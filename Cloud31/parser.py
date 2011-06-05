@@ -25,5 +25,5 @@ def detect_links(text):
 	for item in new_items:
 		result += item + " "
 	
-	return result
+	return result.strip()
 
