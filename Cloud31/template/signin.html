@@ -1,0 +1,19 @@
+{% if user.is_authenticated %}
+<div style="border: 1px 0px;">{{ message }}</div>
+
+<a href="/signout/">signout</a>
+{% else %}
+<div>
+<h3>Login</h3>
+<div style="border: 1px 0px;">{{ message }}</div>
+<form action="/signin/" method="POST">
+{% csrf_token %}
+
+<label>Username</label><input type="text" name="username" /> <br />
+<label>Password</label><input type="text" name="password" /> <br />
+
+<input type="submit" value="Submit" />
+</form>
+<a href="/signup/">sign up</a>
+</div>
+{% endif %}
