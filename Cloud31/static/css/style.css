@@ -1,0 +1,10 @@
+/* Style.css */
+html, body{ font-family: "Arial", "Helvetica", sans-serif; letter-spacing: -1px;}
+h3.message {
+	border-top: 1px solid #CC6600;
+	border-bottom: 1px solid #CC6600;
+	background: #FFEFDF;
+	padding: 10px;
+	font-size: 14px;
+	
+}

@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
@@ -12,9 +15,14 @@ from controller.forms import *
 
 import datetime,json
 
+from django.utils.encoding import smart_unicode
+
 def signin(request):
     t = loader.get_template('signin.html')
     context = RequestContext(request)
+    context['next_url'] = '/'
+    if request.GET.get('next',False):
+        context['next_url'] = request.GET['next']
     
     if request.user.is_authenticated():
         context['message'] = 'You are already logined'
@@ -34,8 +42,10 @@ def signin(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            context['message'] = 'Login Successful'
-            return HttpResponse(t.render(context))
+            if request.POST['next']:
+                return HttpResponseRedirect(request.POST['next'])
+            else:
+                return HttpResponseRedirect('/')
         else:
             return HttpResponse(user.username+' is not active. Please check email and click activation link')
     else:
@@ -96,10 +106,10 @@ def signup(request):
             new_profile = UserProfile(user=new_user, activation_key=activation_key, key_expires=key_expires)
             new_profile.save()
             
-            email_subject = 'Your new example.com account confirmation'
+            email_subject = smart_unicode('Cloud31 계정 인증을 완료해 주세요!', encoding='utf-8', strings_only=False, errors='strict')
             email_body = 'http://localhost:8000/confirm/?key='+activation_key
     
-            send_mail(email_subject, email_body, 'hello<ujlikes@gmail.com>',[email])
+            send_mail(email_subject, email_body, 'Cloud31<cloud31.email@gmail.com>',[email])
             
             return HttpResponse(username + ' Registered. Check Mail' )
     else:
