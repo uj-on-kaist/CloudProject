@@ -7,5 +7,9 @@
 ### MySQL
 > mysql  Ver 14.14 Distrib 5.5.10, for osx10.6 (i386) using  EditLine wrapper
 
+> CREATE DATEBASE 'cloud31'
+> PLEASE SET UTF-8 
+
+
 ### Mysql-python
 > http://mysql-python.sourceforge.net/

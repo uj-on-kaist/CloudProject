@@ -43,6 +43,7 @@ class File(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False)
     uploader = models.ForeignKey(User)
+    file_name = models.CharField(max_length=256)
 
 ##  
 ## Topic Related
