@@ -23,6 +23,7 @@ import json
 def feed(request):
     t = loader.get_template('feed.html')
     context = RequestContext(request)
+    context['load_type']='me'
     return HttpResponse(t.render(context))
     
 
@@ -41,32 +42,19 @@ def delete_feed(request, feed_id):
             result['success']=True
             result['message']='Invalid action'
     except:
-            result['success']=False
-            result['message']='Please sign in first'
+            return return_error('Please Sign in First')
             
     return HttpResponse(json.dumps(result, indent=4))
     
 
-def load_feed(request, load_type):
-    if load_type == 'me':
-        return get_my_feed(request)
-    
+def load_feed(request, user_name):
+    if user_name is not '':
+        return get_user_feed(request,user_name)
+    return return_error('user_name is empty')
 
-def process_messages(messages):
-    feeds=list()
-    for message in messages:
-        feed = dict()
-        feed['id']=message.id
-        feed['author']=message.author.username
-        feed['contents']= message.contents
-        feed['attach_files']= message.attach_files
-        feed['location']= message.location
-        feed['reg_date']= str(message.reg_date)
-        feeds.append(feed)
-    
-    return feeds
 
-def get_my_feed(request):
+
+def load_my_timeline(request):
     result=dict()
     result['success']=True
     result['message']='success'
@@ -74,19 +62,72 @@ def get_my_feed(request):
     try:
         user = User.objects.get(username=request.user.username)
         try:
-            messages = Message.objects.filter(author=user,is_deleted=False).order_by('-reg_date')
+            timelines = UserTimeline.objects.filter(user=user).order_by('-update_date')
+            messages = list()
+            for timeline in timelines:
+                try:
+                    if not timeline.message.is_deleted:
+                        messages.append(timeline.message)
+                except:
+                    pass
+            
             result['feeds']=process_messages(messages)
                 
         except:
             result['success']=True
             result['message']='Do not have any message'
     except:
-            result['success']=False
-            result['message']='no such user'
+            return return_error('No Such User')
             
+    return HttpResponse(json.dumps(result, indent=4))   
+
+# def get_my_feed(request):
+#     result=dict()
+#     result['success']=True
+#     result['message']='success'
+#     
+#     try:
+#         user = User.objects.get(username=request.user.username)
+#         try:
+#             messages = Message.objects.filter(author=user,is_deleted=False).order_by('-reg_date')
+#             result['feeds']=process_messages(messages)
+#                 
+#         except:
+#             result['success']=True
+#             result['message']='Do not have any message'
+#     except:
+#             result['success']=False
+#             result['message']='no such user'
+#             
+#     return HttpResponse(json.dumps(result, indent=4))
+
+def get_user_feed(request,user_name):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    try:
+        user = User.objects.get(username=user_name)
+        try:
+            messages = Message.objects.filter(author=user,is_deleted=False).order_by('-reg_date')
+            result['feeds']=process_messages(messages)                
+        except:
+            result['success']=True
+            result['message']='Do not have any message'
+    except:
+            return return_error('No Such User')
+            
+    return HttpResponse(json.dumps(result, indent=4))
+    
+
+def return_error(msg):
+    result=dict()
+    result['success']=False
+    result['message']=msg
     return HttpResponse(json.dumps(result, indent=4))
 
 
+import parser
 def update_feed(request):
     result=dict()
     result['success']=True
@@ -110,18 +151,55 @@ def update_feed(request):
             user = User.objects.get(username=request.user.username)
             try: 
                 new_message = Message(author=user,contents=message,location=location_info,attach_files=attach_list)
-                new_message.save()
-                
-                #TODO: UPDATE USER_TIMELINE & TARTGET_USER TIMELINE & TOPIC TIMELINE
+                new_message.save()   
             except:
-                result['success']=False
-                result['message']='Insert Failed'
+                return return_error('Insert Failed')
+                     
+            try:
+                author_timeline_new = UserTimeline(message=new_message,user=user)
+                author_timeline_new.save()
+            except:
+                return return_error('Timelilne Failed')
+                
+            target_users=parser.detect_users(message)
+            count = len(target_users)
+            for i, user_name in enumerate(target_users):
+                try:
+                    target_user = User.objects.get(username=user_name)
+                    target_user_timeline_new = UserTimeline(message=new_message,user=target_user)
+                    target_user_timeline_new.save()
+                    if i is not (count - 1):
+                        new_message.related_users+=user_name+','
+                    else:
+                        new_message.related_users+=user_name
+                except:
+                    pass
+            
+            new_message.save()
+            
+            #TODO: UPDATE TARTGET_USER TIMELINE & TOPIC TIMELINE
+            print parser.detect_topics(message)
         except:
-            result['success']=False
-            result['message']='no such user'
+            return return_error('No such User')
     
     return HttpResponse(json.dumps(result, indent=4))
 
 
 
+
+    
+
+def process_messages(messages):
+    feeds=list()
+    for message in messages:
+        feed = dict()
+        feed['id']=message.id
+        feed['author']=message.author.username
+        feed['contents']= parser.parse_text(message.contents)
+        feed['attach_files']= message.attach_files
+        feed['location']= message.location
+        feed['reg_date']= str(message.reg_date)
+        feeds.append(feed)
+    
+    return feeds
 

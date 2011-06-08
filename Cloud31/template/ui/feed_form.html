@@ -2,7 +2,18 @@
 <div class="feed">
 
 <div class="feed_form">
-<div><textarea id="feed_message_input"> </textarea></div>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#feed_message_input").click(function(){
+        if($("#feed_message_input").height()==24)
+            $("#feed_message_input").css('height','56px');
+        $(".feed_rest").show();
+    });
+});
+</script>
+<div><textarea id="feed_message_input" style="max-width:584px; min-width:584px; max-height:100px;"> </textarea></div>
+
+<div class="feed_rest">
 <div><ul id="attach_list"><b style="margin-right:10px;">Attatched</b></ul></div>
 
 <div class="control">
@@ -14,7 +25,7 @@
             <li><b>Attach</b></li>
             <li><a href="#" id="file_button">Files</a></li>
             <li><a href="#">Images</a></li>
-            <li><a href="#">Location</a></li>
+            <li><a rel="facebox" href="#location_selector" id="foo">Location</a></li>
         </ul>
     </div>
     
@@ -23,16 +34,17 @@
 
 </div><!-- item attach -->
 
-
-
-
 <div class="item update">
     <a href="/" class="button update" onClick="upload_feed(); return false;" id="update_btn">Update</a>
     <div class="loading" style="text-align:right; display:none;"><img src="{{ STATIC_URL }}image/loading.gif" /></div>
 </div>
 
 </div><!-- control -->
+</div><!-- feed_rest -->
+
 
 </div><!-- feed_form -->
 
 </div><!-- feed -->
+
+{% include "ui/facebox.html" %}

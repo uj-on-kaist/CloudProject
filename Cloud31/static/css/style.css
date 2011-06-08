@@ -42,3 +42,8 @@ h3.message{
 
 ul.nostyle, ul.nostyle li{list-style: none; padding:0px; margin:0px;}
 ul.nostyle li{display: inline; padding-right: 10px;}
+
+
+
+a.detect_item:hover{text-decoration: none;}
+a.detect_item span:hover{text-decoration: underline;}

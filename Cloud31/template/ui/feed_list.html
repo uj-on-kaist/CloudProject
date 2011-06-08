@@ -1,11 +1,11 @@
 <script type="text/javascript">
 $(document).ready(function(){
-    load_feed('me');
+    load_feed('{{ load_type }}');
 });
 </script>
 
 
-<div id="feed_list" type="me">
+<div id="feed_list" type="{{ load_type }}">
 
 <div class="stream template" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
   <div class="right controls">
@@ -42,11 +42,15 @@ $(document).ready(function(){
         </span>
         |
         <a href="#" class="focus_comment_textarea">댓글 보기</a>
+        |
+        <a href="#" class="focus_comment_textarea">첨부파일(3)</a>
       </div>
-      <div class="attach_files" style="background-color:#F0F4F5; font-size:12px; padding:3px;">
+      <!--
+<div class="attach_files" style="background-color:#F0F4F5; font-size:12px; padding:3px;">
       
       <ul class="nostyle"><b>Attach Files</b><li></li></ul>
       </div>
+-->
       <div class="likes">
       </div>
       <ul class="comments hidden" id="1">

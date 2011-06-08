@@ -56,9 +56,22 @@ function clear_feed_input(){
 
 
 function load_feed(type){
+    if(type == '') return false;
+    
+    if(type.indexOf("user#") != -1){
+        type=type.split("#")[1];
+    }
+    
+    var url='';
+    if(type == 'me'){
+        url="/timeline/"+type;
+    }else{ 
+        url="/feed/"+type;
+    }
+    
     $.ajax({
 		type : "GET",
-		url : "/feed/"+type,
+		url : url,
 		dataType : "JSON",
 		success : function(json) {
 		  if(json.success)
@@ -121,4 +134,13 @@ function delete_feed(item){
 		  console.log(data);
 		}
 	});
+}
+
+
+function setLocationInfo(){
+    $.facebox.close();
+    $('#foo').bind('click', function() {
+        $('#facebox #map_canvas').attr('id','target_map_canvas');
+        initialize();
+    });
 }

@@ -228,7 +228,7 @@ ul.dropdown {
   display: block;
   margin: 5px 0; }
 .stream .stream_element {
-  padding: 20px 20px;
+  padding: 10px 10px;
   min-height: 50px;
   border-bottom: 1px solid #dddddd;
   border-top: 1px solid white; }

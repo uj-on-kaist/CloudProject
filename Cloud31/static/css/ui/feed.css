@@ -5,7 +5,7 @@
 
 .feed_form textarea{
     width:584px;
-    height:56px;
+    height:24px;
     display: block;
     padding:8px;
 }
@@ -48,6 +48,7 @@
 }
 .feed_form .control ul.control_list li{display: inline;margin-right: 10px;}
 
+.feed_rest{display: none;}
 
 
 ul#attach_list, ul#attach_list li{list-style: none; padding:0px; margin: 0px;}

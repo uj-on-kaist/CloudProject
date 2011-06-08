@@ -10,19 +10,18 @@ from django.template import RequestContext, loader
 from controller.models import *
 
 from django.shortcuts import get_object_or_404
-from django.core import serializers
+from django.core.mail import send_mail
 
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.utils.encoding import smart_unicode
 
+
+import json
 
 @login_required(login_url='/signin/')
-def user(request, username):
-    t = loader.get_template('profile.html')
+def topic(request):
+    t = loader.get_template('topic.html')
     context = RequestContext(request)
-    
-    user = get_object_or_404(User,username=username)
-    target_user = get_object_or_404(UserProfile, user=user)
-    context['target_user']=target_user
-    
-    context['load_type']='user#'+username
+    context['load_type']='me'
     return HttpResponse(t.render(context))

@@ -22,7 +22,12 @@ urlpatterns = patterns('',
     url(r'^feed/$','controller.feedcontroller.feed'),
     url(r'^feed/update/$','controller.feedcontroller.update_feed'),
     url(r'^feed/delete/(?P<feed_id>\w+)$','controller.feedcontroller.delete_feed'),
-    url(r'^feed/(?P<load_type>\w+)/$','controller.feedcontroller.load_feed'),
+    url(r'^feed/(?P<user_name>\w+)/$','controller.feedcontroller.load_feed'),
+    url(r'^timeline/me/$','controller.feedcontroller.load_my_timeline'),
+    
+    
+    url(r'^topic/$','controller.topiccontroller.topic'),
+    
     
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
