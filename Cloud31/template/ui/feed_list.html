@@ -1,3 +1,74 @@
-{% for feed in feeds %}
-123
-{% endfor %}
+<script type="text/javascript">
+$(document).ready(function(){
+    load_feed('me');
+});
+</script>
+
+
+<div id="feed_list" type="me">
+
+<div class="stream template" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
+  <div class="right controls">
+    <a href="#" class="delete stream_element_delete" title="지우기" style="display:none;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+  </div>
+  <div class="sm_body">
+    <a href="/user/" class="user_link">
+      <img class="avatar" data-person_id="2" src="/media/default.png">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/" class="user_link">
+          user_name
+        </a>
+        <time class="time timeago" datetime="2011-06-08 13:01:46 UTC" integer="1307538106"></time>
+      </div>
+      <p class="feed_content">
+        feed_content
+      </p>
+      <div class="info">
+<!--
+        <span class="aspect_badges">
+          <span class="aspect_badge single"><a href="/aspects?a_ids[]=3" class=" hard_aspect_link" data-guid="3" params="created_ata_ids[]3">가족</a></span><span class="aspect_badge single"><a href="#" class="hard_aspect_link" data-guid="4">직장</a></span>
+        </span>
+-->
+        <span class="timeago">
+          <abbr class="timeago" title="2011-06-08 13:01:46 UTC">방금 전</abbr>
+        </span>
+        <span class="via">
+        </span>
+        |
+        <span class="like_action">
+          <a href="/likes?positive=true&amp;post_id=1" class="like" data-method="post" data-remote="true" rel="nofollow">좋아요</a>
+        </span>
+        |
+        <a href="#" class="focus_comment_textarea">댓글 보기</a>
+      </div>
+      <div class="attach_files" style="background-color:#F0F4F5; font-size:12px; padding:3px;">
+      
+      <ul class="nostyle"><b>Attach Files</b><li></li></ul>
+      </div>
+      <div class="likes">
+      </div>
+      <ul class="comments hidden" id="1">
+        
+        <li class="comment show">
+          <form accept-charset="UTF-8" action="/comments" class="new_comment" data-remote="true" id="new_comment_on_1" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="RG6kZeXhJ7yIIPrQxqO4xsAb8VE4MjnoYjT6HTCAGAw="></div>
+            <img alt="test12@localhost" class="avatar" data-person_id="2" src="/media/default.png" title="test12@localhost">
+            <p>
+              <label for="comment_text_on_1">댓글 달기</label>
+              <textarea class="comment_box" id="comment_text_on_1" name="text" rows="2"></textarea>
+            </p>
+            <input id="post_id_on_1" name="post_id" type="hidden" value="1">
+            <div class="submit_button">
+              <input class="comment_submit button" data-disable-with="댓글 다는 중···" id="comment_submit_1" name="commit" type="submit" value="댓글 달기">
+            </div>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+
+</div>

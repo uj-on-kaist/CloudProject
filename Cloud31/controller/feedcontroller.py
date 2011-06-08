@@ -25,7 +25,47 @@ def feed(request):
     context = RequestContext(request)
     return HttpResponse(t.render(context))
     
+
+def delete_feed(request, feed_id):
+    result=dict()
+    result['success']=True
+    result['message']='success'
     
+    try:
+        user = User.objects.get(username=request.user.username)
+        try:
+            message = Message.objects.get(author=user, id=feed_id)
+            message.is_deleted=True
+            message.save()
+        except:
+            result['success']=True
+            result['message']='Invalid action'
+    except:
+            result['success']=False
+            result['message']='Please sign in first'
+            
+    return HttpResponse(json.dumps(result, indent=4))
+    
+
+def load_feed(request, load_type):
+    if load_type == 'me':
+        return get_my_feed(request)
+    
+
+def process_messages(messages):
+    feeds=list()
+    for message in messages:
+        feed = dict()
+        feed['id']=message.id
+        feed['author']=message.author.username
+        feed['contents']= message.contents
+        feed['attach_files']= message.attach_files
+        feed['location']= message.location
+        feed['reg_date']= str(message.reg_date)
+        feeds.append(feed)
+    
+    return feeds
+
 def get_my_feed(request):
     result=dict()
     result['success']=True
@@ -33,6 +73,13 @@ def get_my_feed(request):
     
     try:
         user = User.objects.get(username=request.user.username)
+        try:
+            messages = Message.objects.filter(author=user,is_deleted=False).order_by('-reg_date')
+            result['feeds']=process_messages(messages)
+                
+        except:
+            result['success']=True
+            result['message']='Do not have any message'
     except:
             result['success']=False
             result['message']='no such user'

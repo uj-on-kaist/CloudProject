@@ -32,5 +32,13 @@ h3.message{
   font-weight: normal;
   letter-spacing: 0;
   color: #d0312b;
-  text-shadow: 1px 1px 20px #d0312b; }
+  text-shadow: 1px 1px 20px #d0312b; 
 }
+
+
+.template{
+    display:none;
+}
+
+ul.nostyle, ul.nostyle li{list-style: none; padding:0px; margin:0px;}
+ul.nostyle li{display: inline; padding-right: 10px;}
