@@ -20,6 +20,8 @@ urlpatterns = patterns('',
     url(r'^$','controller.maincontroller.main'),
     
     url(r'^feed/$','controller.feedcontroller.feed'),
+    url(r'^feed/update/$','controller.feedcontroller.update_feed'),
+    
     
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),

@@ -1,10 +1,36 @@
-/* Style.css */
-html, body{ font-family: "Arial", "Helvetica", sans-serif; letter-spacing: -1px;}
-h3.message {
-	border-top: 1px solid #CC6600;
-	border-bottom: 1px solid #CC6600;
-	background: #FFEFDF;
-	padding: 10px;
-	font-size: 14px;
-	
+@import url('ui/feed.css');
+
+.wrapper{}
+
+header{
+    width:100%;
+    height:30px;
+    padding:5px 0px;
+}
+
+.main{
+}
+.main_contents{
+    width:100%;
+}
+
+
+.login_form, .register_form{
+    width:200px;
+}
+.register_form label{
+    display: none;
+}
+
+.button{
+    margin:0;
+}
+
+
+h3.message{
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: 0;
+  color: #d0312b;
+  text-shadow: 1px 1px 20px #d0312b; }
 }

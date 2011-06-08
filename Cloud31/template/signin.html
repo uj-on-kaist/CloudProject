@@ -1,24 +1,26 @@
 {% include "meta_open.html"%}
-{% include "header.html" %}
 
 {% if user.is_authenticated %}
 {% if message %}<h3 class="message">{{ message }}</h3>{% endif %}
 {% else %}
 <div>
-<h3>Login</h3>
+<h3>Sign in</h3>
 
 {% if message %}<h3 class="message">{{ message }}</h3>{% endif %}
-<form action="/signin/" method="POST">
+<form action="/signin/" method="POST" class="login_form">
 {% csrf_token %}
 
 <input type="hidden" name="next" value="{{next_url}}" />
-<label>Username</label><input type="text" name="username" /> <br />
-<label>Password</label><input type="password" name="password" /> <br />
-
-<input type="submit" value="Submit" />
+<input type="text" name="username" placeholder="Username" />
+<input type="password" name="password" placeholder="Password" />
+<input type="submit" value="Sign in" class="button" />
 </form>
 
 </div>
+
+
+
+
 {% endif %}
 
 {% include "meta_close.html"%}

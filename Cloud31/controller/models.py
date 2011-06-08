@@ -24,7 +24,7 @@ class Message(models.Model):
     location = models.CharField(max_length=30,default='')
     
     # Comma Seperated
-    attatch_files = models.TextField(default='')
+    attach_files = models.TextField(default='')
     related_users = models.TextField(default='')
     related_topics = models.TextField(default='')
 

@@ -1,11 +1,10 @@
 {% include "meta_open.html"%}
-{% include "header.html" %}
 <div>
 <h3>Sign up</h3>
-<form action="/signup/" method="POST">
+<form action="/signup/" method="POST" class="register_form">
 {% csrf_token %}
 {{ form }}
-<input type="submit" value="Submit" />
+<input type="submit" value="Submit" class="button"/>
 </form>
 </div>
 {% include "meta_close.html"%}

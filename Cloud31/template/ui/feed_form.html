@@ -1,0 +1,38 @@
+<script src="{{ STATIC_URL }}js/feed.js" type="text/javascript"></script>
+<div class="feed">
+
+<div class="feed_form">
+<div><textarea id="feed_message_input"> </textarea></div>
+<div><ul id="attach_list"><b style="margin-right:10px;">Attatched</b></ul></div>
+
+<div class="control">
+
+
+<div class="item attach">
+    <div>
+        <ul class="control_list">
+            <li><b>Attach</b></li>
+            <li><a href="#" id="file_button">Files</a></li>
+            <li><a href="#">Images</a></li>
+            <li><a href="#">Location</a></li>
+        </ul>
+    </div>
+    
+    
+{% include "ui/file_upload.html" %}
+
+</div><!-- item attach -->
+
+
+
+
+<div class="item update">
+    <a href="/" class="button update" onClick="upload_feed(); return false;" id="update_btn">Update</a>
+    <div class="loading" style="text-align:right; display:none;"><img src="{{ STATIC_URL }}image/loading.gif" /></div>
+</div>
+
+</div><!-- control -->
+
+</div><!-- feed_form -->
+
+</div><!-- feed -->

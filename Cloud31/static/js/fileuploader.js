@@ -486,7 +486,7 @@ qq.FileUploader = function(o){
                 
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-                '<div class="qq-upload-button">Upload a file</div>' +
+                '<div class="qq-upload-button">Select a file</div>' +
                 '<ul class="qq-upload-list"></ul>' + 
              '</div>',
 
@@ -497,6 +497,7 @@ qq.FileUploader = function(o){
                 '<span class="qq-upload-size"></span>' +
                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
                 '<span class="qq-upload-failed-text">Failed</span>' +
+                '<a href="#" id="del_btn" onClick="$(this).parent().remove(); return false;">delete</a>'+
             '</li>',        
         
         classes: {
@@ -551,7 +552,8 @@ qq.extend(qq.FileUploader.prototype, {
         var self = this,
             dropArea = this._find(this._element, 'drop');                        
 
-        var dz = new qq.UploadDropZone({
+        /*
+var dz = new qq.UploadDropZone({
             element: dropArea,
             onEnter: function(e){
                 qq.addClass(dropArea, self._classes.dropActive);
@@ -569,6 +571,7 @@ qq.extend(qq.FileUploader.prototype, {
                 self._uploadFileList(e.dataTransfer.files);    
             }
         });
+*/
                 
         dropArea.style.display = 'none';
 
@@ -616,7 +619,8 @@ qq.extend(qq.FileUploader.prototype, {
         qq.remove(this._find(item, 'spinner'));
         
         if (result.success){
-            qq.addClass(item, this._classes.success);    
+            qq.addClass(item, this._classes.success);
+            item.setAttribute('id','file#'+result.id);
         } else {
             qq.addClass(item, this._classes.fail);
         }         

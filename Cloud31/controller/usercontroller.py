@@ -21,6 +21,12 @@ def signin(request):
     t = loader.get_template('signin.html')
     context = RequestContext(request)
     context['next_url'] = '/'
+    
+    if request.session['message']:
+        context['message'] = request.session['message']
+        request.session['message'] = None
+        return HttpResponse(t.render(context))
+        
     if request.GET.get('next',False):
         context['next_url'] = request.GET['next']
     
@@ -34,7 +40,7 @@ def signin(request):
     if not (request.POST.get('username',False) and request.POST.get('password',False) ):
         context['message'] = 'Field is missing'
         return HttpResponse(t.render(context))
-        
+    
     username = request.POST['username']
     password = request.POST['password']
     
@@ -49,20 +55,17 @@ def signin(request):
         else:
             return HttpResponse(user.username+' is not active. Please check email and click activation link')
     else:
-        context['message'] = 'Sign in Failed'
+        context['message'] = 'Sign in Failed. Check Username and Password is correct'
         return HttpResponse(t.render(context))
     
 
 def signout(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/signin/')
-    
-    userane=request.user.username
-    logout(request)
-    t = loader.get_template('signin.html')
-    context = RequestContext(request)
-    context['message'] = 'Successfully logout'
-    return HttpResponse(t.render(context))
+        request.session['message'] =  'You need to login first'
+    else:
+        logout(request)
+        request.session['message'] =  'Successfully logout'
+    return HttpResponseRedirect('/signin/')
 
 import re
 def signup(request):
@@ -132,7 +135,8 @@ def confirm(request):
     user_account = user_profile.user
     user_account.is_active = True
     user_account.save()
-    return HttpResponse(user_account.username + ' is Activated. ')
+    request.session['message'] = user_account.username + ' is Activated. '
+    return HttpResponseRedirect('/signin/')
     
 
 from hashlib import sha1
