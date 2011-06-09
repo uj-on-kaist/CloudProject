@@ -58,17 +58,20 @@ function clear_feed_input(){
 function load_feed(type){
     if(type == '') return false;
     
-    if(type.indexOf("user#") != -1){
-        type=type.split("#")[1];
-    }
-    
+
     var url='';
     if(type == 'me'){
         url="/api/timeline/"+type;
-    }else{ 
-        url="/api/feed/user/"+type;
+    }else if(type.indexOf("user#") != -1){ 
+        var user_name=type.split("#")[1];
+        url="/api/feed/user/"+user_name;
+    }else if(type.indexOf("topic#") != -1){
+        var topic_name=type.split("#")[1];
+        url="/api/feed/topic/"+topic_name;
+    }else{
+        return false;
     }
-    
+    console.log(url);  
     $.ajax({
 		type : "GET",
 		url : url,
@@ -102,8 +105,11 @@ function display_feeds(feeds, type){
         feed_layout.find('img.avatar').attr('src','/picture/'+feed.author);
         
         var attach_count=feed.attach_files.split(',').length;
-        feed_layout.find('#attach_file_count span').text(attach_count);
-        
+        if(feed.attach_files == ""){
+            feed_layout.find('#attach_file_count').hide();
+        }else{
+            feed_layout.find('#attach_file_count span').text(attach_count);
+        }
         if(type == 'me'){
             feed_layout.find('.stream_element_delete').show();
             feed_layout.find('.stream_element_delete').attr('feed_id',feed.id);
@@ -113,10 +119,13 @@ function display_feeds(feeds, type){
         }
         
         
-        feed_layout.find('ul.comments.comment_count span').text(feed.comments.length);
+        
         if(feed.comments.length == 0){
+            feed_layout.find('ul.comments.comment_count li').text('댓글이 없습니다.');
             feed_layout.find('ul.comments.comment_list').hide();
+            feed_layout.find("ul.comments.comment_count a.show_all").hide();
         }else{
+            feed_layout.find('ul.comments.comment_count span').text(feed.comments.length);
             feed_layout.find("ul.comments.comment_count a.show_all").attr('id','comment_show_'+feed.id);
             feed_layout.find("ul.comments.comment_count a.show_all").click(function(){
                 if($(this).text().indexOf('보기') != -1){
@@ -124,7 +133,6 @@ function display_feeds(feeds, type){
                     var id=$(this).attr('id').split('_')[2];
                     $('#feed_'+id+' ul.comments.comment_list li').removeClass('hidden');
                 }else{
-                    $(this).text('모두 보기');
                     $(this).text('모두 보기');
                     var id=$(this).attr('id').split('_')[2];
                     var total=$('#feed_'+id+' ul.comments.comment_list li').length;

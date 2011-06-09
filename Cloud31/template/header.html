@@ -1,6 +1,27 @@
 <header>
 <div class="container">
-<h2 style="color:white;">Cloud31</h2>
+<a href="/"><h2 style="color:white; display:inline; float:left; margin-right:20px;">Cloud31</h2></a>
+
+<input type="text" placeholder="Search" style="padding:4px 8px; font-size:12px; width:300px;display:inline; height:14px;float:left; margin:5px 0px;"/>
+
+{% if user.is_authenticated %}
+<span style="float:right">
+<a href="/user/{{ user.username }}" style="color: #3f8fba;"><img src="/picture/{{ user.username }}" style="width:30px; height:30px;"></a>
+</span>
+{% endif %}
+
+{% if user.is_authenticated %}
+<ul class="" style="float:right; color:white; padding:0px 0px; text-align:right; margin-right:10px;">
+<b>{{ user.username }}</b>
+<li style="line-height:10px"><a href="/signout/" style="color: #3f8fba;">Sign out</a></li>
+{% else %}
+<ul class="nostyle" style="float:right; color:white; padding:6px 0px;">
+<li><a href="/signin/" style="color: #3f8fba;">Sign in</a></li>
+<li><a href="/signup/" style="color: #3f8fba;">Sign up</a></li>
+{% endif %}
+</ul>
+
+
 </div>
 </header>
 

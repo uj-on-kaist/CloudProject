@@ -18,6 +18,8 @@ from django.utils.encoding import smart_unicode
 
 
 import json
+import parser
+import my_utils
 
 @login_required(login_url='/signin/')
 def feed(request):
@@ -71,7 +73,7 @@ def load_my_timeline(request):
                 except:
                     pass
             
-            result['feeds']=process_messages(messages)
+            result['feeds']=my_utils. process_messages(messages)
                 
         except:
             result['success']=True
@@ -90,7 +92,7 @@ def load_my_timeline(request):
 #         user = User.objects.get(username=request.user.username)
 #         try:
 #             messages = Message.objects.filter(author=user,is_deleted=False).order_by('-reg_date')
-#             result['feeds']=process_messages(messages)
+#             result['feeds']=my_utils. process_messages(messages)
 #                 
 #         except:
 #             result['success']=True
@@ -110,7 +112,7 @@ def get_user_feed(request,user_name):
         user = User.objects.get(username=user_name)
         try:
             messages = Message.objects.filter(author=user,is_deleted=False).order_by('-reg_date')
-            result['feeds']=process_messages(messages)                
+            result['feeds']=my_utils. process_messages(messages)                
         except:
             result['success']=True
             result['message']='Do not have any message'
@@ -127,7 +129,7 @@ def return_error(msg):
     return HttpResponse(json.dumps(result, indent=4))
 
 
-import parser
+
 def update_feed(request):
     result=dict()
     result['success']=True
@@ -181,6 +183,24 @@ def update_feed(request):
             #TODO: UPDATE TARTGET_USER TIMELINE & TOPIC TIMELINE
             target_topics=parser.detect_topics(message)
             target_topics=remove_duplicates(target_topics)
+            count = len(target_topics)
+            for i,topic_name in enumerate(target_topics):
+                try:
+                    topic = Topic.objects.get_or_create(topic_name=topic_name)[0]
+                    topic.save()
+                    
+                    topic_timeline_new = TopicTimeline(message=new_message, topic=topic)
+                    topic_timeline_new.save()
+                    if i is not (count - 1):
+                        new_message.related_topics+=topic_name+','
+                    else:
+                        new_message.related_topics+=topic_name
+                    
+                except Exception as e:
+                    print str(e)
+                    pass
+                    
+            new_message.save()
         except:
             return return_error('No such User')
     
@@ -235,6 +255,8 @@ def update_comment(request):
         except Exception as e:
             print str(e)
             return return_error('Related Timelilne Failed')
+            
+        #Question! Should do insert into related Topic timeline?
     else:
         return return_error('Empty Message')
     
@@ -250,30 +272,7 @@ def update_comment(request):
     return HttpResponse(json.dumps(result, indent=4))
     
 
-def process_messages(messages):
-    feeds=list()
-    for message in messages:
-        feed = dict()
-        feed['id']=message.id
-        feed['author']=message.author.username
-        feed['contents']= parser.parse_text(message.contents)
-        feed['attach_files']= message.attach_files
-        feed['location']= message.location
-        feed['reg_date']= str(message.reg_date)
-        feed['comments'] = list()
-        try:
-            comments = Comment.objects.filter(message=message, is_deleted=False).order_by('reg_date')
-            for comment in comments:
-                item = dict()
-                item['id']=comment.id
-                item['author']=comment.author.username
-                item['contents']= parser.parse_text(comment.contents)
-                item['reg_date']= str(comment.reg_date)
-                feed['comments'].append(item)
-        except:
-            pass
-        feeds.append(feed)
-    return feeds
+
 
 
 def remove_duplicates(input_list):

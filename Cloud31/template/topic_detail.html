@@ -1,17 +1,12 @@
 {% include "meta_open.html"%}
 
-<h2 >Topics</h2>
+<h2><a href="/topic/">≪</a> {{ topic_name }}</h2>
 
 <div>
 <b style="font-size:16px;">Search Topic</b>
 <input type="text" style="width:200px; display:inline; margin-left:5px;"/>
 </div>
-<!--
 <script src="{{ STATIC_URL }}js/feed.js" type="text/javascript"></script>
--->
-
-{% for topic in topics %}
-<a href="/topic/{{ topic.topic_name }}">{{ topic.topic_name }}</a>
-{% endfor%}
+{% include "ui/feed_list.html"%}
 
 {% include "meta_close.html"%}

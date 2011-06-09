@@ -26,7 +26,8 @@ def signin(request):
         context['message'] = request.session['message']
         request.session['message'] = None
         return HttpResponse(t.render(context))
-    
+    else:
+        request.session['message'] = None
     
     if request.GET.get('next',False):
         context['next_url'] = request.GET['next']

@@ -12,7 +12,7 @@ def parse_text(text):
         prefix = item[:1]
         link_prefix = item[:7]
         if prefix == "#":
-            item_text=re.sub("\W","",item)
+            item_text = item[1:]
             item = '<a class="detect_item" href="/topic/'+item_text+'">'+prefix+'<span>'+item_text+'</span></a>'
             
         if prefix == "@":
