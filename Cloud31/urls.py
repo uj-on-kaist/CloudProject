@@ -20,10 +20,15 @@ urlpatterns = patterns('',
     url(r'^$','controller.maincontroller.main'),
     
     url(r'^feed/$','controller.feedcontroller.feed'),
-    url(r'^feed/update/$','controller.feedcontroller.update_feed'),
-    url(r'^feed/delete/(?P<feed_id>\w+)$','controller.feedcontroller.delete_feed'),
-    url(r'^feed/(?P<user_name>\w+)/$','controller.feedcontroller.load_feed'),
-    url(r'^timeline/me/$','controller.feedcontroller.load_my_timeline'),
+    
+    
+    url(r'^api/feed/update/$','controller.feedcontroller.update_feed'),
+    url(r'^api/feed/delete/(?P<feed_id>\w+)$','controller.feedcontroller.delete_feed'),
+    url(r'^api/feed/update/comment/$','controller.feedcontroller.update_comment'),
+    url(r'^api/feed/user/(?P<user_name>\w+)/$','controller.feedcontroller.load_feed'),
+    
+    url(r'^api/timeline/me/$','controller.feedcontroller.load_my_timeline'),
+
     
     
     url(r'^topic/$','controller.topiccontroller.topic'),
@@ -38,6 +43,7 @@ urlpatterns = patterns('',
     url(r'^confirm/$','controller.usercontroller.confirm'),
     
     url(r'^user/(?P<username>\w+)/$','controller.profilecontroller.user'),
+    url(r'^picture/(?P<username>\w+)/$','controller.profilecontroller.picture'),
     
     url(r'file/ajax_upload$', 'controller.filecontroller.ajax_upload'),
     url(r'file/$', 'controller.filecontroller.upload_page' ),

@@ -26,3 +26,7 @@ def user(request, username):
     
     context['load_type']='user#'+username
     return HttpResponse(t.render(context))
+    
+    
+def picture(request,username):
+    return HttpResponseRedirect('/media/default.png')

@@ -13,14 +13,13 @@ $(document).ready(function(){
   </div>
   <div class="sm_body">
     <a href="/user/" class="user_link">
-      <img class="avatar" data-person_id="2" src="/media/default.png">
+      <img class="avatar" data-person_id="2">
     </a>
     <div class="content">
       <div class="from">
         <a href="/user/" class="user_link">
           user_name
         </a>
-        <time class="time timeago" datetime="2011-06-08 13:01:46 UTC" integer="1307538106"></time>
       </div>
       <p class="feed_content">
         feed_content
@@ -32,7 +31,7 @@ $(document).ready(function(){
         </span>
 -->
         <span class="timeago">
-          <abbr class="timeago" title="2011-06-08 13:01:46 UTC">방금 전</abbr>
+          <abbr class="timeago feed_time" title="2011-06-08 13:01:46 UTC">방금 전</abbr>
         </span>
         <span class="via">
         </span>
@@ -41,9 +40,7 @@ $(document).ready(function(){
           <a href="/likes?positive=true&amp;post_id=1" class="like" data-method="post" data-remote="true" rel="nofollow">좋아요</a>
         </span>
         |
-        <a href="#" class="focus_comment_textarea">댓글 보기</a>
-        |
-        <a href="#" class="focus_comment_textarea">첨부파일(3)</a>
+        <a href="#" class="focus_comment_textarea" id="attach_file_count">첨부파일(<span></span>)</a>
       </div>
       <!--
 <div class="attach_files" style="background-color:#F0F4F5; font-size:12px; padding:3px;">
@@ -53,22 +50,10 @@ $(document).ready(function(){
 -->
       <div class="likes">
       </div>
-      <ul class="comments hidden" id="1">
-        
-        <li class="comment show">
-          <form accept-charset="UTF-8" action="/comments" class="new_comment" data-remote="true" id="new_comment_on_1" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="RG6kZeXhJ7yIIPrQxqO4xsAb8VE4MjnoYjT6HTCAGAw="></div>
-            <img alt="test12@localhost" class="avatar" data-person_id="2" src="/media/default.png" title="test12@localhost">
-            <p>
-              <label for="comment_text_on_1">댓글 달기</label>
-              <textarea class="comment_box" id="comment_text_on_1" name="text" rows="2"></textarea>
-            </p>
-            <input id="post_id_on_1" name="post_id" type="hidden" value="1">
-            <div class="submit_button">
-              <input class="comment_submit button" data-disable-with="댓글 다는 중···" id="comment_submit_1" name="commit" type="submit" value="댓글 달기">
-            </div>
-          </form>
-        </li>
-      </ul>
+      
+      
+      {% include "ui/comment_box.html" %}
+      
     </div>
   </div>
 </div>

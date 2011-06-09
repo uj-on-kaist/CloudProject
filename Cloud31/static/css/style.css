@@ -1,5 +1,3 @@
-@import url('ui/feed.css');
-
 .wrapper{}
 
 header{
@@ -47,3 +45,9 @@ ul.nostyle li{display: inline; padding-right: 10px;}
 
 a.detect_item:hover{text-decoration: none;}
 a.detect_item span:hover{text-decoration: underline;}
+
+
+.msg_avatar{ width:50px; height:50px;}
+
+
+

@@ -21,12 +21,13 @@ def signin(request):
     t = loader.get_template('signin.html')
     context = RequestContext(request)
     context['next_url'] = '/'
-    
-    if request.session['message']:
+
+    if request.session.get('message',False):
         context['message'] = request.session['message']
         request.session['message'] = None
         return HttpResponse(t.render(context))
-        
+    
+    
     if request.GET.get('next',False):
         context['next_url'] = request.GET['next']
     

@@ -11,12 +11,14 @@
 
 
 <script src="{{ STATIC_URL }}js/jquery-1.6.1.min.js?{{ csrf_token }}" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}js/facebox/facebox.js?{{ csrf_token }}" type="text/javascript"></script> 
+<script src="{{ STATIC_URL }}js/facebox/facebox.js?{{ csrf_token }}" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/jquery.elastic.source.js?{{ csrf_token }}" type="text/javascript"></script> 
 <script src="{{ STATIC_URL }}js/utils.js?{{ csrf_token }}" type="text/javascript"></script> 
 
 <script type="text/javascript">
 $(document).ready(function(){
     $('a[rel*=facebox]').facebox();
+    $('#feed_message_input').elastic();
 });
 </script>
 

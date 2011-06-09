@@ -5,7 +5,7 @@
 
 .feed_form textarea{
     width:584px;
-    height:24px;
+
     display: block;
     padding:8px;
 }
@@ -53,3 +53,16 @@
 
 ul#attach_list, ul#attach_list li{list-style: none; padding:0px; margin: 0px;}
 ul#attach_list li{display: inline; padding-right: 10px;}
+
+textarea.comment_area{
+    margin:0px;
+    width:460px;
+    font-size: 12px;
+    padding:5px;
+    resize: none;
+}
+li.nostyle{ border:none;}
+
+
+ul.comments li.write_box, ul.comment_count li {border-left:3px solid #F0F4F5;}
+ul.comment_count{font-size: 11px;}
