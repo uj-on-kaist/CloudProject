@@ -130,9 +130,9 @@
 				
 				// Update textarea size on keyup, change, cut and paste
 				$textarea.bind('keyup change cut paste', function(){
-					update(); 
+					update();
 				});
-				
+
 				// Update width of twin if browser or textarea is resized (solution for textareas with widths in percent)
 				$(window).bind('resize', setTwinWidth);
 				$textarea.bind('resize', setTwinWidth);
@@ -140,13 +140,21 @@
 				
 				// Compact textarea on blur
 				$textarea.bind('blur',function(){
+					/*
+
 					if($twin.height() < maxheight){
 						if($twin.height() > minheight) {
+						    console.log('hihi');
 							$textarea.height($twin.height());
 						} else {
-							$textarea.height(minheight);
+						
+							$textarea.height(minheight + lineHeight);
 						}
 					}
+*/
+				});
+				$textarea.bind('success',function(){
+				    $textarea.height(21);
 				});
 				
 				// And this line is to catch the browser paste event

@@ -66,6 +66,7 @@ class UserTimeline(models.Model):
     message = models.ForeignKey(Message)
     user = models.ForeignKey(User)
     update_date = models.DateTimeField(auto_now=True)
+    is_read = models.BooleanField(default=False)
         
 class UserFavorite(models.Model):
     message = models.ForeignKey(Message)

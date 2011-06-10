@@ -23,7 +23,12 @@ def user(request, username):
     user = get_object_or_404(User,username=username)
     target_user = get_object_or_404(UserProfile, user=user)
     context['target_user']=target_user
+    context['profile_user']=username
     
+    if request.user.username == username:
+        context['profile_type']='me'
+    else:
+        context['profile_type']='user'
     context['load_type']='user#'+username
     return HttpResponse(t.render(context))
     

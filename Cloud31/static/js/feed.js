@@ -43,6 +43,7 @@ function upload_feed(){
 
 function clear_feed_input(){
     $('textarea#feed_message_input').val("");
+    $('textarea#feed_message_input').trigger('success');
     
     $("#attach_list").find('li').each(function(i, val){
         $(this).remove();
@@ -238,10 +239,11 @@ function update_comment(feed_id){
 		success : function(json) {
 		  console.log(json);
 		  $("#comment_area_"+feed_id).val("");
+		  $('textarea#comment_area_'+feed_id).trigger('success');
 		  if(json.comment){
 		      var feed_layout=$("#feed_"+feed_id);
-		      console.log(feed_layout);
 		      
+		      feed_layout.find('ul.comments.comment_list').show();
 		      var this_index=$('ul.comment_list').find('li.comment.posted').length;
 		      var comment_layout=add_comment(feed_layout, json.comment, this_index,this_index+1);
 		      comment_layout.hide();

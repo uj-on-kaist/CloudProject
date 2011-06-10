@@ -1,6 +1,6 @@
 {% include "meta_open.html"%}
 
-<h2>{{ target_user.user.username }}</h2>
+<h2>{{ target_user.user.username }} {{ profile_type}}</h2>
 
 <script src="{{ STATIC_URL }}js/feed.js" type="text/javascript"></script>
 {% include "ui/feed_list.html"%}
