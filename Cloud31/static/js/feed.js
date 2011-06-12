@@ -104,6 +104,7 @@ function display_feeds(feeds, type){
         
         feed_layout.find('abbr.feed_time').text(humane_date(feed.reg_date));
         feed_layout.find('img.avatar').attr('src','/picture/'+feed.author);
+
         
         var attach_count=feed.attach_files.split(',').length;
         if(feed.attach_files == ""){
@@ -171,6 +172,11 @@ function add_comment(feed_layout, comment, index, total){
     comment_layout.find('abbr.comment_time').text(humane_date(comment.reg_date));
     comment_layout.find('.user_link').attr('href','/user/'+comment.author);
     comment_layout.find('img.avatar').attr('src','/picture/'+comment.author);
+    
+    var current_user = $("#user_name_info").text();
+    comment_layout.find('img.current_user.avatar').attr('src','/picture/'+current_user);
+    console.log(comment_layout.find('img.current_user.avatar'));
+    
     comment_layout.find('.from a').text(comment.author);
     
     if(index <= total-3){

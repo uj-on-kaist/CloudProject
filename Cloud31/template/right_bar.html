@@ -4,7 +4,8 @@
 
 <ul class="nostyle">
 {% if user.is_authenticated %}
-Logged with <b>{{ user.username }}</b>
+<h2>{{ user.username }}</h2>
+<img src="/picture/{{ user.username }}"  style="width:100%;"/>
 <li><a href="/signout/">Sign out</a></li>
 
 {% else %}

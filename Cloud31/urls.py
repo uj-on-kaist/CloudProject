@@ -45,8 +45,12 @@ urlpatterns = patterns('',
     url(r'^confirm/$','controller.usercontroller.confirm'),
     
     url(r'^user/(?P<username>\w+)/$','controller.profilecontroller.user'),
+
+    url(r'^picture/set$', 'controller.profilecontroller.ajax_upload'),
     url(r'^picture/(?P<username>\w+)/$','controller.profilecontroller.picture'),
-    
+
     url(r'file/ajax_upload$', 'controller.filecontroller.ajax_upload'),
     url(r'file/$', 'controller.filecontroller.upload_page' ),
+    
+    url(r'setting/$', 'controller.settingcontroller.setting'),
 )
