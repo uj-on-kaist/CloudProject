@@ -1,15 +1,8 @@
-<script type="text/javascript">
-$(document).ready(function(){
-    load_feed('{{ load_type }}');
-});
-</script>
-
-
 <div id="feed_list" type="{{ load_type }}">
 
 <div class="stream template" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
   <div class="right controls">
-    <a href="#" class="delete stream_element_delete" title="지우기" style="display:none;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+    <a href="#" class="delete stream_element_delete feed" title="지우기" style="display:none;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
   </div>
   <div class="sm_body">
     <a href="/user/" class="user_link">
@@ -37,10 +30,15 @@ $(document).ready(function(){
         </span>
         |
         <span class="like_action">
-          <a href="/likes?positive=true&amp;post_id=1" class="like" data-method="post" data-remote="true" rel="nofollow">좋아요</a>
+          <a href="#"><span class="favor">Favorite</span><span class="unfavor">Unfavorite</span></a>
         </span>
         |
         <a href="#" class="focus_comment_textarea" id="attach_file_count">첨부파일(<span></span>)</a>
+        |
+        <span class="comment_action">
+          Comments
+        </span>
+        
       </div>
       <!--
 <div class="attach_files" style="background-color:#F0F4F5; font-size:12px; padding:3px;">

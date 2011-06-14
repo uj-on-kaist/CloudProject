@@ -12,7 +12,7 @@ import json
 import parser
 
 
-def process_messages(messages):
+def process_messages(request, messages):
     feeds=list()
     for message in messages:
         feed = dict()
@@ -34,7 +34,21 @@ def process_messages(messages):
                 feed['comments'].append(item)
         except:
             pass
+            
+        try:
+            user = User.objects.get(username=request.user.username)
+            is_favorited = UserFavorite.objects.filter(message=message, user=user)[0]
+            feed['favorite']=True
+        except:
+            feed['favorite']=False        
+            pass
         feeds.append(feed)
     return feeds
     
+    
+
+
+def remove_duplicates(input_list):
+    return list(set(input_list))
+
 

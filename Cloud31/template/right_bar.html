@@ -1,12 +1,19 @@
-<div class="rightBar span-5">
+<div class="rightBar span-5" style="margin:0px;margin-left:4px; padding-top:40px;">
 
 
 
 <ul class="nostyle">
 {% if user.is_authenticated %}
-<h2>{{ user.username }}</h2>
-<img src="/picture/{{ user.username }}"  style="width:100%;"/>
-<li><a href="/signout/">Sign out</a></li>
+
+
+{% if 'user_profile' in side_list%}
+<div title="user_profile">
+<a href="/user/{{ current_user }}"><img src="/picture/{{ current_user }}"  style="width:100%;"/></a>
+<h2>{{ current_user }}</h2>
+<b></b>
+</div>
+{% endif %}
+
 
 {% else %}
 <li><a href="/signin/">Sign in</a></li>

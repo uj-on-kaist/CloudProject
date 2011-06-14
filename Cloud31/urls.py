@@ -24,8 +24,16 @@ urlpatterns = patterns('',
     
     url(r'^api/feed/update/$','controller.feedcontroller.update_feed'),
     url(r'^api/feed/delete/(?P<feed_id>\w+)$','controller.feedcontroller.delete_feed'),
+    url(r'^api/feed/favor/(?P<feed_id>\w+)$','controller.feedcontroller.favorite_action'),
+    url(r'^api/feed/unfavor/(?P<feed_id>\w+)$','controller.feedcontroller.unfavorite_action'),
+
     url(r'^api/feed/update/comment/$','controller.feedcontroller.update_comment'),
     url(r'^api/feed/user/(?P<user_name>\w+)/$','controller.feedcontroller.load_feed'),
+    url(r'^api/feed/favorite/(?P<user_name>\w+)$','controller.feedcontroller.load_favorite'),
+    url(r'^api/feed/company$','controller.feedcontroller.load_comany_feed'),
+    url(r'^api/feed/notice$','controller.feedcontroller.load_notice'),
+    
+    url(r'^api/comment/delete/(?P<comment_id>\w+)$','controller.feedcontroller.delete_comment'),
     
     url(r'^api/timeline/me/$','controller.feedcontroller.load_my_timeline'),
 
@@ -50,7 +58,9 @@ urlpatterns = patterns('',
     url(r'^picture/(?P<username>\w+)/$','controller.profilecontroller.picture'),
 
     url(r'file/ajax_upload$', 'controller.filecontroller.ajax_upload'),
-    url(r'file/$', 'controller.filecontroller.upload_page' ),
     
     url(r'setting/$', 'controller.settingcontroller.setting'),
+    
+    
+    url(r'message/$', 'controller.messagecontroller.main'),
 )

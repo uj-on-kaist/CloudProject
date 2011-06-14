@@ -13,7 +13,11 @@
 {% if user.is_authenticated %}
 <ul class="" style="float:right; color:white; padding:0px 0px; text-align:right; margin-right:10px;">
 <b>{{ user.username }}</b>
-<li style="line-height:10px"><a href="/signout/" style="color: #3f8fba;">Sign out</a></li>
+<li style="line-height:10px">
+    <a href="/user/{{ user.username }}" style="color: #3f8fba;">Profile</a>
+    <a href="/setting/" style="color: #3f8fba;">Settings</a>
+    <a href="/signout/" style="color: #3f8fba;">Sign out</a>
+</li>
 {% else %}
 <ul class="nostyle" style="float:right; color:white; padding:6px 0px;">
 <li><a href="/signin/" style="color: #3f8fba;">Sign in</a></li>

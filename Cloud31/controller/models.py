@@ -45,6 +45,19 @@ class File(models.Model):
     uploader = models.ForeignKey(User)
     file_name = models.CharField(max_length=256)
 
+
+class Notice(models.Model):
+    author = models.ForeignKey(User)
+    contents = models.TextField(null=False)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
+    location = models.CharField(max_length=30,default='')
+    write_from = models.CharField(max_length=30,default='')
+    # Comma Seperated
+    attach_files = models.TextField(default='')
+    related_users = models.TextField(default='')
+    related_topics = models.TextField(default='')
+
 ##  
 ## Topic Related
 ##
@@ -53,6 +66,8 @@ class Topic(models.Model):
     reg_date = models.DateTimeField(auto_now_add=True)
     # Comma Seperated
     related_topics = models.TextField(default='')
+    topic_detail = models.TextField(default='')
+
     
 class TopicTimeline(models.Model):
     message = models.ForeignKey(Message)
@@ -71,10 +86,12 @@ class UserTimeline(models.Model):
 class UserFavorite(models.Model):
     message = models.ForeignKey(Message)
     user = models.ForeignKey(User)
+    reg_date = models.DateTimeField(auto_now_add=True)
 
 class UserTopicFavorite(models.Model):
     user = models.ForeignKey(User)
     topic = models.ForeignKey(Topic)
+    reg_date = models.DateTimeField(auto_now_add=True)
 
 class UserNotification(models.Model):
     user = models.ForeignKey(User)

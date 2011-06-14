@@ -1,15 +1,21 @@
 <div class="leftBar span-5">
-
-<ul style="padding:0px;">
-<li><a href="/">Main</a></li>
 {% if user.is_authenticated %}
+<ul style="padding:0px;">
     <li><a href="/feed/">Feed</a></li>
     <li><a href="/user/{{ user.username }}">Profile</a></li>
-    <li><a href="/topic/">Topics</a></li>
-    <li><a href="/message/">Messages</a></li>
+    <li><a href="/event/">Event</a></li>
+    <li><a href="/message/">Direct Messages</a></li>
     <li><a href="/setting/">Setting</a></li>
-    
-{% endif %}
 </ul>
 
+<ul style="padding:0px;">
+    <h4>Search</h4>
+    <li><a href="/topic/">Topics</a></li>
+    <li><a href="/file/">Files</a></li>
+    <li><a href="/location/">Location</a></li>
+    <li><a href="/location/">Members</a></li>
+</ul>
+
+
+{% endif %}
 </div>

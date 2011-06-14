@@ -68,7 +68,7 @@ def load_topic_timeline(request,topic_name):
                 except:
                     pass
             
-            result['feeds']=my_utils. process_messages(messages)
+            result['feeds']=my_utils.process_messages(request, messages)
                 
         except Exception as e:
             print str(e)

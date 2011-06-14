@@ -30,6 +30,8 @@ def user(request, username):
     context['target_user']=target_user
     context['profile_user']=username
     
+    context['side_list']=['user_profile']
+    context['current_user']=username
     if request.user.username == username:
         context['profile_type']='me'
     else:

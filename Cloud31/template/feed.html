@@ -5,6 +5,19 @@
 <script src="{{ STATIC_URL }}js/feed.js" type="text/javascript"></script>
 <link rel="stylesheet" href="{{ STATIC_URL }}css/ui/feed.css?{{ csrf_token }}" type="text/css" />
 {% include "ui/feed_form.html"%}
+
+<div style="margin: 10px;">
+<a href="#" onclick="load_feed('me'); return false;">My Feed</a>
+|
+<a href="#" onclick="load_feed('company'); return false;">Company Feed</a>
+|
+<a href="#" onclick="load_feed('notice'); return false;">Notice</a>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+    load_feed('{{ load_type }}');
+});
+</script>
 {% include "ui/feed_list.html"%}
 
 {% include "meta_close.html"%}
