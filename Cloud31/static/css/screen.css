@@ -105,7 +105,7 @@ form.inline p {margin-bottom:0;}
 .span-2 {width:70px;}
 .span-3 {width:110px;}
 .span-4 {width:150px;}
-.span-5 {width:190px;}
+.span-5 {width:190px;min-width:width:190px;min-height: 1px;}
 .span-6 {width:230px;}
 .span-7 {width:270px;}
 .span-8 {width:310px;}

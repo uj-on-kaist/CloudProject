@@ -1,16 +1,51 @@
 <header>
-<div class="container">
+<div class="container" style="position:relative;">
 <a href="/"><h2 style="color:white; display:inline; float:left; margin-right:20px;">Cloud31</h2></a>
 
 <input type="text" placeholder="Search" style="padding:4px 8px; font-size:12px; width:300px;display:inline; height:14px;float:left; margin:5px 0px;"/>
 
 {% if user.is_authenticated %}
-<span style="float:right">
-<a href="/user/{{ user.username }}" style="color: #3f8fba;"><img src="/picture/{{ user.username }}" style="width:30px; height:30px;"></a>
-</span>
-{% endif %}
+<script type="text/javascript">
+$(document).ready(function(){
 
-{% if user.is_authenticated %}
+    
+    $("#user_menu").click(function(){
+        $(this).find('li.list_item').toggle();
+    });
+    
+});
+
+var mouse_is_inside = false;
+
+$(document).ready(function()
+{
+    $('#user_menu').hover(function(){ 
+        mouse_is_inside=true; 
+    }, function(){ 
+        mouse_is_inside=false; 
+    });
+
+    $("body").mouseup(function(){ 
+        if(! mouse_is_inside) $('#user_menu li.list_item').hide();
+    });
+});
+
+</script>
+<ul class="dropdown" id="user_menu">
+          <li>
+            <div class="right">
+              ▼
+            </div>
+            <div class="avatar">
+              <img src="/picture/{{ user.username }}" class="avatar" />
+            </div>
+            <a href="#" style="margin:10px;">{{ user.username }}</a>
+          </li>
+          <li class="list_item"><a href="/user/{{ user.username }}">프로필</a></li>
+          <li class="list_item"><a href="/setting/">설정</a></li>
+          <li class="list_item"><a href="/signout/">로그아웃</a></li>
+</ul>
+<!--
 <ul class="" style="float:right; color:white; padding:0px 0px; text-align:right; margin-right:10px;">
 <b>{{ user.username }}</b>
 <li style="line-height:10px">
@@ -18,14 +53,17 @@
     <a href="/setting/" style="color: #3f8fba;">Settings</a>
     <a href="/signout/" style="color: #3f8fba;">Sign out</a>
 </li>
+</ul>
+-->
+
+
+
 {% else %}
 <ul class="nostyle" style="float:right; color:white; padding:6px 0px;">
 <li><a href="/signin/" style="color: #3f8fba;">Sign in</a></li>
 <li><a href="/signup/" style="color: #3f8fba;">Sign up</a></li>
-{% endif %}
 </ul>
-
-
+{% endif %}
 </div>
 </header>
 
