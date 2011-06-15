@@ -1,3 +1,5 @@
+@import url("autocomplete.css");
+
 .wrapper{}
 
 header{
@@ -49,5 +51,19 @@ a.detect_item span:hover{text-decoration: underline;}
 
 .msg_avatar{ width:50px; height:50px;}
 
+textarea{overflow-y: hidden;}
 
+
+.message_form{border-bottom:1px solid #DDD; display: inline-block; padding-bottom: 15px;}
+.message_form div div.label{
+    float:left; width:60px; text-align: right; font-weight: bold; margin:3px 5px 0 0; 
+    font-size: 14px;
+}
+.message_form div textarea{width: 515px;}
+.message_form div.item.update{margin: 15px 0 0 65px;}
+
+
+#message_list .stream_element:hover{
+    background-color: #fff;
+}
 

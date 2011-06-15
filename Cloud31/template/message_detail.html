@@ -1,0 +1,41 @@
+{% include "meta_open.html"%}
+
+<h2><a href="/message?type={{ type }}">≪</a> Direct Message</h2>
+<script src="{{ STATIC_URL }}js/message.js?{{ csrf_token }}" type="text/javascript"></script>
+
+
+<div class="stream" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
+  <div class="right controls">
+    {% if user.username == message.author.username %}
+    <a href="#" class="delete stream_element_delete message" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+    {% endif %}
+  </div>
+  <div class="sm_body">
+    <a href="/user/" class="user_link">
+      <img class="avatar" src="/picture/{{ message.author.username }}">
+    </a>
+    <div class="content">
+      <div class="from">
+        From <a href="/user/" class="user_link">
+          {{ message.author.username }}
+        </a>
+        - To <span class="receivers">{{ message.receivers }}</span>
+      </div>
+      <p class="message_content">
+        {{ message.contents|safe }}
+      </p>
+      <div class="info">
+        
+        <span class="timeago">
+          <abbr class="timeago message_time">{{ message.reg_date }}</abbr>
+        </span>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+{% include "meta_close.html"%}

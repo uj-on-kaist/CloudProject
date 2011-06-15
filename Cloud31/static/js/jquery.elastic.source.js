@@ -51,7 +51,7 @@
 			var $textarea	= jQuery(this),
 				$twin		= jQuery('<div />').css({'position': 'absolute','display':'none','word-wrap':'break-word'}),
 				lineHeight	= parseInt($textarea.css('line-height'),10) || parseInt($textarea.css('font-size'),'10'),
-				minheight	= parseInt($textarea.css('height'),10) || lineHeight,
+				minheight	= parseInt($textarea.css('height'),10) || lineHeight*3,
 				maxheight	= parseInt($textarea.css('max-height'),10) || Number.MAX_VALUE,
 				goalheight	= 0;
 				
@@ -81,10 +81,9 @@
 				
 				// Sets a given height and overflow state on the textarea
 				function setHeightAndOverflow(height, overflow){
-				
+                    
 					var curratedHeight = Math.floor(parseInt(height,10));
 					if($textarea.height() !== curratedHeight){
-
 						$textarea.css({'height': curratedHeight + 'px','overflow':overflow});
 						
 						// Fire the custom event resize
@@ -130,9 +129,9 @@
 				
 				// Update textarea size on keyup, change, cut and paste
 				$textarea.bind('keyup change cut paste', function(){
-					update();
+					update(); 
 				});
-
+				
 				// Update width of twin if browser or textarea is resized (solution for textareas with widths in percent)
 				$(window).bind('resize', setTwinWidth);
 				$textarea.bind('resize', setTwinWidth);
@@ -140,15 +139,13 @@
 				
 				// Compact textarea on blur
 				$textarea.bind('blur',function(){
-					/*
+/*
 
 					if($twin.height() < maxheight){
 						if($twin.height() > minheight) {
-						    console.log('hihi');
 							$textarea.height($twin.height());
 						} else {
-						
-							$textarea.height(minheight + lineHeight);
+							$textarea.height(minheight);
 						}
 					}
 */
@@ -162,7 +159,14 @@
 				
 				// Run update once when elastic is initialized
 				update();
-				$textarea.css({'height': '21px','overflow':'hidden'});
+				
+				if($twin.height() < maxheight){
+						if($twin.height() > minheight) {
+							$textarea.height($twin.height());
+						} else {
+							$textarea.height(minheight);
+						}
+				}
 			});
 			
         } 

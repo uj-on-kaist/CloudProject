@@ -39,6 +39,8 @@ urlpatterns = patterns('',
 
     
     
+    
+    
     url(r'^topic/$','controller.topiccontroller.topic'),
     url(r'^topic/(?P<topic_name>\w+)/$','controller.topiccontroller.topic_detail'),
     url(r'^api/feed/topic/(?P<topic_name>\w+)/$','controller.topiccontroller.load_topic_timeline'),
@@ -63,4 +65,10 @@ urlpatterns = patterns('',
     
     
     url(r'message/$', 'controller.messagecontroller.main'),
+    url(r'message/(?P<message_id>\w+)$', 'controller.messagecontroller.message_detail'),
+    url(r'^api/message/update/$','controller.messagecontroller.send_message'),
+    url(r'^api/message/delete/(?P<message_id>\w+)$','controller.messagecontroller.delete_message'),
+    url(r'^api/message/get/(?P<load_type>\w+)/$','controller.messagecontroller.load_message'),
+    
+    url(r'^api/search/user$', 'controller.searchcontroller.ajax_user'),
 )

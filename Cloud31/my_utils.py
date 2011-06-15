@@ -50,5 +50,12 @@ def process_messages(request, messages):
 
 def remove_duplicates(input_list):
     return list(set(input_list))
+    
+    
+def return_error(msg):
+    result=dict()
+    result['success']=False
+    result['message']=msg
+    return HttpResponse(json.dumps(result, indent=4))
 
 

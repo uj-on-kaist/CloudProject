@@ -108,7 +108,7 @@ class UserNotification(models.Model):
 ##
 class DirectMessage(models.Model):
     author = models.ForeignKey(User)
-    receivers = models.TextField(default='')
+    receivers = models.TextField(null=False)
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False)

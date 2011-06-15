@@ -47,7 +47,7 @@ def delete_feed(request, feed_id):
             result['success']=True
             result['message']='Invalid action'
     except:
-            return return_error('Please Sign in First')
+            return my_utils.return_error('Please Sign in First')
             
     return HttpResponse(json.dumps(result, indent=4))
     
@@ -67,7 +67,7 @@ def delete_comment(request, comment_id):
             result['success']=True
             result['message']='Invalid action'
     except:
-            return return_error('Please Sign in First')
+            return my_utils.return_error('Please Sign in First')
             
     return HttpResponse(json.dumps(result, indent=4))
     
@@ -104,7 +104,7 @@ def load_notice(request):
 def load_feed(request, user_name):
     if user_name is not '':
         return get_user_feed(request,user_name)
-    return return_error('user_name is empty')
+    return my_utils.return_error('user_name is empty')
 
 
 
@@ -131,7 +131,7 @@ def load_my_timeline(request):
             result['success']=True
             result['message']='Do not have any message'
     except:
-            return return_error('No Such User')
+            return my_utils.return_error('No Such User')
             
     return HttpResponse(json.dumps(result, indent=4))   
 
@@ -169,16 +169,12 @@ def get_user_feed(request,user_name):
             result['success']=True
             result['message']='Do not have any message'
     except:
-            return return_error('No Such User')
+            return my_utils.return_error('No Such User')
             
     return HttpResponse(json.dumps(result, indent=4))
     
 
-def return_error(msg):
-    result=dict()
-    result['success']=False
-    result['message']=msg
-    return HttpResponse(json.dumps(result, indent=4))
+
 
 
 
@@ -206,13 +202,13 @@ def update_feed(request):
                 new_message = Message(author=user,contents=message,location=location_info,attach_files=attach_list)
                 new_message.save()   
             except:
-                return return_error('Insert Failed')
+                return my_utils.return_error('Insert Failed')
                      
             try:
                 author_timeline_new = UserTimeline(message=new_message,user=user)
                 author_timeline_new.save()
             except:
-                return return_error('Timelilne Failed')
+                return my_utils.return_error('Timelilne Failed')
                 
             target_users=parser.detect_users(message)
             target_users=my_utils.remove_duplicates(target_users)
@@ -254,7 +250,7 @@ def update_feed(request):
                     
             new_message.save()
         except:
-            return return_error('No such User')
+            return my_utils.return_error('No such User')
     
     return HttpResponse(json.dumps(result, indent=4))
 
@@ -275,18 +271,18 @@ def update_comment(request):
         try:
             user = User.objects.get(username=request.user.username)
         except:
-            return return_error('Please Sign in first')
+            return my_utils.return_error('Please Sign in first')
         
         try:
             message = Message.objects.filter(id=feed_id,is_deleted=False)[0]
         except:
-            return return_error('No such Message')
+            return my_utils.return_error('No such Message')
             
         try: 
             new_comment = Comment(author=user,contents=input_message,message=message)
             new_comment.save()
         except:
-            return return_error('Insert Failed')
+            return my_utils.return_error('Insert Failed')
         
         #Add To author Timeline
         try:
@@ -313,11 +309,11 @@ def update_comment(request):
                     pass
         except Exception as e:
             print str(e)
-            return return_error('Related Timelilne Failed')
+            return my_utils.return_error('Related Timelilne Failed')
             
         #Question! Should do insert into related Topic timeline?
     else:
-        return return_error('Empty Message')
+        return my_utils.return_error('Empty Message')
     
     try:
         item = dict()
@@ -354,7 +350,7 @@ def load_favorite(request, user_name):
             result['success']=True
             result['message']='Do not have any message'
     except:
-            return return_error('No Such User')
+            return my_utils.return_error('No Such User')
             
     return HttpResponse(json.dumps(result, indent=4))
     
@@ -367,19 +363,19 @@ def favorite_action(request, feed_id):
     try:
         user = User.objects.get(username=request.user.username)
     except:
-        return return_error('Please Sign in first')
+        return my_utils.return_error('Please Sign in first')
         
     try:
         message = Message.objects.filter(id=feed_id,is_deleted=False)[0]
     except:
-        return return_error('No such Message')
+        return my_utils.return_error('No such Message')
     
     try:
         user_favorite = UserFavorite.objects.get_or_create(message=message,user=user)[0]
         user_favorite.save()     
     except Exception as e:
         print str(e)
-        return return_error('Insert Failed')
+        return my_utils.return_error('Insert Failed')
     
     return HttpResponse(json.dumps(result, indent=4))
     
@@ -391,18 +387,18 @@ def unfavorite_action(request, feed_id):
     try:
         user = User.objects.get(username=request.user.username)
     except:
-        return return_error('Please Sign in first')
+        return my_utils.return_error('Please Sign in first')
         
     try:
         message = Message.objects.filter(id=feed_id,is_deleted=False)[0]
     except:
-        return return_error('No such Message')
+        return my_utils.return_error('No such Message')
     
     try:
         user_favorite = UserFavorite.objects.filter(message=message,user=user)[0]
         user_favorite.delete()     
     except Exception as e:
         print str(e)
-        return return_error('Delete Failed')
+        return my_utils.return_error('Delete Failed')
       
     return HttpResponse(json.dumps(result, indent=4))

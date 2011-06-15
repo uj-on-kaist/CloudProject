@@ -13,13 +13,41 @@
 <script src="{{ STATIC_URL }}js/jquery-1.6.1.min.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/facebox/facebox.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/jquery.elastic.source.js?{{ csrf_token }}" type="text/javascript"></script> 
+<script src="{{ STATIC_URL }}js/jquery.fcbkcomplete.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/utils.js?{{ csrf_token }}" type="text/javascript"></script> 
 
 <script type="text/javascript">
 $(document).ready(function(){
     $('a[rel*=facebox]').facebox();
-    $('#feed_message_input').elastic();
+    $('.autogrow').elastic();
 });
+
+/*
+$(document).ready(function(){
+    $('a[rel*=facebox]').facebox();
+    $(".autogrow").keyup(function(){
+        FitToContent(this, document.documentElement.clientHeight)
+    });
+});
+
+function FitToContent(id, maxHeight)
+{
+   var text = id && id.style ? id : document.getElementById(id);
+   if ( !text )
+      return;
+
+   var adjustedHeight = text.clientHeight;
+   if ( !maxHeight || maxHeight > adjustedHeight )
+   {
+      adjustedHeight = Math.max(text.scrollHeight, adjustedHeight);
+      if ( maxHeight )
+         adjustedHeight = Math.min(maxHeight, adjustedHeight);
+      if ( adjustedHeight > text.clientHeight )
+         text.style.height = adjustedHeight + "px";
+   }
+}
+*/
+
 </script>
 
 </head>

@@ -1,0 +1,22 @@
+<div class="message_form">
+
+<div class="item">
+    <div class="label">
+    To
+    </div>
+    <textarea id="input_users" class="autogrow"  placeholder="Add user" style="overflow-y:hidden; padding:5px 10px; height:16px; resize:none;">@test2</textarea>
+</div>
+<div class="item">
+    <div class="label">
+    Message
+    </div>
+    <textarea id="input_message" class="autogrow"  placeholder="Write your Message" style="overflow-y:hidden; padding:5px 10px;  min-height:50px; resize:none;">123</textarea>
+</div>
+
+
+<div class="item update">
+    <a href="/" class="button update" onClick="send_message(); return false;" id="update_btn">보내기</a>
+    <div class="loading" style="text-align:right; display:none;"><img src="{{ STATIC_URL }}image/loading.gif" /></div>
+</div>
+
+</div>
