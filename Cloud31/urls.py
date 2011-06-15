@@ -71,4 +71,8 @@ urlpatterns = patterns('',
     url(r'^api/message/get/(?P<load_type>\w+)/$','controller.messagecontroller.load_message'),
     
     url(r'^api/search/user$', 'controller.searchcontroller.ajax_user'),
+    
+    
+    url(r'^event/$', 'controller.eventcontroller.main'),
+
 )

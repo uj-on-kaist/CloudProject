@@ -1,0 +1,81 @@
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.datepicker').datepicker({
+        inline: true,
+        dateFormat: 'yy-mm-dd',
+    });
+    
+    var d = new Date();
+    d.setMinutes(d.getMinutes() + 60);
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth()+1;
+    var curr_year = d.getFullYear();
+    $('.datepicker').val(curr_year+"-"+curr_month+"-"+curr_date);
+    
+    var curr_hour = d.getHours();
+    var curr_min = d.getMinutes();
+    var curr_time = curr_hour * 60 + curr_min;
+    curr_time = parseInt(curr_time/30);
+    curr_time*=30;
+    console.log(curr_time);
+    $('.time_min').val(curr_time);
+});
+</script>
+
+
+<div class="event_form">
+<table class="input_table">
+
+<tr id="event_title">
+<td width="60" class="label"><b>What?</b></td>
+<td><input type="text"/></td>
+</tr>
+
+<tr id="event_time">
+<td width="60" class="label"><b>When?</b></td>
+<td>
+    <div id="start_time">
+        <div style="display:inline-block; width:60px;">Start Time</div>
+        <input type="text" class="datepicker" />
+        {% include "ui/time_select.html" %}
+        <a href="#" onclick="$(this).remove(); $('#end_time').show(); return false;">Add End time</a>
+    </div>
+    
+    
+    
+    <div id="end_time" style="display:none;">
+        <div style="display:inline-block; width:60px;">End Time</div>
+        <input type="text" class="datepicker" />
+        {% include "ui/time_select.html" %}
+    </div>
+</td>
+</tr>
+
+
+<tr id="event_location">
+<td width="60" class="label"><b>Where?</b></td>
+<td><input type="text"/></td>
+</tr>
+
+<tr id="event_invites">
+<td width="60" class="label"><b>Who?</b></td>
+<td><input type="text"/></td>
+</tr>
+
+<tr id="event_message">
+<td width="60" class="label"><b>Message</b></td>
+<td><textarea id="input_message" class="autogrow" style="overflow-y:hidden;min-height:50px; resize:none;"></textarea></td>
+</tr>
+
+<tr id="event_submit">
+<td width="60" class="label"><b></b></td>
+<td style="padding-top:10px; text-align:left; padding-right:0px;">
+    <input type="checkbox" style="display:inline; vertical-align:3px;" />
+    <span style="margin:0 10px 0 2px;font-weight:bold;">비공개 설정 (초대 받은 사람만 이벤트 조회 및 참석 가능)</span>
+    <a href="/" class="button update" onClick="register_event(); return false;" id="update_btn" style="float:right;">등록</a>
+</td>
+</tr>
+
+
+</table>
+</div><!-- End demo -->

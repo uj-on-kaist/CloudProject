@@ -118,6 +118,7 @@ function display_feeds(feeds, type){
             
             feed_layout.find('.like_action a').click(function(){
                 feed_like($(this), false);
+                return false;
             });
         }else{
             feed_layout.find('.like_action a span.favor').show();
@@ -125,6 +126,7 @@ function display_feeds(feeds, type){
             feed_layout.find('.like_action a').attr('feed_id',feed.id);
             feed_layout.find('.like_action a').click(function(){
                 feed_like($(this), true);
+                return false;
             });
         }
         
@@ -222,12 +224,15 @@ function feed_like(item, action){
 		  item.unbind('click');
 		  item.click(function(){
                 feed_like($(this), !action);
+                return false;
           });
 		},
 		error : function(data){
 		  console.log(data);
 		}
 	});
+	
+	return false;
 }
 
 function add_comment(feed_layout, comment, index, total){

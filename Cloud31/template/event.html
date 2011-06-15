@@ -1,0 +1,21 @@
+{% include "meta_open.html" %}
+
+<h2>Event</h2>
+
+
+{% include "ui/event_form.html" %}
+
+<div style="margin: 10px;">
+<a href="#" onclick="load_event('up'); return false;">Upcoming</a>
+|
+<a href="#" onclick="load_event('past'); return false;">Past</a>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+
+});
+</script>
+
+{% include "ui/event_list.html" %}
+
+{% include "meta_close.html" %}

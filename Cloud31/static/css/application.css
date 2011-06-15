@@ -637,10 +637,12 @@ a.paginate, #infscr-loading {
     color: #cccccc; }
 
 input:not([type='submit']):not([type='reset']),
-textarea {
+textarea {/*
+
   -moz-border-radius: 3px 3px 3px 3px;
   -webkit-border-radius: 3px 3px 3px 3px;
   border-radius: 3px 3px 3px 3px;
+*/
   font-family: "Arial", "Helvetica", sans-serif;
   font-size: 14px;
   padding: 0.3em;

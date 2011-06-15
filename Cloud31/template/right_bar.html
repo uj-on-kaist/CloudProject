@@ -15,6 +15,27 @@
 {% endif %}
 
 
+{% if 'event_calendar' in side_list%}
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.event_calendar').datepicker({
+        inline: true,
+        dateFormat: 'yy-mm-dd',
+        beforeShowDay: function(date) {
+            if(date.getDate()%5 == 1)
+                return [true, "bold"];
+            else
+                return [true, "normal"]
+        }
+    });
+});
+</script>
+<div class="event_calendar" >
+<h4>Event Calendar</h4>
+</div>
+{% endif %}
+
+
 {% endif %}
 </ul>
 </div>

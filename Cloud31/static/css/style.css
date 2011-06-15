@@ -67,3 +67,31 @@ textarea{overflow-y: hidden;}
     background-color: #fff;
 }
 
+*:focus {outline: none; border:1px solid #AAA;}
+
+
+
+.input_table input:not([type="submit"]):not([type="reset"]), .input_table textarea{
+    width:540px;
+    font-size: 100%;
+    padding-left: 5px;
+}
+.input_table select{margin-right: 5px;}
+input:not([type="submit"]):not([type="reset"]).datepicker{
+    width:100px; display: inline; margin-right: 5px;
+    background-image: url('/static/image/calendar-icon.png');
+    background-repeat: no-repeat;
+    background-position: 90px center;
+}
+
+
+.input_table td{padding: 0;}
+
+
+td.label{vertical-align: top; padding-top: 8px;}
+
+
+.input_table #event_time div b {color: #AAA;}
+
+
+.event_form{border-bottom:1px solid #DDD; display: inline-block; padding-bottom: 15px;}
