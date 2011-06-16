@@ -1,3 +1,8 @@
+# Requirements
+
+> Python 2.6.1
+> Django 1.3.0 final
+
 ## Additional Requirements
 
 ### Python Imaging Library (PIL)
