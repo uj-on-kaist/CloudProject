@@ -28,7 +28,11 @@ def feed(request):
     context['load_type']='me'
     
     context['side_list']=['user_profile']
-    context['current_user']=request.user.username
+    
+    user = get_object_or_404(User,username=request.user.username)
+    user_profile = get_object_or_404(UserProfile,user=user)
+    context['current_user'] = user
+    context['user_profile'] = user_profile
     return HttpResponse(t.render(context))
     
 
@@ -116,7 +120,7 @@ def load_my_timeline(request):
     try:
         user = User.objects.get(username=request.user.username)
         try:
-            timelines = UserTimeline.objects.filter(user=user).order_by('-update_date')
+            timelines = UserTimeline.objects.filter(user=user,message__is_deleted=False).order_by('-update_date')[:5]
             messages = list()
             for timeline in timelines:
                 try:
@@ -251,6 +255,8 @@ def update_feed(request):
             new_message.save()
         except:
             return my_utils.return_error('No such User')
+    else:
+        return my_utils.return_error('Empty Message')
     
     return HttpResponse(json.dumps(result, indent=4))
 

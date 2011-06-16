@@ -38,13 +38,13 @@ def topic(request):
 def topic_detail(request,topic_name):
     t = loader.get_template('topic_detail.html')
     context = RequestContext(request)
-    
+    topic_name = smart_unicode(topic_name, encoding='utf-8', strings_only=False, errors='strict')
     context['topics']=list()
     try:
         context['topics'] = Topic.objects.filter(topic_name=topic_name)
     except Exception as e:
         print str(e)
-    context['load_type']='topic#' + context['topics'][0].topic_name
+    context['load_type']='topic#' + topic_name
     context['topic_name']=context['topics'][0].topic_name
     return HttpResponse(t.render(context))
     

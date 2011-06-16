@@ -6,13 +6,19 @@
 {% include "ui/event_form.html" %}
 
 <div style="margin: 10px;">
-<a href="#" onclick="load_event('up'); return false;">Upcoming</a>
+<a href="#" onclick="load_event('upcoming'); return false;">Upcoming</a>
 |
 <a href="#" onclick="load_event('past'); return false;">Past</a>
+|
+<a href="#" onclick="load_event('me'); return false;">My Event</a>
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
-
+    load_event('upcoming');
+    $("#input_title").click(function(){
+        console.log(1);
+        $("#event_form tr").removeClass("hidden");
+    });
 });
 </script>
 

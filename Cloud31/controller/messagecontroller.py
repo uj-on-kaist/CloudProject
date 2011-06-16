@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.template import RequestContext, loader
 
 from controller.models import *
@@ -48,13 +46,28 @@ def message_detail(request, message_id):
         return HttpResponseRedirect('signin')
     
     query_type = Q(author=user) | Q(receivers__contains=username)  
-    d_message = DirectMessage.objects.filter(query_type,is_deleted=False,id=message_id)[0]
-    context['message']=d_message
-    context['message'].contents=parser.parse_text(d_message.contents)
-    
-    context['type'] = 'all'
-    if request.GET.get('type',False):
-        context['type'] = request.GET['type']
+    try:
+        d_message = DirectMessage.objects.filter(query_type,is_deleted=False,id=message_id)[0]
+        context['message']=d_message
+        context['message'].contents=parser.parse_text(d_message.contents)
+        context['message'].receivers=context['message'].receivers.replace(",", ", ")[:-2]
+        context['message'].reg_date = d_message.reg_date.strftime('%Y-%m-%d %H:%M:%S')
+        #2011-06-14 22:23:10
+        context['type'] = 'all'
+        if request.GET.get('type',False):
+            context['type'] = request.GET['type']
+    except Exception as e:
+        print str(e)
+        return HttpResponseServerError(str(e))
+        
+    try:
+        replies = DirectMessageReply.objects.filter(direct_message=d_message, is_deleted=False).order_by('reg_date')
+        for reply in replies:
+            reply.reg_date = reply.reg_date.strftime('%Y-%m-%d %H:%M:%S')
+        context['replies']= replies
+        print replies
+    except Exception as e:
+        print str(e)
     
     return HttpResponse(t.render(context))
 
@@ -102,6 +115,62 @@ def send_message(request):
     return HttpResponse(json.dumps(result, indent=4))
     
 
+def reply_message(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    reply_message=''
+    message_id=''
+    if request.method == 'POST':
+        if request.POST['message']:
+            reply_message=smart_unicode(request.POST['message'], encoding='utf-8', strings_only=False, errors='strict')
+        if request.POST['message_id']:
+            message_id=request.POST['message_id']
+            
+    print reply_message
+    if message_id is '':
+        return my_utils.return_error('No Message ID')
+
+    if reply_message is not '':
+        try:
+            user = User.objects.get(username=request.user.username)
+        except:
+            return my_utils.return_error('Sign in first')
+           
+        try:
+            user = User.objects.get(username=request.user.username)
+            username = request.user.username
+            username +=","
+            query_type = Q(author=user) | Q(receivers__contains=username)
+            d_message = DirectMessage.objects.filter(query_type,is_deleted=False,id=message_id)[0]
+        except:
+            return my_utils.return_error('You are now allowed to this message')
+        
+        try: 
+            new_dm = DirectMessageReply(direct_message=d_message,author=user,contents=reply_message)
+            new_dm.save()
+            d_message.save()
+        except:
+            return my_utils.return_error('Send Reply Failure')
+        
+        try:
+            item = dict()
+            item['id']=new_dm.id
+            item['author']=new_dm.author.username
+            item['contents']= parser.parse_text(new_dm.contents)
+            item['reg_date']= str(new_dm.reg_date)
+            result['reply']=item
+        except Exception as e:
+            print str(e)
+        
+        #TODO : SEND NOTIFICATION TO USERS
+            
+    else:
+        return my_utils.return_error('empty message')
+    return HttpResponse(json.dumps(result, indent=4))
+
+
 def load_message(request, load_type):
     result=dict()
     result['success']=True
@@ -138,7 +207,7 @@ def process_messages(messages):
         d_message['id']=message.id
         d_message['author']=message.author.username
         d_message['contents']= parser.parse_text(message.contents)
-        d_message['receivers']= message.receivers
+        d_message['receivers']= message.receivers.replace(",", ", ")[:-2]
         d_message['reg_date']= str(message.reg_date)
         d_messages.append(d_message)
     return d_messages
@@ -156,6 +225,25 @@ def delete_message(request, message_id):
             message = DirectMessage.objects.get(author=user, id=message_id)
             message.is_deleted=True
             message.save()
+        except:
+            result['success']=True
+            result['message']='Invalid action'
+    except:
+            return my_utils.return_error('Please Sign in First')
+            
+    return HttpResponse(json.dumps(result, indent=4))
+    
+def delete_reply(request, reply_id):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+        try:
+            reply = DirectMessageReply.objects.get(author=user, id=reply_id)
+            reply.is_deleted=True
+            reply.save()
         except:
             result['success']=True
             result['message']='Invalid action'

@@ -9,8 +9,14 @@
 {% if 'user_profile' in side_list%}
 <div title="user_profile">
 <a href="/user/{{ current_user }}"><img src="/picture/{{ current_user }}"  style="width:100%;"/></a>
-<h2>{{ current_user }}</h2>
-<b></b>
+<h2>{{ current_user.username }}</h2>
+<h3 style="margin:0px">{{ current_user.last_name }}</h3>
+<b>
+{{ user_profile.position }} 
+{% if user_profile.dept %}
+| {{ user_profile.dept }}
+{% endif %}
+</b>
 </div>
 {% endif %}
 

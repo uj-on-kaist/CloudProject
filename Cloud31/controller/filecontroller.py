@@ -7,8 +7,9 @@ from io import BufferedWriter,FileIO
 
 from django.conf import settings
 from django.core.files.base import ContentFile
+from django.core.files import File
 
-from controller.models import *
+from controller import models
 from django.contrib.auth.models import User
 
 from django.shortcuts import get_object_or_404
@@ -40,13 +41,22 @@ def save_upload(request, uploaded, filename, raw_data ):
                 print fileName+"['"+fileBaseName+ "','"+fileExtension+"']"
                 
                 user = get_object_or_404(User,username=request.user.username)
-                new_file = File(file_type=fileExtension,file_name=fileName, uploader=user)
+                new_file = models.File(file_type=fileExtension,file_name=fileName, uploader=user)
                 new_file.file_contents.save(fileName,ContentFile(uploaded.read()))
             # if not raw, it was a form upload so read in the normal Django chunks fashion
             else:
+                (dirName, fileName) = os.path.split(filename)
+                (fileBaseName, fileExtension)=os.path.splitext(fileName)
+                fileExtension=fileExtension[1:]
+                print fileName+"['"+fileBaseName+ "','"+fileExtension+"']"
+                
                 # TODO: figure out when this gets called, make it work to save into a Photo like above
                 for c in uploaded.chunks( ):
                     dest.write( c )
+                user = get_object_or_404(User,username=request.user.username)
+                new_file = models.File(file_type=fileExtension,file_name=fileName, uploader=user)
+                new_file.file_contents.save(fileName,File(open(filename)))
+
     except IOError:
         # could not open the file most likely
         return False, -1

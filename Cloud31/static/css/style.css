@@ -67,7 +67,7 @@ textarea{overflow-y: hidden;}
     background-color: #fff;
 }
 
-*:focus {outline: none; border:1px solid #AAA;}
+input:focus {outline: none; border:1px solid #AAA;}
 
 
 
@@ -86,7 +86,7 @@ input:not([type="submit"]):not([type="reset"]).datepicker{
 
 
 .input_table td{padding: 0;}
-
+.input_table {margin-bottom: 0}
 
 td.label{vertical-align: top; padding-top: 8px;}
 
@@ -94,4 +94,26 @@ td.label{vertical-align: top; padding-top: 8px;}
 .input_table #event_time div b {color: #AAA;}
 
 
-.event_form{border-bottom:1px solid #DDD; display: inline-block; padding-bottom: 15px;}
+#event_form{border-bottom:1px solid #DDD; display: inline-block; padding-bottom: 5px;}
+
+
+
+.stream_element.reply_element{
+    border-bottom:1px dashed #DDD;
+}
+
+
+
+
+
+.container, .container:hover, .container:focus{border:none; border:0;}
+
+
+p.event_title{color: black; font-weight: bold;}
+
+p.event_content{padding:10px 0px;}
+
+ul.comments{display:none;}
+
+
+span.author_name{font-size: 10px; line-height: 16px;}

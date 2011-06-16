@@ -106,9 +106,10 @@ function display_feeds(feeds, type){
         var feed_layout= $("div.stream.template").clone();
         feed_layout.removeClass("template");
         feed_layout.addClass("feed_item");
-        feed_layout.attr('id','feed_'+feed.id)
+        feed_layout.attr('id','feed_'+feed.id);
         feed_layout.find('.user_link').attr('href','/user/'+feed.author);
         feed_layout.find('.from a').text(feed.author);
+        feed_layout.find('.from span.author_name').text(feed.author_name);
         feed_layout.find('.feed_content').html(nl2br(feed.contents));
         
         if(feed.favorite){
@@ -131,14 +132,14 @@ function display_feeds(feeds, type){
         }
         
         feed_layout.find('abbr.feed_time').text(humane_date(feed.reg_date));
-        feed_layout.find('img.avatar').attr('src','/picture/'+feed.author);
+        feed_layout.find('img.avatar.author').attr('src','/picture/'+feed.author);
 
         
         var attach_count=feed.attach_files.split(',').length;
         if(feed.attach_files == ""){
-            feed_layout.find('#attach_file_count').hide();
+            feed_layout.find('.attach_file').hide();
         }else{
-            feed_layout.find('#attach_file_count span').text(attach_count);
+            feed_layout.find('.attach_file span.attach_file_count').text(attach_count);
         }
         if(feed.author == $("#user_name_info").text()){
             feed_layout.find('.stream_element_delete.feed').show();
@@ -147,8 +148,15 @@ function display_feeds(feeds, type){
                 delete_feed($(this));
             });
         }
-
+        
+        feed_layout.find('.comment_action a').attr("feed_id",feed.id);
+        feed_layout.find('.comment_action a').click(function(){
+            $("#feed_"+$(this).attr("feed_id")+" ul.comments").show();
+        });
+        
+        feed_layout.find('span.comment_count_text').text(feed.comments.length);
         if(feed.comments.length == 0){
+            
             feed_layout.find('ul.comments.comment_count li span').text('댓글이 없습니다.');
             feed_layout.find('ul.comments.comment_list').hide();
             feed_layout.find("ul.comments.comment_count a.show_all").attr('id','comment_show_'+feed.id);
@@ -172,9 +180,8 @@ function display_feeds(feeds, type){
                     $('#feed_'+id+' ul.comments.comment_list li').each(function(i){
                         $(this).hide();
                     });
-                    
                 }
-                
+                return false;
         });
         
         for(var j=0; j<feed.comments.length; j++){
@@ -184,9 +191,6 @@ function display_feeds(feeds, type){
         $("#feed_list").append(feed_layout);
         feed_layout.find(".comment_area").attr('id','comment_area_'+feed.id);
         feed_layout.find(".comment_submit").attr('id','comment_submit_'+feed.id);
-        
-        var current_user = $("#user_name_info").text();
-        feed_layout.find('img.current_user.avatar').attr('src','/picture/'+current_user);
 
         feed_layout.find(".comment_submit").click(function(){
                 var id=$(this).attr('id').split('_')[2];
@@ -247,7 +251,7 @@ function add_comment(feed_layout, comment, index, total){
     comment_layout.find('img.current_user.avatar').attr('src','/picture/'+current_user);
     
     comment_layout.find('.from a').text(comment.author);
-    
+    comment_layout.find('.from span.author_name').text(comment.author_name);
     if(index <= total-3){
         comment_layout.hide();
     } 
@@ -301,7 +305,7 @@ function delete_comment(item){
     var tokenValue = $("#csrf_token").text();
     $.ajax({
 		type : "POST",
-		url : "/api/comment/delete/"+comment_id,
+		url : "/api/feed/comment/delete/"+comment_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
 		success : function(json) {

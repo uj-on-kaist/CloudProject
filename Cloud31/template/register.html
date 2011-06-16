@@ -3,7 +3,15 @@
 <h3>Sign up</h3>
 <form action="/signup/" method="POST" class="register_form">
 {% csrf_token %}
-{{ form }}
+
+<label for="idusername">사용자명:</label><input id="id_username" type="text" placeholder="ID" name="username" maxlength="30">
+<label for="id_real_name">이름:</label><input id="id_real_name" type="text" placeholder="이름" name="name" maxlength="30">
+<label for="id_email">email address:</label><input id="id_email" type="text" placeholder="이메일 주소" name="email" maxlength="75">
+<label for="id_password1">비밀번호:</label><input type="password" placeholder="비밀번호" name="password1" id="id_password1">
+<label for="id_password2">비밀번호 확인:</label><input type="password" placeholder="비밀번호 확인" name="password2" id="id_password2">
+<label for="id_dept">dept:</label><input id="id_dept" type="text" placeholder="부서" name="dept" maxlength="30">
+<label for="id_position">position:</label><input id="id_position" type="text" placeholder="직급" name="position" maxlength="30">
+
 <input type="submit" value="Submit" class="button"/>
 </form>
 </div>

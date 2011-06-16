@@ -51,7 +51,7 @@ function clear_message_input(){
 function load_message(type){
     console.log(type);
     
-    $("#message_list").attr('type',type);
+    
     
     $.ajax({
 		type : "GET",
@@ -60,6 +60,7 @@ function load_message(type){
 		success : function(json) {
 		  
           if(json.success){
+            $("#message_list").attr('type',type);
             $("div.stream.message_item").remove();
             display_messages(json.messages);
           }else{console.log(json);}
@@ -132,4 +133,91 @@ function delete_message(item){
 		  console.log(data);
 		}
 	});
+}
+
+
+function send_reply(message_id){
+    var message = $('#reply_area_'+message_id).val();
+
+    var tokenValue = $("#csrf_token").text();
+    data= "message=" + message +"&message_id="+message_id;
+    data +="&csrfmiddlewaretoken="+tokenValue;
+	$.ajax({
+		type : "POST",
+		url : "/api/message/reply/update/",
+		data : data,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json);
+          if(json.success){
+          
+            var reply_layout = add_reply(json.reply);
+            reply_layout.hide();
+            reply_layout.slideToggle();
+            
+            $('#reply_area_'+message_id).val('');
+            $('#reply_area_'+message_id).height(40);
+          }
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});
+
+}
+
+function add_reply(reply){
+    var reply_layout= $("div.stream.template").clone();
+    reply_layout.removeClass("template");
+    reply_layout.attr('id','reply_'+reply.id);
+    reply_layout.find('p.reply_contents').html(nl2br(reply.contents));
+    reply_layout.find('abbr.reply_time').text(humane_date(reply.reg_date));
+    reply_layout.find('.user_link').attr('href','/user/'+reply.author);
+    reply_layout.find('img.avatar').attr('src','/picture/'+reply.author);
+    reply_layout.find('.from a').text(reply.author);
+    
+    if(reply.author == $("#user_name_info").text()){
+        //reply_layout.css("border-left","3px solid #95BDED");
+        reply_layout.find('.stream_element_delete').show();
+        reply_layout.find('.stream_element_delete').attr('reply_id',reply.id);
+        reply_layout.find('.stream_element_delete').click(function(){
+            delete_reply($(this));
+        });
+    }else{
+        //reply_layout.css("border-left","3px solid #F0F4F5");
+        reply_layout.find('.stream_element_delete').remove();
+    }
+    
+    $("#message_reply_list").append(reply_layout);
+    
+    return reply_layout;
+}
+
+
+function delete_reply(item){
+    
+    var answer = confirm ("Really Delete?");
+    if (!answer)
+        return false;
+
+    var reply_id=item.attr('reply_id');
+    var tokenValue = $("#csrf_token").text();
+    $.ajax({
+		type : "POST",
+		url : "/api/message/reply/delete/"+reply_id,
+		data : "&csrfmiddlewaretoken="+tokenValue,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json);
+          if(json.success){
+            $("#reply_"+reply_id).slideToggle("",function(){
+		      $(this).remove();
+		    });
+          }
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});
+	
 }

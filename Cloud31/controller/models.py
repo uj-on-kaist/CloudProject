@@ -104,6 +104,39 @@ class UserNotification(models.Model):
     
 
 ##  
+## Event Related
+##
+class Event(models.Model):
+    host = models.ForeignKey(User)
+    title = models.CharField(max_length=100)
+    contents = models.TextField(null=False)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField(null=True)
+    location = models.CharField(max_length=100)
+    map_info = models.CharField(max_length=30,default='')
+    
+    # Comma Seperated
+    invited_users = models.TextField(default='')
+    
+    is_public = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+
+
+class EventComment(models.Model):
+    event = models.ForeignKey(Event)
+    author = models.ForeignKey(User)
+    contents = models.TextField(null=False)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
+
+class EventParticipate(models.Model):
+    event = models.ForeignKey(Event)
+    user = models.ForeignKey(User)
+    participate = models.CharField(max_length=10, default='')
+
+##  
 ## Direct Message Related
 ##
 class DirectMessage(models.Model):
@@ -111,6 +144,7 @@ class DirectMessage(models.Model):
     receivers = models.TextField(null=False)
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
     
 

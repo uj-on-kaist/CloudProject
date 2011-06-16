@@ -55,7 +55,8 @@ def signin(request):
             else:
                 return HttpResponseRedirect('/')
         else:
-            return HttpResponse(user.username+' is not active. Please check email and click activation link')
+            context['message'] = user.username+' is not active. First check your email and click activation link'
+            return HttpResponse(t.render(context))
     else:
         context['message'] = 'Sign in Failed. Check Username and Password is correct'
         return HttpResponse(t.render(context))
@@ -80,12 +81,29 @@ def signup(request):
         context['form']=RegisterForm()
         return HttpResponse(t.render(context))
     
-    form = RegisterForm(request.POST)
-    if form.is_valid():
-        username=form.cleaned_data['username']
-        email=form.cleaned_data['email']
-        password=form.cleaned_data['password1']
-        
+    if request.method == 'POST':
+        if request.POST['username']:
+            username=smart_unicode(request.POST['username'], encoding='utf-8', strings_only=False, errors='strict')
+        if request.POST['email']:
+            email=request.POST['email']
+        if request.POST['password1']:
+            password=request.POST['password1']
+        if request.POST['name']:
+            name=smart_unicode(request.POST['name'], encoding='utf-8', strings_only=False, errors='strict')
+        if request.POST['dept']:
+            dept=smart_unicode(request.POST['dept'], encoding='utf-8', strings_only=False, errors='strict')
+        if request.POST['position']:
+            position=smart_unicode(request.POST['position'], encoding='utf-8', strings_only=False, errors='strict')
+    
+    try:
+#         username=form.cleaned_data['username']
+#         email=form.cleaned_data['email']
+#         password=form.cleaned_data['password1']
+#         
+#         name=smart_unicode(form.cleaned_data['name'], encoding='utf-8', strings_only=False, errors='strict')
+#         dept=smart_unicode(form.cleaned_data['dept'], encoding='utf-8', strings_only=False, errors='strict')
+#         position=smart_unicode(form.cleaned_data['position'], encoding='utf-8', strings_only=False, errors='strict')
+#         
         #parameter validation
         username_valid= re.match('[\w0-9]*',username) and len(username) >= 3 and len(username) < 16
         
@@ -102,6 +120,7 @@ def signup(request):
         except:
             new_user = User.objects.create_user(username,email,password)
             new_user.is_active = False
+            new_user.last_name = name
             new_user.save()
             
             shaSource= username + email
@@ -109,6 +128,8 @@ def signup(request):
             key_expires = datetime.datetime.today() + datetime.timedelta(2)
     
             new_profile = UserProfile(user=new_user, activation_key=activation_key, key_expires=key_expires)
+            new_profile.dept=dept
+            new_profile.position=position
             new_profile.save()
             
             email_subject = smart_unicode('Cloud31 계정 인증을 완료해 주세요!', encoding='utf-8', strings_only=False, errors='strict')
@@ -117,7 +138,8 @@ def signup(request):
             send_mail(email_subject, email_body, 'Cloud31<cloud31.email@gmail.com>',[email])
             
             return HttpResponse(username + ' Registered. Check Mail' )
-    else:
+    except Exception as e:
+        print str(e)
         return HttpResponse('Error Occured.')
 
 

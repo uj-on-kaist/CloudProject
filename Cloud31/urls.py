@@ -33,7 +33,7 @@ urlpatterns = patterns('',
     url(r'^api/feed/company$','controller.feedcontroller.load_comany_feed'),
     url(r'^api/feed/notice$','controller.feedcontroller.load_notice'),
     
-    url(r'^api/comment/delete/(?P<comment_id>\w+)$','controller.feedcontroller.delete_comment'),
+    url(r'^api/feed/comment/delete/(?P<comment_id>\w+)$','controller.feedcontroller.delete_comment'),
     
     url(r'^api/timeline/me/$','controller.feedcontroller.load_my_timeline'),
 
@@ -67,12 +67,19 @@ urlpatterns = patterns('',
     url(r'message/$', 'controller.messagecontroller.main'),
     url(r'message/(?P<message_id>\w+)$', 'controller.messagecontroller.message_detail'),
     url(r'^api/message/update/$','controller.messagecontroller.send_message'),
+    url(r'^api/message/reply/update/$','controller.messagecontroller.reply_message'),
+    url(r'^api/message/reply/delete/(?P<reply_id>\w+)$','controller.messagecontroller.delete_reply'),
     url(r'^api/message/delete/(?P<message_id>\w+)$','controller.messagecontroller.delete_message'),
     url(r'^api/message/get/(?P<load_type>\w+)/$','controller.messagecontroller.load_message'),
     
     url(r'^api/search/user$', 'controller.searchcontroller.ajax_user'),
     
     
+    
     url(r'^event/$', 'controller.eventcontroller.main'),
-
+    url(r'^api/event/register/$','controller.eventcontroller.register_event'),
+    url(r'^api/event/comment/delete/(?P<comment_id>\w+)$','controller.eventcontroller.delete_event_comment'),
+    url(r'^api/event/delete/(?P<event_id>\w+)$','controller.eventcontroller.delete_event'),
+    url(r'^api/event/get/(?P<load_type>\w+)$','controller.eventcontroller.load_event'),
+    url(r'^api/event/update/comment/$','controller.eventcontroller.update_event_comment'),
 )

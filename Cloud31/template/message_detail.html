@@ -1,9 +1,18 @@
 {% include "meta_open.html"%}
 
-<h2><a href="/message?type={{ type }}">≪</a> Direct Message</h2>
-<script src="{{ STATIC_URL }}js/message.js?{{ csrf_token }}" type="text/javascript"></script>
+<h2>Direct Message</h2>
 
+<script type="text/javascript">
+$(document).ready(function(){
+    $("abbr").each(function(){
+        $(this).text( humane_date( $(this).text() ) );
+    });
+});
+</script>
 
+<a href="/message?type={{ type }}">≪</a> {{ message.author.username }}  -> {{ message.receivers }}
+
+<div class="d_message">
 <div class="stream" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
   <div class="right controls">
     {% if user.username == message.author.username %}
@@ -11,15 +20,14 @@
     {% endif %}
   </div>
   <div class="sm_body">
-    <a href="/user/" class="user_link">
+    <a href="/user/{{ message.author.username }}" class="user_link">
       <img class="avatar" src="/picture/{{ message.author.username }}">
     </a>
     <div class="content">
       <div class="from">
-        From <a href="/user/" class="user_link">
+        <a href="/user/{{ message.author.username }}" class="user_link">
           {{ message.author.username }}
         </a>
-        - To <span class="receivers">{{ message.receivers }}</span>
       </div>
       <p class="message_content">
         {{ message.contents|safe }}
@@ -36,6 +44,94 @@
 </div>
 </div>
 
+</div>
+
+<div id="message_reply_list" message_id={{ message.id }}>
+
+<div class="stream template" data-guids="3,4" id="main_stream"><div class="stream_element reply_element" data-guid="1">
+  <div class="right controls">
+    <a href="#" class="delete stream_element_delete message" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+  </div>
+  <div class="sm_body">
+    <a href="/user/" class="user_link">
+      <img class="avatar" src="/media/default.png" />
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/" class="user_link"></a>
+      </div>
+      <p class="reply_contents"></p>
+      <div class="info">
+        <span class="timeago">
+          <abbr class="timeago reply_time"></abbr>
+        </span>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+{% for reply in replies %}
+<div class="stream" id="reply_{{ reply.id }}"><div class="stream_element reply_element" data-guid="1">
+  <div class="right controls">
+    {% if user.username == reply.author.username %}
+    <a href="#" class="delete stream_element_delete message" title="지우기" onclick="delete_reply($(this)); return false;" reply_id="{{ reply.id }}"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+    {% endif %}
+  </div>
+  <div class="sm_body">
+    <a href="/user/{{ reply.author.username }}" class="user_link">
+      <img class="avatar" src="/picture/{{ reply.author.username }}">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/{{ reply.author.username }}" class="user_link">
+          {{ reply.author.username }}
+        </a>
+      </div>
+      <p class="message_content">
+        {{ reply.contents|safe }}
+      </p>
+      <div class="info">
+        
+        <span class="timeago">
+          <abbr class="timeago message_time">{{ reply.reg_date }}</abbr>
+        </span>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+{% endfor %}
+</div>
+
+<div id="message_reply_form" message_id={{ message.id }}>
+
+
+<div class="stream" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
+  <div class="right controls"></div>
+  <div class="sm_body">
+    <a href="/user/" class="user_link">
+      <img class="avatar" src="/picture/{{ user.username }}">
+    </a>
+    <div class="content">
+      <p style=" margin-bottom:3px;">
+        <textarea class="reply_area autogrow" id="reply_area_{{ message.id }}" style=" margin:0px; height:40px; width:530px; resize:none;"></textarea>
+      </p>
+      
+      <div class="submit_button ">
+       <input class="reply_submit button" id="reply_submit_{{ message.id }}" name="reply" type="submit" value="Reply" onclick="send_reply('{{ message.id }}'); return false;">
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+
+</div>
 
 
 {% include "meta_close.html"%}

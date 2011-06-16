@@ -6,13 +6,15 @@
   </div>
   <div class="sm_body">
     <a href="/user/" class="user_link">
-      <img class="avatar" data-person_id="2">
+      <img class="avatar author" data-person_id="2">
     </a>
     <div class="content">
       <div class="from">
         <a href="/user/" class="user_link">
           user_name
         </a>
+        <span class="author_name">
+        </span>
       </div>
       <p class="feed_content">
         feed_content
@@ -28,15 +30,15 @@
         </span>
         <span class="via">
         </span>
-        |
+        
         <span class="like_action">
-          <a href="#"><span class="favor">Favorite</span><span class="unfavor">Unfavorite</span></a>
+        |  <a href="#"><span class="favor">Favorite</span><span class="unfavor">Unfavorite</span></a>
         </span>
-        |
-        <a href="#" class="focus_comment_textarea" id="attach_file_count">첨부파일(<span></span>)</a>
-        |
+        <span class="attach_file">
+        |  <a href="#" class="focus_comment_textarea" >첨부파일(<span class="attach_file_count"></span>)</a>
+        </span>
         <span class="comment_action">
-          Comments
+        |  <a href="#"  onclick="return false;">Comments (<span class="comment_count_text"></span>)</a>
         </span>
         
       </div>
