@@ -128,7 +128,7 @@ function display_event(events){
         event_layout.find('.event_content').html(nl2br(event.contents));
         event_layout.find('.event_location').html("<b>Where? </b> "+event.location);
         event_layout.find('.start_time').html("<b>From</b> "+event.start_time);
-        if(event.end_time != undefined){
+        if(event.end_time != undefined && event.end_time != 'None'){
             event_layout.find('.end_time').html(" - <b>To</b> "+event.end_time);
         }
         
@@ -200,9 +200,16 @@ function display_event(events){
         });    
         event_layout.find('textarea').elastic();
         
+        event_layout.find('.event_open_action').attr('event_id',event.id);
+        event_layout.find('.event_open_action').click(function(){
+            show_event_detail($(this).attr('event_id'));
+            return false;
+        });
+        
         
     }
 }
+
 
 function add_event_comment(event_layout, comment, index, total){
     var comment_layout= event_layout.find("li.comment.posted.template").clone();
@@ -318,4 +325,91 @@ function delete_event_comment(item){
 		  console.log(data);
 		}
 	});
+}
+
+
+
+
+function show_event_detail(event_id){
+    var tokenValue = $("#csrf_token").text();
+    $.ajax({
+		type : "POST",
+		url : "/api/event/detail/"+event_id,
+		data : "&csrfmiddlewaretoken="+tokenValue,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json);
+          if(json.success){
+            var detail_box = $('#event_detail_box');
+            var event = json.event;
+            detail_box.find('a.attend_btn').attr('event_id',event.id);
+            detail_box.find('.event_title').text(event.title);
+            detail_box.find('img.host_avatar').attr('src','/picture/'+event.host);
+            detail_box.find('.event_content').html(nl2br(event.contents));
+            detail_box.find('.event_location').html("<b>Where? </b> "+event.location);
+            detail_box.find('.start_time').html("<b>From</b> "+event.start_time);
+            if(event.end_time != undefined && event.end_time != 'None'){
+                detail_box.find('.end_time').html(" - <b>To</b> "+event.end_time);
+            }
+            for(var i=0; i<event.attendees.length; i++){
+                detail_box.find('#attendees_list ul').append('<li><img src="/picture/'+event.attendees[i]+'" /></li>');
+            }
+            
+            if(!event.attend_open){
+                $(".attend_action").remove();
+            }else{
+                var description=detail_box.find(".attending_status");
+                if(event.attending == 'yes'){
+                    description.text("회원님은 참석 중입니다.");
+                }else if(event.attending == 'no'){
+                    description.text("회원님은 참석 중이 아닙니다.");
+                }else if(event.attending == 'wait'){
+                    description.text("회원님은 참석 여부를 보류 하셨습니다.");
+                }else{
+                    description.text("회원님은 아직 응답하지 않으셨습니다.");
+                }
+            }
+            $.facebox({ div: '#event_detail_box' });
+          }
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});
+}
+
+function attend_event(item, type){
+    var event_id = item.attr('event_id');
+    
+    
+    
+    var url='/api/event/attend/'+event_id;
+    var tokenValue = $("#csrf_token").text();
+    var data ="attend_type="+type+"&csrfmiddlewaretoken="+tokenValue;
+    $.ajax({
+		type : "POST",
+		url : url,
+		data : data,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json);
+		  if(json.success){
+		    var description=$("#facebox .attending_status");
+		    if(type == 'yes'){
+                description.text("참가 하셨습니다.");
+            }else if(type == 'no'){
+                description.text("참가 하지 않으시고 계십니다.");
+            }else if(type == 'wait'){
+                description.text("참가 보류 하셨습니다.");
+            }else{
+                description.text("회원님은 아직 응답하지 않으셨습니다.");
+            }
+		  }
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});   
+    
+    
 }

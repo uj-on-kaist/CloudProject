@@ -77,6 +77,8 @@ urlpatterns = patterns('',
     
     
     url(r'^event/$', 'controller.eventcontroller.main'),
+    url(r'^api/event/detail/(?P<event_id>\w+)$', 'controller.eventcontroller.event_detail'),
+    url(r'^api/event/attend/(?P<event_id>\w+)$', 'controller.eventcontroller.attend_event'),
     url(r'^api/event/register/$','controller.eventcontroller.register_event'),
     url(r'^api/event/comment/delete/(?P<comment_id>\w+)$','controller.eventcontroller.delete_event_comment'),
     url(r'^api/event/delete/(?P<event_id>\w+)$','controller.eventcontroller.delete_event'),

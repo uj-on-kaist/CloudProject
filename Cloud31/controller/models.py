@@ -134,7 +134,7 @@ class EventComment(models.Model):
 class EventParticipate(models.Model):
     event = models.ForeignKey(Event)
     user = models.ForeignKey(User)
-    participate = models.CharField(max_length=10, default='')
+    attend_status = models.CharField(max_length=10, default='')
 
 ##  
 ## Direct Message Related

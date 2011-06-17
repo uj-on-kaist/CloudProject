@@ -1,0 +1,45 @@
+<div id="event_detail_box" style="display:none; width:480px;">
+ <div style="width:480px;">
+  <h4>Event</h4>
+  <div class="main_info_div">
+    <div class="main_info">
+        <p class="event_title">Event Detail</p>
+        <p class="event_time">
+            <span class="start_time"></span>
+            <span class="end_time"></span>
+        </p>
+        <p class="event_location">
+            event_location
+        </p>
+        <p class="event_content">
+            event_content
+        </p>
+      
+    </div>
+    <img src="/" class="host_avatar"/>
+    
+  </div>
+  
+  
+  
+  
+  <div class="attendees_list">
+    <p>참석자 리스트</p>
+    <ul class="nostyle">
+        <li class="attendee"><img src="/picture/test" /></li>
+    </ul>
+  </div>
+  
+  <div class="attend_action">
+    <p class="attending_status">회원님은 현재 현재 참석 중이 아닙니다.</p>
+    <div class="description">해당 이벤트에 참가 하시겠습니까?</div>
+    <div class="actions">
+        <a href="/" class="button update attend_btn" onClick="attend_event($(this),'yes'); return false;" id="update_btn">예</a>
+        <a href="/" class="button update attend_btn" onClick="attend_event($(this), 'no'); return false;" id="update_btn">아니오</a>
+        <a href="/" class="button update attend_btn" onClick="attend_event($(this), 'wait'); return false;" id="update_btn">보류</a>
+    </div>
+    
+  </div>
+
+ </div>
+</div>

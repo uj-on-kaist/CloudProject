@@ -111,9 +111,30 @@ td.label{vertical-align: top; padding-top: 8px;}
 
 p.event_title{color: black; font-weight: bold;}
 
+
+
 p.event_content{padding:10px 0px;}
 
 ul.comments{display:none;}
 
 
 span.author_name{font-size: 10px; line-height: 16px;}
+
+
+.attendees_list p{font-size: 1.2em; color:#777; font-weight: bold; margin:5px 0;}
+li.attendee img{width:30px; height: 30px;}
+
+.main_info_div,.attendees_list{padding:0px 10px; padding-bottom: 10px;float:left; width:460px;}
+.main_info{width:410px;float: left;}
+.main_info  p{margin-bottom: 0}
+.main_info .event_title{font-size: 1.5em; color:#777; font-weight: bold;}
+
+img.host_avatar{float:left; width:50px; height: 50px;}
+
+.attend_action {float:left;width:460px; padding:10px;}
+.attending_status{margin:0;}
+.attend_action div{font-size: 1.2em; color:black; font-weight: bold;float:left;}
+.attend_action div.description{width:320px;}
+
+
+.attendees_list, .attend_action{border-top: 1px solid #e7e7e7; }

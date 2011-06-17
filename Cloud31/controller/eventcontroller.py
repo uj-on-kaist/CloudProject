@@ -31,7 +31,29 @@ def main(request):
     
     context['side_list']=['event_calendar']
     return HttpResponse(t.render(context))
+
+def event_detail(request, event_id):
+    result=dict()
+    result['success']=True
+    result['message']='success'
     
+    try:
+        user = User.objects.get(username=request.user.username)
+        username = request.user.username
+        username +=","
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Sign in')
+    
+    query_type = Q(host=user) | Q(invited_users__contains=username) | Q(is_public=True)
+    try:
+        events = Event.objects.filter(query_type,is_deleted=False,id=event_id)
+        result['event']=process_events(events, user)[0]
+    except Exception as e:
+        print str(e)
+        pass
+    
+    return HttpResponse(json.dumps(result, indent=4))
 
 def load_event(request, load_type):
     result=dict()
@@ -56,7 +78,7 @@ def load_event(request, load_type):
         query_type = Q(host=user)
     try:
         events = Event.objects.filter(query_type,is_deleted=False).order_by('-reg_date')[:5]
-        result['events']=process_events(events)                
+        result['events']=process_events(events , user)               
     except Exception as e:
         print str(e)
         pass
@@ -64,7 +86,47 @@ def load_event(request, load_type):
     
     return HttpResponse(json.dumps(result, indent=4))
 
-def process_events(events):
+def attend_event(request, event_id):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    result['events']=list()
+    
+    if request.method == 'POST':
+        if request.POST['attend_type']:
+            attend_type=request.POST['attend_type']
+    
+    if attend_type not in ['yes','no','wait']:
+        return my_utils.return_error('Invalid Status')
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+        username = request.user.username
+        username +=","
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Sign in')
+    
+    query_type = Q(host=user) | Q(invited_users__contains=username) | Q(is_public=True)
+    query_type = (query_type) & Q(start_time__gt = datetime.now())
+    try:
+        event = Event.objects.filter(query_type,is_deleted=False,id=event_id)[0]
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Invalid Action')
+
+    try:
+        event_attend = EventParticipate.objects.get_or_create(event=event, user=user)[0]
+        event_attend.attend_status = attend_type
+        event_attend.save()
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Insert Failure')
+    
+    
+    return HttpResponse(json.dumps(result, indent=4))
+    
+def process_events(events, user):
     results=list()
     for event in events:
         item = dict()
@@ -73,6 +135,7 @@ def process_events(events):
         item['host_name']=event.host.last_name
         item['title']= event.title
         item['location']= event.location
+        item['attend_open']= (datetime.now() < event.start_time)
         try:
             item['start_time'] = str(event.start_time)
             item['end_time'] = str(event.end_time)
@@ -95,7 +158,23 @@ def process_events(events):
                 item['comments'].append(c_item)
         except:
             pass
-        
+        item['attendees']=list()
+        try:
+            attendees = EventParticipate.objects.filter(event=event, attend_status='yes')
+            for attendee in attendees:
+                a_item=dict()
+                a_item['username']=attendee.user.username
+                a_item['name']=attendee.user.last_name
+                item['attendees'].append(a_item)
+        except:
+            pass
+            
+        try:
+            attending = EventParticipate.objects.filter(event=event, user=user)[0]
+            item['attending'] = attending.attend_status
+        except:
+            item['attending'] = 'not yet'
+            pass
         results.append(item)
     return results
 
