@@ -23,7 +23,7 @@ def main(request):
     t = loader.get_template('message.html')
     context = RequestContext(request)
 #     user = get_object_or_404(User,username=request.user.username)
-    
+    context['page_dm'] = "selected"
     context['type'] = 'all'
     if request.GET.get('type',False):
         context['type'] = request.GET['type']

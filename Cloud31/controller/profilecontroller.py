@@ -28,6 +28,7 @@ def user(request, username):
     user = get_object_or_404(User,username=username)
     user_profile = get_object_or_404(UserProfile,user=user)
     target_user = get_object_or_404(UserProfile, user=user)
+    context['page_profile'] = "selected"
     context['target_user']=target_user
     context['profile_user']=username
     

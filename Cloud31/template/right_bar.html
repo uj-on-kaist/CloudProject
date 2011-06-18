@@ -1,4 +1,4 @@
-<div class="rightBar span-5" style="margin:0px;margin-left:4px; padding-top:40px;">
+<div class="rightBar span-5" style="margin:0px;margin-left:4px; padding-top:55px;">
 
 
 
@@ -8,7 +8,7 @@
 
 {% if 'user_profile' in side_list%}
 <div title="user_profile">
-<a href="/user/{{ current_user }}"><img src="/picture/{{ current_user }}"  style="width:100%;"/></a>
+<a href="/user/{{ current_user }}"><img src="/picture/{{ current_user }}"  style="width:190px; height:190px;"/></a>
 <h2>{{ current_user.username }}</h2>
 <h3 style="margin:0px">{{ current_user.last_name }}</h3>
 <b>
@@ -32,12 +32,18 @@ $(document).ready(function(){
                 return [true, "bold"];
             else
                 return [true, "normal"]
+        },
+        onSelect: function(dateText, inst){
+            $(".date_header").text("* Events on "+dateText);
         }
     });
 });
 </script>
 <div class="event_calendar" >
 <h4>Event Calendar</h4>
+</div>
+<div class="event_list">
+<b class="date_header"></b>
 </div>
 {% endif %}
 

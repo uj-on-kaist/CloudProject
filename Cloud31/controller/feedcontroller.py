@@ -35,6 +35,7 @@ def feed(request):
     user = get_object_or_404(User,username=request.user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
     context['current_user'] = user
+    context['page_feed'] = "selected"
     context['user_profile'] = user_profile
     return HttpResponse(t.render(context))
     

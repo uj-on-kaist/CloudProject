@@ -19,6 +19,17 @@ $(document).ready(function(){
         onComplete: function(id, fileName, responseJSON){
             console.log(responseJSON);
             
+            $(document).find("img").each(function(){
+                console.log($(this));
+                var currentURL=$(this).attr("src");
+                if(currentURL != undefined){
+                    currentURL=currentURL.split("?")[0];
+                    var src="/picture/" + $("#user_name_info").text();
+                    if(currentURL == src){
+                        $(this).attr("src",src+"?"+new Date().getTime());
+                    }
+                }
+            });
         },
     });
 });

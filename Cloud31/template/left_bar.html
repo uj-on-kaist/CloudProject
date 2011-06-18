@@ -1,19 +1,30 @@
-<div class="leftBar span-5" style="border:0px; border:none;">
+<div class="leftBar span-5" style="border:0px; border:none; margin-right:0px;">
 {% if user.is_authenticated %}
-<ul style="padding:0px;">
-    <li><a href="/feed/">Feed</a></li>
-    <li><a href="/user/{{ user.username }}">Profile</a></li>
-    <li><a href="/event/">Event</a></li>
-    <li><a href="/message/">Direct Messages</a></li>
-    <li><a href="/setting/">Setting</a></li>
+
+<div class="user_box">
+    <a href="/user/{{ user.username }}"><img src="/picture/{{ user.username }}" /></a>
+    <div>
+        <p class="user_id">
+            <a href="/user/{{ user.username }}">{{ user.username }}</a>
+            <span class="user_name">{{ user.last_name }}</span></p>
+        <p class="setting"><a href="/user/{{ user.username }}">Profile</a> <a href="/setting/">Setting</a></p>
+    </div>
+</div>
+
+<ul class="menu_list">
+    <a href="/feed/"><li class="menu_item feed_icon {{ page_feed }}">Feed</li></a>
+    <a href="/user/{{ user.username }}"><li class="menu_item {{ page_profile }}">Profile</li></a>
+    <a href="/event/"><li class="menu_item {{ page_event }}">Event</li></a>
+    <a href="/message/"><li class="menu_item {{ page_dm }}">Direct Messages</li></a>
+    <a href="/setting/"><li class="menu_item {{ page_setting }}">Setting</li></a>
 </ul>
 
-<ul style="padding:0px;">
+<ul class="menu_list">
     <h4>Search</h4>
-    <li><a href="/topic/">Topics</a></li>
-    <li><a href="/file/">Files</a></li>
-    <li><a href="/location/">Location</a></li>
-    <li><a href="/members/">Members</a></li>
+    <a href="/topic/"><li class="menu_item {{ page_topic }}">Topics</li></a>
+    <a href="/file/"><li class="menu_item {{ page_files }}"><a href="/file/">Files</li></a>
+    <a href="/location/"><li class="menu_item {{ page_location }}"><a href="/location/">Location</li></a>
+    <a href="/members/"><li class="menu_item {{ page_member }}"><a href="/members/">Members</li></a>
 </ul>
 
 

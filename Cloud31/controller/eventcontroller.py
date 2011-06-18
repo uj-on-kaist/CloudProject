@@ -28,7 +28,7 @@ def main(request):
     t = loader.get_template('event.html')
     context = RequestContext(request)
 #     user = get_object_or_404(User,username=request.user.username)
-    
+    context['page_event'] = "selected"
     context['side_list']=['event_calendar']
     return HttpResponse(t.render(context))
 

@@ -45,6 +45,10 @@ $(document).ready(function(){
         hide_noti();
         hide_user_menu();
     });
+    
+    $(".main div").bind("resize",function(){
+        console.log(123);
+    });
 });
 
 
@@ -57,5 +61,5 @@ $(document).ready(function(){
 <div class="container">
 {% include "left_bar.html" %}
 
-<div class="main span-16">
+<div class="main span-16" style="padding-left:9px;">
 <div class="main_contents">

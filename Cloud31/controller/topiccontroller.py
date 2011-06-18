@@ -24,6 +24,7 @@ import my_utils
 def topic(request):
     t = loader.get_template('topic.html')
     context = RequestContext(request)
+    context['page_topic'] = "selected"
     context['topics']=list()
     try:
         context['topics'] = Topic.objects.all()[:5]

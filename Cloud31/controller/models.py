@@ -96,7 +96,7 @@ class UserTopicFavorite(models.Model):
 class UserNotification(models.Model):
     user = models.ForeignKey(User, related_name="receiver")
     sender = models.ForeignKey(User, related_name="sender")
-    notification_type = models.CharField(max_length=50)
+    notification_type = models.CharField(max_length=10)
     related_type = models.CharField(max_length=10)
     related_id = models.IntegerField()
     contents = models.TextField(null=False)
