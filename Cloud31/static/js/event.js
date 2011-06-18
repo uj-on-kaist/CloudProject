@@ -272,8 +272,7 @@ function update_event_comment(event_id){
 		  console.log(data);
 		}
 	});
-
-    
+ 
 }
 
 function delete_event(item){
@@ -412,4 +411,54 @@ function attend_event(item, type){
 	});   
     
     
+}
+
+
+function delete_detail_event(item){
+    var answer = confirm ("Really Delete?");
+    if (!answer)
+        return false;
+
+    var event_id=item.attr('event_id');
+    var tokenValue = $("#csrf_token").text();
+    $.ajax({
+		type : "POST",
+		url : "/api/event/delete/"+event_id,
+		data : "&csrfmiddlewaretoken="+tokenValue,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json);
+          if(json.success){
+            location.href="/event/";
+          }
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});
+}
+
+function delete_detail_event_comment(item){
+    var answer = confirm ("Really Delete?");
+    if (!answer)
+        return false;
+
+    var comment_id=item.attr('comment_id');
+    var tokenValue = $("#csrf_token").text();
+    $.ajax({
+		type : "POST",
+		url : "/api/event/comment/delete/"+comment_id,
+		data : "&csrfmiddlewaretoken="+tokenValue,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json);
+		  item.parent().parent().slideToggle("",function(){
+		      $(this).remove();
+		      $(".comment_count_text").text($(".comment_list").find("li.comment.posted").length - 1);
+		  });
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});
 }

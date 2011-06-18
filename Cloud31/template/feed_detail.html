@@ -1,0 +1,146 @@
+{% include "meta_open.html"%}
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("abbr").each(function(){
+        $(this).text( humane_date( $(this).text() ) );
+    });
+    $(".comments").show();
+    
+    $("textarea.comment_area").elastic();
+});
+</script>
+<div id="feed_list">
+
+<div class="stream feed_item" id="feed_{{ feed.id }}" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
+  <div class="right controls">
+    {% if user.username == feed.author %}
+    <a href="#" class="delete stream_element_delete message" onclick="delete_detail_feed($(this));" feed_id="{{ feed.id }}" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png"></a>
+    {% endif %}
+  </div>
+  <div class="sm_body">
+    <a href="/user/{{ feed.author }}" class="user_link">
+      <img class="avatar author" src="/picture/{{ feed.author }}" data-person_id="2">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/{{ feed.author }}" class="user_link">
+          {{ feed.author }}
+        </a>
+        <span class="author_name">{{ feed.author_name }}
+        </span>
+      </div>
+      <p class="feed_content">
+        {{ feed.contents|safe }}
+      </p>
+      <div class="info">
+        <span class="timeago">
+          <abbr class="timeago feed_time" title="2011-06-08 13:01:46 UTC">{{ feed.reg_date }}</abbr>
+        </span>
+        <span class="via">
+        </span>
+        
+        <span class="like_action">
+        |  <a href="#">
+                <span class="favor {% if feed.favorite %}hidden{% endif %}" onclick="detail_feed_like($(this), true);" feed_id="{{ feed.id }}">Favorite</span>
+                <span class="unfavor {% if not feed.favorite %}hidden{% endif %}" onclick="detail_feed_like($(this), false);" feed_id="{{ feed.id }}">Unfavorite</span>
+            </a>
+        </span>
+        {% if feed.attatch_files %}
+        <span class="attach_file">
+        |  <a href="#" class="focus_comment_textarea" >첨부파일(<span class="attach_file_count"></span>)</a>
+        </span>
+        {% endif %}
+        
+        <span class="comment_action">
+        |  <a href="#"  onclick="return false;">Comments (<span class="comment_count_text">{{ feed.comments|length }}</span>)</a>
+        </span>
+      </div>
+      <div class="likes">
+      </div>
+      
+      
+      
+      
+
+<ul class="comments comment_count" id="1" >
+<li><span><span class="comment_count_text">{{ feed.comments|length }}</span>개의 댓글이 있습니다.</span></li>
+</ul>
+
+<ul class="comments comment_list" id="1">
+<li class="comment posted template" data-guid="2">
+    <div class="right controls">
+        <a href="#" class="delete stream_element_delete" title="지우기" style="display:none;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+    </div>
+    <a href="/people/1" class="user_link">
+      <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="/picture/test" title="ujlikes@localhost">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/" class="user_link">
+          user_name
+        </a>
+        <span class="author_name">
+        </span>
+        <time class="timeago">
+          <abbr class="timeago comment_time"></abbr>
+        </time>
+      </div>
+      <p class="comment_text"></p>
+    </div>
+</li>
+{% for comment in feed.comments %}
+<li class="comment posted" data-guid="2">
+    <div class="right controls">
+        {% if user.username == comment.author %}
+            <a href="#" class="delete stream_element_delete message" onclick="delete_detail_comment($(this));" comment_id="{{ comment.id }}" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png"></a>
+        {% endif %}
+    </div>
+    <a href="/user/{{ comment.author }}" class="user_link">
+      <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="/picture/{{ comment.author }}" title="ujlikes@localhost">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/{{ comment.author }}" class="user_link">
+        {{ comment.author }}
+        </a>
+        <span class="author_name">
+        {{ comment.author_name }}
+        </span>
+        <time class="timeago">
+          <abbr class="timeago comment_time">{{ comment.reg_date }}</abbr>
+        </time>
+      </div>
+      <p class="comment_text">{{ comment.contents|safe }}</p>
+    </div>
+</li>
+{% endfor %}
+</ul>
+ 
+
+<ul class="comments" id="1">
+   <li class="write_box" style="border-left-width: 3px; border-left-style: solid; border-left-color: rgb(149, 189, 237); ">
+    <img alt="ujlikes@localhost" class="current_user avatar" src="/picture/{{ user.username }}" title="ujlikes@localhost">
+    <p style="position:relative; left:35px; margin-bottom:3px;">
+        <textarea class="comment_area" id="comment_area_{{ feed.id }}" style="width:482px; margin:0px; height:15px;" placeholder="Write Comment" onclick="$('.submit_button').removeClass('hidden'); return false;"></textarea>
+    </p>
+    <div class="submit_button hidden">
+       <input class="comment_submit button" id="comment_submit_{{ feed.id }}" name="commit" type="submit" value="Reply" onclick="var id=$(this).attr('id').split('_')[2]; ;update_comment(id); return false;">
+    </div>
+    </li>
+</ul>
+      
+      
+      
+      
+      
+    </div>
+  </div>
+</div>
+</div>
+
+
+</div>
+
+{% include "meta_close.html"%}

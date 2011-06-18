@@ -38,8 +38,29 @@ def feed(request):
     context['page_feed'] = "selected"
     context['user_profile'] = user_profile
     return HttpResponse(t.render(context))
-    
 
+
+@login_required(login_url='/signin/')
+def feed_detail(request, feed_id):
+    t = loader.get_template('feed_detail.html')
+    context = RequestContext(request)
+    context['side_list']=['user_profile']
+    
+    user = get_object_or_404(User,username=request.user.username)
+    user_profile = get_object_or_404(UserProfile,user=user)
+    context['current_user'] = user
+    context['page_feed'] = "selected"
+    context['user_profile'] = user_profile
+    
+    feed = get_object_or_404(Message,id=feed_id)
+    if not feed.is_deleted:
+        feed = my_utils.process_messages(request, [feed])
+        context['feed'] = feed[0]
+    print feed
+    
+    return HttpResponse(t.render(context))
+    
+    
 def delete_feed(request, feed_id):
     result=dict()
     result['success']=True
@@ -227,6 +248,13 @@ def update_feed(request):
                             new_message.related_users+=user_name+','
                         else:
                             new_message.related_users+=user_name
+                            
+                        #SEND NOTIFICATION
+                        info = dict()
+                        info['from'] = user
+                        info['to'] = target_user
+                        info['target_object'] = new_message
+                        register_noti(request, "new_at_feed",info)
                 except:
                     pass
             

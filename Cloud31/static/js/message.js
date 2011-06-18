@@ -93,7 +93,7 @@ function display_messages(messages){
         
         message_layout.find('.content').attr('message_id',message.id);
         message_layout.find('.content').click(function(){
-            location.href="/message/"+$(this).attr('message_id')+"?type="+$("#message_list").attr('type');
+            location.href="/message/detail/"+$(this).attr('message_id')+"?type="+$("#message_list").attr('type');
         });
         
         if(message.author == $("#user_name_info").text()){

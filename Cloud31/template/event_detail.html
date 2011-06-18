@@ -1,0 +1,130 @@
+{% include "meta_open.html" %}
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("abbr").each(function(){
+        $(this).text( humane_date( $(this).text() ) );
+    });
+    $(".comments").show();
+    
+    $("textarea.comment_area").elastic();
+});
+</script>
+
+{% if event %}
+<div class="stream" id="event_{{ event.id }}" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
+  <div class="right controls">
+    {% if user.username == event.host %}
+    <a href="#" class="delete stream_element_delete message" onclick="delete_detail_event($(this));" event_id="{{ event.id }}" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png"></a>
+    {% endif %}
+  </div>
+  <div class="sm_body">
+    <a href="/user/{{ event.host }}" class="user_link">
+      <img class="avatar author" src="/picture/{{ event.host }}" data-person_id="2">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/{{ event.host }}" class="user_link">
+          {{ event.host }}
+        </a>
+        <span class="author_name">{{ event.host_name }}
+        </span>
+        <span class="timeago" style="font-size:11px;">
+          <abbr class="timeago event_time" title="2011-06-08 13:01:46 UTC">{{ event.reg_date }}</abbr>
+        </span>
+      </div>
+      <p class="event_title" style="font-size:20px; margin:10px 0;">
+        {{ event.title }}
+      </p>
+      <p class="event_time">
+        <span class="start_time"><b>From</b> {{ event.start_time }}</span>
+        {% if event.end_time != "None" %}<span class="end_time"><b>To</b> {{ event.end_time }}</span>{% endif %}
+      </p>
+      <p class="event_location">
+        <b>Where?</b> {{ event.location }}
+      </p>
+      <p class="event_content">
+        {{ event.contents }}
+      </p>
+      
+      
+<ul class="comments comment_count" id="1" >
+<li><span><span class="comment_count_text">{{ event.comments|length }}</span>개의 댓글이 있습니다.</span></li>
+</ul>
+
+<ul class="comments comment_list" id="1">
+<li class="comment posted template" data-guid="2">
+    <div class="right controls">
+        <a href="#" class="delete stream_element_delete" title="지우기" style="display:none;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+    </div>
+    <a href="/people/1" class="user_link">
+      <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="/picture/test" title="ujlikes@localhost">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/" class="user_link">
+          user_name
+        </a>
+        <span class="author_name">
+        </span>
+        <time class="timeago">
+          <abbr class="timeago comment_time"></abbr>
+        </time>
+      </div>
+      <p class="comment_text"></p>
+    </div>
+</li>
+{% for comment in event.comments %}
+<li class="comment posted" data-guid="2">
+    <div class="right controls">
+        {% if user.username == comment.author %}
+            <a href="#" class="delete stream_element_delete message" onclick="delete_detail_event_comment($(this));" comment_id="{{ comment.id }}" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png"></a>
+        {% endif %}
+    </div>
+    <a href="/user/{{ comment.author }}" class="user_link">
+      <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="/picture/{{ comment.author }}" title="ujlikes@localhost">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/{{ comment.author }}" class="user_link">
+        {{ comment.author }}
+        </a>
+        <span class="author_name">
+        {{ comment.author_name }}
+        </span>
+        <time class="timeago">
+          <abbr class="timeago comment_time">{{ comment.reg_date }}</abbr>
+        </time>
+      </div>
+      <p class="comment_text">{{ comment.contents|safe }}</p>
+    </div>
+</li>
+{% endfor %}
+</ul>
+ 
+
+<ul class="comments" id="1">
+   <li class="write_box" style="border-left-width: 3px; border-left-style: solid; border-left-color: rgb(149, 189, 237); ">
+    <img alt="ujlikes@localhost" class="current_user avatar" src="/picture/{{ user.username }}" title="ujlikes@localhost">
+    <p style="position:relative; left:35px; margin-bottom:3px;">
+        <textarea class="comment_area" id="comment_area_{{ event.id }}" style="width:482px; margin:0px; height:15px;" placeholder="Write Comment" onclick="$('.submit_button').removeClass('hidden'); return false;"></textarea>
+    </p>
+    <div class="submit_button hidden">
+       <input class="comment_submit button" id="comment_submit_{{ event.id }}" name="commit" type="submit" value="Reply" onclick="var id=$(this).attr('id').split('_')[2]; ;update_event_comment(id); return false;">
+    </div>
+    </li>
+</ul>
+      
+      
+      
+      
+    </div>
+  </div>
+</div>
+</div>
+{% else %}
+{{ error_message }}
+{% endif %}
+
+
+{% include "meta_close.html" %}

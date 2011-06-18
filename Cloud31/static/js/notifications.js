@@ -5,7 +5,7 @@ function get_notis_count(){
 		dataType : "JSON",
 		success : function(json) {
 		  if(json.success){
-		      if(json.notifications.length == 0){
+		      if(json.unread_notis.length == 0){
 		          $(".noti_count").text("");
 		          $('#noti_selector').attr('status','nor');
 		          $('#noti_selector').removeClass("sel");
@@ -14,7 +14,7 @@ function get_notis_count(){
 		          $('#noti_selector').attr('status','high');
 		          $('#noti_selector').removeClass("nor");
 		          $('#noti_selector').addClass("high");
-		          $(".noti_count").text(json.notifications.length);
+		          $(".noti_count").text(json.unread_notis.length);
 		      }
 		  }
 		},
@@ -29,17 +29,29 @@ function load_notis(){
         hide_noti();
         return false;
     }
-
+    
     $.ajax({
 		type : "GET",
 		url : "/api/noti/get/",
 		dataType : "JSON",
 		success : function(json) {
 		  if(json.success){
-		      console.log(json.notifications);
-		      show_noti(json.notifications);
-		      if(json.notifications.length != 0)
-		          $(".noti_count").text(json.notifications.length);
+		      console.log(json.unread_notis, json.read_notis);
+		      
+		      var notis = new Array();
+		      for (var i=0; i<json.unread_notis.length; i++){
+		          notis.push(json.unread_notis[i]);
+		      }
+		      if(notis.length <5){
+		          var needed = 5 - notis.length;
+		          for(var i=0; i<needed && i<json.read_notis.length; i++){
+		              var noti = json.read_notis[i];
+		              notis.push(noti);
+		          }
+		      }
+		      show_noti(notis);
+		      if(json.unread_notis.length != 0)
+		          $(".noti_count").text(json.unread_notis.length);
 		  }
 		},
 		error : function(data){
@@ -63,10 +75,45 @@ function show_noti(notis){
         var noti_layout= $("#noti_list li.noti_item_template").clone();
         noti_layout.removeClass("noti_item_template");
         noti_layout.addClass("noti_item");
+        if(!noti.is_read){
+            noti_layout.addClass("unread");
+        }
+        noti_layout.attr("noti_id",noti.id);
+        noti_layout.attr("related_type",noti.related_type);
+        noti_layout.attr("related_id",noti.related_id);
         noti_layout.find(".user_picture").attr("src","/picture/"+noti.sender);
         noti_layout.find(".message").html(noti.contents);
         noti_layout.find(".noti_time abbr").text(humane_date(noti.reg_date));
-        console.log(noti_layout);
+        noti_layout.click(function(event){
+            var url='/';
+            var noti_id = $(this).attr("noti_id");
+            var related_type=$(this).attr("related_type");
+            var related_id=$(this).attr("related_id");
+            if(related_type == "Message")
+                url="/feed/detail/"+related_id;
+            else if(related_type == "Event")
+                url="/event/detail/"+related_id;
+            else{
+                event.stopPropagation();
+                return;
+            }
+            
+            var tokenValue = $("#csrf_token").text();
+            $.ajax({
+		      type : "POST",
+		      url : "/api/noti/read/"+noti_id,
+		      dataType : "JSON",
+		      data : "&csrfmiddlewaretoken="+tokenValue,
+		      success : function(json) {
+		          location.href=url; 
+		      }, error : function(data){
+		          location.href=url;
+		          console.log(data);
+		      }
+	       });
+            
+            event.stopPropagation();
+        });
         $('#noti_list a.see_more').before(noti_layout);
     }
 

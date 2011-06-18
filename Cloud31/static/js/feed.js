@@ -393,3 +393,54 @@ function update_comment(feed_id){
 function show_all_comments(feed_id){
     $('#feed_'+feed_id+' ul.comment_list').find('li.comment.posted').removeClass('hidden');
 }
+
+
+
+function delete_detail_feed(item){
+    var answer = confirm ("Really Delete?");
+    if (!answer)
+        return false;
+
+    var feed_id=item.attr('feed_id');
+    var tokenValue = $("#csrf_token").text();
+    $.ajax({
+		type : "POST",
+		url : "/api/feed/delete/"+feed_id,
+		data : "&csrfmiddlewaretoken="+tokenValue,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json);
+          if(json.success){
+            location.href="/feed/";
+          }
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});
+}
+
+function delete_detail_comment(item){
+    var answer = confirm ("Really Delete?");
+    if (!answer)
+        return false;
+
+    var comment_id=item.attr('comment_id');
+    var tokenValue = $("#csrf_token").text();
+    $.ajax({
+		type : "POST",
+		url : "/api/feed/comment/delete/"+comment_id,
+		data : "&csrfmiddlewaretoken="+tokenValue,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json);
+		  item.parent().parent().slideToggle("",function(){
+		      $(this).remove();
+		      $(".comment_count_text").text($(".comment_list").find("li.comment.posted").length - 1);
+		  });
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});
+}

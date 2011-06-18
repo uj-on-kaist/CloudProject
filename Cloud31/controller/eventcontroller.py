@@ -23,6 +23,8 @@ import parser
 from datetime import datetime
 from django.db.models import Q
 
+from controller.notificationcontroller import *
+
 @login_required(login_url='/signin/')
 def main(request):
     t = loader.get_template('event.html')
@@ -31,6 +33,35 @@ def main(request):
     context['page_event'] = "selected"
     context['side_list']=['event_calendar']
     return HttpResponse(t.render(context))
+    
+
+# Event 하나를 상세히 보여주는 페이지
+@login_required(login_url='/signin/')
+def detail_event(request, event_id):
+    t = loader.get_template('event_detail.html')
+    context = RequestContext(request)
+    context['page_event'] = "selected"
+    context['side_list']=['event_calendar']
+    try:
+        user = User.objects.get(username=request.user.username)
+        username = request.user.username
+        username +=","
+    except Exception as e:
+        print str(e)
+        return HttpResponse(t.render(context))
+    
+    query_type = Q(host=user) | Q(invited_users__contains=username) | Q(is_public=True)
+    try:
+        events = Event.objects.filter(query_type,is_deleted=False,id=event_id)
+        context['event']=process_events(events, user)[0]
+    except Exception as e:
+        print str(e)
+        context['error_message'] = 'You cannot access to this event.'
+        pass
+    
+    return HttpResponse(t.render(context))
+    
+
 
 def event_detail(request, event_id):
     result=dict()
@@ -138,6 +169,10 @@ def process_events(events, user):
         item['attend_open']= (datetime.now() < event.start_time)
         try:
             item['start_time'] = str(event.start_time)
+        except:
+            pass
+        
+        try:
             item['end_time'] = str(event.end_time)
         except:
             pass
@@ -253,9 +288,15 @@ def register_event(request):
                 if user_name != request.user.username:
                     target_user = User.objects.get(username=user_name)
                     new_event.invited_users+=user_name+','
-
-                    # TODO : ADD EACH USER TIMELINE
                     
+                    print user_name
+                    # TODO : ADD EACH USER Notification
+                    #SEND NOTIFICATION
+                    info = dict()
+                    info['from'] = user
+                    info['to'] = target_user
+                    info['target_object'] = new_event
+                    register_noti(request, "new_event_invite",info)
             except:
                 pass
             

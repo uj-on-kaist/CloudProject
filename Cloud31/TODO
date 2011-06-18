@@ -1,10 +1,9 @@
+#Notification 에서 Feed 디테일 페이지 접속시,
+권한이 안되어있으면 에러 메시지 출력
+(Event에 구현 해 놓았으니 참고)
 
+#Event Detail 페이지에서 참석자 리스트 보이기 & 참석 여부 결정
 
-#textarea 
-자동 조절 시 아래 버튼이 잘 눌리게 (first done)
-
-#Comment
-delete function
 
 #Timeline
 is_read option
@@ -15,3 +14,5 @@ Rectangle 로 짜르기
 
 
 #Search
+
+

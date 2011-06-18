@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     url(r'^$','controller.maincontroller.main'),
     
     url(r'^feed/$','controller.feedcontroller.feed'),
-    
+    url(r'^feed/detail/(?P<feed_id>\w+)$', 'controller.feedcontroller.feed_detail'),
     
     url(r'^api/feed/update/$','controller.feedcontroller.update_feed'),
     url(r'^api/feed/delete/(?P<feed_id>\w+)$','controller.feedcontroller.delete_feed'),
@@ -64,8 +64,8 @@ urlpatterns = patterns('',
     url(r'setting/$', 'controller.settingcontroller.setting'),
     
     
-    url(r'message/$', 'controller.messagecontroller.main'),
-    url(r'message/(?P<message_id>\w+)$', 'controller.messagecontroller.message_detail'),
+    url(r'^message/$', 'controller.messagecontroller.main'),
+    url(r'^message/detail/(?P<message_id>\w+)$', 'controller.messagecontroller.message_detail'),
     url(r'^api/message/update/$','controller.messagecontroller.send_message'),
     url(r'^api/message/reply/update/$','controller.messagecontroller.reply_message'),
     url(r'^api/message/reply/delete/(?P<reply_id>\w+)$','controller.messagecontroller.delete_reply'),
@@ -77,6 +77,7 @@ urlpatterns = patterns('',
     
     
     url(r'^event/$', 'controller.eventcontroller.main'),
+    url(r'^event/detail/(?P<event_id>\w+)$', 'controller.eventcontroller.detail_event'),
     url(r'^api/event/detail/(?P<event_id>\w+)$', 'controller.eventcontroller.event_detail'),
     url(r'^api/event/attend/(?P<event_id>\w+)$', 'controller.eventcontroller.attend_event'),
     url(r'^api/event/register/$','controller.eventcontroller.register_event'),
@@ -90,4 +91,5 @@ urlpatterns = patterns('',
     
     url(r'^notification/$', 'controller.notificationcontroller.main'),
     url(r'^api/noti/get/$', 'controller.notificationcontroller.get_notifications'),
+    url(r'^api/noti/read/(?P<noti_id>\w+)$', 'controller.notificationcontroller.read_notification'),
 )

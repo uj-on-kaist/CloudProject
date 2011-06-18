@@ -112,7 +112,7 @@ td.label{vertical-align: top; padding-top: 8px;}
 
 
 
-p.event_title{color: black; font-weight: bold;}
+p.event_title{color: black; font-weight: bold; font-size: 20px;}
 
 
 
@@ -121,7 +121,7 @@ p.event_content{padding:10px 0px;}
 ul.comments{display:none;}
 
 
-span.author_name{font-size: 10px; line-height: 16px;}
+span.author_name{font-size: 10px; line-height: 16px; margin-right: 5px;}
 
 
 .attendees_list p{font-size: 1.2em; color:#777; font-weight: bold; margin:5px 0;}
@@ -181,11 +181,11 @@ img.host_avatar{float:left; width:50px; height: 50px;}
     width:40px; height:44px;
     background-repeat: no-repeat;
     text-align: center;
-    
+    cursor: pointer;
 }
 .noti_box:hover{
     background-image: url("/static/image/transparent_bg.png");
-    cursor: pointer;
+    
 }
 #noti_selector.nor{background-image: url('/static/image/Notification_nor.png');}
 #noti_selector.high{background-image: url('/static/image/Notification_high.png');}
@@ -201,7 +201,7 @@ img.host_avatar{float:left; width:50px; height: 50px;}
 
 
 .noti_item{
-    
+    cursor: pointer;
     border-top: 0px;
 }
 .noti_item:hover{
@@ -218,6 +218,7 @@ ul#noti_list{
     position: relative;
     top:-1px;
     z-index: -1;
+    float: left;
 }
 ul#noti_list li{
     padding:5px;
@@ -225,11 +226,12 @@ ul#noti_list li{
     
 }
 
-ul#noti_list li.header b{color: black}
+ul#noti_list li.header{float:left;width:320px;}
+ul#noti_list li.header b{color: black;}
 
 ul#noti_list, ul#noti_list li{list-style: none;}
 
-ul#noti_list li.noti_load_more{text-align: center; color: #3F8FBA; font-weight: bold;}
+ul#noti_list li.noti_load_more{text-align: center; color: #3F8FBA; font-weight: bold;float:left;width:320px;}
 ul#noti_list li.noti_load_more:hover{text-decoration: underline}
 
 li.noti_item_template{display: none;}
@@ -239,19 +241,25 @@ li.noti_item{
     float:left;
     width:320px;
 }
+li.noti_item.unread{
+    background-color: rgb(245,255,255);
+}
+li.noti_item.unread:hover{
+    background-color: rgb(235,250,250);
+}
 li.noti_item img{
-    width: 30px;
-    height:30px;
+    width: 50px;
+    height:50px;
     float:left;
 }
 li.noti_item div.noti_contents{
-    width:290px;
+    width:270px;
     float: left;
 }
 li.noti_item div.noti_contents p.message{
     float:left;
     margin: 0; padding: 2px 0px 0 5px;
-    width:285px;
+    width:265px;
     max-height: 30px;
     line-height: 15px;
     overflow: hidden;
@@ -261,6 +269,7 @@ li.noti_item  .noti_time{
     padding:0px 0 0 5px;
     margin: 0;
 }
+li.noti_item b{color: #325AAA;}
 
 #user_box{
     float: right;
