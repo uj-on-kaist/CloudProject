@@ -10,7 +10,7 @@
     padding:8px;
 }
 
-.feed_form{width:600px;}
+.feed_form{width:590px;padding:10px;}
 
 
 .feed_form .control .button.update{
@@ -30,7 +30,7 @@
 }
 
 .feed_form .control div.attach{
-    width:520px;
+    width:510px;
 }
 
 .feed_form .control div.update{
