@@ -142,8 +142,8 @@ img.host_avatar{float:left; width:50px; height: 50px;}
 
 .logo_box, .noti_box, .search_box{
     float: left;
-    margin-top: 4px;
-    height: 40px;
+    margin-top: 0px;
+    height: 44px;
     margin-right: 10px;
 }
 
@@ -170,7 +170,7 @@ img.host_avatar{float:left; width:50px; height: 50px;}
 }
 
 #noti_selector{
-    width:40px; height:40px;
+    width:40px; height:44px;
     background-repeat: no-repeat;
     text-align: center;
     
@@ -184,6 +184,7 @@ img.host_avatar{float:left; width:50px; height: 50px;}
 #noti_selector.sel{
     background-image: url('/static/image/Notification_sel.png');background-color: white;
     border: 1px solid black;
+    border-top: 0px;
     border-bottom: 0px;
     z-index: 1000;
 }
@@ -196,7 +197,7 @@ img.host_avatar{float:left; width:50px; height: 50px;}
     border-top: 0px;
 }
 .noti_item:hover{
-    background-color: rgb(230,255,255);
+    background-color: rgb(235,250,250);
 }
 
 
@@ -204,7 +205,7 @@ ul#noti_list{
     display: none;
     margin:0; padding:0;
     background-color: white;
-    width:295px;
+    width:330px;
     border: 1px solid black;
     position: relative;
     top:-1px;
@@ -213,6 +214,7 @@ ul#noti_list{
 ul#noti_list li{
     padding:5px;
     border-bottom: 1px solid #f0f0f0;
+    
 }
 
 ul#noti_list li.header b{color: black}
@@ -221,3 +223,102 @@ ul#noti_list, ul#noti_list li{list-style: none;}
 
 ul#noti_list li.noti_load_more{text-align: center; color: #3F8FBA; font-weight: bold;}
 ul#noti_list li.noti_load_more:hover{text-decoration: underline}
+
+li.noti_item_template{display: none;}
+li.noti_item{
+    font-size: 11px;
+    color: #333;
+    float:left;
+    width:320px;
+}
+li.noti_item img{
+    width: 30px;
+    height:30px;
+    float:left;
+}
+li.noti_item div.noti_contents{
+    width:290px;
+    float: left;
+}
+li.noti_item div.noti_contents p.message{
+    float:left;
+    margin: 0; padding: 2px 0px 0 5px;
+    width:285px;
+    max-height: 30px;
+    line-height: 15px;
+    overflow: hidden;
+}
+li.noti_item  .noti_time{
+    float:left;
+    padding:0px 0 0 5px;
+    margin: 0;
+}
+
+#user_box{
+    float: right;
+    height: 24px;
+    padding: 10px 12px;
+    color: #DCDCDC;
+    margin-right: 10px;
+    
+}
+#user_box.open{
+    background-color: white;
+    border: 1px solid black;
+    border-top: 0px;
+    border-bottom: 0px;
+    z-index: 1000;
+    color: black;
+}
+
+#user_box:hover{
+    cursor: pointer;
+    background-color: #7ed8f6;
+    color: #fff;
+}
+#user_box.open:hover{
+    background-color: white;
+    color: black;
+}
+#user_box img.user_picture{
+    width:24px;
+    height: 24px;
+    margin-right: 12px;
+    float:left;    
+}
+
+.user_info_box span{
+    line-height: 24px;
+    margin-right: 4px;
+}
+.user_info_box span.dropdown_btn{
+    width: 7px;
+    height: 7px;
+    background-image: url('/static/image/sprite_icons.png');
+    background-position: 0 0;
+    margin-top: 8px;
+    margin-left: 1px;
+    display: inline-block;
+}
+
+ul#menu_list{
+    display: none;
+    color: black;
+    margin:0; padding:0;
+    background-color: white;
+    width:120px;
+    border: 1px solid black;
+    position: absolute;
+    top:43px;
+    right: 10px;
+    z-index: -1;
+}
+ul#menu_list li{
+    padding:6px 15px;
+    list-style: none;
+}
+ul#menu_list li:hover{
+    background-color: rgb(235,250,250);color: black;
+}
+
+

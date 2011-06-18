@@ -30,6 +30,7 @@
 <script src="{{ STATIC_URL }}js/event.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/notifications.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/message.js?{{ csrf_token }}" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/etc.js?{{ csrf_token }}" type="text/javascript"></script>
 
 
 <script type="text/javascript">
@@ -38,16 +39,11 @@ $(document).ready(function(){
     $('.autogrow').elastic();
     
     get_notis_count();
-    
-    $("#user_menu").click(function(){
-        $(this).find('li.list_item').toggle();
-        return false;
-    });
+
     
     $(document).click(function() {
-        console.log('hide');
         hide_noti();
-        $('#user_menu li.list_item').hide();
+        hide_user_menu();
     });
 });
 

@@ -12,12 +12,17 @@
     </div>
     <ul id="noti_list">
         <li class="header"><b>Notifications</b></li>
-        <li class="noti_item">hihi</li>
-        <li class="noti_item">hihi</li>
-        <li class="noti_item">hihi</li>
-        <li class="noti_item">hihi</li>
+        <li class="noti_item_template">
+            <img class="user_picture"/>
+            <div class="noti_contents">
+            <p class="message"></p>
+            <p class="noti_time">
+                <abbr class="timeago event_time" title="2011-06-08 13:01:46 UTC"></abbr>
+            </p>
+            </div>
+        </li>
+        <a href="/" class="see_more"><li class="noti_load_more">See More</li></a>
         
-        <a href="/"><li class="noti_load_more">See More</li></a>
     </ul>
 </div>
 
@@ -28,30 +33,21 @@
 </div>
 {% if user.is_authenticated %}
 
-<ul class="dropdown" id="user_menu">
-          <li>
-            <div class="right">
-              ▼
-            </div>
-            <div class="avatar">
-              <img src="/picture/{{ user.username }}" class="avatar" />
-            </div>
-            <a href="#" style="margin:10px;">{{ user.username }}</a>
-          </li>
-          <li class="list_item"><a href="/user/{{ user.username }}">프로필</a></li>
-          <li class="list_item"><a href="/setting/">설정</a></li>
-          <li class="list_item"><a href="/signout/">로그아웃</a></li>
-</ul>
-<!--
-<ul class="" style="float:right; color:white; padding:0px 0px; text-align:right; margin-right:10px;">
-<b>{{ user.username }}</b>
-<li style="line-height:10px">
-    <a href="/user/{{ user.username }}" style="color: #3f8fba;">Profile</a>
-    <a href="/setting/" style="color: #3f8fba;">Settings</a>
-    <a href="/signout/" style="color: #3f8fba;">Sign out</a>
-</li>
-</ul>
--->
+<div id="user_box" onclick="show_user_menu(event); return false;">
+    <div class="user_info_box">
+        <img src="/picture/{{ user.username }}" class="user_picture"/>
+        <span class="">
+            {{ user.username }}
+        </span>
+        <span class="dropdown_btn">&nbsp;</span>
+    </div>
+    <ul id="menu_list" onclick="event.stopPropagation();">
+        <a href="/user/{{ user.username }}"><li class="menu_item">My Profile</li></a>
+        <a href="/setting/"><li class="menu_item">Setting</li></a>
+        <a href="/signout/"><li class="menu_item">Logout</li></a>
+    </ul>
+</div>
+
 
 
 

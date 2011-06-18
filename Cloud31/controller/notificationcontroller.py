@@ -21,7 +21,6 @@ import json
 import parser
 import my_utils
 
-
 def get_notifications(request):
     result=dict()
     result['success']=True
@@ -30,11 +29,13 @@ def get_notifications(request):
     try:
         user = User.objects.get(username=request.user.username)
         try:
-            notis = UserNotification.objects.filter(user=user, is_read=False)[:5]
-        except:
+            notis = UserNotification.objects.filter(user=user).order_by('-reg_date')[:5]
+            result['notifications']=process_notis(request,notis)
+        except Exception as e:
+            print str(e)
             result['success']=True
             result['message']='Invalid action'
-            result['notifications']=process_notis(request,notis)
+            
     except:
             return my_utils.return_error('Please Sign in First')
             
@@ -47,18 +48,39 @@ def process_notis(request, notis):
     for noti in notis:
         try:
             item = dict()
-            item['receiver']=notis.user.username
-            item['sender']=notis.sender.username
-            item['noti_type']=notis.notification_type
-            item['related_type']=notis.related_type
-            item['related_id']=notis.related_id
-            item['contents']=parser.parse_text(notis.contents)
-            item['reg_date']=notis.reg_date
+            item['receiver']=noti.user.username
+            item['sender']=noti.sender.username
+            item['noti_type']=noti.notification_type
+            item['related_type']=noti.related_type
+            item['related_id']=noti.related_id
+            item['contents']=parser.parse_text(noti.contents)
+            item['reg_date']=str(noti.reg_date)
             result.append(item)
-        except:
+        except Exception as e:
             pass
     return result
     
+    
+    
+def register_noti(request, noti_type, info):
+    try:        
+        target_user = info['to']
+        sender = info['from']
+        target_object = info['target_object']
+        print info
+        if noti_type == 'new_comment':
+            target_message = target_object.contents
+            target_message = target_message[:10] + "..."
+            target_message=smart_unicode(target_message, encoding='ascii', strings_only=False, errors='strict')
+            contents = u"<b>"+sender.username+u"</b>님께서 메시지 <b>"+target_message+u"</b>에 새 댓글을 다셨습니다."
+            new_noti = UserNotification(user=target_user, sender=sender, \
+                                        notification_type=noti_type, related_type="Comment", \
+                                        related_id = target_object.id, contents = contents)
+            new_noti.save()
+        
+    except Exception as e:
+        print 'Error '+str(e)
+        pass
     
     
     

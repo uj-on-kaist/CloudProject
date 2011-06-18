@@ -21,6 +21,9 @@ import json
 import parser
 import my_utils
 
+
+from controller.notificationcontroller import *
+
 @login_required(login_url='/signin/')
 def feed(request):
     t = loader.get_template('feed.html')
@@ -176,10 +179,6 @@ def get_user_feed(request,user_name):
             return my_utils.return_error('No Such User')
             
     return HttpResponse(json.dumps(result, indent=4))
-    
-
-
-
 
 
 def update_feed(request):
@@ -309,8 +308,15 @@ def update_comment(request):
             for timeline in related_timelines:
                 try:
                     if timeline.user.username != request.user.username:
-                        print timeline.user.username
                         timeline.save()
+                        
+                        #SEND NOTIFICATION
+                        info = dict()
+                        info['from'] = request.user
+                        info['to'] = timeline.user
+                        info['comment'] = input_message
+                        info['target_object'] = message
+                        register_noti(request, "new_comment",info)
                 except:
                     pass
         except Exception as e:
@@ -325,6 +331,7 @@ def update_comment(request):
         item = dict()
         item['id']=new_comment.id
         item['author']=new_comment.author.username
+        item['author_name']=new_comment.author.last_name
         item['contents']= parser.parse_text(new_comment.contents)
         item['reg_date']= str(new_comment.reg_date)
         result['comment']=item

@@ -12,6 +12,8 @@ function get_notis_count(){
                   $('#noti_selector').addClass("nor");
 		      }else{
 		          $('#noti_selector').attr('status','high');
+		          $('#noti_selector').removeClass("nor");
+		          $('#noti_selector').addClass("high");
 		          $(".noti_count").text(json.notifications.length);
 		      }
 		  }
@@ -34,7 +36,10 @@ function load_notis(){
 		dataType : "JSON",
 		success : function(json) {
 		  if(json.success){
-		    show_noti(json.notifications);
+		      console.log(json.notifications);
+		      show_noti(json.notifications);
+		      if(json.notifications.length != 0)
+		          $(".noti_count").text(json.notifications.length);
 		  }
 		},
 		error : function(data){
@@ -54,7 +59,15 @@ function show_noti(notis){
     
     $('#noti_list li.noti_item').remove();
     for(var i=0; i<notis.length; i++){
-        
+        var noti=notis[i];
+        var noti_layout= $("#noti_list li.noti_item_template").clone();
+        noti_layout.removeClass("noti_item_template");
+        noti_layout.addClass("noti_item");
+        noti_layout.find(".user_picture").attr("src","/picture/"+noti.sender);
+        noti_layout.find(".message").html(noti.contents);
+        noti_layout.find(".noti_time abbr").text(humane_date(noti.reg_date));
+        console.log(noti_layout);
+        $('#noti_list a.see_more').before(noti_layout);
     }
 
 }
