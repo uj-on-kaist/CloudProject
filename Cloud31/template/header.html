@@ -1,36 +1,33 @@
 <header>
 <div class="container" style="position:relative;">
-<a href="/"><h2 style="color:white; display:inline; float:left; margin-right:20px;">Cloud31</h2></a>
 
-<input type="text" placeholder="Search" style="padding:4px 8px; font-size:12px; width:300px;display:inline; height:14px;float:left; margin:5px 0px;"/>
+<a href="/">
+<div class="logo_box">
+</div>
+</a>
 
+<div class="noti_box">
+    <div id="noti_selector" onclick="load_notis(); return false;">
+        <b class="noti_count"></b>
+    </div>
+    <ul id="noti_list">
+        <li class="header"><b>Notifications</b></li>
+        <li class="noti_item">hihi</li>
+        <li class="noti_item">hihi</li>
+        <li class="noti_item">hihi</li>
+        <li class="noti_item">hihi</li>
+        
+        <a href="/"><li class="noti_load_more">See More</li></a>
+    </ul>
+</div>
+
+
+
+<div class="search_box">
+<input type="text" placeholder="Search" style="padding:4px 8px; font-size:12px; width:400px;display:inline; height:14px; margin:5px 0px;"/>
+</div>
 {% if user.is_authenticated %}
-<script type="text/javascript">
-$(document).ready(function(){
 
-    
-    $("#user_menu").click(function(){
-        $(this).find('li.list_item').toggle();
-    });
-    
-});
-
-var mouse_is_inside = false;
-
-$(document).ready(function()
-{
-    $('#user_menu').hover(function(){ 
-        mouse_is_inside=true; 
-    }, function(){ 
-        mouse_is_inside=false; 
-    });
-
-    $("body").mouseup(function(){ 
-        if(! mouse_is_inside) $('#user_menu li.list_item').hide();
-    });
-});
-
-</script>
 <ul class="dropdown" id="user_menu">
           <li>
             <div class="right">

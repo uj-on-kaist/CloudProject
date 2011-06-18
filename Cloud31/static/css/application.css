@@ -2,7 +2,7 @@ body {
   /*padding: 2em;*/
   margin: 0;
     margin-top: 60px;
-  background-color: #fcfcfc; }
+/*   background-color: #fcfcfc;  */}
 
 a {
   color: #107fc9;
@@ -113,6 +113,7 @@ form {
     margin: 0; }
 
 header {
+/*
   -webkit-box-shadow: 0 1px 3px #222222;
   -moz-box-shadow: 0 1px 3px #222222;
   box-shadow: 0 1px 3px #222222;
@@ -120,6 +121,7 @@ header {
   BACKGROUND-COLOR: #222222;
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(15, 15, 15, 0.85)), to(#0a0a0a));
   background: -moz-linear-gradient(top, rgba(15, 15, 15, 0.85) 0%, #0a0a0a 100%);
+*/
   z-index: 50;
   padding: 0;
     padding-top: 2px;

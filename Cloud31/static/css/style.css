@@ -4,8 +4,10 @@
 
 header{
     width:100%;
-    height:30px;
-    padding:5px 0px;
+    height:45px;
+    padding:0px 0px;
+    background-image: url('/static/image/header_bg.png');
+    background-repeat: repeat-x;
 }
 
 .main{
@@ -94,7 +96,7 @@ td.label{vertical-align: top; padding-top: 8px;}
 .input_table #event_time div b {color: #AAA;}
 
 
-#event_form{border-bottom:1px solid #DDD; display: inline-block; padding-bottom: 5px;}
+#event_form{border-bottom:1px solid #DDD;width:100%;padding-bottom: 5px;}
 
 
 
@@ -102,11 +104,6 @@ td.label{vertical-align: top; padding-top: 8px;}
     border-bottom:1px dashed #DDD;
 }
 
-
-
-
-
-.container, .container:hover, .container:focus{border:none; border:0;}
 
 
 p.event_title{color: black; font-weight: bold;}
@@ -138,3 +135,89 @@ img.host_avatar{float:left; width:50px; height: 50px;}
 
 
 .attendees_list, .attend_action{border-top: 1px solid #e7e7e7; }
+
+
+
+
+
+.logo_box, .noti_box, .search_box{
+    float: left;
+    margin-top: 4px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo_box{
+    background-image: url('/static/image/main_logo.png');
+    background-position: 5px 0px;
+    background-repeat: no-repeat;
+    width: 180px;
+}
+.search_box{
+    margin-top: 10px;
+    margin-left: 80px;
+}
+
+.logo_box:hover{
+    background-color: #7ed8f6;
+}
+
+
+
+.noti_box{
+    position: relative;
+    width: 40px;
+}
+
+#noti_selector{
+    width:40px; height:40px;
+    background-repeat: no-repeat;
+    text-align: center;
+    
+}
+#noti_selector:hover{
+    background-color: #7ed8f6;
+    cursor: pointer;
+}
+#noti_selector.nor{background-image: url('/static/image/Notification_nor.png');}
+#noti_selector.high{background-image: url('/static/image/Notification_high.png');}
+#noti_selector.sel{
+    background-image: url('/static/image/Notification_sel.png');background-color: white;
+    border: 1px solid black;
+    border-bottom: 0px;
+    z-index: 1000;
+}
+
+.noti_count{font-size: 13px; color:red; position: relative; top:12px;}
+
+
+.noti_item{
+    
+    border-top: 0px;
+}
+.noti_item:hover{
+    background-color: rgb(230,255,255);
+}
+
+
+ul#noti_list{
+    display: none;
+    margin:0; padding:0;
+    background-color: white;
+    width:295px;
+    border: 1px solid black;
+    position: relative;
+    top:-1px;
+    z-index: -1;
+}
+ul#noti_list li{
+    padding:5px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+ul#noti_list li.header b{color: black}
+
+ul#noti_list, ul#noti_list li{list-style: none;}
+
+ul#noti_list li.noti_load_more{text-align: center; color: #3F8FBA; font-weight: bold;}
+ul#noti_list li.noti_load_more:hover{text-decoration: underline}

@@ -94,7 +94,8 @@ class UserTopicFavorite(models.Model):
     reg_date = models.DateTimeField(auto_now_add=True)
 
 class UserNotification(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name="receiver")
+    sender = models.ForeignKey(User, related_name="sender")
     notification_type = models.CharField(max_length=10)
     related_type = models.CharField(max_length=10)
     related_id = models.IntegerField()

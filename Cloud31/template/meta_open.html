@@ -26,41 +26,31 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}css/ui/datepicker.css?{{ csrf_token }}" type="text/css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/ui/feed.css?{{ csrf_token }}" type="text/css" />
 
-<script src="{{ STATIC_URL }}js/feed.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}js/event.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/feed.js?{{ csrf_token }}" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/event.js?{{ csrf_token }}" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/notifications.js?{{ csrf_token }}" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/message.js?{{ csrf_token }}" type="text/javascript"></script>
 
 
 <script type="text/javascript">
 $(document).ready(function(){
     $('a[rel*=facebox]').facebox();
     $('.autogrow').elastic();
-});
-
-/*
-$(document).ready(function(){
-    $('a[rel*=facebox]').facebox();
-    $(".autogrow").keyup(function(){
-        FitToContent(this, document.documentElement.clientHeight)
+    
+    get_notis_count();
+    
+    $("#user_menu").click(function(){
+        $(this).find('li.list_item').toggle();
+        return false;
+    });
+    
+    $(document).click(function() {
+        console.log('hide');
+        hide_noti();
+        $('#user_menu li.list_item').hide();
     });
 });
 
-function FitToContent(id, maxHeight)
-{
-   var text = id && id.style ? id : document.getElementById(id);
-   if ( !text )
-      return;
-
-   var adjustedHeight = text.clientHeight;
-   if ( !maxHeight || maxHeight > adjustedHeight )
-   {
-      adjustedHeight = Math.max(text.scrollHeight, adjustedHeight);
-      if ( maxHeight )
-         adjustedHeight = Math.min(maxHeight, adjustedHeight);
-      if ( adjustedHeight > text.clientHeight )
-         text.style.height = adjustedHeight + "px";
-   }
-}
-*/
 
 </script>
 

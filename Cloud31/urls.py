@@ -84,4 +84,10 @@ urlpatterns = patterns('',
     url(r'^api/event/delete/(?P<event_id>\w+)$','controller.eventcontroller.delete_event'),
     url(r'^api/event/get/(?P<load_type>\w+)$','controller.eventcontroller.load_event'),
     url(r'^api/event/update/comment/$','controller.eventcontroller.update_event_comment'),
+    
+    
+    
+    
+    url(r'^notification/$', 'controller.notificationcontroller.main'),
+    url(r'^api/noti/get/$', 'controller.notificationcontroller.get_notifications'),
 )
