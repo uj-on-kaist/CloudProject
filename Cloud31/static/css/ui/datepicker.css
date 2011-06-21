@@ -78,7 +78,7 @@
 ----------------------------------*/
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #fed22f; background: #ffe45c; color: #363636; }
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #363636; }
-.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #cd0a0a; background: #b81900 url(images/ui-bg_diagonals-thick_18_b81900_40x40.png) 50% 50% repeat; color: #ffffff; }
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #cd0a0a; background: #b81900 url(/static/image/ui-bg_diagonals-thick_18_b81900_40x40.png) 50% 50% repeat; color: #ffffff; }
 .ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a { color: #ffffff; }
 .ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text { color: #ffffff; }
 .ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary { font-weight: bold; }
@@ -96,8 +96,8 @@
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(images/ui-icons_ef8c08_256x240.png); }
 .ui-state-active .ui-icon {background-image: url(images/ui-icons_ef8c08_256x240.png); }
 .ui-state-highlight .ui-icon {background-image: url(images/ui-icons_228ef1_256x240.png); }
-.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(images/ui-icons_ffd27a_256x240.png); }
-
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(/static/image/ui-icons_ffd27a_256x240.png); }
+.ui-icon-alert { background-position: 0 -144px; }
 .ui-icon-triangle-1-e { background-position: -32px -16px; }
 .ui-icon-triangle-1-w { background-position: -96px -16px; }
 

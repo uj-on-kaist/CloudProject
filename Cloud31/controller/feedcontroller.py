@@ -30,7 +30,7 @@ def feed(request):
     context = RequestContext(request)
     context['load_type']='me'
     
-    context['side_list']=['user_profile']
+    context['side_list']=['']
     
     user = get_object_or_404(User,username=request.user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
@@ -202,6 +202,22 @@ def get_user_feed(request,user_name):
             
     return HttpResponse(json.dumps(result, indent=4))
 
+def get_user_at_feed(request,user_name):
+    if user_name is '':
+        return my_utils.return_error('user_name is empty')
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    print '123123'
+    try:
+        messages = Message.objects.filter(related_users__contains=user_name+',',is_deleted=False).order_by('-reg_date')
+        result['feeds']=my_utils.process_messages(request,messages)                
+    except:
+        result['success']=True
+        result['message']='Do not have any message'
+            
+    return HttpResponse(json.dumps(result, indent=4))
+
 
 def update_feed(request):
     result=dict()
@@ -244,11 +260,8 @@ def update_feed(request):
                         target_user = User.objects.get(username=user_name)
                         target_user_timeline_new = UserTimeline(message=new_message,user=target_user)
                         target_user_timeline_new.save()
-                        if i is not (count - 1):
-                            new_message.related_users+=user_name+','
-                        else:
-                            new_message.related_users+=user_name
-                            
+                        new_message.related_users+=user_name+','
+                        
                         #SEND NOTIFICATION
                         info = dict()
                         info['from'] = user
@@ -271,11 +284,7 @@ def update_feed(request):
                     
                     topic_timeline_new = TopicTimeline(message=new_message, topic=topic)
                     topic_timeline_new.save()
-                    if i is not (count - 1):
-                        new_message.related_topics+=topic_name+','
-                    else:
-                        new_message.related_topics+=topic_name
-                    
+                    new_message.related_topics+=topic_name+','
                 except Exception as e:
                     print str(e)
                     pass

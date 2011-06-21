@@ -1,10 +1,16 @@
 function show_user_menu(event){
     $("#menu_list").toggle();
-    
+    $("#menu_list").width($("#user_box").width()+24);
     if($("#menu_list").is(":visible")){
         $("#user_box").addClass("open");
+        
+        $("#user_box").find("span.ui_icon").removeClass("ui_icon_arrow_white");
+        $("#user_box").find("span.ui_icon").addClass("ui_icon_arrow_black");
     }else{
-        $("#user_box").removeClass("open");;
+        $("#user_box").removeClass("open");
+        
+        $("#user_box").find("span.ui_icon").removeClass("ui_icon_arrow_black");
+        $("#user_box").find("span.ui_icon").addClass("ui_icon_arrow_white");
     }
     
     event.stopPropagation();
@@ -12,7 +18,10 @@ function show_user_menu(event){
 
 function hide_user_menu(){
     $("#menu_list").hide();
-    $("#user_box").removeClass("open");;
+    $("#user_box").removeClass("open");
+    
+    $("#user_box").find("span.ui_icon").removeClass("ui_icon_arrow_black");
+    $("#user_box").find("span.ui_icon").addClass("ui_icon_arrow_white");
 }
 
 
@@ -44,4 +53,10 @@ function detail_feed_like(item, action){
 	       });
 	
             
+}
+
+function select_this_tab(item){
+    item.parent().parent().find(".tab_item").removeClass("selected");
+    item.addClass("selected");
+    return false;
 }

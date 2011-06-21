@@ -1,17 +1,24 @@
 {% include "meta_open.html" %}
 
-<h2>Event</h2>
+<h2 class="page_title">Event</h2>
 
 
 {% include "ui/event_form.html" %}
+ 
+<div class="tab">
+<a href="#" onclick="load_event('upcoming'); return false;">
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">Upcoming</span>
+</a>
 
-<div style="margin: 10px;">
-<a href="#" onclick="load_event('upcoming'); return false;">Upcoming</a>
-|
-<a href="#" onclick="load_event('past'); return false;">Past</a>
-|
-<a href="#" onclick="load_event('me'); return false;">My Event</a>
+<a href="#" onclick="load_event('past'); return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">Past</span>
+</a>
+
+<a href="#" onclick="load_event('me'); return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">My Event</span>
+</a>
 </div>
+
 <script type="text/javascript">
 $(document).ready(function(){
     load_event('upcoming');

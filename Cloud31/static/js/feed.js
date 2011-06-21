@@ -69,6 +69,10 @@ function load_feed(type){
     }else if(type.indexOf("user#") != -1){ 
         var user_name=type.split("#")[1];
         url="/api/feed/user/"+user_name;
+    }else if(type.indexOf("at#") != -1){ 
+        var user_name=type.split("#")[1];
+        url="/api/feed/user_at/"+user_name;
+        console.log("123");
     }else if(type.indexOf("topic#") != -1){
         var topic_name=type.split("#")[1];
         url="/api/feed/topic/"+topic_name;

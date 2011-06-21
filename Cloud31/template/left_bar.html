@@ -2,31 +2,92 @@
 {% if user.is_authenticated %}
 
 <div class="user_box">
-    <a href="/user/{{ user.username }}"><img src="/picture/{{ user.username }}" /></a>
+    <a href="/user/{{ user.username }}"><img src="/picture/{{ user.username }}" class="user_picture"/></a>
     <div>
         <p class="user_id">
             <a href="/user/{{ user.username }}">{{ user.username }}</a>
-            <span class="user_name">{{ user.last_name }}</span></p>
+        </p>
+        <p class="user_name">{{ user.last_name }}</p>
         <p class="setting"><a href="/user/{{ user.username }}">Profile</a> <a href="/setting/">Setting</a></p>
     </div>
 </div>
 
 <ul class="menu_list">
-    <a href="/feed/"><li class="menu_item feed_icon {{ page_feed }}">Feed</li></a>
-    <a href="/user/{{ user.username }}"><li class="menu_item {{ page_profile }}">Profile</li></a>
-    <a href="/event/"><li class="menu_item {{ page_event }}">Event</li></a>
-    <a href="/message/"><li class="menu_item {{ page_dm }}">Direct Messages</li></a>
-    <a href="/setting/"><li class="menu_item {{ page_setting }}">Setting</li></a>
+    <a href="/feed/"><li class="menu_item {{ page_feed }}">
+        <span class="ui_icon ui_icon_feed"></span>
+        Feed
+    </li></a>
+    <a href="/message/"><li class="menu_item {{ page_dm }}">
+        <span class="ui_icon ui_icon_dm"></span>
+        Direct Messages
+    </li></a>
+    <a href="/event/"><li class="menu_item {{ page_event }}">
+        <span class="ui_icon ui_icon_event"></span>
+        Event
+    </li></a>
+    <a href="/favorite/"><li class="menu_item {{ page_favorite }}">
+        <span class="ui_icon ui_icon_favorite"></span>
+        Favorite Messages
+    </li></a>
+    <a href="/setting/"><li class="menu_item {{ page_setting }}">
+        <span class="ui_icon ui_icon_feed"></span>
+        Settings
+    </li></a>
+    <a href="/user/{{ user.username }}"><li class="menu_item {{ page_profile }}">
+        <span class="ui_icon ui_icon_feed"></span>
+        Profile
+    </li></a>
 </ul>
 
 <ul class="menu_list">
     <h4>Search</h4>
-    <a href="/topic/"><li class="menu_item {{ page_topic }}">Topics</li></a>
-    <a href="/file/"><li class="menu_item {{ page_files }}"><a href="/file/">Files</li></a>
-    <a href="/location/"><li class="menu_item {{ page_location }}"><a href="/location/">Location</li></a>
-    <a href="/members/"><li class="menu_item {{ page_member }}"><a href="/members/">Members</li></a>
+    <a href="/topic/"><li class="menu_item {{ page_topic }}">
+        <span class="ui_icon ui_icon_topic"></span>
+        Topics
+    </li></a>
+    <a href="/file/"><li class="menu_item {{ page_files }}">
+        <span class="ui_icon ui_icon_file"></span>
+        Files
+    </li></a>
+    <a href="/location/"><li class="menu_item {{ page_location }}">
+        <span class="ui_icon ui_icon_location"></span>
+        Location
+    </li></a>
+    <a href="/members/"><li class="menu_item {{ page_member }}">
+        <span class="ui_icon ui_icon_member"></span>
+        Members
+    </li></a>
 </ul>
 
+{% if user.is_staff %}
+<ul class="menu_list">
+    <h4>Admin</h4>
+    <a href="/admin/stats/overview/"><li class="menu_item {{ page_overview }}">
+        <span class="ui_icon ui_icon_overview"></span>
+        Overview
+    </li></a>
+    <a href="/admin/stats/topic/"><li class="menu_item {{ page_stats_by_topic }}">
+        <span class="ui_icon ui_icon_stats_by_topic"></span>
+        Stats by Topic
+    </li></a>
+    <a href="/admin/stats/member/"><li class="menu_item {{ page_stats_by_member }}">
+        <span class="ui_icon ui_icon_stats_by_member"></span>
+        Stats by Member
+    </li></a>
+    <a href="/admin/stats/authority/"><li class="menu_item {{ page_authority }}">
+        <span class="ui_icon ui_icon_authority"></span>
+        Authority
+    </li></a>
+    <a href="/admin/invite/"><li class="menu_item {{ page_invite }}">
+        <span class="ui_icon ui_icon_invite"></span>
+        Invite
+    </li></a>
+    <a href="/admin/notice/"><li class="menu_item {{ page_notice }}">
+        <span class="ui_icon ui_icon_notice"></span>
+        Notice
+    </li></a>
+</ul>
+{% endif %}
 
 {% endif %}
 

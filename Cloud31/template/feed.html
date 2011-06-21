@@ -1,17 +1,26 @@
 {% include "meta_open.html"%}
 
-<h2>My Feed</h2>
+<h2 class="page_title">My Feed</h2>
 
 
 {% include "ui/feed_form.html"%}
 
-<div style="margin: 10px;">
-<a href="#" onclick="load_feed('me'); return false;">My Feed</a>
-|
-<a href="#" onclick="load_feed('company'); return false;">Company Feed</a>
-|
-<a href="#" onclick="load_feed('notice'); return false;">Notice</a>
+
+<div class="tab">
+<a href="#" onclick="load_feed('me'); return false;">
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">My Feed</span>
+</a>
+
+<a href="#" onclick="load_feed('company'); return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">Company Feed</span>
+</a>
+
+<a href="#" onclick="load_feed('notice'); return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">Notice</span>
+</a>
 </div>
+
+
 <script type="text/javascript">
 $(document).ready(function(){
     load_feed('{{ load_type }}');

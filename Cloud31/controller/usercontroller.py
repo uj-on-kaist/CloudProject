@@ -43,6 +43,12 @@ def signin(request):
         context['message'] = 'Field is missing'
         return HttpResponse(t.render(context))
     
+    try:
+        if request.POST['keep_signed']:
+            pass
+    except:
+        request.session.set_expiry(0)
+    
     username = request.POST['username']
     password = request.POST['password']
     

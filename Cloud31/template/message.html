@@ -1,18 +1,24 @@
 {% include "meta_open.html"%}
 
-<h2>Direct Message</h2>
+<h2 class="page_title">Direct Message</h2>
 
 
 {% include "ui/message_form.html" %}
 
+<div class="tab">
+<a href="#" onclick="load_message('all'); return false;">
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">All</span>
+</a>
 
-<div style="margin: 10px;">
-<a href="#" onclick="load_message('all'); return false;">All</a>
-|
-<a href="#" onclick="load_message('sent'); return false;">Sent</a>
-|
-<a href="#" onclick="load_message('received'); return false;">Received</a>
+<a href="#" onclick="load_message('sent'); return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">Sent</span>
+</a>
+
+<a href="#" onclick="load_message('received'); return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">Received</span>
+</a>
 </div>
+
 <script type="text/javascript">
 $(document).ready(function(){
     load_message('{{ type }}');

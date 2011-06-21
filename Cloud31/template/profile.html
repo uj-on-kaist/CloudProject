@@ -1,13 +1,23 @@
 {% include "meta_open.html"%}
 
-<h2>{{ target_user.user.username }}님의 프로필</h2>
+<h2 class="page_title">{{page_user}} Profile</h2>
 
 <script src="{{ STATIC_URL }}js/feed.js" type="text/javascript"></script>
 
+<div class="tab">
+<a href="#" onclick="load_feed('user#{{target_user.user.username}}'); return false;">
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">{{page_user}} Feed</span>
+</a>
 
-<a href="#" onclick="load_feed('user#{{target_user.user.username}}'); return false;">{{target_user.user.username}}'s Feed</a>
-|
-<a href="#" onclick="load_feed('favorite#{{target_user.user.username}}'); return false;">{{target_user.user.username}}'s Favorite</a>
+<a href="#" onclick="load_feed('at#{{target_user.user.username}}'); return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">@{{target_user.user.username}}</span>
+</a>
+
+<a href="#" onclick="load_feed('favorite#{{target_user.user.username}}'); return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">Favorites</span>
+</a>
+
+</div>
 
 <script type="text/javascript">
 $(document).ready(function(){

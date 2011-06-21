@@ -1,0 +1,66 @@
+.container.signin{
+    background-image: url("/static/image/Introduction_bg.png");
+    height: 768px;
+}
+
+.container.signin .header{
+    height: 30px;
+    padding: 5px;
+}
+
+.container.signin input:not([type="submit"]){
+    display: inline;
+    width: 128px;
+    margin: 0px;
+    border: none;
+    padding: 2px 8px;
+    height: 20px;
+    font-size: 13px;
+    background-color: transparent;
+    background-image: url("/static/image/Box_144x24_intro.png");
+    background-repeat: no-repeat;
+    border: 1px solid transparent;
+}
+
+.container.signin input:not([type="submit"]):focus{
+    background-image: url("/static/image/Box_144x25_over.png");
+}
+
+.container.signin form{
+    margin-right: 36px;
+    float: right;
+}
+
+.button_m{
+    background-color: transparent;
+    background-image: url("/static/image/Button_M_nor.png");
+    background-repeat: no-repeat;
+    width: 74px;
+    height: 30px;
+    border: 0;
+    font-size: 13px;
+    font-weight: bold;
+    
+    color: rgb(120,120,120);
+}
+
+.button_m:hover{
+    background-image: url("/static/image/Button_M_over.png");
+}
+.button_m:active{
+    background-image: url("/static/image/Button_M_sel.png");
+}
+
+span.keep_signed{
+    margin-left: 5px;
+    color: white;
+    font-size: 13px;
+    margin-right: 116px;
+}
+
+a.signup{
+    text-decoration: underline;
+    color: rgb(196,231,241);font-weight: bold;
+}
+
+a.signup:hover{color:#107FC9}

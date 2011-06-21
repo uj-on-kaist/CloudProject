@@ -1,0 +1,81 @@
+<ul class="profile_setting setting_list {{ profile_setting }}" style="display:none;">
+
+
+<li class="setting_item">
+<div class="setting_label">
+Profile Picture:
+</div>
+<div class="setting_field">
+
+<a id="fancy_image" href="/media/{{ user_picture_url }}" class="setting_picture">
+    <img src="/picture/{{ user.username }}" class="setting_avatar setting_picture"/>
+</a>
+
+
+<div id="file-uploader">       
+    <noscript>          
+        <p>Please enable JavaScript to use file uploader.</p>
+        <!-- or put a simple form for upload here -->
+    </noscript>         
+</div>
+</div>
+</li>
+
+<form action="/setting/update/profile" method="post">
+{% csrf_token %}
+<li class="setting_item">
+<div class="setting_label">
+User name:
+</div>
+<div class="setting_field">
+{{ user.last_name }}
+<a href="#" onclick="$(this).parent().find('.change_field').show(); $(this).remove();  return false;">(change)</a>
+
+<div class="change_field">
+    <input id="id_email" type="text" placeholder="이름" name="new_last_name" class="setting_input">
+</div>
+</div>
+</li>
+
+<li class="setting_item">
+<div class="setting_label">
+Dept:
+</div>
+<div class="setting_field">
+{{ user_profile.dept }}
+<a href="#" onclick="$(this).parent().find('.change_field').show(); $(this).remove();  return false;">(change)</a>
+
+<div class="change_field">
+    <input id="id_email" type="text" placeholder="소속" name="new_dept" class="setting_input">
+</div>
+</div>
+</li>
+
+<li class="setting_item">
+<div class="setting_label">
+Position:
+</div>
+<div class="setting_field">
+{{ user_profile.position }}
+<a href="#" onclick="$(this).parent().find('.change_field').show(); $(this).remove();  return false;">(change)</a>
+
+<div class="change_field">
+    <input id="id_email" type="text" placeholder="직급" name="new_position" class="setting_input">
+</div>
+</div>
+</li>
+
+
+
+
+<li class="setting_item">
+<div class="setting_label">
+</div>
+<div class="setting_field">
+<input type="submit" value="Save" class="button"/>
+<a href="/setting" class="button">Cancel</a>
+</div>
+</li>
+
+</form>
+</ul>

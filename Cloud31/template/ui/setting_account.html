@@ -1,0 +1,68 @@
+<ul class="account_setting setting_list {{ account_setting }}">
+<form action="/setting/update/account" method="post">
+{% csrf_token %}
+<li class="setting_item">
+<div class="setting_label">
+ID:
+</div>
+<div class="setting_field">
+{{ user.username }}
+</div>
+</li>
+
+<li class="setting_item">
+<div class="setting_label">
+Email Address:
+</div>
+<div class="setting_field">
+
+{{ user.email }}
+<a href="#" onclick="$(this).parent().find('.change_field').show(); $(this).remove();  return false;">(change)</a>
+
+<div class="change_field">
+    <input id="id_email" type="text" placeholder="이메일 주소" name="new_email" class="setting_input">
+</div>
+{% if email_error_msg %}
+    <div class="ui-widget"><div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+        <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+        {{ email_error_msg }}</p>
+    </div>
+{% endif %}
+
+
+</div>
+</li>
+
+<li class="setting_item">
+<div class="setting_label">
+Password:
+</div>
+<div class="setting_field">
+<a href="#" onclick="$(this).parent().find('.change_field').show(); $(this).remove();  return false;">(change)</a>
+
+<div class="change_field">
+<input type="password" placeholder="새 비밀번호" name="new_password" class="setting_input">
+<input type="password" placeholder="현재 비밀번호" name="password1" class="setting_input">
+<input type="password" placeholder="현재 비밀번호 (확인)" name="password2" class="setting_input">
+</div>
+{% if password_error_msg %}
+    <div class="ui-widget"><div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+        <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+        {{ password_error_msg }}</p>
+    </div>
+{% endif %}
+
+</div>
+</li>
+
+<li class="setting_item">
+<div class="setting_label">
+</div>
+<div class="setting_field">
+<input type="submit" value="Save" class="button"/>
+<a href="/setting" class="button">Cancel</a>
+</div>
+</li>
+
+</form>
+</ul>

@@ -29,6 +29,7 @@ urlpatterns = patterns('',
 
     url(r'^api/feed/update/comment/$','controller.feedcontroller.update_comment'),
     url(r'^api/feed/user/(?P<user_name>\w+)/$','controller.feedcontroller.load_feed'),
+    url(r'^api/feed/user_at/(?P<user_name>\w+)$','controller.feedcontroller.get_user_at_feed'),
     url(r'^api/feed/favorite/(?P<user_name>\w+)$','controller.feedcontroller.load_favorite'),
     url(r'^api/feed/company$','controller.feedcontroller.load_comany_feed'),
     url(r'^api/feed/notice$','controller.feedcontroller.load_notice'),
@@ -56,12 +57,11 @@ urlpatterns = patterns('',
     
     url(r'^user/(?P<username>\w+)/$','controller.profilecontroller.user'),
 
-    url(r'^picture/set$', 'controller.profilecontroller.ajax_upload'),
     url(r'^picture/(?P<username>\w+)/$','controller.profilecontroller.picture'),
 
     url(r'file/ajax_upload$', 'controller.filecontroller.ajax_upload'),
     
-    url(r'setting/$', 'controller.settingcontroller.setting'),
+    
     
     
     url(r'^message/$', 'controller.messagecontroller.main'),
@@ -92,4 +92,9 @@ urlpatterns = patterns('',
     url(r'^notification/$', 'controller.notificationcontroller.main'),
     url(r'^api/noti/get/$', 'controller.notificationcontroller.get_notifications'),
     url(r'^api/noti/read/(?P<noti_id>\w+)$', 'controller.notificationcontroller.read_notification'),
+    
+    
+    url(r'^setting/$', 'controller.settingcontroller.setting'),
+    url(r'setting/update/(?P<update_type>\w+)$', 'controller.settingcontroller.update'),
+    url(r'^setting/picture/set$', 'controller.settingcontroller.ajax_upload'),
 )
