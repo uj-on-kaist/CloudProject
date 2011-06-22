@@ -48,21 +48,34 @@ function clear_message_input(){
 }
 
 
-function load_message(type){
+function load_message(type, load_more, base_id){
     console.log(type);
     
+    var url="/api/message/get/"+type+"/";
     
+    if (load_more){
+        url+="?base_id="+base_id;
+    }
     
     $.ajax({
 		type : "GET",
-		url : "/api/message/get/"+type+"/",
+		url : url,
 		dataType : "JSON",
 		success : function(json) {
 		  
           if(json.success){
             $("#message_list").attr('type',type);
-            $("div.stream.message_item").remove();
+            if(!load_more)
+                $("div.stream.message_item").remove();
             display_messages(json.messages);
+            
+            
+            if(json.load_more){
+		          $("#load_more_box").show();
+		    }else{
+		          $("#load_more_box").hide();
+		    }
+		      
           }else{console.log(json);}
 		},
 		error : function(data){
@@ -70,6 +83,17 @@ function load_message(type){
 		}
 	});
 	
+}
+
+function load_more_message(){
+    var base_id = $("#message_list").find(".stream.message_item").last().attr("base_id");
+    if (base_id == undefined || base_id == ''){
+        return false;
+    }
+    var type = $("#message_list").attr('type');
+    console.log(base_id, type);
+    load_message(type, true, base_id);
+
 }
 
 
@@ -83,7 +107,8 @@ function display_messages(messages){
         var message_layout= $("div.stream.template").clone();
         message_layout.removeClass("template");
         message_layout.addClass("message_item");
-        message_layout.attr('id','message_'+message.id)
+        message_layout.attr('id','message_'+message.id);
+        message_layout.attr('base_id',+message.base_id);
         message_layout.find('.user_link').attr('href','/user/'+message.author);
         message_layout.find('.from a').text(message.author);
         message_layout.find('.from span').text(message.receivers);

@@ -25,6 +25,8 @@ from django.db.models import Q
 
 from controller.notificationcontroller import *
 
+DEFAULT_LOAD_LENGTH = 3
+
 @login_required(login_url='/signin/')
 def main(request):
     t = loader.get_template('event.html')
@@ -107,9 +109,23 @@ def load_event(request, load_type):
         query_type = (query_type) & Q(start_time__lte = datetime.now())
     elif load_type == 'me':
         query_type = Q(host=user)
+        
+    base_id = request.GET.get("base_id",False)
+    additional = Q()
+    if base_id:
+        try:
+            event = Event.objects.get(id=base_id)
+            additional = Q(reg_date__lt=event.reg_date)
+        except:
+            pass
+    
     try:
-        events = Event.objects.filter(query_type,is_deleted=False).order_by('-reg_date')[:5]
-        result['events']=process_events(events , user)               
+        events = Event.objects.filter(query_type,additional,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+        result['events']=process_events(events , user)
+        
+        if len(events) == DEFAULT_LOAD_LENGTH:
+            result['load_more']=True
+                   
     except Exception as e:
         print str(e)
         pass
@@ -162,6 +178,7 @@ def process_events(events, user):
     for event in events:
         item = dict()
         item['id']=event.id
+        item['base_id']=event.id
         item['host']=event.host.username
         item['host_name']=event.host.last_name
         item['title']= event.title

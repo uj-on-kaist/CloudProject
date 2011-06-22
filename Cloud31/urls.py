@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^feed/$','controller.feedcontroller.feed'),
     url(r'^feed/detail/(?P<feed_id>\w+)$', 'controller.feedcontroller.feed_detail'),
     
+    
     url(r'^api/feed/update/$','controller.feedcontroller.update_feed'),
     url(r'^api/feed/delete/(?P<feed_id>\w+)$','controller.feedcontroller.delete_feed'),
     url(r'^api/feed/favor/(?P<feed_id>\w+)$','controller.feedcontroller.favorite_action'),
@@ -56,7 +57,7 @@ urlpatterns = patterns('',
     url(r'^confirm/$','controller.usercontroller.confirm'),
     
     url(r'^user/(?P<username>\w+)/$','controller.profilecontroller.user'),
-
+    url(r'^favorite/$','controller.profilecontroller.favorite'),
     url(r'^picture/(?P<username>\w+)/$','controller.profilecontroller.picture'),
 
     url(r'file/ajax_upload$', 'controller.filecontroller.ajax_upload'),
@@ -85,6 +86,8 @@ urlpatterns = patterns('',
     url(r'^api/event/delete/(?P<event_id>\w+)$','controller.eventcontroller.delete_event'),
     url(r'^api/event/get/(?P<load_type>\w+)$','controller.eventcontroller.load_event'),
     url(r'^api/event/update/comment/$','controller.eventcontroller.update_event_comment'),
+    
+    
     
     
     

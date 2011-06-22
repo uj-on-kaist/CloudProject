@@ -5,8 +5,8 @@
 
 
 {% if 'user_profile' in side_list%}
-<div title="user_profile">
-<a href="/user/{{ current_user }}"><img src="/picture/{{ current_user }}"  style="width:190px; height:190px;"/></a>
+<div title="user_profile" class="user_profile_box">
+<a href="/user/{{ current_user }}"><img src="/picture/{{ current_user }}"  style="width:168px; height:168px;"/></a>
 <h2>{{ current_user.username }}</h2>
 <h3 style="margin:0px">{{ current_user.last_name }}</h3>
 <b>

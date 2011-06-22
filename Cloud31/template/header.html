@@ -31,8 +31,12 @@
 
 
 <div class="search_box">
-<input type="text" placeholder="Search" style="padding:4px 8px; font-size:12px; width:400px;display:inline; height:14px; margin:5px 0px;"/>
+<input type="text" placeholder="Search" id="search_box_input"/>
+<span class="ui_icon ui_icon_search"></span>
 </div>
+
+
+
 {% if user.is_authenticated %}
 
 <div id="user_box" onclick="show_user_menu(event); return false;">

@@ -22,15 +22,20 @@ footer .container .description{
     height: 39px;
     line-height: 39px;
 }
-
+.container{
+    padding: 0 37px;
+    width:950px;
+}
 .main{
-    border-left: 1px solid rgb(180,180,180);
+    border-left: 1px solid rgb(180,180,180);padding-bottom: 40px;
     
 }
 .main_container{
     background-image: url("/static/image/container_bg.png");
     background-repeat: repeat-y;
+    background-position: 37px 0px;
     z-index: -1;
+    
 }
 
 .main, .leftBar, .rightBar{
@@ -85,7 +90,7 @@ textarea{overflow-y: hidden;}
     float:left; width:60px; text-align: right; font-weight: bold; margin:3px 5px 0 0; 
     font-size: 14px;
 }
-.message_form div textarea{width: 515px;}
+.message_form div textarea{width: 445px;}
 .message_form div.item.update{margin: 15px 0 0 65px;}
 
 
@@ -98,7 +103,7 @@ input:focus {outline: none; border:1px solid #AAA;}
 
 
 .input_table input:not([type="submit"]):not([type="reset"]), .input_table textarea{
-    width:540px;
+    width:460px;
     font-size: 100%;
     padding-left: 5px;
 }
@@ -163,13 +168,13 @@ img.host_avatar{float:left; width:50px; height: 50px;}
 
 
 
-
 .logo_box, .noti_box, .search_box{
     float: left;
     margin-top: 0px;
     height: 44px;
     margin-right: 10px;
 }
+
 .logo_box{margin-right: 0px;}
 .logo_box .logo{
     background-image: url('/static/image/main_logo.png');
@@ -179,10 +184,7 @@ img.host_avatar{float:left; width:50px; height: 50px;}
     height: 44px;
     
 }
-.search_box{
-    margin-top: 10px;
-    margin-left: 80px;
-}
+
 
 .logo_box:hover{
     background-image: url("/static/image/transparent_bg.png");
@@ -353,7 +355,7 @@ ul#menu_list{
     border: 1px solid black;
     position: absolute;
     top:43px;
-    right: 10px;
+    right: 47px;
     z-index: -1;
    
 }
@@ -439,7 +441,7 @@ ul.setting_list.True{display: none;}
 }
 .setting_field{
     float: left;
-    width: 440px;
+    width: 360px;
     padding-left: 60px;
     font-size: 13px;
     color: #323232;
@@ -481,3 +483,54 @@ input:not([type="submit"]).setting_input:focus{
     background-image: url('/static/image/Box_167x25_over.png');
 }
 
+
+
+#load_more_box{
+    margin:16px 0px;
+    text-align: center;
+    width:100%;
+    display: none;
+}
+#load_more_box a{
+    text-align: center; width:100%;
+    
+}
+#load_more_box a p{
+    background-image: url('/static/image/Box_525x26_nor.png');
+    width:525px;
+    height: 26px;
+    line-height: 26px;
+    margin: 0 auto; padding: 0;
+}
+#load_more_box a:hover{text-decoration: none;}
+#load_more_box a p:hover{
+    background-image: url('/static/image/Box_525x26_over.png');
+    text-decoration: none;
+}
+#load_more_box a p:active{
+    background-image: url('/static/image/Box_525x26_sel.png');
+}
+
+
+.user_profile_box{
+    padding: 0px 11px;
+}
+
+
+.search_box{
+    background-image: url('/static/image/Searchbox_5px.png');
+    width: 362px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 70px;
+    padding:2px 5px; 
+}
+
+input:not([type="submit"])#search_box_input{
+    padding: 0 5px; margin: 0;
+    border: none;
+    background-color: transparent;
+    font-size:12px;display:inline; height:20px;
+    width: 330px;
+    float: left;
+}

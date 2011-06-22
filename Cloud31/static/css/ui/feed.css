@@ -3,13 +3,13 @@
 }
 
 .feed_form textarea{
-    width:584px;
+    width:504px;
 
     display: block;
     padding:8px;
 }
 
-.feed_form{width:590px;padding:10px;}
+.feed_form{width:520px;padding:10px;}
 
 
 .feed_form .control .button.update{
@@ -29,7 +29,7 @@
 }
 
 .feed_form .control div.attach{
-    width:510px;
+    width:440px;
 }
 
 .feed_form .control div.update{
@@ -65,3 +65,4 @@ li.nostyle{ border:none;}
 
 ul.comments li.write_box, ul.comment_count li {border-left:3px solid #F0F4F5;}
 ul.comment_count{font-size: 11px;}
+

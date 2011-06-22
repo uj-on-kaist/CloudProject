@@ -1,0 +1,28 @@
+{% include "meta_open.html"%}
+
+<h2 class="page_title">Favorite Messages</h2>
+
+<script src="{{ STATIC_URL }}js/feed.js" type="text/javascript"></script>
+
+<div class="tab">
+<a href="#" onclick="load_feed('favorite#{{target_user.user.username}}'); return false;">
+    <span class="tab_item corner_top selected" onclick="select_this_tab($(this)); return false;">Favorites</span>
+</a>
+
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    load_feed('favorite#{{user.username}}');
+});
+</script>
+
+{% include "ui/feed_list.html"%}
+
+<div id="load_more_box">
+<a href="#" onclick="load_more(); return false">
+<p>Load more</p>
+</a>
+</div>
+
+{% include "meta_close.html"%}

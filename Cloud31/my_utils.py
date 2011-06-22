@@ -24,6 +24,12 @@ def process_messages(request, messages):
         feed['location']= message.location
         feed['reg_date']= str(message.reg_date)
         feed['comments'] = list()
+        
+        try:
+            feed['base_id']=message.base_id
+        except:
+            feed['base_id']=message.id
+        
         try:
             comments = Comment.objects.filter(message=message, is_deleted=False).order_by('reg_date')
             for comment in comments:

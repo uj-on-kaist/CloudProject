@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_unicode
 
+from django.db.models import Q
 
 import json
 import parser
@@ -23,6 +24,9 @@ import my_utils
 
 
 from controller.notificationcontroller import *
+
+
+DEFAULT_LOAD_LENGTH = 10
 
 @login_required(login_url='/signin/')
 def feed(request):
@@ -106,8 +110,16 @@ def load_comany_feed(request):
     result['message']='success'
     
     try:
-        messages = Message.objects.filter(is_deleted=False).order_by('-reg_date')[:5]
-        result['feeds']=my_utils.process_messages(request,messages)                
+        base_id = request.GET.get("base_id",False)
+        additional = Q()
+        if base_id:
+            additional = Q(id__lt=base_id)
+        
+        messages = Message.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+        result['feeds']=my_utils.process_messages(request,messages)
+        
+        if len(messages) == DEFAULT_LOAD_LENGTH:
+            result['load_more']=True
     except:
         result['success']=True
         result['message']='Do not have any message'
@@ -120,8 +132,16 @@ def load_notice(request):
     result['message']='success'
     
     try:
-        notices = Notice.objects.filter(is_deleted=False).order_by('-reg_date')[:5]
-        result['feeds']=my_utils.process_messages(request,notices)                
+        base_id = request.GET.get("base_id",False)
+        additional = Q()
+        if base_id:
+            additional = Q(id__lt=base_id)
+        
+        notices = Notice.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+        result['feeds']=my_utils.process_messages(request,notices)
+        
+        if len(notices) == DEFAULT_LOAD_LENGTH:
+            result['load_more']=True             
     except:
         result['success']=True
         result['message']='Do not have any message'
@@ -145,11 +165,25 @@ def load_my_timeline(request):
     try:
         user = User.objects.get(username=request.user.username)
         try:
-            timelines = UserTimeline.objects.filter(user=user,message__is_deleted=False).order_by('-update_date')[:5]
+            base_id = request.GET.get("base_id",False)
+            additional = Q()
+            if base_id:
+                try:
+                    timeline = UserTimeline.objects.get(id=base_id)
+                    additional = Q(update_date__lt=timeline.update_date)
+                except:
+                    pass
+                    
+            
+            timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-update_date')[:DEFAULT_LOAD_LENGTH]
+            
+            if len(timelines) == DEFAULT_LOAD_LENGTH:
+                result['load_more']=True
             messages = list()
             for timeline in timelines:
                 try:
                     if not timeline.message.is_deleted:
+                        timeline.message.base_id=timeline.id
                         messages.append(timeline.message)
                 except:
                     pass
@@ -164,26 +198,6 @@ def load_my_timeline(request):
             
     return HttpResponse(json.dumps(result, indent=4))   
 
-# def get_my_feed(request):
-#     result=dict()
-#     result['success']=True
-#     result['message']='success'
-#     
-#     try:
-#         user = User.objects.get(username=request.user.username)
-#         try:
-#             messages = Message.objects.filter(author=user,is_deleted=False).order_by('-reg_date')
-#             result['feeds']=my_utils.process_messages(request,messages)
-#                 
-#         except:
-#             result['success']=True
-#             result['message']='Do not have any message'
-#     except:
-#             result['success']=False
-#             result['message']='no such user'
-#             
-#     return HttpResponse(json.dumps(result, indent=4))
-
 def get_user_feed(request,user_name):
     result=dict()
     result['success']=True
@@ -191,9 +205,18 @@ def get_user_feed(request,user_name):
     
     try:
         user = User.objects.get(username=user_name)
+        base_id = request.GET.get("base_id",False)
+        additional = Q()
+        if base_id:
+            additional = Q(id__lt=base_id)
+        
         try:
-            messages = Message.objects.filter(author=user,is_deleted=False).order_by('-reg_date')
-            result['feeds']=my_utils.process_messages(request,messages)                
+            messages = Message.objects.filter(additional, author=user,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+            result['feeds']=my_utils.process_messages(request,messages)
+            
+            if len(messages) == DEFAULT_LOAD_LENGTH:
+                result['load_more']=True
+            
         except:
             result['success']=True
             result['message']='Do not have any message'
@@ -208,15 +231,61 @@ def get_user_at_feed(request,user_name):
     result=dict()
     result['success']=True
     result['message']='success'
-    print '123123'
     try:
-        messages = Message.objects.filter(related_users__contains=user_name+',',is_deleted=False).order_by('-reg_date')
-        result['feeds']=my_utils.process_messages(request,messages)                
+        base_id = request.GET.get("base_id",False)
+        additional = Q()
+        if base_id:
+            additional = Q(id__lt=base_id)
+        
+        messages = Message.objects.filter(additional, related_users__contains=user_name+',',is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+        result['feeds']=my_utils.process_messages(request,messages)
+        
+        if len(messages) == DEFAULT_LOAD_LENGTH:
+                result['load_more']=True             
     except:
         result['success']=True
         result['message']='Do not have any message'
             
     return HttpResponse(json.dumps(result, indent=4))
+
+def load_favorite(request, user_name):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+        try:
+            base_id = request.GET.get("base_id",False)
+            additional = Q()
+            if base_id:
+                additional = Q(id__lt=base_id)
+            
+            favorites = UserFavorite.objects.filter(additional, user=user,message__is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+            messages = list()
+            
+            for favorite in favorites:
+                try:
+                    if not favorite.message.is_deleted:
+                        favorite.message.base_id=favorite.id
+                        messages.append(favorite.message)
+                except Exception as e:
+                    print str(e)
+                    pass
+            
+            if len(favorites) == DEFAULT_LOAD_LENGTH:
+                result['load_more']=True
+            
+            result['feeds']=my_utils.process_messages(request,messages)
+                
+        except:
+            result['success']=True
+            result['message']='Do not have any message'
+    except:
+            return my_utils.return_error('No Such User')
+            
+    return HttpResponse(json.dumps(result, indent=4))
+    
 
 
 def update_feed(request):
@@ -378,32 +447,7 @@ def update_comment(request):
     return HttpResponse(json.dumps(result, indent=4))
     
 
-def load_favorite(request, user_name):
-    result=dict()
-    result['success']=True
-    result['message']='success'
-    
-    try:
-        user = User.objects.get(username=request.user.username)
-        try:
-            favorites = UserFavorite.objects.filter(user=user).order_by('-reg_date')
-            messages = list()
-            for favorite in favorites:
-                try:
-                    if not favorite.message.is_deleted:
-                        messages.append(favorite.message)
-                except:
-                    pass
-            
-            result['feeds']=my_utils.process_messages(request,messages)
-                
-        except:
-            result['success']=True
-            result['message']='Do not have any message'
-    except:
-            return my_utils.return_error('No Such User')
-            
-    return HttpResponse(json.dumps(result, indent=4))
+
     
 
 

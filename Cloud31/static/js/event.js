@@ -82,11 +82,13 @@ function clear_event_input(){
     //$("#event_form tr.canHide").addClass("hidden");
 }
 
-function load_event(type){
+function load_event(type, load_more, base_id){
     if(type == '') return false;
     console.log("load_type: "+type);
     
     var url='/api/event/get/'+type;
+    if(load_more)
+        url +="?base_id="+base_id;
     var tokenValue = $("#csrf_token").text();
     var data ="&csrfmiddlewaretoken="+tokenValue;
     $.ajax({
@@ -97,14 +99,32 @@ function load_event(type){
 		success : function(json) {
 		  if(json.success){
 		      $("#event_list").attr('type',type);
-		      $("div.stream.event_item").remove();
+		      if(!load_more)
+		          $("div.stream.event_item").remove();
 		      display_event(json.events);
+		      
+              if(json.load_more){
+		          $("#load_more_box").show();
+		      }else{
+		          $("#load_more_box").hide();
+		      }
 		  }
 		},
 		error : function(data){
 		  console.log(data);
 		}
 	});
+}
+
+function load_more_event(){
+    var base_id = $("#event_list").find(".stream.event_item").last().attr("base_id");
+    if (base_id == undefined || base_id == ''){
+        return false;
+    }
+    var type = $("#event_list").attr('type');
+    console.log(base_id, type);
+    load_event(type, true, base_id);
+
 }
 
 
@@ -119,7 +139,7 @@ function display_event(events){
         event_layout.removeClass("template");
         event_layout.addClass("event_item");
         event_layout.attr('id','event_'+event.id);
-        event_layout.attr('id','event_'+event.id);
+        event_layout.attr('base_id',+event.base_id);
         event_layout.find('.user_link').attr('href','/user/'+event.host);
         event_layout.find('.from a').text(event.host);
         event_layout.find('.from span.author_name').text(event.host_name);

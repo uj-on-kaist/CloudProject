@@ -57,11 +57,9 @@ function clear_feed_input(){
 }
 
 
-function load_feed(type){
+function load_feed(type, load_more, base_id){
     if(type == '') return false;
     console.log("load_type: "+type);
-    
-    $("#feed_list").attr('type',type);
     
     var url='';
     if(type == 'me'){
@@ -84,6 +82,10 @@ function load_feed(type){
     }else{
         return false;
     }
+    
+    if(load_more){
+        url+="?base_id="+base_id;
+    }
 
     $.ajax({
 		type : "GET",
@@ -91,8 +93,16 @@ function load_feed(type){
 		dataType : "JSON",
 		success : function(json) {
 		  if(json.success){
-		      $("div.stream.feed_item").remove();
+		      $("#feed_list").attr('type',type);
+		      if(!load_more)
+		          $("div.stream.feed_item").remove();
 		      display_feeds(json.feeds, type);
+		      
+		      if(json.load_more){
+		          $("#load_more_box").show();
+		      }else{
+		          $("#load_more_box").hide();
+		      }
 		  }
 		},
 		error : function(data){
@@ -100,6 +110,19 @@ function load_feed(type){
 		}
 	});
 }
+
+
+function load_more(){
+    var base_id = $("#feed_list").find(".stream.feed_item").last().attr("base_id");
+    if (base_id == undefined || base_id == ''){
+        return false;
+    }
+    var type = $("#feed_list").attr('type');
+    console.log(base_id, type);
+    load_feed(type, true, base_id);
+
+}
+
 
 function display_feeds(feeds, type){
     for(var i=0; i<feeds.length; i++){
@@ -111,6 +134,7 @@ function display_feeds(feeds, type){
         feed_layout.removeClass("template");
         feed_layout.addClass("feed_item");
         feed_layout.attr('id','feed_'+feed.id);
+        feed_layout.attr('base_id',feed.base_id);
         feed_layout.find('.user_link').attr('href','/user/'+feed.author);
         feed_layout.find('.from a').text(feed.author);
         feed_layout.find('.from span.author_name').text(feed.author_name);
@@ -448,3 +472,5 @@ function delete_detail_comment(item){
 		}
 	});
 }
+
+

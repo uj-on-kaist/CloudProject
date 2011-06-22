@@ -18,6 +18,9 @@ import json
 import my_utils
 import parser
 
+
+DEFAULT_LOAD_LENGTH = 10
+
 @login_required(login_url='/signin/')
 def main(request):
     t = loader.get_template('message.html')
@@ -190,10 +193,24 @@ def load_message(request, load_type):
     elif load_type == 'sent':
         query_type = Q(author=user)
     elif load_type == 'received':
-        query_type = Q(receivers__contains=username)    
+        query_type = Q(receivers__contains=username)
+        
+    
+    base_id = request.GET.get("base_id",False)
+    additional = Q()
+    if base_id:
+        try:
+            d_message = DirectMessage.objects.get(id=base_id)
+            additional = Q(reg_date__lt=d_message.reg_date)
+        except:
+            pass
+
     try:
-        d_messages = DirectMessage.objects.filter(query_type, is_deleted=False).order_by('-reg_date')
+        d_messages = DirectMessage.objects.filter(query_type, additional,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
         result['messages'] = process_messages(d_messages)
+        
+        if len(d_messages) == DEFAULT_LOAD_LENGTH:
+            result['load_more']=True
     except Exception as e:
         print str(e)
     
@@ -205,6 +222,7 @@ def process_messages(messages):
     for message in messages:
         d_message = dict()
         d_message['id']=message.id
+        d_message['base_id']=message.id
         d_message['author']=message.author.username
         d_message['contents']= parser.parse_text(message.contents)
         d_message['receivers']= message.receivers.replace(",", ", ")[:-2]
