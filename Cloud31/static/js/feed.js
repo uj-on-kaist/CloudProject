@@ -92,6 +92,7 @@ function load_feed(type, load_more, base_id){
 		url : url,
 		dataType : "JSON",
 		success : function(json) {
+		  $("#loading_box").hide();
 		  if(json.success){
 		      $("#feed_list").attr('type',type);
 		      if(!load_more)
@@ -106,6 +107,7 @@ function load_feed(type, load_more, base_id){
 		  }
 		},
 		error : function(data){
+		  $("#loading_box").hide();
 		  console.log(data);
 		}
 	});
@@ -119,6 +121,9 @@ function load_more(){
     }
     var type = $("#feed_list").attr('type');
     console.log(base_id, type);
+    
+    $("#load_more_box").hide();
+    $("#loading_box").show();
     load_feed(type, true, base_id);
 
 }

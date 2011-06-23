@@ -108,3 +108,56 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 .ui-corner-bottom {-moz-border-radius:0px 0px 5px 5px ;
     -webkit-border-radius:0px 0px 5px 5px ;
     border-radius:0px 0px 5px 5px ; }
+    
+    
+
+
+.button_m{
+    background-color: transparent;
+    background-image: url("/static/image/Button_M_nor.png");
+    background-repeat: no-repeat;
+    width: 74px;
+    height: 30px;
+    border: 0;
+    outline: 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: rgb(120,120,120);
+}
+
+.button_m:hover{
+    background-image: url("/static/image/Button_M_over.png");border: 0;
+    outline: 0;
+}
+.button_m:active{
+    background-image: url("/static/image/Button_M_sel.png");border: 0;
+    outline: 0;
+    
+}
+
+
+input[type='text'].input_167_25,input[type='password'].input_167_25{
+    font-size: 14px;
+    border: 0;
+    background-image: url('/static/image/Box_167x25_nor.png');
+    background-repeat: no-repeat;
+    width: 147px;
+    height: 17px;
+    padding: 4px 10px;
+}
+input[type='text'].input_167_25:focus,input[type='password'].input_167_25:focus{
+    background-image: url('/static/image/Box_167x25_over.png');
+}
+
+input[type='text'].input_167_32,input[type='password'].input_167_32{
+    font-size: 14px;
+    border: 0;
+    background-image: url('/static/image/Box_167x32_nor.png');
+    background-repeat: no-repeat;
+    width: 147px;
+    height: 16px;
+    padding: 8px 10px;
+}
+input[type='text'].input_167_32:focus,input[type='password'].input_167_32:focus{
+    background-image: url('/static/image/Box_167x32_over.png');
+}

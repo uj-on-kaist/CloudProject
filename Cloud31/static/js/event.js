@@ -97,6 +97,7 @@ function load_event(type, load_more, base_id){
 		data : data,
 		dataType : "JSON",
 		success : function(json) {
+		  $("#loading_box").hide();
 		  if(json.success){
 		      $("#event_list").attr('type',type);
 		      if(!load_more)
@@ -111,6 +112,7 @@ function load_event(type, load_more, base_id){
 		  }
 		},
 		error : function(data){
+		  $("#loading_box").hide();
 		  console.log(data);
 		}
 	});
@@ -122,7 +124,10 @@ function load_more_event(){
         return false;
     }
     var type = $("#event_list").attr('type');
-    console.log(base_id, type);
+    
+    
+    $("#load_more_box").hide();
+    $("#loading_box").show();
     load_event(type, true, base_id);
 
 }

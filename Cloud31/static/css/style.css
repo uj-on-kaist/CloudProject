@@ -102,13 +102,13 @@ input:focus {outline: none; border:1px solid #AAA;}
 
 
 
-.input_table input:not([type="submit"]):not([type="reset"]), .input_table textarea{
+.input_table input, .input_table textarea{
     width:460px;
     font-size: 100%;
     padding-left: 5px;
 }
 .input_table select{margin-right: 5px;}
-input:not([type="submit"]):not([type="reset"]).datepicker{
+input[type="text"].datepicker{
     width:100px; display: inline; margin-right: 5px;
     background-image: url('/static/image/calendar-icon.png');
     background-repeat: no-repeat;
@@ -464,28 +464,16 @@ ul.setting_list.True{display: none;}
     display: none;
 }
 
-.setting_field input:not([type="submit"]){
-}
 .setting_field .change_field{
     display: none;
-}
-
-input:not([type="submit"]).setting_input{
-    font-size: 14px;
-    border: none;
-    background-image: url('/static/image/Box_167x25_nor.png');
-    background-repeat: no-repeat;
-    width: 147px;
-    height: 25px;
-    padding: 0 10px;
-}
-input:not([type="submit"]).setting_input:focus{
-    background-image: url('/static/image/Box_167x25_over.png');
+    width: 100%;
 }
 
 
 
-#load_more_box{
+
+
+#load_more_box, #loading_box{
     margin:16px 0px;
     text-align: center;
     width:100%;
@@ -522,15 +510,15 @@ input:not([type="submit"]).setting_input:focus{
     width: 362px;
     height: 20px;
     margin-top: 10px;
-    margin-left: 55px;
+
     padding:2px 5px; 
 }
 
-input:not([type="submit"])#search_box_input{
-    padding: 0 5px; margin: 0;
-    border: none;
+input#search_box_input{
+    padding: 4px 5px; margin: 0;
+    border: 0;
     background-color: transparent;
-    font-size:12px;display:inline; height:20px;
+    font-size:12px;display:inline; height:12px;
     width: 330px;
     float: left;
 }
@@ -554,6 +542,5 @@ ul.comments textarea,
     padding: 5px 5px;
     border-bottom: 1px solid #E9E9E9;
     font-weight: bold;
-    
 }
 

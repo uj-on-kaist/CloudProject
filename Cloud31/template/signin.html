@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml"> 
 <head> 
@@ -11,30 +10,73 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}css/signin.css?{{ csrf_token }}" type="text/css" />
 
 <script src="{{ STATIC_URL }}js/jquery-1.6.1.min.js?{{ csrf_token }}" type="text/javascript"></script>
-
+<script src="{{ STATIC_URL }}js/jquery.tipsy.js?{{ csrf_token }}" type="text/javascript"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/tipsy/tipsy.css?{{ csrf_token }}" type="text/css" />
 <script src="{{ STATIC_URL }}js/etc.js?{{ csrf_token }}" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    var page_height = $.getDocHeight();
+    var container_pos = page_height/2.0 - 220;
+    if(container_pos <= 10)
+        container_pos = 10;
+    $(".sign_container").css('padding-top',container_pos+'px');
+     $(".sign_container").fadeIn(1000);
+     
+      $('#sign_form input').tipsy({trigger: 'focus', gravity: 'w',title:'placeholder'});
+    /*
+ $("input").tipsy({trigger: 'focus', gravity: 'w'});
+     
+*/
+});
+$.getDocHeight = function(){
+    return Math.max(
+        $(document).height(),
+        $(window).height(),
+        /* For opera: */
+        document.documentElement.clientHeight
+    );
+};
+</script>
+
+
 </head>
 
 <body screen_capture_injected="true" style="margin:0;">
-<div class="container signin">
 
-<div class="header">
+<div class="container sign_container">
+<div class="signin_logo">
+<img src="/static/image/Introduction_logo.png" />
+</div>
 
 
-{% if message %}<h3 class="message" style="display:none;">{{ message }}</h3>{% endif %}
+<div class="sign_form" id="sign_form">
 <form action="/signin/" method="POST" class="" style=""> 
 {% csrf_token %}
-<input type="hidden" name="next" value="{{next_url}}" />
-<input type="text" name="username" placeholder="ID" />
-<input type="password" name="password" placeholder="Password" />
-<input type="submit" value="Sign in" class="button_m" /><br />
-<input type="checkbox" name="keep_signed" class="checkbox"  /><span class="keep_signed">Keep me logged in</span>
+<input type="hidden" name="next" value="{{next_url}}"/>
+<div><input type="text" name="username" placeholder="Enter ID" class="ui-corner-all id input_167_32" /></div>
+<div><input type="password" name="password" placeholder="Enter Password" class="ui-corner-all password input_167_32" /></div>
 
-<a href="/signup/" class="signup" >Sign Up</a>
+<div class="keep_box"><input type="checkbox" name="keep_signed" class="checkbox"  /><span class="keep_signed">Keep me logged in</span></div>
+<div class="submit_box">
+<!-- <input type="submit" value="Log in" class="button_m"/> -->
+<button type="submit" class="button_m" onblur="return false">
+    Log in
+</button>
+</div>
+<div>
+You are not an member? Then, <a href="/signup/" class="signup" >Sign Up</a> Now!
+</div>
 </form>
+</div>
 
+<div class="signin_footer">
+<b>Cloud 31</b> © 2011</span>
 </div>
 
 </div>
+
+
+
+
 </body>
 </html>

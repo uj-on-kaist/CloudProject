@@ -62,7 +62,7 @@ function load_message(type, load_more, base_id){
 		url : url,
 		dataType : "JSON",
 		success : function(json) {
-		  
+		  $("#loading_box").hide();
           if(json.success){
             $("#message_list").attr('type',type);
             if(!load_more)
@@ -79,6 +79,7 @@ function load_message(type, load_more, base_id){
           }else{console.log(json);}
 		},
 		error : function(data){
+		  $("#loading_box").hide();
 		  console.log(data);
 		}
 	});
@@ -91,7 +92,10 @@ function load_more_message(){
         return false;
     }
     var type = $("#message_list").attr('type');
-    console.log(base_id, type);
+    
+    
+    $("#load_more_box").hide();
+    $("#loading_box").show();
     load_message(type, true, base_id);
 
 }

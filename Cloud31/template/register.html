@@ -1,18 +1,78 @@
-{% include "meta_open.html"%}
-<div>
-<h3>Sign up</h3>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" href="{{ STATIC_URL }}css/screen.css?{{ csrf_token }}" type="text/css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/application.css?{{ csrf_token }}" type="text/css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/ui.css?{{ csrf_token }}" type="text/css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/style.css?{{ csrf_token }}" type="text/css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/signin.css?{{ csrf_token }}" type="text/css" />
+
+<script src="{{ STATIC_URL }}js/jquery-1.6.1.min.js?{{ csrf_token }}" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/jquery.tipsy.js?{{ csrf_token }}" type="text/javascript"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/tipsy/tipsy.css?{{ csrf_token }}" type="text/css" />
+<script src="{{ STATIC_URL }}js/etc.js?{{ csrf_token }}" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    var page_height = $.getDocHeight();
+    var container_pos = page_height/2.0 - 240;
+    if(container_pos <= 10)
+        container_pos = 10;
+    $(".sign_container").css('padding-top',container_pos+'px');
+     $(".sign_container").fadeIn(1000);
+     
+      $('#sign_form input[placeholder]').tipsy({always: true, gravity: 'e',title:'placeholder', fade: true});
+      $('#sign_form input[placeholder]').each(function(){
+            $(this).tipsy("show");
+      });
+      
+});
+$.getDocHeight = function(){
+    return Math.max(
+        $(document).height(),
+        $(window).height(),
+        /* For opera: */
+        document.documentElement.clientHeight
+    );
+};
+</script>
+
+
+</head>
+
+<body screen_capture_injected="true" style="margin:0;">
+
+<div class="container sign_container">
+
+<h3>Register</h3>
+<div class="sign_form" id="sign_form">
 <form action="/signup/" method="POST" class="register_form">
 {% csrf_token %}
 
-<label for="idusername">사용자명:</label><input id="id_username" type="text" placeholder="ID" name="username" maxlength="30">
-<label for="id_real_name">이름:</label><input id="id_real_name" type="text" placeholder="이름" name="name" maxlength="30">
-<label for="id_email">email address:</label><input id="id_email" type="text" placeholder="이메일 주소" name="email" maxlength="75">
-<label for="id_password1">비밀번호:</label><input type="password" placeholder="비밀번호" name="password1" id="id_password1">
-<label for="id_password2">비밀번호 확인:</label><input type="password" placeholder="비밀번호 확인" name="password2" id="id_password2">
-<label for="id_dept">dept:</label><input id="id_dept" type="text" placeholder="부서" name="dept" maxlength="30">
-<label for="id_position">position:</label><input id="id_position" type="text" placeholder="직급" name="position" maxlength="30">
+<div><input id="id_username" type="text" placeholder="Enter ID" name="username" class="ui-corner-all id input_167_32" /></div>
+<div><input id="id_real_name" type="text" placeholder="이름" name="name" class="ui-corner-all id input_167_32" /></div>
+<div><input id="id_email" type="text" placeholder="이메일 주소" name="email" class="ui-corner-all id input_167_32" /></div>
+<div><input type="password" placeholder="비밀번호" name="password1" id="id_password1" class="ui-corner-all id input_167_32" /></div>
+<div><input type="password" placeholder="비밀번호 확인" name="password2" id="id_password2" class="ui-corner-all id input_167_32" /></div>
+<div><input id="id_dept" type="text" placeholder="부서" name="dept" class="ui-corner-all id input_167_32" /></div>
+<div><input id="id_position" type="text" placeholder="직급" name="position" class="ui-corner-all id input_167_32" /></div>
 
-<input type="submit" value="Submit" class="button"/>
+
+<button type="submit" class="button_m register_btn" onblur="return false">
+    Register
+</button>
 </form>
 </div>
-{% include "meta_close.html"%}
+
+<div class="signin_footer">
+<b>Cloud 31</b> © 2011</span>
+</div>
+
+</div>
+
+
+
+
+</body>
+</html>
