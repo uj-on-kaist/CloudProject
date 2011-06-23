@@ -1,0 +1,57 @@
+#auto_complete_list{
+    position: absolute;
+    background: #ffffff;
+    padding:0 0;
+    width: 523px;
+    z-index: 100;
+    border: 1px solid #323232;
+    display: none;
+}
+
+#auto_complete_list ul{
+    padding: 0; margin: 0;
+    font-size: 12px;
+    color: #323232;
+}
+
+#auto_complete_list li{
+    padding: 5px 10px;
+    float: left;
+    width: 503px;
+}
+
+#auto_complete_list li.first{
+    border-bottom: 1px solid #AAA;
+    font-weight: bold;
+}
+#auto_complete_list li.add{
+    background-color: #F7F7F7;
+    color: #325AAA;
+}
+#auto_complete_list ul li.list_item:hover,#auto_complete_list li.add:hover{
+    background-color: rgb(235,250,250);
+    cursor: pointer;
+}
+
+
+.user_item .user_picture{
+    float: left;
+}
+.user_item .user_picture img{
+
+    width: 24px;
+    height: 24px;
+}
+
+.user_item .user_info{
+    margin: 0 5px; padding: 0;
+    padding-left: 29px;
+    line-height: 24px;
+}
+
+.user_item .user_info .user_name{
+    margin-right: 5px;
+    color: black;
+}
+
+#auto_complete_list .topic_item .topic_name{color: #325AAA;}

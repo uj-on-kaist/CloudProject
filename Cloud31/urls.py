@@ -104,4 +104,5 @@ urlpatterns = patterns('',
     
     url(r'^search/(?P<keyword>.*)$', 'controller.searchcontroller.main'),
     url(r'^api/search/user$', 'controller.searchcontroller.ajax_user'),
+    url(r'^api/search/topic$', 'controller.searchcontroller.ajax_topic'),
 )

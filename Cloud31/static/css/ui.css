@@ -104,3 +104,7 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 .corner_top {-moz-border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
     border-radius: 5px 5px 0px 0px; }
+    
+.ui-corner-bottom {-moz-border-radius:0px 0px 5px 5px ;
+    -webkit-border-radius:0px 0px 5px 5px ;
+    border-radius:0px 0px 5px 5px ; }

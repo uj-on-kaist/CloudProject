@@ -9,7 +9,7 @@
     padding:8px;
 }
 
-.feed_form{width:525px;}
+.feed_form{width:525px;position: relative;}
 
 
 .feed_form .control .button.update{

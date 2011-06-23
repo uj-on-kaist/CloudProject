@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}css/ui/feed.css?{{ csrf_token }}" type="text/css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/ui/topic.css?{{ csrf_token }}" type="text/css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/ui/file.css?{{ csrf_token }}" type="text/css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/ui/autocomplete.css?{{ csrf_token }}" type="text/css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/fileuploader.css" type="text/css" />
 
 
@@ -54,6 +55,8 @@ $(document).ready(function(){
     $(document).click(function() {
         hide_noti();
         hide_user_menu();
+        
+        $("#auto_complete_list").hide();
     });
 });
 
