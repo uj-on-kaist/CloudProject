@@ -91,7 +91,15 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 .ui_icon_radio_blank { background-position: -154px -44px; }
 .ui_icon_radio_blank { background-position: -176px -44px; }
 .ui_icon_add { background-position: -198px -44px; }
+.ui_icon_remove { background-position: 0px -66px; }
 
+.ui_icon_file_excel {width:30px;height:30px; background-position: 0px -88px; }
+.ui_icon_file_word {width:30px;height:30px; background-position: -30px -88px; }
+.ui_icon_file_ppt {width:30px;height:30px; background-position: -60px -88px; }
+.ui_icon_file_hwp {width:30px;height:30px; background-position: -90px -88px; }
+.ui_icon_file_pdf {width:30px;height:30px; background-position: -120px -88px; }
+.ui_icon_file_zip {width:30px;height:30px; background-position: -150px -88px; }
+.ui_icon_file_etc {width:30px;height:30px; background-position: -180px -88px; }
 
 .corner_top {-moz-border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;

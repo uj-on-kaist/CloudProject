@@ -29,7 +29,23 @@
 </div>
 
 
-
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#search_box_input').keyup(function(e) {
+	    if(e.keyCode == 13) {
+            var keyword=$("#search_box_input").val();
+            keyword=remove_special(keyword);
+	        location.href="/search/"+encodeURI(keyword);
+	   	    e.preventDefault();
+	   }
+    });
+    $(".ui_icon.ui_icon_search").click(function(){
+        var keyword=$("#search_box_input").val();
+        keword=remove_special(keyword);
+	    location.href="/search/"+encodeURI(keyword);
+    });
+});
+</script>
 <div class="search_box">
 <input type="text" placeholder="Search" id="search_box_input"/>
 <span class="ui_icon ui_icon_search"></span>

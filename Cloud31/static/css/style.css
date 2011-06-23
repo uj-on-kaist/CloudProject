@@ -27,8 +27,10 @@ footer .container .description{
     width:950px;
 }
 .main{
-    border-left: 1px solid rgb(180,180,180);padding-bottom: 40px;
-    
+    border-left: 1px solid rgb(180,180,180);
+    padding:0 22px; width:525px;
+    padding-bottom: 40px;
+    margin: 0;
 }
 .main_container{
     background-image: url("/static/image/container_bg.png");
@@ -42,7 +44,6 @@ footer .container .description{
     min-height: 800px;padding-top: 15px;
 }
 .main_contents{
-    padding: 0 5px;
 }
 
 
@@ -85,12 +86,11 @@ a.detect_item span:hover{text-decoration: underline;}
 textarea{overflow-y: hidden;}
 
 
-.message_form{ display: inline-block; padding-bottom: 15px;}
+.message_form{ display: inline-block; padding-bottom: 15px; font-size: 12px;}
 .message_form div div.label{
     float:left; width:60px; text-align: right; font-weight: bold; margin:3px 5px 0 0; 
-    font-size: 14px;
 }
-.message_form div textarea{width: 445px;}
+.message_form div textarea{width: 445px; font-size: 12px;margin:5px 0;}
 .message_form div.item.update{margin: 15px 0 0 65px;}
 
 
@@ -177,7 +177,7 @@ img.host_avatar{float:left; width:50px; height: 50px;}
 
 .logo_box{margin-right: 0px;}
 .logo_box .logo{
-    background-image: url('/static/image/main_logo.png');
+    background-image: url('/static/image/Logo.png');
     background-position: 0px 0px;
     background-repeat: no-repeat;
     width: 170px;
@@ -245,25 +245,25 @@ ul#noti_list{
     
 }
 ul#noti_list li{
-    padding:5px;
+    padding:5px 10px;
     border-bottom: 1px solid #f0f0f0;
     
 }
 
-ul#noti_list li.header{float:left;width:320px;}
+ul#noti_list li.header{float:left;width:310px;border-bottom: 1px solid #AAA;}
 ul#noti_list li.header b{color: black;}
 
 ul#noti_list, ul#noti_list li{list-style: none;}
 
-ul#noti_list li.noti_load_more{text-align: center; color: #3F8FBA; font-weight: bold;float:left;width:320px;}
-ul#noti_list li.noti_load_more:hover{text-decoration: underline}
+ul#noti_list li.noti_load_more{text-align: center; color: #325AAA; font-weight: bold;float:left;width:310px; background-color: #F7F7F7;}
+ul#noti_list li.noti_load_more:hover{text-decoration: underline; background-color: rgb(235,250,250);}
 
 li.noti_item_template{display: none;}
 li.noti_item{
     font-size: 11px;
     color: #333;
     float:left;
-    width:320px;
+    width:310px;
 }
 li.noti_item.unread{
     background-color: rgb(245,255,255);
@@ -277,20 +277,20 @@ li.noti_item img{
     float:left;
 }
 li.noti_item div.noti_contents{
-    width:270px;
+    width:260px;
     float: left;
 }
 li.noti_item div.noti_contents p.message{
     float:left;
-    margin: 0; padding: 2px 0px 0 5px;
-    width:265px;
+    margin: 0; padding: 2px 0px 0 10px;
+    width:255px;
     max-height: 30px;
     line-height: 15px;
     overflow: hidden;
 }
 li.noti_item  .noti_time{
     float:left;
-    padding:0px 0 0 5px;
+    padding:0px 0 0 10px;
     margin: 0;
 }
 li.noti_item b{color: #325AAA;}
@@ -392,7 +392,7 @@ li.selected.menu_item{background-color: rgb(196,231,241); font-weight: bold;}
 li.selected.menu_item:hover{background-color: rgb(196,231,241);}
 
 
-.user_box{float:left; width:100%; padding:5px 14px;}
+.user_box{float:left; width:100%; padding:0px 14px 5px 14px;}
 .user_box img{width:50px; height: 50px;float:left;}
 .user_box div{float:left; padding:2px 10px;}
 .user_box div p{padding: 0px; margin-bottom: 0px; width: 105px; height: 20px; line-height: 20px;overflow: hidden; text-overflow: ellipsis;}
@@ -407,8 +407,8 @@ li.selected.menu_item:hover{background-color: rgb(196,231,241);}
 h2.page_title{font-size: 24px; color: #323232;}
 
 
-div.tab{display: block; width: 100%; height: 25px; border-bottom: 1px solid #b4b4b4; margin: 10px 0;}
-span.tab_item{width:105px; display: block; float: left; text-align: center; font-size: 12px; padding:3px 0px; color: #323232; 
+div.tab{display: block; width: 100%; height: 25px; border-bottom: 1px solid #b4b4b4; margin: 10px 0 0 0;}
+span.tab_item{width:103px; display: block; float: left; text-align: center; font-size: 12px; padding:3px 0px; color: #323232; 
     border: 1px solid transparent; border-bottom: 1px solid #b4b4b4;   
 }
 div.tab a{text-decoration: none;}
@@ -441,7 +441,7 @@ ul.setting_list.True{display: none;}
 }
 .setting_field{
     float: left;
-    width: 360px;
+    width: 345px;
     padding-left: 60px;
     font-size: 13px;
     color: #323232;
@@ -522,7 +522,7 @@ input:not([type="submit"]).setting_input:focus{
     width: 362px;
     height: 20px;
     margin-top: 10px;
-    margin-left: 70px;
+    margin-left: 55px;
     padding:2px 5px; 
 }
 
@@ -533,4 +533,26 @@ input:not([type="submit"])#search_box_input{
     font-size:12px;display:inline; height:20px;
     width: 330px;
     float: left;
+}
+
+.from{font-size: 13px;}
+
+.search_list{display: none;}
+.search_result{font-size: 12px; color: #323232;}
+
+.search_feed_item{}
+.search_feed_item:hover{background-color: rgb(245,245,245);cursor: pointer;}
+
+ul.comments textarea,
+  ul.show_comments textarea,
+  .likes_container textarea{
+    width:405px; margin:0px; height:15px;
+}
+
+.no_result{
+    font-size: 12px;
+    padding: 5px 5px;
+    border-bottom: 1px solid #E9E9E9;
+    font-weight: bold;
+    
 }

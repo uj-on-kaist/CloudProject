@@ -41,6 +41,7 @@ def feed(request):
     context['current_user'] = user
     context['page_feed'] = "selected"
     context['user_profile'] = user_profile
+    
     return HttpResponse(t.render(context))
 
 

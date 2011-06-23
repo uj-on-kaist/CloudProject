@@ -1,0 +1,21 @@
+<div id="file_list" class="search_list" >
+{% if files|length_is:"0" %}
+<div class="no_result">
+No Result
+</div>
+{% else %}
+{% for file in files %}
+
+<div class="file_item">
+<a href="{{ file.url }}" target="_blank" title="{{ file.name }}">
+<span class="ui_icon ui_icon_file_{{ file.type }}"></span>
+<p class="file_name">{{ file.name }}</p>
+<p class="type_name">{{ file.type_name }}</p>
+
+
+</a>
+</div>
+{% endfor %}
+
+{% endif %}
+</div>

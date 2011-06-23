@@ -1,0 +1,23 @@
+<div id="topic_list" class="search_list" >
+{% if topics|length_is:"0" %}
+<div class="no_result">
+No Result
+</div>
+{% else %}
+{% for topic in topics %}
+<div class="topic_item">
+
+<div class="topic_info">
+<p class="topic_name"><b>[{{ topic.name }}]</b></p>
+</div>
+
+<div class="topic_detail">
+{{ topic.detail }}
+</div>
+
+
+</div>
+{% endfor %}
+
+{% endif %}
+</div>

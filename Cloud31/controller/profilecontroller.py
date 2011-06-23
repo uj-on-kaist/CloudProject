@@ -53,8 +53,9 @@ def favorite(request):
     user = get_object_or_404(User,username=request.user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
     context['profile_user']=request.user.username
-    context['current_user']=request.user.username
+    
     context['side_list']=['user_profile']
+    context['current_user']=user
     context['user_profile']=user_profile
     context['profile_type']='me'
     context['page_user']='My'

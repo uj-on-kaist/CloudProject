@@ -1,0 +1,61 @@
+{% include "meta_open.html"%}
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#feed_list').show();
+});
+</script>
+
+<h2 class="page_title">Search</h2>
+
+<p class="search_result">{{ search_length }} results total for keyword <b>{{ keyword }}</b>.</p>
+
+<div class="tab">
+<a href="#" onclick="$('.search_list').hide(); $('#feed_list').show(); return false;">
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">
+        Feeds 
+        {% if not feeds|length_is:"0" %}
+        ({{feeds|length}})
+        {% endif %}
+    </span>
+</a>
+
+<a href="#" onclick="$('.search_list').hide();$('#topic_list').show();   return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">
+        Topics
+        {% if not topics|length_is:"0" %}
+        ({{topics|length}})
+        {% endif %}
+        </span>
+</a>
+
+<a href="#" onclick="$('.search_list').hide();$('#file_list').show();      return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">
+        Files
+        {% if not files|length_is:"0" %}
+        ({{files|length}})
+        {% endif %}
+        </span>
+</a>
+<a href="#" onclick="$('.search_list').hide();   return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">
+        Location
+        {% if not locations|length_is:"0" %}
+        ({{locations|length}})
+        {% endif %}
+        </span>
+</a>
+<a href="#" onclick="$('.search_list').hide();   return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">
+        Members
+        {% if not members|length_is:"0" %}
+        ({{members|length}})
+        {% endif %}
+    </span>
+</a>
+</div>
+
+{% include "ui/search_feeds.html"%}
+{% include "ui/search_topics.html"%}
+{% include "ui/search_files.html"%}
+{% include "meta_close.html"%}

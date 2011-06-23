@@ -10,7 +10,18 @@ from django.http import HttpResponse
 
 import json
 import parser
+import re
 
+def remove_special(inStr):
+    result = inStr
+    result=smart_unicode(result, encoding='utf-8', strings_only=False, errors='strict')
+    # try:
+#         result=smart_unicode(inStr, encoding='ascii', strings_only=False, errors='strict')
+#         result = re.sub('[^가-힣0-9a-zA-Z\\s]', '', result)
+#         print result+'/'+inStr
+#     except Exception as e:
+#         print str(e)
+    return result
 
 def process_messages(request, messages):
     feeds=list()

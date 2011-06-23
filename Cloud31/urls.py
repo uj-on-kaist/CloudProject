@@ -73,7 +73,7 @@ urlpatterns = patterns('',
     url(r'^api/message/delete/(?P<message_id>\w+)$','controller.messagecontroller.delete_message'),
     url(r'^api/message/get/(?P<load_type>\w+)/$','controller.messagecontroller.load_message'),
     
-    url(r'^api/search/user$', 'controller.searchcontroller.ajax_user'),
+    
     
     
     
@@ -100,4 +100,8 @@ urlpatterns = patterns('',
     url(r'^setting/$', 'controller.settingcontroller.setting'),
     url(r'setting/update/(?P<update_type>\w+)$', 'controller.settingcontroller.update'),
     url(r'^setting/picture/set$', 'controller.settingcontroller.ajax_upload'),
+    
+    
+    url(r'^search/(?P<keyword>.*)$', 'controller.searchcontroller.main'),
+    url(r'^api/search/user$', 'controller.searchcontroller.ajax_user'),
 )

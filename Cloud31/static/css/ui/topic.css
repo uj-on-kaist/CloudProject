@@ -1,0 +1,14 @@
+.topic_item{
+    font-size: 12px;
+    padding: 10px 5px;
+    border-bottom: 1px solid #E9E9E9;
+}
+.topic_item:hover{background-color: rgb(245,245,245);cursor: pointer;}
+
+.topic_item .topic_info{
+    
+}
+.topic_item .topic_detail{
+    
+}
+.topic_name{color: #325AAA; margin: 0; padding: 0;}

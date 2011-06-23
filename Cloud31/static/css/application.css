@@ -5,11 +5,10 @@ body {
 /*   background-color: #fcfcfc;  */}
 
 a {
-  color: #107fc9;
-  color: #3f8fba;
+  color: #325AAA;
   text-decoration: none; }
   a:hover {
-    color: #3f8fba;
+    color: #325AAA;
     text-decoration: underline; }
 
 p {
@@ -229,7 +228,7 @@ ul.dropdown {
   display: block;
   margin: 5px 0; }
 .stream .stream_element {
-  padding: 10px 10px;
+  padding: 10px 0px;
   min-height: 50px;
   border-bottom: 1px solid #E9E9E9;
   border-top: 1px solid white; }
@@ -350,7 +349,7 @@ ul.dropdown {
   .stream_element:hover > .controls, .stream_element .comment:hover > .controls {
     display: inline; }
   .stream_element:hover .from a, .stream_element .comment:hover .from a {
-    color: #3f8fba; }
+    color: #325AAA; }
 
 .status_message_show .stream_element .content {
   font-size: 1em; }

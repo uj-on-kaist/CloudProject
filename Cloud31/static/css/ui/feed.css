@@ -9,7 +9,7 @@
     padding:8px;
 }
 
-.feed_form{width:520px;padding:10px;}
+.feed_form{width:525px;}
 
 
 .feed_form .control .button.update{
@@ -66,3 +66,28 @@ li.nostyle{ border:none;}
 ul.comments li.write_box, ul.comment_count li {border-left:3px solid #F0F4F5;}
 ul.comment_count{font-size: 11px;}
 
+
+.feed_form .qq-upload-button{
+    width: 22px;
+    padding: 0px;
+}
+
+.feed_form .qq-upload-list{
+    display: block;
+    width: 100%;
+    padding: 0px;
+}
+
+.feed_form .attach_label{
+    float: left;
+    height: 22px;
+    line-height: 23px;
+    margin-right: 10px;
+    color: rgb(120,120,120);
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#feed_message_input:focus{
+    outline: none; border:1px solid #34b0d9;
+}

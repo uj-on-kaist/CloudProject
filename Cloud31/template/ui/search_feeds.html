@@ -1,0 +1,52 @@
+<div id="feed_list" class="search_list" type="{{ load_type }}">
+{% if feeds|length_is:"0" %}
+<div class="no_result">
+No Result
+</div>
+{% else %}
+{% for feed in feeds %}
+
+<div class="stream feed_item search_feed_item" id="feed_{{ feed.id }}" data-guids="3,4" id="main_stream" onclick="location.href='/feed/detail/{{ feed.id }}'"><div class="stream_element">
+  <div class="sm_body">
+    <a href="/user/{{ feed.author }}" class="user_link">
+      <img class="avatar author" src="/picture/{{ feed.author }}" data-person_id="2">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/{{ feed.author }}" class="user_link">
+          {{ feed.author }}
+        </a>
+        <span class="author_name">{{ feed.author_name }}
+        </span>
+      </div>
+      <p class="feed_content">
+        {{ feed.contents|safe }}
+      </p>
+      <div class="info">
+        <span class="timeago">
+          <abbr class="timeago feed_time" title="2011-06-08 13:01:46 UTC">{{ feed.reg_date }}</abbr>
+        </span>
+        <span class="via">
+        </span>
+        
+        <span class="like_action">
+        {% if feed.attatch_files %}
+        <span class="attach_file">
+        |  <a href="#" class="focus_comment_textarea" >첨부파일(<span class="attach_file_count"></span>)</a>
+        </span>
+        {% endif %}
+        
+        <span class="comment_action">
+        |  <a href="#"  onclick="return false;">Comments (<span class="comment_count_text">{{ feed.comments|length }}</span>)</a>
+        </span>
+      </div>
+      <div class="likes">
+      </div>    
+    
+    </div>
+  </div>
+</div>
+</div>
+{% endfor %}
+{% endif %}
+</div>
