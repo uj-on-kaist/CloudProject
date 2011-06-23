@@ -35,7 +35,7 @@ function nl2br (str, is_xhtml) {
 
 function remove_special(input){
     var result=input;
-    var re = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+    var re = /[\{\}\[\]\/?.,;:|\)*~`!^\+┼<>@\#$%&\'\"\\\(\=]/gi;
     return result.replace(re, "");
 }
 

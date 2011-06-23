@@ -10,6 +10,7 @@
 .file_item:hover .file_name{text-decoration: underline;}
 
 .file_name{
+    margin: 0; padding: 0;
     padding-left: 5px;
     float: left;
     width: 375px;
@@ -22,6 +23,7 @@
 text-decoration: none;
 }
 .type_name{
+    margin: 0; padding: 0;
     color: #323232;text-decoration: none;
     padding-left: 5px;
     float: left;

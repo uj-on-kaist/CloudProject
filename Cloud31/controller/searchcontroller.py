@@ -11,6 +11,7 @@ from controller.models import *
 from django.utils.encoding import smart_unicode
 from django.shortcuts import get_object_or_404
 from django.core import serializers
+from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required
 
@@ -34,6 +35,11 @@ def main(request, keyword):
         context['search_length']=len(context['feeds'])+len(context['topics']) \
                             +len(context['files'])+len(context['locations'])+len(context['members'])
     else:
+        context['feeds']=list()
+        context['topics']=list()
+        context['files']=list()
+        context['locations']=list()
+        context['members']=list()
         context['search_length'] = 0
     return HttpResponse(t.render(context))
 
@@ -41,7 +47,11 @@ def search_feeds(request, inStr):
     result = list()
     
     try:
-        feeds = Message.objects.filter(contents__contains=inStr, is_deleted=False)
+        arr = inStr.split(' ')
+        query_type = Q()
+        for item in arr:
+            query_type = query_type & Q(contents__contains=item)
+        feeds = Message.objects.filter(query_type, is_deleted=False)
         result = my_utils.process_messages(request,feeds)
     except Exception as e:
         print str(e)
@@ -52,13 +62,16 @@ def search_feeds(request, inStr):
 def search_topics(request, inStr):
     result = list()
     try:
-        topics = Topic.objects.filter(topic_name__contains=inStr)
+        arr = inStr.split(' ')
+        query_type = Q()
+        for item in arr:
+            query_type = query_type & Q(topic_name__contains=item)
+        topics = Topic.objects.filter(query_type)
         for topic in topics:
             item = dict()
             item['name']=topic.topic_name
             item['detail']=topic.topic_detail
             result.append(item)
-        print topics
     except Exception as e:
         print str(e)
         pass
@@ -67,7 +80,11 @@ def search_topics(request, inStr):
 def search_files(request, inStr):
     result = list()
     try:
-        files = File.objects.filter(file_name__contains=inStr)
+        arr = inStr.split(' ')
+        query_type = Q()
+        for item in arr:
+            query_type = query_type & Q(file_name__contains=item)
+        files = File.objects.filter(query_type)
         for a_file in files:
             item = dict()
             item['type']=a_file.file_type
@@ -95,7 +112,6 @@ def search_files(request, inStr):
             item['name']=a_file.file_name
             item['url']='/media/'+a_file.file_contents.url
             result.append(item)
-        print files
     except Exception as e:
         print str(e)
         pass
