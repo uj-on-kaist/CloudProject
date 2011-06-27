@@ -64,7 +64,37 @@ def process_messages(request, messages):
         feeds.append(feed)
     return feeds
     
-    
+
+def process_files(files):
+    result = list()
+    for a_file in files:
+        item = dict()
+        item['type']=a_file.file_type
+        if a_file.file_type in ['xls','xlsx']:
+            item['type']='excel'
+            item['type_name']='Excel file'
+        elif a_file.file_type in ['doc','docx']:
+            item['type']='word'
+            item['type_name']='Word file'
+        elif a_file.file_type in ['ppt','pptx']:
+            item['type']='ppt'
+            item['type_name']='Powerpoint file'
+        elif a_file.file_type in ['ppt','pptx']:
+            item['type']='ppt'
+            item['type_name']='Powerpoint file'
+        elif a_file.file_type in ['hwp']:
+            item['type_name']='HWP file'
+        elif a_file.file_type in ['pdf']:
+            item['type_name']='PDF file'
+        elif a_file.file_type in ['zip']:
+            item['type_name']='Zip file'
+        else:
+            item['type']='etc'
+            item['type_name']='Unknown type' 
+        item['name']=a_file.file_name
+        item['url']='/media/'+a_file.file_contents.url
+        result.append(item)
+    return result  
 
 
 def remove_duplicates(input_list):
@@ -142,3 +172,29 @@ def next_search_index(index):
         return this_index, next_index
     except:
         pass
+        
+        
+
+def get_related_users(topic_name):
+    print 123123
+    try:
+        users = Message.objects.filter(related_topics__contains=topic_name+',').values('author').distinct()[:20]
+        result = list()
+        for author in users:
+            user_id = int(author['author'])
+            try:
+                user = User.objects.filter(id=user_id, is_active=True)[0]
+                result.append(user.username)
+            except Exception as e:
+                print str(e)
+                pass
+            
+        return result
+    except Exception as e:
+        print str(e)
+        return list()    
+    
+    
+def prepare_search_topic(context):
+    context['ko_list']=[u'ㄱ', u'ㄲ', u'ㄴ', u'ㄷ', u'ㄸ', u'ㄹ', u'ㅁ', u'ㅂ', u'ㅃ', u'ㅅ', u'ㅆ', u'ㅇ', u'ㅈ', u'ㅉ', u'ㅊ', u'ㅋ', u'ㅌ', u'ㅍ', u'ㅎ']
+    context['en_list']=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']

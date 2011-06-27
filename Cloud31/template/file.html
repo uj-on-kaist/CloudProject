@@ -1,0 +1,25 @@
+{% include "meta_open.html"%}
+
+<h2 class="page_title">File</h2>
+
+<table class="file_table">
+    <tr>
+        <th width="210" class="first"><p>File Name</p></th>
+        <th width="100" ><p>Format</p></th>
+        <th width="160"><p>Related Topics</p></th>
+    </tr>
+    
+    {% for file in files.object_list %}
+    <tr class="file_item" onclick="window.open('{{ file.url }}');">
+        <td class="first name">
+            <span class="ui_icon ui_icon_file_{{ file.type }}"></span>
+            <p class="ellipsis">{{ file.name }}</p></td>
+        <td ><p>{{ file.type }}</p></td>
+        <td><p class="topic_detail">{{ file.related_topics }}</p></td>
+    </tr>
+    {% endfor%}
+</table>
+
+{% include "ui/pagination.html" %}
+
+{% include "meta_close.html"%}

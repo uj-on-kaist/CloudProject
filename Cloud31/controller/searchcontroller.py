@@ -85,33 +85,7 @@ def search_files(request, inStr):
         for item in arr:
             query_type = query_type & Q(file_name__contains=item)
         files = File.objects.filter(query_type)
-        for a_file in files:
-            item = dict()
-            item['type']=a_file.file_type
-            if a_file.file_type in ['xls','xlsx']:
-                item['type']='excel'
-                item['type_name']='Excel file'
-            elif a_file.file_type in ['doc','docx']:
-                item['type']='word'
-                item['type_name']='Word file'
-            elif a_file.file_type in ['ppt','pptx']:
-                item['type']='ppt'
-                item['type_name']='Powerpoint file'
-            elif a_file.file_type in ['ppt','pptx']:
-                item['type']='ppt'
-                item['type_name']='Powerpoint file'
-            elif a_file.file_type in ['hwp']:
-                item['type_name']='HWP file'
-            elif a_file.file_type in ['pdf']:
-                item['type_name']='PDF file'
-            elif a_file.file_type in ['zip']:
-                item['type_name']='Zip file'
-            else:
-                item['type']='etc'
-                item['type_name']='Unknown type' 
-            item['name']=a_file.file_name
-            item['url']='/media/'+a_file.file_contents.url
-            result.append(item)
+        result = my_utils.process_files(files)
     except Exception as e:
         print str(e)
         pass

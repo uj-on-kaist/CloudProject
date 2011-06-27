@@ -7,9 +7,10 @@
 
     display: block;
     padding:8px;
+    font-family: "Tahoma","Helvetica", Arial, sans-serif;
 }
 
-.feed_form{width:525px;position: relative;}
+.feed_form{width:525px;position: relative;display: inline-block;}
 
 
 .feed_form .control .button.update{
@@ -20,7 +21,7 @@
 
 .feed_form .control{
     padding-top: 5px;
-    display: block;
+    display: inline-block;
     float:left;
 }
 .feed_form .control .item{

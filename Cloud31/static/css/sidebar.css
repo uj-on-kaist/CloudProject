@@ -12,6 +12,7 @@
     margin-bottom: 10px;
 /*     border-bottom: 1px solid #dcdcdc; */
 }
+
 .user_profile_box{
 }
 
@@ -41,14 +42,14 @@
     
 }
 
-.user_profile_box ul.user_related_topics{
+.user_related_topics, .topic_related_users{
     margin: 0; padding: 5px 0 0 0;
     border-top: 1px solid #E0E0E0;
 }
-.user_profile_box ul.user_related_topics b{
+.user_related_topics b, .topic_related_users b{
     
 }
-.user_profile_box ul.user_related_topics li{
+.user_related_topics li, .topic_related_users li{
     color: #325AAA;
 }
 
@@ -57,3 +58,68 @@ input[type='text'].search_topic_input,input[type='password'].search_topic_input{
     padding: 4px 5px;
     width: 157px;
 }
+
+.search_topic_box{
+    width: 167px;
+    overflow-x: hidden;
+}
+
+.search_topic_box span.keyword{
+    font-size: 12px;
+    float: left;
+    width: 16px;
+    padding: 0px 2px;
+    margin: 2px 0;
+    text-align: center;
+    border-right: 1px solid #B4B4B4;
+    
+}
+.search_topic_box span.keyword a{
+    color: #323232;
+}
+.search_topic_box span.keyword a:hover{
+    color: #325AAA;
+}
+.num_index, .en_index, .ko_index{
+    float: left;
+    width: 170px;
+    margin: 5px 0;
+}
+.num_index span.keyword{
+    border:0;
+}
+.topic_detail_box{
+    margin: 10px 0 15px 0;
+}
+.topic_detail_box p{
+    margin: 0; padding: 0;
+}
+.topic_detail_box ul{margin: 0;padding-left:20px;}
+.topic_detail_box li{margin: 0; list-style-type: disc;}
+
+.topic_related_users li{
+   float: left;
+}
+.topic_related_users img{
+    width: 30px;
+    height: 30px;
+    margin-right: 2px;
+    padding: 1px;
+    border: 1px solid #F0F0F0;
+}
+.topic_related_users img:hover{
+    border: 1px solid #323232;
+}
+
+.topic_related_users .list_header{
+    margin-bottom: 5px;
+}
+
+.edit_btn{
+    font-weight: normal;
+    font-size: 12px;
+    margin-left: 10px;
+    letter-spacing: 0px;
+}
+
+

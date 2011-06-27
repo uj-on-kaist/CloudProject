@@ -6,70 +6,19 @@
 
 
 {% if 'search_topic' in side_list%}
-<div class="side_item">
-<h3 class="sidebar_header">Search Topic</h3>
-<div title="search_topic" class="search_topic_box">
-<form method="get" action="./">
-<input id="q" type="text" placeholder="ex)삼일..." name="q" class="search_topic_input input_167_25">
-</form>
-</div>
+{% include "sidebar/search_topic.html" %}
+{% endif %}
 
-<div>
-<span><a href="./">All</a></span>
-</div>
+{% if 'search_file' in side_list%}
+{% include "sidebar/search_file.html" %}
+{% endif %}
 
-<div>
-{% for en in en_list %}
-<span><a href="./?index={{en}}">{{ en }}</a></span>
-{% endfor %}
-</div>
-
-<div>
-{% for ko in ko_list %}
-<span><a href="./?index={{ko}}">{{ ko }}</a></span>
-{% endfor %}
-</div>
-
-<div>
-<span><a href="./?index=#">#</a></span>
-</div>
-
-</div>
+{% if 'topic_detail' in side_list%}
+{% include "sidebar/topic_detail.html" %}
 {% endif %}
 
 {% if 'user_profile' in side_list%}
-<div class="side_item">
-<h3 class="sidebar_header">User Profile</h3>
-<div title="user_profile" class="user_profile_box">
-
-
-<div class="user_picture_box">
-    <img src="/picture/{{ target_user.user }}"  class="user_picture"/>
-</div>
-<p class="user_id">{{ target_user.user.username }}</p>
-<p class="user_name">{{ target_user.user.last_name }}</p>
-<p class="user_detail">
-{{ target_user.user.email }} <br />
-{% if user_profile.dept %}
-{{ user_profile.dept }} <br />
-{% endif %}
-{% if user_profile.position %}
-{{ user_profile.position }} <br />
-{% endif %}
-</p>
-
-{% if related_topics %}
-<ul class="user_related_topics">
-<b>Related Topics</b>
-
-{% for topic in related_topics %}
-<li><a href="/topic/{{ topic }}">#{{ topic }}</a></li>
-{% endfor %}
-</ul>
-{% endif %}
-
-</div>
-</div>
+{% include "sidebar/user_profile.html" %}
 {% endif %}
 
 

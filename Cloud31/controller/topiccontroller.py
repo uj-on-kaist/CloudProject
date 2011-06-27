@@ -30,8 +30,7 @@ def topic(request):
     context = RequestContext(request)
     
     context['side_list']=['search_topic']
-    context['ko_list']=[u'ㄱ', u'ㄲ', u'ㄴ', u'ㄷ', u'ㄸ', u'ㄹ', u'ㅁ', u'ㅂ', u'ㅃ', u'ㅅ', u'ㅆ', u'ㅇ', u'ㅈ', u'ㅉ', u'ㅊ', u'ㅋ', u'ㅌ', u'ㅍ', u'ㅎ']
-    context['en_list']=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    my_utils.prepare_search_topic(context)
     
     context['page_topic'] = "selected"
     context['topics']=list()
@@ -43,33 +42,20 @@ def topic(request):
             query_type = Q(topic_name__istartswith=keyword)
         
         search_index = request.GET.get('index', '')
+        print search_index
         if search_index is not '':
             if search_index in map(chr, range(65, 91)):
                 query_type = Q(topic_name__istartswith=search_index)
-            elif search_inde is '#':
-                query_type = Q()
+            elif search_index == 'number':
+                query_type = Q(topic_name__gt="0",topic_name__lt="9")
             else:
                 this_index,next_index=my_utils.next_search_index(search_index)
                 query_type = Q(topic_name__gt=this_index, topic_name__lt=next_index)
         
-        topics = Topic.objects.filter(query_type)
+        topics = Topic.objects.filter(query_type).order_by('topic_name')
         
-        b = list()
-        for topic in topics:
-            b.append(topic)
         
-        c = list()
-        for a in b:
-            c.append(a)
-            c.append(a)
-        for a in b:
-            c.append(a)
-            c.append(a)
-        for a in b:
-            c.append(a)
-            c.append(a)
-        
-        paginator = Paginator(c, 15)
+        paginator = Paginator(topics, 15)
         
         page = request.GET.get('page', 1)
         try:
@@ -96,14 +82,19 @@ def topic_detail(request,topic_name):
     t = loader.get_template('topic_detail.html')
     context = RequestContext(request)
     topic_name = smart_unicode(topic_name, encoding='utf-8', strings_only=False, errors='strict')
-    context['page_topic'] = "selected"
-    context['topics']=list()
+    context['side_list']=['topic_detail']
+    context['topic']=list()
     try:
-        context['topics'] = Topic.objects.filter(topic_name=topic_name)
+        context['topic'] = Topic.objects.filter(topic_name=topic_name)[0]
     except Exception as e:
-        print str(e)
+        pass
+    
+    context['page_topic'] = "selected"
     context['load_type']='topic#' + topic_name
-    context['topic_name']=context['topics'][0].topic_name
+    context['topic_name']=context['topic'].topic_name
+    
+    
+    context['related_users']=my_utils.get_related_users(context['topic'].topic_name)
     return HttpResponse(t.render(context))
     
     
@@ -136,3 +127,25 @@ def load_topic_timeline(request,topic_name):
             return return_error('No Such Topic')
             
     return HttpResponse(json.dumps(result, indent=4))
+    
+    
+
+
+def update_description(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    topic_id = request.POST.get('topic_id',False)
+    new_description = request.POST.get('desc',False)
+    new_description = smart_unicode(new_description, encoding='utf-8', strings_only=False, errors='strict')
+
+    try:
+        topic = Topic.objects.get(id=topic_id)
+        topic.topic_detail = new_description
+        topic.save()
+    except Exception as e:
+        print str(e)
+    
+    return HttpResponse(json.dumps(result, indent=4))
+    

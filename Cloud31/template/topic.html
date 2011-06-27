@@ -13,7 +13,7 @@
     <tr class="topic_item" onclick="document.location.href='/topic/{{ topic.topic_name }}';">
         <td class="topic_name first"><p>{{ topic.topic_name }}</p></td>
         <td ><p>#</p></td>
-        <td><p class="ellipsis topic_detail">{{ topic.topic_detail }}</p></td>
+        <td><p class="ellipsis topic_detail">{{ topic.topic_detail|striptags|safe }}</p></td>
     </tr>
     {% endfor%}
 </table>

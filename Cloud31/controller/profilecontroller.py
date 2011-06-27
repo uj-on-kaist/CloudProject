@@ -47,13 +47,13 @@ def favorite(request):
     
     user = get_object_or_404(User,username=request.user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
-    context['profile_user']=request.user.username
+    target_user = get_object_or_404(UserProfile, user=user)
     
+    context['page_favorite']='selected'
     context['side_list']=['user_profile']
-    context['current_user']=user
-    context['user_profile']=user_profile
-    context['profile_type']='me'
-    context['page_user']='My'
+    context['target_user']=target_user
+    context['related_topics'] = my_utils.get_related_topics(request.user.username)
+    
     return HttpResponse(t.render(context))
 
 def picture(request,username):

@@ -23,6 +23,71 @@ def upload_page( request ):
     
 
 import os, json
+import my_utils
+from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+def main(request):
+    t = loader.get_template('file.html')
+    context = RequestContext(request)
+    context['side_list']=['search_file']
+    context['page_files'] = "selected"
+    my_utils.prepare_search_topic(context)
+    
+    context['files']=list()
+    try:
+        keyword = request.GET.get('q', '')
+        query_type = Q()
+        if keyword is not '':
+            print keyword
+            query_type = Q(file_name__icontains=keyword)
+        
+        search_index = request.GET.get('index', '')
+
+        if search_index is not '':
+            if search_index in map(chr, range(65, 91)):
+                query_type = Q(file_name__istartswith=search_index)
+            elif search_index == 'number':
+                query_type = Q(file_name__gt="0",file_name__lt="9")
+            else:
+                this_index,next_index=my_utils.next_search_index(search_index)
+                query_type = Q(file_name__gt=this_index, file_name__lt=next_index)
+        
+        files = models.File.objects.filter(query_type).order_by('file_name')
+        files = my_utils.process_files(files)
+        
+        paginator = Paginator(files, 15)
+        
+        page = request.GET.get('page', 1)
+        try:
+            context['files'] = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            context['files'] = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            context['files'] = paginator.page(paginator.num_pages)
+        
+        context['index_info'] = my_utils.get_index_list(context['files'].number, paginator.num_pages)
+        
+    except Exception as e:
+        print str(e)
+        
+    
+    
+    return HttpResponse(t.render(context))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def save_upload(request, uploaded, filename, raw_data ):
     """
@@ -98,3 +163,5 @@ def ajax_upload( request ):
   # let Ajax Upload know whether we saved it or not
   ret_json = { 'success': success, 'id': file_id}
   return HttpResponse( json.dumps( ret_json ) )
+  
+    

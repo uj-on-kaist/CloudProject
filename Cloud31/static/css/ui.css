@@ -132,8 +132,30 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 .button_m:active{
     background-image: url("/static/image/Button_M_sel.png");border: 0;
     outline: 0;
-    
 }
+
+.button_s{
+    background-color: transparent;
+    background-image: url("/static/image/Button_S_nor.png");
+    background-repeat: no-repeat;
+    width: 67px;
+    height: 30px;
+    border: 0;
+    outline: 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: rgb(120,120,120);
+}
+
+.button_s:hover{
+    background-image: url("/static/image/Button_S_over.png");border: 0;
+    outline: 0;
+}
+.button_s:active{
+    background-image: url("/static/image/Button_S_sel.png");border: 0;
+    outline: 0;
+}
+
 
 
 input[type='text'].input_167_25,input[type='password'].input_167_25{
