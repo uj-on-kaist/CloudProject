@@ -1,20 +1,41 @@
 <div class="rightBar span-5" style="margin:0px;">
 
-<div style="margin-top:55px;">
+
 {% if user.is_authenticated %}
 
 
 {% if 'user_profile' in side_list%}
+<div class="side_item">
+<h3 class="sidebar_header">User Profile</h3>
 <div title="user_profile" class="user_profile_box">
-<a href="/user/{{ current_user }}"><img src="/picture/{{ current_user }}"  style="width:168px; height:168px;"/></a>
-<h2>{{ current_user.username }}</h2>
-<h3 style="margin:0px">{{ current_user.last_name }}</h3>
-<b>
-{{ user_profile.position }} 
+
+
+<div class="user_picture_box">
+    <img src="/picture/{{ target_user.user }}"  class="user_picture"/>
+</div>
+<p class="user_id">{{ target_user.user.username }}</p>
+<p class="user_name">{{ target_user.user.last_name }}</p>
+<p class="user_detail">
+{{ target_user.user.email }} <br />
 {% if user_profile.dept %}
-| {{ user_profile.dept }}
+{{ user_profile.dept }} <br />
 {% endif %}
-</b>
+{% if user_profile.position %}
+{{ user_profile.position }} <br />
+{% endif %}
+</p>
+
+{% if related_topics %}
+<ul class="user_related_topics">
+<b>Related Topics</b>
+
+{% for topic in related_topics %}
+<li><a href="/topic/{{ topic }}">#{{ topic }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+</div>
 </div>
 {% endif %}
 
@@ -47,6 +68,6 @@ $(document).ready(function(){
 
 
 {% endif %}
-</div>
+
 
 </div>

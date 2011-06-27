@@ -1,12 +1,12 @@
 {% include "meta_open.html"%}
 
-<h2 class="page_title">{{page_user}} Profile</h2>
+<p class="page_title profile_title"><b class="header_map">Profile ></b> {{target_user.user.last_name}} <b class="user_id">@{{target_user.user.username}}</b></p>
 
 <script src="{{ STATIC_URL }}js/feed.js" type="text/javascript"></script>
 
 <div class="tab">
 <a href="#" onclick="load_feed('user#{{target_user.user.username}}'); return false;">
-    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">Feed</span>
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">Feeds</span>
 </a>
 
 <a href="#" onclick="load_feed('at#{{target_user.user.username}}'); return false;">

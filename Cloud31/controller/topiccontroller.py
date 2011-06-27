@@ -20,6 +20,9 @@ from django.utils.encoding import smart_unicode
 import json
 import my_utils
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
 @login_required(login_url='/signin/')
 def topic(request):
     t = loader.get_template('topic.html')
@@ -27,7 +30,21 @@ def topic(request):
     context['page_topic'] = "selected"
     context['topics']=list()
     try:
-        context['topics'] = Topic.objects.all()[:5]
+        topics = Topic.objects.all()
+        paginator = Paginator(topics, 2)
+        
+        page = request.GET.get('page', 1)
+        try:
+            context['topics'] = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            context['topics'] = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            context['topics'] = paginator.page(paginator.num_pages)
+        
+        print context['topics']
+        
     except Exception as e:
         print str(e)
         

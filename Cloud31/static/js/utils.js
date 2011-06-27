@@ -92,8 +92,8 @@ function detect_auto_complete(item){
         
         if(text.charAt(0) == '@' || text.charAt(0) == '#'){
             if(text.charAt(0) == '@'){
-                console.log(123);
                 $("#auto_complete_list .type_msg").text("Type search keyword for User...");
+                $('#auto_complete_list li.add').hide();
             }else{
                 $("#auto_complete_list .type_msg").text("Type search keyword for Topic...");
             }
@@ -154,6 +154,13 @@ function display_auto_complete(type,items, left, right, keyword){
         $('#auto_complete_list li.add').attr('left',left);
         $('#auto_complete_list li.add').attr('right',right);
         $('#auto_complete_list li.add').show();
+    }
+    if(type == 'user' && items.length == 0){
+         $("#auto_complete_list .search_msg").text("User Not found for \""+keyword+"\"");
+    }else if(type == 'topic' && items.length == 0){
+         $("#auto_complete_list .search_msg").text("Topic Not found for \""+keyword+"\"");
+    }else{
+        $("#auto_complete_list .search_msg").text("Search Result");
     }
     for(var i=0; i<items.length; i++){
         var item=items[i];

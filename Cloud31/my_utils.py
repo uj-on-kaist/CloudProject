@@ -79,3 +79,31 @@ def return_error(msg):
     return HttpResponse(json.dumps(result, indent=4))
 
 
+
+
+def get_related_topics(username):
+    result = list()
+    
+    try:
+        user = User.objects.get(username=username)
+    except:
+        return result
+    
+    
+    try:
+        messages = Message.objects.filter(author=user)
+        topic_list = ''
+        for message in messages:
+            if message.related_topics != '':
+                topic_list += message.related_topics
+                
+        result = filter(None,list(set(topic_list.split(','))))
+    except Exception as e:
+        print str(e)
+        pass
+
+    return result
+    
+    
+
+

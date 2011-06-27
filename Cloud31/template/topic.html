@@ -1,17 +1,21 @@
 {% include "meta_open.html"%}
 
-<h2 >Topics</h2>
+<h2 class="page_title">Topics</h2>
 
-<div>
-<b style="font-size:16px;">Search Topic</b>
-<input type="text" style="width:200px; display:inline; margin-left:5px;"/>
-</div>
-<!--
-<script src="{{ STATIC_URL }}js/feed.js" type="text/javascript"></script>
--->
-
-{% for topic in topics %}
-<a href="/topic/{{ topic.topic_name }}">{{ topic.topic_name }}</a>
-{% endfor%}
+<table class="topic_table">
+    <tr>
+        <th width="160" class="first"><p>Topic Name</p></th>
+        <th width="90" ><p>Messages</p></th>
+        <th width="265"><p>Topic Detail</p></th>
+    </tr>
+    
+    {% for topic in topics.object_list %}
+    <tr class="topic_item" onclick="document.location.href='/topic/{{ topic.topic_name }}';">
+        <td class="topic_name first"><p>{{ topic.topic_name }}</p></td>
+        <td ><p>#</p></td>
+        <td><p>{{ topic.topic_detail }}</p></td>
+    </tr>
+    {% endfor%}
+</table>
 
 {% include "meta_close.html"%}

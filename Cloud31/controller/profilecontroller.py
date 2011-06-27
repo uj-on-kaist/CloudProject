@@ -19,6 +19,8 @@ from django.contrib.auth.decorators import login_required
 import os,json
 from django.conf import settings
 from io import BufferedWriter,FileIO
+
+import my_utils
  
 @login_required(login_url='/signin/')
 def user(request, username):
@@ -28,20 +30,13 @@ def user(request, username):
     user = get_object_or_404(User,username=username)
     user_profile = get_object_or_404(UserProfile,user=user)
     target_user = get_object_or_404(UserProfile, user=user)
-    context['page_profile'] = "selected"
-    context['target_user']=target_user
-    context['profile_user']=username
+    
     
     context['side_list']=['user_profile']
-    context['current_user']=target_user.user
-    context['page_user']=target_user.user.username
+    context['target_user']=target_user
     context['user_profile']=user_profile
-    if request.user.username == username:
-        context['profile_type']='me'
-        context['page_user']='My'
-    else:
-        context['profile_type']='user'
-        context['page_user']=context['page_user']+"'s"
+    
+    context['related_topics'] = my_utils.get_related_topics(username)
     context['load_type']='user#'+username
     return HttpResponse(t.render(context))
 

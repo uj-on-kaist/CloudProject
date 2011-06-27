@@ -63,7 +63,7 @@ $(document).ready(function(){
         </span>
         <span class="ui_icon ui_icon_arrow_white" style="float:left; margin:0;"></span>
     </div>
-    <ul id="menu_list" onclick="event.stopPropagation();">
+    <ul id="menu_list" onclick="stopEvent(event);">
         <a href="/user/{{ user.username }}"><li class="menu_item">My Profile</li></a>
         <a href="/setting/"><li class="menu_item">Setting</li></a>
         <a href="/signout/"><li class="menu_item">Logout</li></a>

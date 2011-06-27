@@ -88,9 +88,9 @@ textarea{overflow-y: hidden;}
 
 .message_form{ display: inline-block; padding-bottom: 15px; font-size: 12px;}
 .message_form div div.label{
-    float:left; width:60px; text-align: right; font-weight: bold; margin:3px 5px 0 0; 
+    float:left; width:60px; text-align: right; font-weight: bold; margin:3px 10px 0 0; 
 }
-.message_form div textarea{width: 445px; font-size: 12px;margin:5px 0;}
+.message_form div textarea{width: 425px; font-size: 12px;margin:5px 0;}
 .message_form div.item.update{margin: 15px 0 0 65px;}
 
 
@@ -404,11 +404,12 @@ li.selected.menu_item:hover{background-color: rgb(196,231,241);}
 .user_box div p.setting a{font-size: 11px; color: rgb(50,90,170);line-height: 14px; margin-right: 10px;}
 
 
-h2.page_title{font-size: 24px; color: #323232;}
-
+.page_title{font-size: 20px; color: #323232; font-weight: bold; margin-bottom: 10px;}
+.profile_title b.user_id{font-size: 20px; color: #727272; font-weight: normal;}
+.page_title .header_map{font-size: 16px; margin-right: 5px;}
 
 div.tab{display: block; width: 100%; height: 25px; border-bottom: 1px solid #b4b4b4; margin: 10px 0 0 0;}
-span.tab_item{width:103px; display: block; float: left; text-align: center; font-size: 12px; padding:3px 0px; color: #323232; 
+span.tab_item{min-width:83px; display: block; float: left; text-align: center; font-size: 12px; padding:3px 10px; color: #323232; 
     border: 1px solid transparent; border-bottom: 1px solid #b4b4b4;   
 }
 div.tab a{text-decoration: none;}
@@ -500,9 +501,7 @@ ul.setting_list.True{display: none;}
 }
 
 
-.user_profile_box{
-    padding: 0px 11px;
-}
+
 
 
 .search_box{
@@ -544,3 +543,32 @@ ul.comments textarea,
     font-weight: bold;
 }
 
+
+.topic_table th, .topic_table td{padding:0;}
+.topic_table tr td.topic_title p{
+    color: #325AAA;
+}
+.topic_table tr td p{
+    height: 33px;
+    line-height: 33px;
+    overflow-y: hidden;
+    margin: 0; padding: 0;
+}
+ .topic_table tr th p{height: 23px;
+    line-height: 23px;
+    overflow-y: hidden;
+    margin: 0; padding: 0;}
+
+.topic_table tr th{
+    border-bottom: 1px solid #B4B4B4;
+    font-size: 12px;
+    color: #323232;
+}
+
+.topic_table tr.topic_item:hover{
+    background-color: rgb(235,250,250);   
+}
+
+th.first, td.first{
+    padding-left: 10px;
+}

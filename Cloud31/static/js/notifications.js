@@ -94,7 +94,7 @@ function show_noti(notis){
             else if(related_type == "Event")
                 url="/event/detail/"+related_id;
             else{
-                event.stopPropagation();
+                stopEvent(event);
                 return;
             }
             
@@ -112,7 +112,7 @@ function show_noti(notis){
 		      }
 	       });
             
-            event.stopPropagation();
+            stopEvent(event);
         });
         $('#noti_list a.see_more').before(noti_layout);
     }

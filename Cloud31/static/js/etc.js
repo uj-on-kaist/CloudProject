@@ -12,8 +12,7 @@ function show_user_menu(event){
         $("#user_box").find("span.ui_icon").removeClass("ui_icon_arrow_black");
         $("#user_box").find("span.ui_icon").addClass("ui_icon_arrow_white");
     }
-    
-    event.stopPropagation();
+    stopEvent(event);
 }
 
 function hide_user_menu(){
@@ -59,6 +58,15 @@ function select_this_tab(item){
     item.parent().parent().find(".tab_item").removeClass("selected");
     item.addClass("selected");
     return false;
+}
+
+function stopEvent(event){
+    agent = jQuery.browser;
+	if(agent.msie) {
+		event.cancelBubble = true;
+	} else {
+		event.stopPropagation();
+	}
 }
 
 
