@@ -38,6 +38,7 @@ def feed(request):
     
     user = get_object_or_404(User,username=request.user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
+    
     context['current_user'] = user
     context['page_feed'] = "selected"
     context['user_profile'] = user_profile
@@ -49,10 +50,11 @@ def feed(request):
 def feed_detail(request, feed_id):
     t = loader.get_template('feed_detail.html')
     context = RequestContext(request)
-    context['side_list']=['user_profile']
     
     user = get_object_or_404(User,username=request.user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
+    
+    
     context['current_user'] = user
     context['page_feed'] = "selected"
     context['user_profile'] = user_profile
@@ -61,7 +63,6 @@ def feed_detail(request, feed_id):
     if not feed.is_deleted:
         feed = my_utils.process_messages(request, [feed])
         context['feed'] = feed[0]
-    print feed
     
     return HttpResponse(t.render(context))
     

@@ -255,6 +255,7 @@ function add_event_comment(event_layout, comment, index, total){
         comment_layout.find('.stream_element_delete').attr('comment_id',comment.id);
         comment_layout.find('.stream_element_delete').click(function(){
             delete_event_comment($(this));
+            return false;
         });
     }else{
         comment_layout.css("border-left","3px solid #F0F4F5");

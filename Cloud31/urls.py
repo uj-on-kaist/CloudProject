@@ -63,7 +63,7 @@ urlpatterns = patterns('',
     url(r'^file/$', 'controller.filecontroller.main'),
     url(r'^file/ajax_upload$', 'controller.filecontroller.ajax_upload'),
     
-    
+    url(r'^members/$', 'controller.membercontroller.main'),
     
     
     url(r'^message/$', 'controller.messagecontroller.main'),

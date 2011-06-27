@@ -31,7 +31,7 @@ def main(request, keyword):
         context['files']=search_files(request, keyword)
         context['locations']=search_locations(request, keyword)
         context['members']=search_members(request, keyword)
-    
+        context['keyword'] = keyword
         context['search_length']=len(context['feeds'])+len(context['topics']) \
                             +len(context['files'])+len(context['locations'])+len(context['members'])
     else:
@@ -50,7 +50,7 @@ def search_feeds(request, inStr):
         arr = inStr.split(' ')
         query_type = Q()
         for item in arr:
-            query_type = query_type & Q(contents__contains=item)
+            query_type = query_type & Q(contents__icontains=item)
         feeds = Message.objects.filter(query_type, is_deleted=False)
         result = my_utils.process_messages(request,feeds)
     except Exception as e:
@@ -65,13 +65,9 @@ def search_topics(request, inStr):
         arr = inStr.split(' ')
         query_type = Q()
         for item in arr:
-            query_type = query_type & Q(topic_name__contains=item)
+            query_type = query_type & Q(topic_name__icontains=item)
         topics = Topic.objects.filter(query_type)
-        for topic in topics:
-            item = dict()
-            item['name']=topic.topic_name
-            item['detail']=topic.topic_detail
-            result.append(item)
+        result = topics
     except Exception as e:
         print str(e)
         pass
@@ -83,7 +79,7 @@ def search_files(request, inStr):
         arr = inStr.split(' ')
         query_type = Q()
         for item in arr:
-            query_type = query_type & Q(file_name__contains=item)
+            query_type = query_type & Q(file_name__icontains=item)
         files = File.objects.filter(query_type)
         result = my_utils.process_files(files)
     except Exception as e:
@@ -97,6 +93,28 @@ def search_locations(request, inStr):
 
 def search_members(request, inStr):
     result = list()
+    try:
+        arr = inStr.split(' ')
+        query_type_1 = Q()
+        query_type_2 = Q()
+        for item in arr:
+            query_type_1 = query_type_1 & Q(username__icontains=item)
+        for item in arr:
+            query_type_2 = query_type_2 & Q(last_name__icontains=item)
+        members = User.objects.filter(query_type_1 | query_type_2)
+        members_list = list()
+        for member in members:
+            try:
+                member_profile = UserProfile.objects.get(user=member)
+                member.profile = member_profile
+                members_list.append(member)
+            except:
+                pass
+                
+        result = members_list
+    except Exception as e:
+        print str(e)
+        pass
     return result
 
 def ajax_user(request):
@@ -109,7 +127,7 @@ def ajax_user(request):
     else:
         return HttpResponse(json.dumps(result, indent=4))
     
-    users = User.objects.filter(username__startswith=q)
+    users = User.objects.filter(username__istartswith=q)
     
     for user in users:
         try:
@@ -134,7 +152,7 @@ def ajax_topic(request):
     else:
         return HttpResponse(json.dumps(result, indent=4))
     
-    topics = Topic.objects.filter(topic_name__startswith=q)
+    topics = Topic.objects.filter(topic_name__istartswith=q)
     
     for topic in topics:
         try:

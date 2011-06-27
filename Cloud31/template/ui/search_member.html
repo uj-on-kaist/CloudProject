@@ -1,0 +1,25 @@
+<div id="member_list" class="search_list" >
+{% if members|length_is:"0" %}
+<div class="no_result">
+No Result
+</div>
+{% else %}
+<table class="member_table list_table">
+    
+    {% for member in members %}
+    <tr class="member_item list_item" onclick="document.location.href='/user/{{ member.username }}';">
+        <td width="60" class="first member_picture"><img src='/picture/{{ member.username}}' /></td>
+        <td width="160" class="name">
+            <p class="ellipsis username highlight_target"><a>@{{ member.username }}</a></p>
+            <p class="ellipsis real_name highlight_target">{{ member.last_name }}</p>
+        </td>
+        <td width="160" class="dept">
+            <p>{{ member.profile.dept }}</p>
+            <p>{{ member.profile.position }}</p>
+        </td>
+    </tr>
+    {% endfor%}
+</table>
+
+{% endif %}
+</div>

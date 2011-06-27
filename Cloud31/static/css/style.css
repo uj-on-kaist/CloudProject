@@ -404,7 +404,7 @@ li.selected.menu_item:hover{background-color: rgb(196,231,241);}
 .user_box div p.setting a{font-size: 11px; color: rgb(50,90,170);line-height: 14px; margin-right: 10px;}
 
 
-.page_title{font-size: 20px; color: #323232; font-weight: bold; margin-bottom: 10px;}
+.page_title{font-size: 20px; color: #323232; font-weight: bold; margin-bottom: 15px;}
 .profile_title b.user_id{font-size: 20px; color: #727272; font-weight: normal;}
 .page_title .header_map{font-size: 16px; margin-right: 5px;}
 
@@ -551,17 +551,18 @@ ul.comments textarea,
 
 .no_result{
     font-size: 12px;
-    padding: 5px 5px;
+    padding: 10px 5px;
     border-bottom: 1px solid #E9E9E9;
     font-weight: bold;
+    text-align: center;
 }
 
 
-.topic_table th, .topic_table td, .file_table th, .file_table td{padding:0;}
+.list_table th, .list_table td{padding:0;}
 .topic_table tr td.topic_title p, .file_table tr td.name p{
     color: #325AAA;
 }
-.topic_table tr td p, .file_table tr td p{
+.list_table tr td p{
     height: 33px;
     line-height: 33px;
     overflow-y: hidden;
@@ -575,21 +576,21 @@ ul.comments textarea,
     white-space:nowrap;
     text-overflow:ellipsis;
 }
- .topic_table tr th p, .file_table tr th p{height: 23px;
+ .list_table tr th p{height: 23px;
     line-height: 23px;
     overflow-y: hidden;
     margin: 0; padding: 0;}
 
-.topic_table tr th, .file_table tr th{
+.list_table tr th{
     border-bottom: 1px solid #B4B4B4;
     font-size: 12px;
     color: #323232;
 }
 
-.topic_table tr.topic_item td, .file_table tr.file_item td{
+.list_table tr.topic_item td{
     border-bottom: 1px solid #F0F0F0;
 }
-.topic_table tr.topic_item:hover,.file_table tr.file_item:hover{
+.list_table tr.list_item:hover{
     background-color: rgb(235,250,250);   
 }
 
@@ -598,7 +599,7 @@ ul.comments textarea,
     background-position-y: -86px;
 }
 
-th.first,.topic_table td.first{
+th.first,.list_table td.first{
     padding-left: 10px;
 }
 .file_table td.first{
@@ -609,7 +610,22 @@ td.first.name p{
     width: 200px;
 }
 
+.member_table tr.member_item td{
+    height: 60px;
+}
+.member_table td.member_picture img{
+    width: 50px;
+    height: 50px;
+}
 
+tr.member_item .name p{
+    line-height: 20px;
+    height: 20px;
+    font-weight: bold;
+    font-size: 12px;
+}
+tr.member_item .dept p{line-height: 20px; height: 20px;}
+tr.member_item .name p.real_name{color: #787878; font-weight: normal;}
 
 .index_box{
     color: #323232;
@@ -664,3 +680,7 @@ ul.index_list li.previous span, ul.index_list li.next span{
 
 
 
+
+.stream_element .event_delete.right{
+    top:5px;
+}

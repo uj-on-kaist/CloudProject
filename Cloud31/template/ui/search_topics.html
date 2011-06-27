@@ -4,6 +4,7 @@
 No Result
 </div>
 {% else %}
+<!--
 {% for topic in topics %}
 <div class="topic_item">
 
@@ -18,6 +19,17 @@ No Result
 
 </div>
 {% endfor %}
+-->
+<table class="topic_table list_table">
+    {% for topic in topics %}
+    <tr class="topic_item list_item" onclick="document.location.href='/topic/{{ topic.topic_name }}';">
+        <td width="160" class="topic_name first highlight_target"><p>#{{ topic.topic_name }}</p></td>
+        <td width="90" ><p>#</p></td>
+        <td width="265"><p class="ellipsis topic_detail">{{ topic.topic_detail|striptags|safe }}</p></td>
+    </tr>
+    {% endfor%}
+</table>
+
 
 {% endif %}
 </div>

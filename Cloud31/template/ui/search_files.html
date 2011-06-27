@@ -4,6 +4,7 @@
 No Result
 </div>
 {% else %}
+<!--
 {% for file in files %}
 
 <div class="file_item">
@@ -16,6 +17,19 @@ No Result
 </a>
 </div>
 {% endfor %}
+-->
+
+<table class="file_table list_table">
+    {% for file in files %}
+    <tr class="file_item list_item" onclick="window.open('{{ file.url }}');">
+        <td width="260" class="first name">
+            <span class="ui_icon ui_icon_file_{{ file.type }}"></span>
+            <p class="ellipsis highlight_target">{{ file.name }}</p></td>
+        <td width="100"  ><p>{{ file.type_name }}</p></td>
+        <td width="190"><p class="topic_detail">@{{ file.uploader.username }} <span style="color:#B4B4B4; font-size:11px;">({{ file.upload_date }})</span></p></td>
+    </tr>
+    {% endfor%}
+</table>
 
 {% endif %}
 </div>

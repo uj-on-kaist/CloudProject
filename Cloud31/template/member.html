@@ -1,0 +1,29 @@
+{% include "meta_open.html"%}
+
+<h2 class="page_title">File</h2>
+
+<table class="member_table list_table">
+    <tr>
+        <th width="60" class="first"><p>Member</p></th>
+        <th width="160" ><p>ID / Name</p></th>
+        <th width="160"><p>Department/Position</p></th>
+    </tr>
+    
+    {% for member in members.object_list %}
+    <tr class="member_item list_item" onclick="document.location.href='/user/{{ member.username }}';">
+        <td class="first member_picture"><img src='/picture/{{ member.username}}' /></td>
+        <td class="name">
+            <p class="ellipsis username"><a>@{{ member.username }}</a></p>
+            <p class="ellipsis real_name">{{ member.last_name }}</p>
+        </td>
+        <td class="dept">
+            <p>{{ member.profile.dept }}</p>
+            <p>{{ member.profile.position }}</p>
+        </td>
+    </tr>
+    {% endfor%}
+</table>
+
+{% include "ui/pagination.html" %}
+
+{% include "meta_close.html"%}

@@ -70,6 +70,8 @@ def process_files(files):
     for a_file in files:
         item = dict()
         item['type']=a_file.file_type
+        item['uploader']=a_file.uploader
+        item['upload_date']=str(a_file.upload_date)
         if a_file.file_type in ['xls','xlsx']:
             item['type']='excel'
             item['type_name']='Excel file'

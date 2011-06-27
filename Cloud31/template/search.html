@@ -3,6 +3,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
     $('#feed_list').show();
+    
+    $(".highlight_target").highlight("{{ keyword }}");
 });
 </script>
 
@@ -37,15 +39,7 @@ $(document).ready(function(){
         {% endif %}
         </span>
 </a>
-<a href="#" onclick="$('.search_list').hide();   return false;">
-    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">
-        Location
-        {% if not locations|length_is:"0" %}
-        ({{locations|length}})
-        {% endif %}
-        </span>
-</a>
-<a href="#" onclick="$('.search_list').hide();   return false;">
+<a href="#" onclick="$('.search_list').hide(); $('#member_list').show(); return false;">
     <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">
         Members
         {% if not members|length_is:"0" %}
@@ -53,9 +47,19 @@ $(document).ready(function(){
         {% endif %}
     </span>
 </a>
+<a href="#" onclick="$('.search_list').hide(); $('#location_list').show(); return false;">
+    <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">
+        Location
+        {% if not locations|length_is:"0" %}
+        ({{locations|length}})
+        {% endif %}
+        </span>
+</a>
 </div>
 
 {% include "ui/search_feeds.html"%}
 {% include "ui/search_topics.html"%}
 {% include "ui/search_files.html"%}
+{% include "ui/search_member.html"%}
+{% include "ui/search_location.html"%}
 {% include "meta_close.html"%}

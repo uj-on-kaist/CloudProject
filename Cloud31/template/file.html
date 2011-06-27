@@ -2,20 +2,20 @@
 
 <h2 class="page_title">File</h2>
 
-<table class="file_table">
+<table class="file_table list_table">
     <tr>
-        <th width="210" class="first"><p>File Name</p></th>
+        <th width="260" class="first"><p>File Name</p></th>
         <th width="100" ><p>Format</p></th>
-        <th width="160"><p>Related Topics</p></th>
+        <th width="190"><p>Uploader</p></th>
     </tr>
     
     {% for file in files.object_list %}
-    <tr class="file_item" onclick="window.open('{{ file.url }}');">
+    <tr class="file_item list_item" onclick="window.open('{{ file.url }}');">
         <td class="first name">
             <span class="ui_icon ui_icon_file_{{ file.type }}"></span>
             <p class="ellipsis">{{ file.name }}</p></td>
-        <td ><p>{{ file.type }}</p></td>
-        <td><p class="topic_detail">{{ file.related_topics }}</p></td>
+        <td ><p>{{ file.type_name }}</p></td>
+        <td><p class="topic_detail">@{{ file.uploader.username }} <span style="color:#B4B4B4; font-size:11px;">({{ file.upload_date }})</span></p></td>
     </tr>
     {% endfor%}
 </table>

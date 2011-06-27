@@ -77,18 +77,6 @@ def main(request):
     return HttpResponse(t.render(context))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 def save_upload(request, uploaded, filename, raw_data ):
     """
     raw_data: if True, upfile is a HttpRequest object with raw post data

@@ -1,0 +1,11 @@
+<div id="location_list" class="search_list">
+{% if locations|length_is:"0" %}
+<div class="no_result">
+No Result
+</div>
+{% else %}
+{% for location in locations %}
+
+{% endfor %}
+{% endif %}
+</div>

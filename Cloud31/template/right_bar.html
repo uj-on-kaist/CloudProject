@@ -13,6 +13,10 @@
 {% include "sidebar/search_file.html" %}
 {% endif %}
 
+{% if 'search_member' in side_list%}
+{% include "sidebar/search_member.html" %}
+{% endif %}
+
 {% if 'topic_detail' in side_list%}
 {% include "sidebar/topic_detail.html" %}
 {% endif %}

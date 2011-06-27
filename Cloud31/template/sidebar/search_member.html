@@ -1,5 +1,5 @@
 <div class="side_item">
-<h3 class="sidebar_header">Search Topic</h3>
+<h3 class="sidebar_header">Search User</h3>
 <div title="search_topic" class="search_topic_box">
 <form method="get" action="./">
 <input id="q" type="text" placeholder="type keyword..." name="q" class="search_topic_input input_167_25">
@@ -10,12 +10,6 @@
 <span class="all keyword"><a href="./"><b>All</b></a></span>
 {% for en in en_list %}
 <span class="keyword"><a href="./?index={{en}}">{{ en }}</a></span>
-{% endfor %}
-</div>
-
-<div class="ko_index">
-{% for ko in ko_list %}
-<span class="keyword"><a href="./?index={{ko}}">{{ ko }}</a></span>
 {% endfor %}
 </div>
 
