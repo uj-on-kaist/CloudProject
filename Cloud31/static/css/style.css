@@ -554,6 +554,14 @@ ul.comments textarea,
     overflow-y: hidden;
     margin: 0; padding: 0;
 }
+.topic_table tr td p.topic_detail{
+    width: 265px;
+}
+.ellipsis{
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
  .topic_table tr th p{height: 23px;
     line-height: 23px;
     overflow-y: hidden;
@@ -565,10 +573,66 @@ ul.comments textarea,
     color: #323232;
 }
 
+.topic_table tr.topic_item td{
+    border-bottom: 1px solid #F0F0F0;
+}
 .topic_table tr.topic_item:hover{
     background-color: rgb(235,250,250);   
 }
 
 th.first, td.first{
     padding-left: 10px;
+}
+
+
+
+.index_box{
+    color: #323232;
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+    float: left;
+    clear: both;
+}
+ul.index_list{
+    
+    padding: 0;
+margin: 0 auto;
+margin-top: 20px;
+list-style-type: none;
+float: left;
+position: relative;
+left: 50%;
+}
+ul.index_list a{
+    margin: 0; padding: 0;
+    color: #323232;
+}
+ul.index_list a:hover{
+    color: #325AAA;
+}
+ul.index_list li{float: left;
+    list-style: none;
+    margin:0;
+    padding: 0px;
+    text-align: center;
+    position: relative;
+    right: 50%;
+}
+ul.index_list li span{
+    width: 25px;
+    float: left;
+    line-height: 13px;
+    height: 13px;
+}
+
+ul.index_list li.index_item{
+    border-left: 1px solid #B4B4B4;
+}
+ul.index_list li.index_item.last{
+    border-right: 1px solid #B4B4B4;
+}
+
+ul.index_list li.previous span, ul.index_list li.next span{
+    width: 50px;
 }

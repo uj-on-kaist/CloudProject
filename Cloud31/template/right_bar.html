@@ -4,6 +4,39 @@
 {% if user.is_authenticated %}
 
 
+
+{% if 'search_topic' in side_list%}
+<div class="side_item">
+<h3 class="sidebar_header">Search Topic</h3>
+<div title="search_topic" class="search_topic_box">
+<form method="get" action="./">
+<input id="q" type="text" placeholder="ex)삼일..." name="q" class="search_topic_input input_167_25">
+</form>
+</div>
+
+<div>
+<span><a href="./">All</a></span>
+</div>
+
+<div>
+{% for en in en_list %}
+<span><a href="./?index={{en}}">{{ en }}</a></span>
+{% endfor %}
+</div>
+
+<div>
+{% for ko in ko_list %}
+<span><a href="./?index={{ko}}">{{ ko }}</a></span>
+{% endfor %}
+</div>
+
+<div>
+<span><a href="./?index=#">#</a></span>
+</div>
+
+</div>
+{% endif %}
+
 {% if 'user_profile' in side_list%}
 <div class="side_item">
 <h3 class="sidebar_header">User Profile</h3>

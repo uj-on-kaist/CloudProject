@@ -51,3 +51,9 @@
 .user_profile_box ul.user_related_topics li{
     color: #325AAA;
 }
+
+input[type='text'].search_topic_input,input[type='password'].search_topic_input{
+    font-size: 12px;
+    padding: 4px 5px;
+    width: 157px;
+}

@@ -1,0 +1,31 @@
+<div class="index_box">
+
+<ul class="index_list">
+    {% if index_info.has_previous %}
+    <a href="./?page={{ index_info.previous_index }}">
+    <li class="previous">
+        <span>&lt; Prev</span>
+    </li>
+    </a>
+    {% endif %}
+    {% for index in index_info.index_list %}
+    <a href="./?page={{ index }}">
+        <li class="index_item {% if forloop.last%}last{% endif %}"><span>
+                {% if index == index_info.current_index %}
+                <b>{{ index }}</b>
+                {% else %}
+                {{index}}
+                {% endif %}
+        </span></li>
+    </a>
+    {% endfor%}
+    {% if index_info.has_next %}
+    <a href="./?page={{ index_info.next_index }}">
+    <li class="next">
+        <span>Next &gt;</span>
+    </li>
+    </a>
+    {% endif %}
+</ul>
+
+</div>

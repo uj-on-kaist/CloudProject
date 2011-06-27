@@ -104,6 +104,41 @@ def get_related_topics(username):
 
     return result
     
+
+
+def get_index_list(index, last_index):
+    result = dict()
+    result['index_list']=list()
+    result['current_index']=index
+    left = int((index-1)/10)*10 + 1
+    right = min(left+10, last_index+1)
     
+    result['has_previous'] = False
+    if left > 1:
+        result['has_previous']=True
+        result['previous_index']=left-1
+    
+    for i in range(left,right):
+        result['index_list'].append(i)
+    
+    result['has_next']=False
+    if right < last_index+1:
+        result['has_next']=True
+        result['next_index']=right
+    
+    
+    return result
 
+HANGUL_BEGIN_UNICODE = 44032
+HANGUL_BASE_UNIT = 588
 
+def next_search_index(index):
+    ko = [u'ㄱ',u'ㄲ',u'ㄴ',u'ㄷ',u'ㄸ',u'ㄹ',u'ㅁ',u'ㅂ',u'ㅃ',u'ㅅ',u'ㅆ',u'ㅇ',u'ㅈ',u'ㅉ',u'ㅊ',u'ㅋ',u'ㅌ',u'ㅍ',u'ㅎ']
+     
+    try:
+        uni_index = ko.index(index)
+        this_index = unichr(HANGUL_BEGIN_UNICODE+uni_index*HANGUL_BASE_UNIT)
+        next_index = unichr(HANGUL_BEGIN_UNICODE+(uni_index+1)*HANGUL_BASE_UNIT)
+        return this_index, next_index
+    except:
+        pass
