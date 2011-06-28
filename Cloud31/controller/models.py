@@ -44,6 +44,7 @@ class File(models.Model):
     is_deleted = models.BooleanField(default=False)
     uploader = models.ForeignKey(User)
     file_name = models.CharField(max_length=256)
+    is_attached = models.BooleanField(default=False)
 
 
 class Notice(models.Model):

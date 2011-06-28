@@ -80,7 +80,7 @@ def search_files(request, inStr):
         query_type = Q()
         for item in arr:
             query_type = query_type & Q(file_name__icontains=item)
-        files = File.objects.filter(query_type)
+        files = File.objects.filter(query_type, is_attached=True)
         result = my_utils.process_files(files)
     except Exception as e:
         print str(e)
@@ -125,7 +125,7 @@ def ajax_user(request):
     if request.GET.get('q'):
         q=request.GET['q']
     else:
-        return HttpResponse(json.dumps(result, indent=4))
+        return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
     users = User.objects.filter(username__istartswith=q)
     
@@ -138,7 +138,7 @@ def ajax_user(request):
             result['items'].append(item)
         except:
             pass
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
     
 def ajax_topic(request):
@@ -150,7 +150,7 @@ def ajax_topic(request):
         q=request.GET['q']
         q=smart_unicode(request.GET['q'], encoding='utf-8', strings_only=False, errors='strict')
     else:
-        return HttpResponse(json.dumps(result, indent=4))
+        return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
     topics = Topic.objects.filter(topic_name__istartswith=q)
     
@@ -161,4 +161,4 @@ def ajax_topic(request):
             result['items'].append(item)
         except:
             pass
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')

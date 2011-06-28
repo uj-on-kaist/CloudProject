@@ -52,7 +52,7 @@ def main(request):
                 this_index,next_index=my_utils.next_search_index(search_index)
                 query_type = Q(file_name__gt=this_index, file_name__lt=next_index)
         
-        files = models.File.objects.filter(query_type).order_by('file_name')
+        files = models.File.objects.filter(query_type, is_attached=True).order_by('file_name')
         files = my_utils.process_files(files)
         
         paginator = Paginator(files, 15)

@@ -1,0 +1,35 @@
+<script type="text/javascript">
+$(document).ready(function(){
+    load_dialog();
+});
+</script>
+<div class="side_item">
+<h3 class="sidebar_header">Dialog</h3>
+    <div title="invite_user" class="invite_box">
+<div style="float:left;">
+<input id="dialog_input" type="text" placeholder="Join short dialog" name="q" class="dialog_input input_167_25" onkeyup="if(event.keyCode == 13) upload_dialog(); return false;">
+
+<span class="ui_icon ui_icon_enter" style="margin: 7px 0px 0 1px;" onclick="upload_dialog(); return false;"></span>
+</div>
+
+<div id="dialog_list">
+    <div class="stream_element dialog_item template">
+        <div class="right controls" style="top:2px;">
+            <a href="#" class="delete stream_element_delete" title="지우기" style="" comment_id="134"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+        </div>
+        <p class="user_info">
+            <a href="" class="user_link">@test</a>
+            <span class="author_name">수지</span>
+        </p>
+        <p class="dialog_message">
+            본 컨퍼런스에서는 한국과 일본의 iPhone/Android 등의 스마트폰 어플리케이션을 개발하는 개발자가 모입니다. 
+        </p>
+        <p>
+            <abbr class="timeago dialog_time">4 days ago</abbr>
+        </p>
+    </div>
+</div>
+
+
+    </div>
+</div>

@@ -38,9 +38,6 @@ urlpatterns = patterns('',
     url(r'^api/feed/comment/delete/(?P<comment_id>\w+)$','controller.feedcontroller.delete_comment'),
     
     url(r'^api/timeline/me/$','controller.feedcontroller.load_my_timeline'),
-
-    
-    
     
     
     url(r'^topic/$','controller.topiccontroller.topic'),
@@ -106,4 +103,10 @@ urlpatterns = patterns('',
     url(r'^search/(?P<keyword>.*)$', 'controller.searchcontroller.main'),
     url(r'^api/search/user$', 'controller.searchcontroller.ajax_user'),
     url(r'^api/search/topic$', 'controller.searchcontroller.ajax_topic'),
+    
+    
+    
+    url(r'^api/sidebar/dialog/add$', 'sidebar.sidebarcontroller.add_dialog'),
+    url(r'^api/sidebar/dialog/delete$', 'sidebar.sidebarcontroller.delete_dialog'),
+    url(r'^api/sidebar/dialog/get$', 'sidebar.sidebarcontroller.load_dialog'),
 )

@@ -86,7 +86,7 @@ def event_detail(request, event_id):
         print str(e)
         pass
     
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 def load_event(request, load_type):
     result=dict()
@@ -131,7 +131,7 @@ def load_event(request, load_type):
         pass
     
     
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 def attend_event(request, event_id):
     result=dict()
@@ -171,7 +171,7 @@ def attend_event(request, event_id):
         return my_utils.return_error('Insert Failure')
     
     
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
 def process_events(events, user):
     results=list()
@@ -322,7 +322,7 @@ def register_event(request):
     else:
         return my_utils.return_error('Emtpy Title')
     
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
             
     
     
@@ -370,7 +370,7 @@ def update_event_comment(request):
         result['comment']=item
     except Exception as e:
         print str(e)
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
     
     
@@ -392,7 +392,7 @@ def delete_event(request, event_id):
     except:
             return my_utils.return_error('Please Sign in First')
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
 
 def delete_event_comment(request, comment_id):
@@ -412,4 +412,4 @@ def delete_event_comment(request, comment_id):
     except:
             return my_utils.return_error('Please Sign in First')
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')

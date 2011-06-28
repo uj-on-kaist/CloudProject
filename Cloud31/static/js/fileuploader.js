@@ -488,19 +488,21 @@ qq.FileUploader = function(o){
         listElement: null,
                 
         template: '<div class="qq-uploader">' + 
-                '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-                '<div class="qq-upload-button">'+(this._options.params.title || 'Select a File')+'</div>' +
                 '<ul class="qq-upload-list"></ul>' + 
+                '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+                '<div class="custom_zone">' +
+                '<div class="qq-upload-button">'+(this._options.params.title || 'Select a File')+'</div>' +
+                '</div>' +
              '</div>',
 
         // template for one item in file list
         fileTemplate: '<li>' +
-                '<span class="qq-upload-file"></span>' +
-                '<span class="qq-upload-spinner"></span>' +
-                '<span class="qq-upload-size"></span>' +
+                '<p class="qq-upload-file"></p>' +
+                '<p class="qq-upload-spinner"></p>' +
+                '<p class="qq-upload-size"></p>' +
                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
-                '<span class="qq-upload-failed-text">Failed</span>' +
-                '<a href="#" id="del_btn" onClick="$(this).parent().remove(); return false;">delete</a>'+
+                '<p class="qq-upload-failed-text">Failed</p>' +
+                '<a href="#" id="del_btn" onClick="$(this).parent().remove(); return false;">'+( this._options.params.delete_btn || 'delete')+'</a>'+
             '</li>',        
         
         classes: {

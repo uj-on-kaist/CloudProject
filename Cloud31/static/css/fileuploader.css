@@ -33,3 +33,7 @@
 
 .qq-upload-failed-text {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}
+
+
+.qq-uploader .qq-upload-list li p{float: left; margin: 0; padding: 0; margin-right: 5px; line-height: 22px;}
+.qq-uploader .qq-upload-list li p.qq-upload-file{width: 240px; padding-left: 5px;}

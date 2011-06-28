@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     
     'controller',
+    'sidebar'
 )
 
 

@@ -144,7 +144,6 @@ function display_auto_complete(type,items, left, right, keyword){
     $("#auto_complete_list .type_msg").hide();
     $("#auto_complete_list .search_msg").show();
     if(!$("#auto_complete_list").is(":visible")){
-        
         $("#auto_complete_list").show();
     }
     $("#auto_complete_list li.list_item").remove();
@@ -205,6 +204,7 @@ function display_auto_complete(type,items, left, right, keyword){
             $('#auto_complete_list li.add').before(layout);
         }
     }
+    $("#auto_complete_list li.list_item").highlight(keyword);
 }
 
 function replace_input_text(item, text, left, right){

@@ -1,16 +1,7 @@
-<div class="feed">
-
-<div class="feed_form">
 <script type="text/javascript">
-
-
 $(document).ready(function(){
     $("#feed_message_input").click(function(){
-        /*
-if($("#feed_message_input").height()==16)
-            $("#feed_message_input").css('height','56px');
-        
-*/
+
         $(".feed_rest").show();
     });
     
@@ -30,10 +21,37 @@ if($("#feed_message_input").height()==16)
         replace_input_text($("#feed_message_input"), $(this).find('.topic_name').text(),left, right);
         $("#auto_complete_list").hide();
     });
+    
+    
+    var uploader = new qq.FileUploader({
+        element: document.getElementById('file-uploader'),
+        action: '/file/ajax_upload',
+        sizeLimit: 0, // max size
+        minSizeLimit: 0, // min size
+        debug: true,
+        params:{
+            title: '<span class="ui_icon ui_icon_attach_file"></span>',
+            delete_btn: '<span class="ui_icon ui_icon_delete"></span>'
+        },
+        onComplete: function(id, fileName, responseJSON){
+            /* $("#attach_list").append("<li id='file_"+responseJSON.id+"'>"+responseJSON.id+"</li>"); */
+        },
+    });
+    
+    $("#file-uploader .custom_zone").prepend("<b class='attach_label'>Add:</b>");
+    var update_btn_layout = $(".item.update").clone();
+    update_btn_layout.removeClass("template");
+    $("#file-uploader .custom_zone").after(update_btn_layout);
+    
 });
 </script>
-<div><textarea id="feed_message_input" class="autogrow ui-corner-all" style="resize:none; width:507px; height:16px;" placeholder="Write your Feed"></textarea></div>
 
+<div><textarea id="feed_message_input" class="autogrow ui-corner-all" style="resize:none; width:513px; padding:5px 5px; height:20px;font-family:'Tahoma','Helvetica', Arial, sans-serif; margin:0; margin-bottom:3px;" placeholder="Write your Feed"></textarea></div>
+
+
+<div class="feed">
+
+<div class="feed_form">
 <div id="auto_complete_list" class="ui-corner-all">
 <ul>
 <li class="first corner_top type_msg"><span></span></li>
@@ -55,45 +73,15 @@ if($("#feed_message_input").height()==16)
 <li class="add ui-corner-bottom">Make Topic "<b><span class="topic_name"></span></b>"</li>
 </ul>
 </div>
-<div class="feed_rest" style="display:inline-block;">
+<div class="feed_rest" style="display:none;">
 <div style="display:none;"><ul id="attach_list"><b style="margin-right:10px;">Attatched</b></ul></div>
 
 <div class="control">
 
 
-<div class="item attach">
-   <!--
- <div>
-        <ul class="control_list">
-            <li><b>Add</b></li>
-            <li><a href="#" id="file_button">Files</a></li>
-            <li><a rel="facebox" href="#location_selector" id="foo">Location</a></li>
-        </ul>
-    </div>
--->
-    
-    
-<script type="text/javascript">
-$(document).ready(function(){
-    var uploader = new qq.FileUploader({
-        element: document.getElementById('file-uploader'),
-        action: '/file/ajax_upload',
-        sizeLimit: 0, // max size
-        minSizeLimit: 0, // min size
-        debug: true,
-        params:{
-            title: '<span class="ui_icon ui_icon_attach_file"></span>'
-        },
-        onComplete: function(id, fileName, responseJSON){
-            console.log(responseJSON);
-            
-            $("#attach_list").append("<li>"+responseJSON.id+"</li>");
-        },
-    });
-    
-    $(".qq-uploader").prepend("<b class='attach_label'>Add</b>");
-});
-</script>
+<div class="item attach" style="min-height:20px;">
+
+
 
 <div id="file-uploader">       
     <noscript>          
@@ -104,9 +92,8 @@ $(document).ready(function(){
 
 </div><!-- item attach -->
 
-<div class="item update">
-    <a href="/" class="button update" onClick="upload_feed(); return false;" id="update_btn">Update</a>
-    <div class="loading" style="text-align:right; display:none;"><img src="{{ STATIC_URL }}image/loading.gif" /></div>
+<div class="item update template">
+    <button type="submit" class="button_m" onblur="return false" onClick="upload_feed(); return false;">Update</button>
 </div>
 
 </div><!-- control -->

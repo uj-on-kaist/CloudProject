@@ -126,7 +126,7 @@ def load_topic_timeline(request,topic_name):
     except:
             return return_error('No Such Topic')
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
     
 
@@ -147,5 +147,5 @@ def update_description(request):
     except Exception as e:
         print str(e)
     
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     

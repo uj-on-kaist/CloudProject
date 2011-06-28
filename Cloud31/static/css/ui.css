@@ -66,8 +66,8 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 .ui_icon_star_off { background-position: -88px 0; }
 .ui_icon_star_on { background-position: -110px 0; }
 .ui_icon_topic { background-position: -132px 0; }
-.ui_icon_file { background-position: -154px 0; }
-.ui_icon_attach_file { background-position: -176px 0; }
+.ui_icon_attach_file { background-position: -154px 0; }
+.ui_icon_file { background-position: -176px 0; }
 .ui_icon_location { background-position: -198px 0; }
 .ui_icon_location_attach { background-position: 0px -22px; }
 .ui_icon_member { background-position: -22px -22px; }
@@ -156,7 +156,18 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
     outline: 0;
 }
 
-
+input[type='text'].input_144_25,input[type='password'].input_144_25{
+    font-size: 14px;
+    border: 0;
+    background-image: url('/static/image/Box_144x25_nor.png');
+    background-repeat: no-repeat;
+    width: 147px;
+    height: 17px;
+    padding: 4px 10px;
+}
+input[type='text'].input_144_25:focus,input[type='password'].input_144_25:focus{
+    background-image: url('/static/image/Box_144x25_over.png');
+}
 
 input[type='text'].input_167_25,input[type='password'].input_167_25{
     font-size: 14px;

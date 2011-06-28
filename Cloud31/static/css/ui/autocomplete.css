@@ -51,7 +51,8 @@
 
 .user_item .user_info .user_name{
     margin-right: 5px;
-    color: black;
+    color: #325AAA;
+    font-weight: bold;
 }
 
 #auto_complete_list .topic_item .topic_name{color: #325AAA;}

@@ -12,6 +12,8 @@ import json
 import parser
 import re
 
+from django.conf import settings
+
 def remove_special(inStr):
     result = inStr
     result=smart_unicode(result, encoding='utf-8', strings_only=False, errors='strict')
@@ -64,38 +66,46 @@ def process_messages(request, messages):
         feeds.append(feed)
     return feeds
     
+import os.path
 
 def process_files(files):
     result = list()
     for a_file in files:
-        item = dict()
-        item['type']=a_file.file_type
-        item['uploader']=a_file.uploader
-        item['upload_date']=str(a_file.upload_date)
-        if a_file.file_type in ['xls','xlsx']:
-            item['type']='excel'
-            item['type_name']='Excel file'
-        elif a_file.file_type in ['doc','docx']:
-            item['type']='word'
-            item['type_name']='Word file'
-        elif a_file.file_type in ['ppt','pptx']:
-            item['type']='ppt'
-            item['type_name']='Powerpoint file'
-        elif a_file.file_type in ['ppt','pptx']:
-            item['type']='ppt'
-            item['type_name']='Powerpoint file'
-        elif a_file.file_type in ['hwp']:
-            item['type_name']='HWP file'
-        elif a_file.file_type in ['pdf']:
-            item['type_name']='PDF file'
-        elif a_file.file_type in ['zip']:
-            item['type_name']='Zip file'
-        else:
-            item['type']='etc'
-            item['type_name']='Unknown type' 
-        item['name']=a_file.file_name
-        item['url']='/media/'+a_file.file_contents.url
-        result.append(item)
+        try:
+            item = dict()
+            file_path = settings.PROJECT_PATH + '/media/'+smart_unicode(a_file.file_contents.url, encoding='utf-8', strings_only=False, errors='strict')
+            if not os.path.isfile(file_path):
+                print file_path
+                print 'not file'
+            item['type']=a_file.file_type
+            item['uploader']=a_file.uploader
+            item['upload_date']=str(a_file.upload_date)
+            if a_file.file_type in ['xls','xlsx']:
+                item['type']='excel'
+                item['type_name']='Excel file'
+            elif a_file.file_type in ['doc','docx']:
+                item['type']='word'
+                item['type_name']='Word file'
+            elif a_file.file_type in ['ppt','pptx']:
+                item['type']='ppt'
+                item['type_name']='Powerpoint file'
+            elif a_file.file_type in ['ppt','pptx']:
+                item['type']='ppt'
+                item['type_name']='Powerpoint file'
+            elif a_file.file_type in ['hwp']:
+                item['type_name']='HWP file'
+            elif a_file.file_type in ['pdf']:
+                item['type_name']='PDF file'
+            elif a_file.file_type in ['zip']:
+                item['type_name']='Zip file'
+            else:
+                item['type']='etc'
+                item['type_name']='Unknown type' 
+            item['name']=smart_unicode(a_file.file_name, encoding='utf-8', strings_only=False, errors='strict')
+            item['url']='/media/'+a_file.file_contents.url
+            result.append(item)
+        except:
+            pass
     return result  
 
 

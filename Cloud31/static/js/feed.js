@@ -1,16 +1,17 @@
 function upload_feed(){
-    $("#update_btn").hide();
-    $("div.item.update div.loading").show();
     
     var attach_list='';
-    var count=$("#attach_list").find('li').length;
-    $("#attach_list").find('li').each(function(i, val){
+    var count=$(".qq-upload-list").find('li').length;
+    $(".qq-upload-list").find('li').each(function(i, val){
+        var file_id = $(this).attr('id').split('#');
+        if(file_id.length != 2)
+            return false;
         if (i == count-1)
-            attach_list+=$(this).text();
+            attach_list+=file_id[1];
         else
-            attach_list+=$(this).text()+'.';
+            attach_list+=file_id[1]+'.';
     });
-    console.log(attach_list);
+    console.log("Attach: " + attach_list);
     
     var message=$('textarea#feed_message_input').val();
     var location_info='';
@@ -26,8 +27,6 @@ function upload_feed(){
 		dataType : "JSON",
 		success : function(json) {
 		  console.log(json);
-		  $("#update_btn").show();
-          $("div.item.update div.loading").hide();
           if(json.success){
             clear_feed_input();
             var feed_type=$("#feed_list").attr('type');
@@ -133,7 +132,7 @@ function display_feeds(feeds, type){
     for(var i=0; i<feeds.length; i++){
         
         var feed=feeds[i];
-        console.log(feed);
+/*         console.log(feed); */
         
         var feed_layout= $("div.stream.template").clone();
         feed_layout.removeClass("template");

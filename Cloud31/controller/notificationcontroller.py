@@ -41,7 +41,7 @@ def get_notifications(request):
             
     except:
             return my_utils.return_error('Please Sign in First')
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
     
 def read_notification(request, noti_id):
@@ -62,7 +62,7 @@ def read_notification(request, noti_id):
     except:
             return my_utils.return_error('Please Sign in First')
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 def process_notis(request, notis):
     result=list()

@@ -8,9 +8,11 @@
 }
 .side_item{
     padding: 0 5px;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-/*     border-bottom: 1px solid #dcdcdc; */
+    padding-bottom: 5px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #dcdcdc;
+    width: 100%;
+    float:left;
 }
 
 .user_profile_box{
@@ -57,10 +59,10 @@ input[type='text'].search_topic_input,input[type='password'].search_topic_input{
     font-size: 12px;
     padding: 4px 5px;
     width: 157px;
+    float: left;
 }
 
 .search_topic_box{
-    width: 167px;
     overflow-x: hidden;
 }
 
@@ -71,7 +73,8 @@ input[type='text'].search_topic_input,input[type='password'].search_topic_input{
     padding: 0px 2px;
     margin: 2px 0;
     text-align: center;
-    border-right: 1px solid #B4B4B4;
+    border-left: 1px solid #B4B4B4;
+    
     
 }
 .search_topic_box span.keyword a{
@@ -83,10 +86,10 @@ input[type='text'].search_topic_input,input[type='password'].search_topic_input{
 .num_index, .en_index, .ko_index{
     float: left;
     width: 170px;
-    margin: 5px 0;
+    margin: 5px 0;margin-left: -1px;
 }
 .num_index span.keyword{
-    border:0;
+    border:1px solid white;
 }
 .topic_detail_box{
     margin: 10px 0 15px 0;
@@ -123,3 +126,49 @@ input[type='text'].search_topic_input,input[type='password'].search_topic_input{
 }
 
 
+input[type="text"].invite_input, input[type="password"].invite_input{
+    font-size: 12px;
+padding: 4px 5px;
+width: 157px;float: left;
+}
+input[type="text"].dialog_input{
+    font-size: 12px;
+padding: 4px 5px;
+width: 157px;
+    float: left;
+}
+
+#dialog_list{
+    position: relative;
+    padding: 0 5px;
+/*     border: 1px solid #F0F0F0; */
+    float: left; width:180px;
+}
+.dialog_item {
+    position: relative;
+    padding: 5px 0px;
+    border-bottom: 1px solid #F0F0F0;
+}
+.dialog_item.last{
+    border-bottom: 0px;
+}
+.dialog_item p{
+    margin: 0; padding: 0;
+}
+.dialog_item .user_info{
+    line-height: 20px;
+    height: 20px;
+    overflow: hidden;
+    font-size: 12px;
+}
+.dialog_item .user_info .user_link{
+    font-weight: bold;
+    
+}
+.dialog_item .dialog_message{
+    font-size: 12px;
+    color: #323232;
+}
+.dialog_item  .dialog_time{
+    font-size: 10px;
+}

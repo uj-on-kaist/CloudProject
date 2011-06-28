@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_unicode
 
@@ -84,7 +85,7 @@ def delete_feed(request, feed_id):
     except:
             return my_utils.return_error('Please Sign in First')
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
 
 def delete_comment(request, comment_id):
@@ -104,8 +105,9 @@ def delete_comment(request, comment_id):
     except:
             return my_utils.return_error('Please Sign in First')
             
-    return HttpResponse(json.dumps(result, indent=4))
-    
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
+@never_cache
 def load_comany_feed(request):
     result=dict()
     result['success']=True
@@ -126,8 +128,9 @@ def load_comany_feed(request):
         result['success']=True
         result['message']='Do not have any message'
             
-    return HttpResponse(json.dumps(result, indent=4))
-    
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
+@never_cache
 def load_notice(request):
     result=dict()
     result['success']=True
@@ -148,17 +151,17 @@ def load_notice(request):
         result['success']=True
         result['message']='Do not have any message'
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 
-
+@never_cache
 def load_feed(request, user_name):
     if user_name is not '':
         return get_user_feed(request,user_name)
     return my_utils.return_error('user_name is empty')
 
 
-
+@never_cache
 def load_my_timeline(request):
     result=dict()
     result['success']=True
@@ -198,7 +201,7 @@ def load_my_timeline(request):
     except:
             return my_utils.return_error('No Such User')
             
-    return HttpResponse(json.dumps(result, indent=4))   
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')   
 
 def get_user_feed(request,user_name):
     result=dict()
@@ -225,7 +228,7 @@ def get_user_feed(request,user_name):
     except:
             return my_utils.return_error('No Such User')
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 def get_user_at_feed(request,user_name):
     if user_name is '':
@@ -248,7 +251,7 @@ def get_user_at_feed(request,user_name):
         result['success']=True
         result['message']='Do not have any message'
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 def load_favorite(request, user_name):
     result=dict()
@@ -286,7 +289,7 @@ def load_favorite(request, user_name):
     except:
             return my_utils.return_error('No Such User')
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
 
 
@@ -306,7 +309,7 @@ def update_feed(request):
             
         if request.POST['location_info']:
             attach_list=request.POST['location_info']
-        
+    
     if message is not '':
         try:
             user = User.objects.get(username=request.user.username)
@@ -361,12 +364,25 @@ def update_feed(request):
                     pass
                     
             new_message.save()
+            
+            
+            #FILE CHECK
+            attach_arr = attach_list.split('.')
+            for attach_id in attach_arr:
+                try:
+                    if attach_id is '':
+                        continue
+                    attach = File.objects.get(id=attach_id)
+                    attach.is_attached=True
+                    attach.save()
+                except Exception as e:
+                    print str(e)
         except:
             return my_utils.return_error('No such User')
     else:
         return my_utils.return_error('Empty Message')
     
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 
 def update_comment(request):
@@ -446,7 +462,7 @@ def update_comment(request):
         result['comment']=item
     except Exception as e:
         print str(e)
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
 
 
@@ -474,7 +490,7 @@ def favorite_action(request, feed_id):
         print str(e)
         return my_utils.return_error('Insert Failed')
     
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
 def unfavorite_action(request, feed_id):
     result=dict()
@@ -498,4 +514,4 @@ def unfavorite_action(request, feed_id):
         print str(e)
         return my_utils.return_error('Delete Failed')
       
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')

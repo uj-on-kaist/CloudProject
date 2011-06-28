@@ -115,7 +115,7 @@ def send_message(request):
             
     else:
         return my_utils.return_error('empty message')
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
 
 def reply_message(request):
@@ -171,7 +171,7 @@ def reply_message(request):
             
     else:
         return my_utils.return_error('empty message')
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 
 def load_message(request, load_type):
@@ -214,7 +214,7 @@ def load_message(request, load_type):
     except Exception as e:
         print str(e)
     
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 
 def process_messages(messages):
@@ -249,7 +249,7 @@ def delete_message(request, message_id):
     except:
             return my_utils.return_error('Please Sign in First')
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
 def delete_reply(request, reply_id):
     result=dict()
@@ -268,5 +268,5 @@ def delete_reply(request, reply_id):
     except:
             return my_utils.return_error('Please Sign in First')
             
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     

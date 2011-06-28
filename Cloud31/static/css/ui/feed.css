@@ -30,13 +30,11 @@
 }
 
 .feed_form .control div.attach{
-    width:440px;
+    width:525px;
 }
 
 .feed_form .control div.update{
     width: 71px;
-    padding-top: 10px;
-    padding-left:9px;
     text-align: right;
     
 }
@@ -48,7 +46,7 @@
 }
 .feed_form .control ul.control_list li{display: inline;margin-right: 10px;}
 
-.feed_rest{display: none;}
+.feed_rest{display:inline-block;}
 
 
 ul#attach_list, ul#attach_list li{list-style: none; padding:0px; margin: 0px;}
@@ -68,6 +66,12 @@ ul.comments li.write_box, ul.comment_count li {border-left:3px solid #F0F4F5;}
 ul.comment_count{font-size: 11px;}
 
 
+.feed_form #file-uploader{
+    display: inline-block;
+}
+.feed_form .qq-uploader{
+    display: inline-block;
+}
 .feed_form .qq-upload-button{
     width: 22px;
     padding: 0px;
@@ -75,7 +79,7 @@ ul.comment_count{font-size: 11px;}
 
 .feed_form .qq-upload-list{
     display: block;
-    width: 100%;
+    width: 525px;
     padding: 0px;
 }
 
@@ -83,7 +87,7 @@ ul.comment_count{font-size: 11px;}
     float: left;
     height: 22px;
     line-height: 23px;
-    margin-right: 10px;
+    margin-right: 5px;
     color: rgb(120,120,120);
     font-size: 12px;
     font-weight: normal;
@@ -91,4 +95,25 @@ ul.comment_count{font-size: 11px;}
 
 #feed_message_input:focus{
     outline: none; border:1px solid #34b0d9;
+}
+
+.feed_form #file-uploader .custom_zone{
+    width:451px;
+    display: inline-block;
+    float:left;
+}
+
+
+.feed_form .qq-upload-list li{
+    background-color: #f0f0f0;
+    float: left;
+    width: 515px;
+    padding: 0px 5px;
+    margin-bottom: 3px;
+}
+.feed_form .qq-upload-list li span{
+    float: left;
+}
+.feed_form .qq-upload-list li span.ui_icon_delete{
+    float: right;
 }
