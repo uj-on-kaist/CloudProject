@@ -37,7 +37,7 @@ def main(request):
         query_type = Q()
         if keyword is not '':
             print keyword
-            query_type = Q(username__icontains=keyword)
+            query_type = Q(username__icontains=keyword) | Q(last_name__icontains=keyword)
         
         if search_index is not '':
             if search_index in map(chr, range(65, 91)):

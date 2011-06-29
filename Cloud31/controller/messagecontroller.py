@@ -18,6 +18,7 @@ import json
 import my_utils
 import parser
 
+from controller.notificationcontroller import *
 
 DEFAULT_LOAD_LENGTH = 10
 
@@ -112,7 +113,17 @@ def send_message(request):
             
             
         #TODO : SEND NOTIFICATION TO USERS
-            
+        #SEND NOTIFICATION
+        for receiver in receivers:
+            try:
+                target_user = User.objects.get(username=receiver)
+                info = dict()
+                info['from'] = user
+                info['to'] = target_user
+                info['target_object'] = new_dm
+                register_noti(request, "new_dm",info)
+            except:
+                pass
     else:
         return my_utils.return_error('empty message')
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
@@ -151,24 +162,34 @@ def reply_message(request):
             return my_utils.return_error('You are now allowed to this message')
         
         try: 
-            new_dm = DirectMessageReply(direct_message=d_message,author=user,contents=reply_message)
-            new_dm.save()
+            new_dm_reply = DirectMessageReply(direct_message=d_message,author=user,contents=reply_message)
+            new_dm_reply.save()
             d_message.save()
         except:
             return my_utils.return_error('Send Reply Failure')
         
         try:
             item = dict()
-            item['id']=new_dm.id
-            item['author']=new_dm.author.username
-            item['contents']= parser.parse_text(new_dm.contents)
-            item['reg_date']= str(new_dm.reg_date)
+            item['id']=new_dm_reply.id
+            item['author']=new_dm_reply.author.username
+            item['contents']= parser.parse_text(new_dm_reply.contents)
+            item['reg_date']= str(new_dm_reply.reg_date)
             result['reply']=item
         except Exception as e:
             print str(e)
         
         #TODO : SEND NOTIFICATION TO USERS
-            
+        #SEND NOTIFICATION
+        try:
+            author_name = d_message.author.username
+            target_user = User.objects.get(username=author_name)
+            info = dict()
+            info['from'] = user
+            info['to'] = target_user
+            info['target_object'] = d_message
+            register_noti(request, "new_dm_reply",info)
+        except:
+            pass
     else:
         return my_utils.return_error('empty message')
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')

@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_unicode
 
@@ -21,6 +22,7 @@ import json
 import parser
 import my_utils
 
+@never_cache
 def get_notifications(request):
     result=dict()
     result['success']=True
@@ -43,7 +45,7 @@ def get_notifications(request):
             return my_utils.return_error('Please Sign in First')
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
-    
+
 def read_notification(request, noti_id):
     result=dict()
     result['success']=True
@@ -116,10 +118,32 @@ def register_noti(request, noti_type, info):
                                         related_id = target_object.id, contents = contents)
             new_noti.save()
         elif noti_type == 'new_event_invite':
-            print 'hi '+target_user.username
             contents = u"<b>"+sender.username+u"</b>님께서 회원님을 이벤트 <b>"+target_object.title+u"</b>에 초대하셨습니다."
             new_noti = UserNotification(user=target_user, sender=sender, \
                                         notification_type=noti_type, related_type="Event", \
+                                        related_id = target_object.id, contents = contents)
+            new_noti.save() 
+        elif noti_type == 'new_dm':
+            target_message = target_object.contents
+            target_message = target_message[:10] + "..."
+            p = re.compile(r'<.*?>')
+            print target_message
+            target_message = p.sub('', target_message)
+            target_message=smart_unicode(target_message, encoding='ascii', strings_only=False, errors='strict')
+            contents = u"<b>"+sender.username+u"</b>님께서 회원님에게 쪽지 <b>"+target_message+u"</b>를 보냈습니다."
+            new_noti = UserNotification(user=target_user, sender=sender, \
+                                        notification_type=noti_type, related_type="DM", \
+                                        related_id = target_object.id, contents = contents)
+            new_noti.save()
+        elif noti_type == 'new_dm_reply':
+            target_message = target_object.contents
+            target_message = target_message[:10] + "..."
+            p = re.compile(r'<.*?>')
+            target_message = p.sub('', target_message)
+            target_message=smart_unicode(target_message, encoding='ascii', strings_only=False, errors='strict')
+            contents = u"<b>"+sender.username+u"</b>님께서 회원님에게 쪽지 <b>"+target_message+u"</b>에 답장을 작성하셨습니다."
+            new_noti = UserNotification(user=target_user, sender=sender, \
+                                        notification_type=noti_type, related_type="DM_Reply", \
                                         related_id = target_object.id, contents = contents)
             new_noti.save()
         

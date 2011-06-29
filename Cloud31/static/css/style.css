@@ -71,8 +71,12 @@ h3.message{
 }
 
 ul.nostyle, ul.nostyle li{list-style: none; padding:0px; margin:0px;}
-ul.nostyle li{display: inline; padding-right: 10px;}
-
+ul.nostyle li{display: inline-block; padding-right: 10px;padding: 1px;
+border: 1px solid #B4B4B4;
+margin-right:3px;}
+ul.nostyle li:hover{
+border: 1px solid #323232;
+}
 
 
 a.detect_item:hover{text-decoration: none;}
@@ -136,7 +140,7 @@ td.label{vertical-align: top; padding-top: 8px;}
 p.event_title{color: black; font-weight: bold; font-size: 20px;}
 
 
-
+.public_info{color: #323232;}
 p.event_content{padding:10px 0px;}
 
 
@@ -404,6 +408,9 @@ li.selected.menu_item:hover{background-color: rgb(196,231,241);}
 div.tab{display: inline-block; width: 100%; height: 25px; border-bottom: 1px solid #b4b4b4; margin: 10px 0 0 0;}
 span.tab_item{min-width:83px; display: block; float: left; text-align: center; font-size: 12px; padding:3px 10px; color: #323232; 
     border: 1px solid transparent; border-bottom: 1px solid #b4b4b4;   
+    max-width: 300px;
+max-height: 20px;
+overflow: hidden;
 }
 span.tab_item.back{
     min-width: 10px;

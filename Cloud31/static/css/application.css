@@ -340,7 +340,7 @@ ul.dropdown {
     position: absolute;
     right: -5px; 
     }
-.stream_element .right.top {top:0px;}
+.stream_element .right.top {top:5px;}
   .stream_element .controls {
     display: none;
     z-index: 6;

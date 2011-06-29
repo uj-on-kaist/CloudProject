@@ -376,23 +376,29 @@ function show_event_detail(event_id){
             if(event.end_time != undefined && event.end_time != 'None'){
                 detail_box.find('.end_time').html(" - <b>To</b> "+event.end_time);
             }
-            for(var i=0; i<event.attendees.length; i++){
-                detail_box.find('#attendees_list ul').append('<li><img src="/picture/'+event.attendees[i]+'" /></li>');
-            }
             
             if(!event.attend_open){
                 $(".attend_action").remove();
             }else{
                 var description=detail_box.find(".attending_status");
+                $(".attend_action .attend_btn").show();
                 if(event.attending == 'yes'){
                     description.text("회원님은 참석 중입니다.");
+                    $(".attend_action .yes_btn").hide();
                 }else if(event.attending == 'no'){
                     description.text("회원님은 참석 중이 아닙니다.");
+                    $(".attend_action .no_btn").hide();
                 }else if(event.attending == 'wait'){
                     description.text("회원님은 참석 여부를 보류 하셨습니다.");
+                    $(".attend_action .wait_btn").hide();
                 }else{
                     description.text("회원님은 아직 응답하지 않으셨습니다.");
                 }
+            }
+            
+            for(var a=0; a<event.attendees.length; a++){
+                var layout = '<li class="attendee"><img src="/picture/'+event.attendees[a].username+'" /></li>';
+                detail_box.find(".attendees_list ul").append(layout);
             }
             $.facebox({ div: '#event_detail_box' });
           }
@@ -419,13 +425,29 @@ function attend_event(item, type){
 		success : function(json) {
 		  console.log(json);
 		  if(json.success){
+		    var attendee_list=$("#facebox .attendees_list ul");
+		    
 		    var description=$("#facebox .attending_status");
+		    $(".attend_action .attend_btn").show();
 		    if(type == 'yes'){
+		        var user_name = $("#user_name_info").text();
+		        attendee_list.append('<li class="attendee"><img src="/picture/'+user_name+'" /></li>').hide().fadeIn();
                 description.text("참가 하셨습니다.");
+                $(".attend_action .yes_btn").hide();
             }else if(type == 'no'){
+                var user_name = $("#user_name_info").text();
+                attendee_list.find("img[src='/picture/"+user_name+"']").parent().fadeOut(1000,function(){
+                    $(this).remove();
+                });
                 description.text("참가 하지 않으시고 계십니다.");
+                $(".attend_action .no_btn").hide();
             }else if(type == 'wait'){
+                var user_name = $("#user_name_info").text();
+                attendee_list.find("img[src='/picture/"+user_name+"']").parent().fadeOut(1000,function(){
+                    $(this).remove();
+                });
                 description.text("참가 보류 하셨습니다.");
+                $(".attend_action .wait_btn").hide();
             }else{
                 description.text("회원님은 아직 응답하지 않으셨습니다.");
             }

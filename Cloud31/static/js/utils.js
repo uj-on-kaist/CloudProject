@@ -88,6 +88,7 @@ function detect_auto_complete(item){
     var result = cursor_postion_text(item);
     
     var text=result.text;
+    
     if(text.length <= 1){
         
         if(text.charAt(0) == '@' || text.charAt(0) == '#'){

@@ -47,6 +47,12 @@ $(document).ready(function(){
         {{ event.contents }}
       </p>
       
+      <div class="info">
+        <span class="check_action">
+          <b class="public_info">{% if event.public %}공개된 이벤트 입니다.{% endif %}</b>
+          <a href="#" class="event_open_action"  onclick="show_event_detail('{{ event.id }}');">Check who is attending.</a>
+        </span>
+      </div>
       
 <ul class="comments comment_count" id="1" >
 <li><span><span class="comment_count_text">{{ event.comments|length }}</span>개의 댓글이 있습니다.</span></li>
@@ -73,6 +79,7 @@ $(document).ready(function(){
       </div>
       <p class="comment_text"></p>
     </div>
+    
 </li>
 {% for comment in event.comments %}
 <li class="comment posted" data-guid="2">
@@ -107,7 +114,7 @@ $(document).ready(function(){
    <li class="write_box" style="border-left-width: 3px; border-left-style: solid; border-left-color: rgb(149, 189, 237); ">
     <img alt="ujlikes@localhost" class="current_user avatar" src="/picture/{{ user.username }}" title="ujlikes@localhost">
     <p style="position:relative; left:35px; margin-bottom:3px;">
-        <textarea class="comment_area" id="comment_area_{{ event.id }}" style="width:482px; margin:0px; height:15px;" placeholder="Write Comment" onclick="$('.submit_button').removeClass('hidden'); return false;"></textarea>
+        <textarea class="comment_area" id="comment_area_{{ event.id }}" style="width:405px; margin:0px; height:15px;" placeholder="Write Comment" onclick="$('.submit_button').removeClass('hidden'); return false;"></textarea>
     </p>
     <div class="submit_button hidden">
        <input class="comment_submit button" id="comment_submit_{{ event.id }}" name="commit" type="submit" value="Reply" onclick="var id=$(this).attr('id').split('_')[2]; ;update_event_comment(id); return false;">
@@ -126,5 +133,7 @@ $(document).ready(function(){
 {{ error_message }}
 {% endif %}
 
+
+{% include "ui/facebox_event.html" %}
 
 {% include "meta_close.html" %}

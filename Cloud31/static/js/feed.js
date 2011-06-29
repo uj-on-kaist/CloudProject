@@ -223,7 +223,6 @@ function display_feeds(feeds, type){
         for(var j=0; j<feed.comments.length; j++){
             add_comment(feed_layout, feed.comments[j], j, feed.comments.length);
         }
-    
         $("#feed_list").append(feed_layout);
         feed_layout.find(".comment_area").attr('id','comment_area_'+feed.id);
         feed_layout.find(".comment_submit").attr('id','comment_submit_'+feed.id);
@@ -237,6 +236,10 @@ function display_feeds(feeds, type){
                 reply_btn.show();
         });    
         feed_layout.find('textarea').elastic();
+        
+        if(feed.comments.length != 0)
+            feed_layout.find('ul.comments').show();
+        
     }
 }
 

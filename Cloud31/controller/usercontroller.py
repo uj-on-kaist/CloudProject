@@ -17,6 +17,8 @@ import datetime,json
 
 from django.utils.encoding import smart_unicode
 
+from django.conf import settings
+
 def signin(request):
     t = loader.get_template('signin.html')
     context = RequestContext(request)
@@ -88,18 +90,20 @@ def signup(request):
         return HttpResponse(t.render(context))
     
     if request.method == 'POST':
-        if request.POST['username']:
-            username=smart_unicode(request.POST['username'], encoding='utf-8', strings_only=False, errors='strict')
-        if request.POST['email']:
-            email=request.POST['email']
-        if request.POST['password1']:
-            password=request.POST['password1']
-        if request.POST['name']:
-            name=smart_unicode(request.POST['name'], encoding='utf-8', strings_only=False, errors='strict')
-        if request.POST['dept']:
-            dept=smart_unicode(request.POST['dept'], encoding='utf-8', strings_only=False, errors='strict')
-        if request.POST['position']:
-            position=smart_unicode(request.POST['position'], encoding='utf-8', strings_only=False, errors='strict')
+        username=request.POST.get('username','')
+        username=smart_unicode(username, encoding='utf-8', strings_only=False, errors='strict')
+
+        email=request.POST.get('email','')
+        password=request.POST.get('password1','')
+        
+        name=request.POST.get('name','')
+        name=smart_unicode(name, encoding='utf-8', strings_only=False, errors='strict')
+        
+        dept=request.POST.get('dept','')
+        dept=smart_unicode(dept, encoding='utf-8', strings_only=False, errors='strict')
+        
+        position=request.POST.get('position','')
+        position=smart_unicode(position, encoding='utf-8', strings_only=False, errors='strict')
     
     try:
 #         username=form.cleaned_data['username']
@@ -114,7 +118,7 @@ def signup(request):
         username_valid= re.match('[\w0-9]*',username) and len(username) >= 3 and len(username) < 16
         
         password_valid=True
-        #password_valid=len(password) >= 6 
+        password_valid=len(password) >= 6 
         email_valid=re.match('[\w.]*@\w*\.[\w.]*',email)
         
         if not (username_valid and password_valid and email_valid):
@@ -126,6 +130,7 @@ def signup(request):
         except:
             new_user = User.objects.create_user(username,email,password)
             new_user.is_active = False
+            #new_user.is_active = True
             new_user.last_name = name
             new_user.save()
             
@@ -139,11 +144,14 @@ def signup(request):
             new_profile.save()
             
             email_subject = smart_unicode('Cloud31 계정 인증을 완료해 주세요!', encoding='utf-8', strings_only=False, errors='strict')
-            email_body = 'http://localhost:8000/confirm/?key='+activation_key
-    
+            #email_body = 'http://localhost:8000/'
+            email_body= 'Click this link to activate your account.'
+            email_body+= '\n'+'http://175.203.72.119:8000/confirm/?key='+activation_key
+            
             send_mail(email_subject, email_body, 'Cloud31<cloud31.email@gmail.com>',[email])
             
-            return HttpResponse(username + ' Registered. Check Mail' )
+            request.session['message'] = username + ' Registered. Check your email and Click Activation Link.'
+            return HttpResponseRedirect('/signin/')
     except Exception as e:
         print str(e)
         return HttpResponse('Error Occured.')

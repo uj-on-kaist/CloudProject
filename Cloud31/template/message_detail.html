@@ -10,7 +10,14 @@ $(document).ready(function(){
 });
 </script>
 
-<a href="/message?type={{ type }}">≪</a> {{ message.author.username }}  -> {{ message.receivers }}
+<div class="tab">
+<a href="#" onclick="return false;">
+    <span class="tab_item back" onclick="history.back();">&laquo;</span>
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;" style="font-weight:normal;">
+        From. <b style="color:#325AAA">{{ message.author.username }}</b>  -> To. <b style="color:#325AAA">{{ message.receivers }}</b>
+    </span>
+</a>
+</div>
 
 <div class="d_message">
 <div class="stream" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">

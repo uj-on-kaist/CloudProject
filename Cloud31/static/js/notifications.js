@@ -72,6 +72,7 @@ function show_noti(notis){
     $('#noti_list li.noti_item').remove();
     for(var i=0; i<notis.length; i++){
         var noti=notis[i];
+        console.log(noti);
         var noti_layout= $("#noti_list li.noti_item_template").clone();
         noti_layout.removeClass("noti_item_template");
         noti_layout.addClass("noti_item");
@@ -93,6 +94,8 @@ function show_noti(notis){
                 url="/feed/detail/"+related_id;
             else if(related_type == "Event")
                 url="/event/detail/"+related_id;
+            else if(related_type == "DM" || related_type == "DM_Reply")
+                url="/message/detail/"+related_id;
             else{
                 stopEvent(event);
                 return;

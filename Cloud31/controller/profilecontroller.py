@@ -15,6 +15,7 @@ from django.utils.encoding import smart_unicode
 
 from django.contrib.auth.decorators import login_required
 
+from django.views.decorators.cache import never_cache
 
 import os,json
 from django.conf import settings
@@ -55,6 +56,7 @@ def favorite(request):
     context['related_topics'] = my_utils.get_related_topics(request.user.username)
     
     return HttpResponse(t.render(context))
+
 
 def picture(request,username):
     try:

@@ -175,4 +175,16 @@ span.author_name{font-size: 12px; line-height: 16px; margin-right: 5px;}
 
 .stream_element .content p.feed_attach a{
     display: block;
+    font-size: 11px;
+}
+
+.stream_element .content p.comment_text{
+    color:#323232;
+    font-size: 12px;
+    font-family: "Tahoma","Helvetica", Arial, sans-serif;
+}
+
+
+.d_message .stream_element, #message_list .stream_element{
+    padding: 10px 0px;
 }

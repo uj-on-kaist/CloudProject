@@ -1,5 +1,6 @@
-<div class="message_form">
-
+<div  id="message_form" style="display:none;">
+<div class="message_form" style="width: 525px;">
+<h4>Send a Message</h4>
 <div class="item">
     <div class="label">
     To
@@ -10,13 +11,14 @@
     <div class="label">
     Message
     </div>
-    <textarea id="input_message" class="autogrow"  placeholder="Write your Message" style="overflow-y:hidden; padding:5px 10px;  min-height:50px; resize:none;"></textarea>
+    <textarea id="input_message" class="autogrow"  placeholder="Write your Message" style="overflow-y:hidden; padding:5px 10px;  min-height:100px; resize:none;"></textarea>
 </div>
 
 
 <div class="item update">
-    <a href="/" class="button update" onClick="send_message(); return false;" id="update_btn">보내기</a>
+    <a href="/" class="button update" onClick="send_message(); $.facebox.close(); return false;" id="update_btn">보내기</a>
     <div class="loading" style="text-align:right; display:none;"><img src="{{ STATIC_URL }}image/loading.gif" /></div>
 </div>
 
+</div>
 </div>

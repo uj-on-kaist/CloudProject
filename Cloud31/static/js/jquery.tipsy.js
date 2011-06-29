@@ -20,6 +20,7 @@
     
     Tipsy.prototype = {
         show: function() {
+            
             var title = this.getTitle();
             if (title && this.enabled) {
                 var $tip = this.tip();
@@ -157,8 +158,10 @@
         
         if (options.trigger != 'manual') {
             var binder   = options.live ? 'live' : 'bind',
-                eventIn  = options.trigger == 'hover' ? 'mouseenter' : 'focus',
-                eventOut = options.trigger == 'hover' ? 'mouseleave' : 'blur';
+                eventIn  = options.trigger == 'focus' ? 'focus' : '',
+                eventOut = options.trigger == 'focus' ? 'blur' : '';
+            eventIn = options.trigger == 'hover' ? 'mouseenter' : eventIn;
+            eventOut = options.trigger == 'hover' ? 'mouseleave' : eventOut;
             this[binder](eventIn, enter)[binder](eventOut, leave);
         }
         
@@ -177,7 +180,7 @@
         offset: 0,
         opacity: 0.8,
         title: 'title',
-        trigger: 'hover',
+        trigger: '',
         always: false,
     };
     

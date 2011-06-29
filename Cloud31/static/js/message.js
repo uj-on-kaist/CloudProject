@@ -1,6 +1,6 @@
 function send_message(){
-    var receivers_text = $('#input_users').val();
-    var message = $('#input_message').val();
+    var receivers_text = $('#facebox #input_users').val();
+    var message = $('#facebox #input_message').val();
     /*
 
     receivers_text = receivers_text.replace(/[^a-zA-Z 0-9]+/g,'');

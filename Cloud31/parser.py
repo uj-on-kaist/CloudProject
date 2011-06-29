@@ -17,7 +17,8 @@ def parse_text(text):
             
         if prefix == "@":
             item_text=re.sub("\W","",item)
-            item = '<a class="detect_item" href="/user/'+item_text+'">'+prefix+'<span>'+item_text+'</span></a>'
+            item_remain=item[1:].replace(item_text,'')
+            item = '<a class="detect_item" href="/user/'+item_text+'">'+prefix+'<span>'+item_text+'</span></a>'+item_remain
         
         if link_prefix == "http://":
             item = '<a href="'+item+'" target=_blank>'+item+'</a>'
@@ -36,10 +37,11 @@ def detect_users(text):
     items=text.split(" ")
     detected_users = list()
     for item in items:
-       prefix = item[:1]
-       if prefix == "@":
-           detected_users.append(item[1:])
-           
+        prefix = item[:1]
+        if prefix == "@":
+            item_text=re.sub("\W","",item)
+            detected_users.append(item_text)
+     
     return detected_users
 
 def detect_topics(text):
