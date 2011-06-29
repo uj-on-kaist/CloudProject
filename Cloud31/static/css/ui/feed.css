@@ -111,7 +111,8 @@ ul.comment_count{font-size: 11px;}
 
 
 .feed_form .qq-upload-list li{
-    background-color: #f0f0f0;
+    background-image:url('/static/image/Box_address_525x22.png');
+    background-repeat: no-repeat;
     float: left;
     width: 515px;
     padding: 0px 5px;

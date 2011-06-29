@@ -42,6 +42,9 @@ urlpatterns = patterns('',
     
     url(r'^topic/$','controller.topiccontroller.topic'),
     url(r'^topic/(?P<topic_name>\w+)/$','controller.topiccontroller.topic_detail'),
+    url(r'^api/topic/favor/(?P<topic_name>\w+)$','controller.topiccontroller.topic_favorite'),
+    url(r'^api/topic/unfavor/(?P<topic_name>\w+)$','controller.topiccontroller.topic_unfavorite'),
+    
     url(r'^api/feed/topic/(?P<topic_name>\w+)/$','controller.topiccontroller.load_topic_timeline'),
     url(r'^api/feed/update/desc$','controller.topiccontroller.update_description'),
     

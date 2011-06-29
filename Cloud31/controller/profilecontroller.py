@@ -32,7 +32,7 @@ def user(request, username):
     user_profile = get_object_or_404(UserProfile,user=user)
     target_user = get_object_or_404(UserProfile, user=user)
     
-    
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     context['side_list']=['user_profile']
     context['target_user']=target_user
     context['user_profile']=user_profile
@@ -50,6 +50,7 @@ def favorite(request):
     user_profile = get_object_or_404(UserProfile,user=user)
     target_user = get_object_or_404(UserProfile, user=user)
     
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     context['page_favorite']='selected'
     context['side_list']=['user_profile']
     context['target_user']=target_user

@@ -15,7 +15,7 @@
             <span class="ui_icon ui_icon_file_{{ file.type }}"></span>
             <p class="ellipsis">{{ file.name }}</p></td>
         <td ><p>{{ file.type_name }}</p></td>
-        <td><p class="topic_detail">@{{ file.uploader.username }} <span style="color:#B4B4B4; font-size:11px;">({{ file.upload_date }})</span></p></td>
+        <td><p class="topic_detail">@{{ file.uploader }} <span style="color:#B4B4B4; font-size:11px;">({{ file.upload_date }})</span></p></td>
     </tr>
     {% endfor%}
 </table>

@@ -34,15 +34,19 @@ def feed(request):
     t = loader.get_template('feed.html')
     context = RequestContext(request)
     context['load_type']='me'
-    
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     context['side_list']=['']
     
     user = get_object_or_404(User,username=request.user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
     
+    
     context['current_user'] = user
     context['page_feed'] = "selected"
     context['user_profile'] = user_profile
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
+    
+    print context['user_favorite_topics']
     
     return HttpResponse(t.render(context))
 
@@ -55,7 +59,7 @@ def feed_detail(request, feed_id):
     user = get_object_or_404(User,username=request.user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
     
-    
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     context['current_user'] = user
     context['page_feed'] = "selected"
     context['user_profile'] = user_profile

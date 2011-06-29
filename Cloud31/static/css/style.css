@@ -389,6 +389,21 @@ li.selected.menu_item{background-color: rgb(196,231,241); font-weight: bold;}
 li.selected.menu_item:hover{background-color: rgb(196,231,241);}
 
 
+li.topic_favor_item{
+    line-height:20px; height: 20px; overflow:hidden; font-size:12px;color: #325AAA;
+    padding-left:36px;
+}
+li.topic_favor_item a p{font-size:12px;color: #325AAA;}
+li.topic_favor_item .del_btn{
+    display: none;
+}
+li.topic_favor_item:hover .del_btn{
+    display: inline;
+}
+li.topic_favor_item.last{
+    margin-bottom: 5px;
+}
+
 .user_box{float:left; width:100%; padding:0px 14px 5px 14px;}
 .user_box img{width:50px; height: 50px;float:left;}
 .user_box div{float:left; padding:2px 10px;}

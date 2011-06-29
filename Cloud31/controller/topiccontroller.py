@@ -23,11 +23,14 @@ import my_utils
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from operator import itemgetter
 
 @login_required(login_url='/signin/')
 def topic(request):
     t = loader.get_template('topic.html')
     context = RequestContext(request)
+    
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     
     context['side_list']=['search_topic']
     my_utils.prepare_search_topic(context)
@@ -54,6 +57,14 @@ def topic(request):
         
         topics = Topic.objects.filter(query_type).order_by('topic_name')
         
+        
+        for topic in topics:
+            try:
+                topic.message_length = len(Message.objects.filter(related_topics__contains=topic.topic_name+","))
+            except Exception as e:
+                print str(e)
+                topic.message_length = 0
+                pass
         
         paginator = Paginator(topics, 15)
         
@@ -82,6 +93,9 @@ def topic_detail(request,topic_name):
     t = loader.get_template('topic_detail.html')
     context = RequestContext(request)
     topic_name = smart_unicode(topic_name, encoding='utf-8', strings_only=False, errors='strict')
+    
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
+    print context['user_favorite_topics']
     context['side_list']=['topic_detail']
     context['topic']=list()
     try:
@@ -92,7 +106,7 @@ def topic_detail(request,topic_name):
     context['page_topic'] = "selected"
     context['load_type']='topic#' + topic_name
     context['topic_name']=context['topic'].topic_name
-    
+    context['topic_id']=context['topic'].id
     
     context['related_users']=my_utils.get_related_users(context['topic'].topic_name)
     return HttpResponse(t.render(context))
@@ -147,5 +161,55 @@ def update_description(request):
     except Exception as e:
         print str(e)
     
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+    
+    
+def topic_favorite(request, topic_name):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+    except:
+        return my_utils.return_error('Please Sign in first')
+        
+    try:
+        topic = Topic.objects.filter(topic_name=topic_name)[0]
+    except:
+        return my_utils.return_error('No such Topic')
+    
+    try:
+        user_topic_favorite = UserTopicFavorite.objects.get_or_create(topic=topic,user=user)[0]
+        user_topic_favorite.save()     
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Insert Failed')
+    
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
+def topic_unfavorite(request, topic_name):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+    except:
+        return my_utils.return_error('Please Sign in first')
+        
+    try:
+        topic = Topic.objects.filter(topic_name=topic_name)[0]
+    except:
+        return my_utils.return_error('No such Topic')
+    
+    try:
+        user_topic_favorite = UserTopicFavorite.objects.filter(topic=topic,user=user)[0]
+        user_topic_favorite.delete()     
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Delete Failed')
+      
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     

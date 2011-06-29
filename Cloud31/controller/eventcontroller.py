@@ -34,6 +34,7 @@ def main(request):
 #     user = get_object_or_404(User,username=request.user.username)
     context['page_event'] = "selected"
     context['side_list']=['event_calendar']
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     return HttpResponse(t.render(context))
     
 
@@ -44,6 +45,7 @@ def detail_event(request, event_id):
     context = RequestContext(request)
     context['page_event'] = "selected"
     context['side_list']=['event_calendar']
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     try:
         user = User.objects.get(username=request.user.username)
         username = request.user.username

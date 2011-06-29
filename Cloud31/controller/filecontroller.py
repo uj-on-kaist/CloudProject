@@ -31,6 +31,7 @@ def main(request):
     context = RequestContext(request)
     context['side_list']=['search_file']
     context['page_files'] = "selected"
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     my_utils.prepare_search_topic(context)
     
     context['files']=list()

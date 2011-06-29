@@ -14,6 +14,17 @@ import re
 
 from django.conf import settings
 
+def get_favorite_topics(user):
+    result=list()
+    try:
+        favorites = UserTopicFavorite.objects.filter(user=user)
+        for favorite in favorites:
+            result.append(favorite.topic.topic_name)
+    except Exception as e:
+        print 'Error '+str(e)
+        pass
+    return result
+
 def remove_special(inStr):
     result = inStr
     result=smart_unicode(result, encoding='utf-8', strings_only=False, errors='strict')

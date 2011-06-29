@@ -26,6 +26,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def main(request):
     t = loader.get_template('member.html')
     context = RequestContext(request)
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     context['side_list']=['search_member']
     context['page_member'] = "selected"
     my_utils.prepare_search_topic(context)

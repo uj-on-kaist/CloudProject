@@ -5,14 +5,14 @@
 <table class="topic_table list_table">
     <tr>
         <th width="160" class="first"><p>Topic Name</p></th>
-        <th width="90" ><p>Messages</p></th>
+        <th width="90" ><p>Feeds</p></th>
         <th width="265"><p>Topic Detail</p></th>
     </tr>
     
     {% for topic in topics.object_list %}
     <tr class="topic_item list_item" onclick="document.location.href='/topic/{{ topic.topic_name }}';">
         <td class="topic_name first"><p>{{ topic.topic_name }}</p></td>
-        <td ><p>#</p></td>
+        <td ><p>{{ topic.message_length }}</p></td>
         <td><p class="ellipsis topic_detail">{{ topic.topic_detail|striptags|safe }}</p></td>
     </tr>
     {% endfor%}
