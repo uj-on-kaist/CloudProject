@@ -50,7 +50,7 @@ function load_dialog(){
 		url : url,
 		dataType : "JSON",
 		success : function(json) {
-		  console.log(json);
+		  /* console.log(json); */
           if(json.success){
             display_dialogs(json.dialogs);
           }else{console.log(json);}

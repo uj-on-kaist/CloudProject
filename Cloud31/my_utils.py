@@ -33,11 +33,10 @@ def process_messages(request, messages):
         feed['author']=message.author.username
         feed['author_name']=message.author.last_name
         feed['contents']= parser.parse_text(message.contents)
-        feed['attach_files']= message.attach_files
         feed['location']= message.location
         feed['reg_date']= str(message.reg_date)
         feed['comments'] = list()
-        
+        feed['file_list'] = list()
         try:
             feed['base_id']=message.base_id
         except:
@@ -55,7 +54,16 @@ def process_messages(request, messages):
                 feed['comments'].append(item)
         except:
             pass
-            
+        
+        attach_files = message.attach_files.split('.')
+        if attach_files[0] is not u'':
+            try:
+                files = File.objects.filter(id__in=attach_files)
+                feed['file_list']=process_files(files)
+            except Exception as e:
+                print str(e)
+                pass
+        
         try:
             user = User.objects.get(username=request.user.username)
             is_favorited = UserFavorite.objects.filter(message=message, user=user)[0]
@@ -73,12 +81,12 @@ def process_files(files):
     for a_file in files:
         try:
             item = dict()
-            file_path = settings.PROJECT_PATH + '/media/'+smart_unicode(a_file.file_contents.url, encoding='utf-8', strings_only=False, errors='strict')
-            if not os.path.isfile(file_path):
-                print file_path
-                print 'not file'
+            #file_path = settings.PROJECT_PATH + '/media/'+smart_unicode(a_file.file_contents.url, encoding='utf-8', strings_only=False, errors='strict')
+            #if not os.path.isfile(file_path):
+            #    print file_path
+            #    print 'not file'
             item['type']=a_file.file_type
-            item['uploader']=a_file.uploader
+            item['uploader']=a_file.uploader.username
             item['upload_date']=str(a_file.upload_date)
             if a_file.file_type in ['xls','xlsx']:
                 item['type']='excel'
@@ -98,13 +106,17 @@ def process_files(files):
                 item['type_name']='PDF file'
             elif a_file.file_type in ['zip']:
                 item['type_name']='Zip file'
+            elif a_file.file_type in ['png', 'jpg', 'jpeg', 'gif']:
+                item['type']='img'
+                item['type_name']='Image file'
             else:
                 item['type']='etc'
                 item['type_name']='Unknown type' 
             item['name']=smart_unicode(a_file.file_name, encoding='utf-8', strings_only=False, errors='strict')
             item['url']='/media/'+a_file.file_contents.url
             result.append(item)
-        except:
+        except Exception as e:
+            print str(e)
             pass
     return result  
 

@@ -64,7 +64,7 @@ def signin(request):
             context['message'] = user.username+' is not active. First check your email and click activation link'
             return HttpResponse(t.render(context))
     else:
-        context['message'] = 'Sign in Failed. Check Username and Password is correct'
+        context['message'] = '<b>Sign in Failed.</b> Check Username and Password again.'
         return HttpResponse(t.render(context))
     
 

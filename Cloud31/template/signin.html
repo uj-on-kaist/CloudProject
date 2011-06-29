@@ -16,7 +16,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
     var page_height = $.getDocHeight();
-    var container_pos = page_height/2.0 - 220;
+    var container_pos = page_height/2.0 - 260;
     if(container_pos <= 10)
         container_pos = 10;
     $(".sign_container").css('padding-top',container_pos+'px');
@@ -47,8 +47,15 @@ $.getDocHeight = function(){
 <div class="signin_logo">
 <img src="/static/image/Introduction_logo.png" />
 </div>
-
-
+{% if message %}
+<div class="ui-widget">
+    <div class="ui-state-highlight ui-corner-all" style="padding: 5px 10px;margin:0 auto; margin-bottom:20px;display: inline-block;"> 
+        <span class="ui_icon ui_icon_notice"></span>
+        <p style="margin:0; padding-left:27px;padding-right:5px; line-height:22px;">
+        {{ message|safe}} </p>
+    </div>
+</div>
+{% endif %}
 <div class="sign_form" id="sign_form">
 <form action="/signin/" method="POST" class="" style=""> 
 {% csrf_token %}

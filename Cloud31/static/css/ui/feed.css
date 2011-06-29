@@ -1,3 +1,9 @@
+
+
+ul.comments{display:none;}
+
+
+
 .feed{
     display: inline-block;
 }
@@ -116,4 +122,57 @@ ul.comment_count{font-size: 11px;}
 }
 .feed_form .qq-upload-list li span.ui_icon_delete{
     float: right;
+}
+
+.stream_element .content .info{
+    line-height: 22px;
+}
+.stream_element .content .info span{
+    padding-bottom: 9px;
+}
+.stream_element .content .info .favor, .stream_element .content .info .unfavor{
+    padding-left:18px;
+    background-repeat: no-repeat;
+    background-position: 0 -1px;
+}
+.stream_element .content .info .favor{
+    background-image: url(/static/image/Icon_favorite_off.png);
+}
+.stream_element .content .info .unfavor{
+    background-image: url(/static/image/Icon_favorite_on.png);
+}
+.stream .stream_element {
+    padding: 15px 0px;
+}
+
+span.author_name{font-size: 12px; line-height: 16px; margin-right: 5px;}
+
+.stream_element .content p.feed_content{color:#323232; padding-top:2px; padding-bottom: 2px;}
+
+
+.stream_element .content p.feed_attach_image, .stream_element .content p.feed_attach{
+    margin: 10px 0;
+    padding: 0px 0 0px 3px;
+    border-left: 3px solid #F0F0F0;
+}
+.stream_element .content p.feed_attach_image img{
+    margin: 0 3px 0 4px;
+    padding: 3px;
+    height:72px;
+    border: 1px solid #f0f0f0;
+}
+.stream_element .content p.feed_attach_image img:hover{
+    border: 1px solid #b4b4b4;
+}
+
+.stream_element .content p.feed_attach span.ui_icon{
+    background-position-y: -87px;
+    margin-right: 5px;
+}
+.stream_element .content p.feed_attach{
+    line-height: 30px;
+}
+
+.stream_element .content p.feed_attach a{
+    display: block;
 }

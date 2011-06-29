@@ -132,7 +132,7 @@ function display_feeds(feeds, type){
     for(var i=0; i<feeds.length; i++){
         
         var feed=feeds[i];
-/*         console.log(feed); */
+        console.log(feed);
         
         var feed_layout= $("div.stream.template").clone();
         feed_layout.removeClass("template");
@@ -166,13 +166,10 @@ function display_feeds(feeds, type){
         feed_layout.find('abbr.feed_time').text(humane_date(feed.reg_date));
         feed_layout.find('img.avatar.author').attr('src','/picture/'+feed.author);
 
+        display_files(feed.file_list, feed_layout);
+        feed_layout.find("a.fancy_image").fancybox();
         
-        var attach_count=feed.attach_files.split(',').length;
-        if(feed.attach_files == ""){
-            feed_layout.find('.attach_file').hide();
-        }else{
-            feed_layout.find('.attach_file span.attach_file_count').text(attach_count);
-        }
+        
         if(feed.author == $("#user_name_info").text()){
             feed_layout.find('.stream_element_delete.feed').show();
             feed_layout.find('.stream_element_delete.feed').attr('feed_id',feed.id);
@@ -180,6 +177,9 @@ function display_feeds(feeds, type){
                 delete_feed($(this));
             });
         }
+        
+        
+        
         
         feed_layout.find('.comment_action a').attr("feed_id",feed.id);
         feed_layout.find('.comment_action a').click(function(){
@@ -216,6 +216,10 @@ function display_feeds(feeds, type){
                 return false;
         });
         
+        
+        
+        
+        
         for(var j=0; j<feed.comments.length; j++){
             add_comment(feed_layout, feed.comments[j], j, feed.comments.length);
         }
@@ -234,6 +238,35 @@ function display_feeds(feeds, type){
         });    
         feed_layout.find('textarea').elastic();
     }
+}
+
+
+function display_files(file_list, feed_layout){
+    for(var i=0; i<file_list.length; i++){
+        var file = file_list[i];
+        if(file.type == "img"){
+            var image_layout = '<a class="fancy_image" href="'+file.url+'" onfocus="this.blur()">'+
+                '<img  src="'+file.url+'">' +
+                '</a>';
+        
+            feed_layout.find('.feed_attach_image').append(image_layout);
+        }else{
+            var file_layout = '<a class="attach_file" href="'+file.url+'" target=_blank onfocus="this.blur()">' +
+                '<span class="ui_icon ui_icon_file_'+file.type+'" ></span>' +
+                '<span class="">'+file.name+'</span>' +
+            '</a>';
+        
+            feed_layout.find('.feed_attach').append(file_layout);
+        }
+    }
+    
+    if(feed_layout.find('.feed_attach a').length == 0){
+        feed_layout.find('.feed_attach').remove();
+    }
+    if(feed_layout.find('.feed_attach_image a').length == 0){
+        feed_layout.find('.feed_attach_image').remove();
+    }        
+    
 }
 
 function feed_like(item, action){

@@ -139,11 +139,6 @@ p.event_title{color: black; font-weight: bold; font-size: 20px;}
 
 p.event_content{padding:10px 0px;}
 
-ul.comments{display:none;}
-
-
-span.author_name{font-size: 10px; line-height: 16px; margin-right: 5px;}
-
 
 .attendees_list p{font-size: 1.2em; color:#777; font-weight: bold; margin:5px 0;}
 li.attendee img{width:30px; height: 30px;}
