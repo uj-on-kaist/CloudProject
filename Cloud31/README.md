@@ -15,6 +15,9 @@
 > CREATE DATEBASE 'cloud31'
 > PLEASE SET UTF-8 
 
+### Django-celery
+http://bitkickers.blogspot.com/2010/07/djangocelery-quickstart-or-how-i.html
+
 
 ### Mysql-python
 > http://mysql-python.sourceforge.net/

@@ -19,6 +19,8 @@ from django.utils.encoding import smart_unicode
 
 from django.conf import settings
 
+import my_emailer
+
 def signin(request):
     t = loader.get_template('signin.html')
     context = RequestContext(request)
@@ -132,23 +134,19 @@ def signup(request):
             new_user.is_active = False
             #new_user.is_active = True
             new_user.last_name = name
-            new_user.save()
             
-            shaSource= username + email
-            activation_key=encode(shaSource)
-            key_expires = datetime.datetime.today() + datetime.timedelta(2)
-    
-            new_profile = UserProfile(user=new_user, activation_key=activation_key, key_expires=key_expires)
+            
+            new_profile = UserProfile(user=new_user)
             new_profile.dept=dept
             new_profile.position=position
-            new_profile.save()
             
-            email_subject = smart_unicode('Cloud31 계정 인증을 완료해 주세요!', encoding='utf-8', strings_only=False, errors='strict')
-            #email_body = 'http://localhost:8000/'
-            email_body= 'Click this link to activate your account.'
-            email_body+= '\n'+'http://175.203.72.119:8000/confirm/?key='+activation_key
-            
-            send_mail(email_subject, email_body, 'Cloud31<cloud31.email@gmail.com>',[email])
+            try:
+                my_emailer.send_activation_mail(new_user, new_profile)
+                
+                new_user.save()
+                new_profile.save()
+            except Exception as e:
+                print str(e)
             
             request.session['message'] = username + ' Registered. Check your email and Click Activation Link.'
             return HttpResponseRedirect('/signin/')

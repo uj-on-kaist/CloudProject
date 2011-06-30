@@ -130,19 +130,28 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     
     'controller',
-    'sidebar'
+    'sidebar',
+    'django_cron',
 )
 
 
 
 
 # Email Settings(using Gmail)
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'cloud31.email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'cloud3131'
+# EMAIL_PORT = 587
+
+# Email Settings(using Naver)
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'cloud31.email@gmail.com'
-EMAIL_HOST_PASSWORD = 'cloud3131'
+EMAIL_HOST = 'smtp.naver.com'
+EMAIL_HOST_USER = 'hr95jung@naver.com'
+EMAIL_HOST_PASSWORD = 'testtest'
 EMAIL_PORT = 587
 
+#smtp.daum.net
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -168,3 +177,5 @@ LOGGING = {
 }
 
 
+
+CRON_POLLING_FREQUENCY = 3
