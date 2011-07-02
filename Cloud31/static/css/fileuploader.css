@@ -28,9 +28,12 @@
 }
 
 .qq-upload-file {}
-.qq-upload-spinner {display:inline-block; background: url("loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
+.qq-upload-spinner {display:inline-block; background: url("loading.gif"); width: 22px;
+height: 21px;
+background-position: center center;
+background-repeat: no-repeat; vertical-align:text-bottom;}
 .qq-upload-size,.qq-upload-cancel {font-size:11px;}
-
+.qq-upload-cancel{position: relative;top: 3px;}
 .qq-upload-failed-text {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}
 

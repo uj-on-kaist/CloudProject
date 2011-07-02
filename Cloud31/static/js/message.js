@@ -125,6 +125,7 @@ function display_messages(messages){
             location.href="/message/detail/"+$(this).attr('message_id')+"?type="+$("#message_list").attr('type');
         });
         
+        
         if(message.author == $("#user_name_info").text()){
             message_layout.find('.stream_element_delete.message').show();
             message_layout.find('.stream_element_delete.message').attr('message_id',message.id);

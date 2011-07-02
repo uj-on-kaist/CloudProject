@@ -12,7 +12,7 @@ import datetime,json
 from hashlib import sha1
 
 
-
+from django.conf import settings
 
 
 def encode(string) : 
@@ -33,13 +33,27 @@ def send_activation_mail(user,user_profile):
     email_body = t.render(context)
     email_subject = smart_unicode('Cloud31 계정 인증을 완료해 주세요!', encoding='utf-8', strings_only=False, errors='strict')
     
-    register_email_queue(user, email_subject, email_body)
+    register_email_queue(user.email, email_subject, email_body)
 
 
-def register_email_queue(user,subject,contents):
+def send_invitation_mail(from_user, target_emails):
+    t = loader.get_template('email/invitation.html')
+    context = Context()
+    context['from_user'] = from_user.username
+    context['from_user_name'] = from_user.last_name
+    context['SERVICE_BASE_URL'] = settings.SERVICE_BASE_URL
+    email_body = t.render(context)
+    email_subject = smart_unicode('Cloud31를 사용해 보세요!', encoding='utf-8', strings_only=False, errors='strict')
+    
+    for email in target_emails:
+        register_email_queue(email, email_subject, email_body)
+    
+
+def register_email_queue(target_email,subject,contents):
     try:
-        email = EmailQueue(target_user=user,subject=subject, contents=contents)
-        email.save()
+        if target_email != '' and target_email is not None:
+            email = EmailQueue(target_email=target_email,subject=subject, contents=contents)
+            email.save()
     except Exception as e:
         print str(e)
         pass

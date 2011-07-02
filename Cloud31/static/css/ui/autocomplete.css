@@ -1,8 +1,9 @@
 #auto_complete_list{
     position: absolute;
+    top:-41px;
     background: #ffffff;
     padding:0 0;
-    width: 523px;
+    width: 525px;
     z-index: 100;
     border: 1px solid #323232;
     display: none;
@@ -21,6 +22,7 @@
 }
 
 #auto_complete_list li.first{
+    background-color: #F7F7F7;
     border-bottom: 1px solid #AAA;
     font-weight: bold;
 }

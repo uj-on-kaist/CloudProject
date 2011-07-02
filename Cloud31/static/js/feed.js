@@ -1,5 +1,7 @@
-function upload_feed(){
-    
+function upload_feed(item){
+    item.attr('disabled','disabled');
+    item.parent().find('.loading').show();
+    item.hide();
     var attach_list='';
     var count=$(".qq-upload-list").find('li').length;
     $(".qq-upload-list").find('li').each(function(i, val){
@@ -27,14 +29,20 @@ function upload_feed(){
 		dataType : "JSON",
 		success : function(json) {
 		  console.log(json);
+		  item.removeAttr('disabled');
           if(json.success){
             clear_feed_input();
             var feed_type=$("#feed_list").attr('type');
             load_feed(feed_type);
+            
+            
           }
+          item.parent().find('.loading').hide();
+            item.show();
 		},
 		error : function(data){
 		  console.log(data);
+		  alert('Error Occured');
 		}
 	});
     

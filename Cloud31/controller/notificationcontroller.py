@@ -147,6 +147,9 @@ def register_noti(request, noti_type, info):
                                         related_id = target_object.id, contents = contents)
             new_noti.save()
         
+        
+        #TODO : EMAIL NOTI - User Option Check
+        
     except Exception as e:
         print 'Error '+str(e)
         pass

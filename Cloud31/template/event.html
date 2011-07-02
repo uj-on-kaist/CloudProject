@@ -1,10 +1,10 @@
 {% include "meta_open.html" %}
 
-<h2 class="page_title">Event</h2>
+<h2 class="page_title">
+    Event
+    <a href="/event/new" class="title_link">Make a Event</a>
+</h2>
 
-
-{% include "ui/event_form.html" %}
- 
 <div class="tab">
 <a href="#" onclick="load_event('upcoming'); return false;">
     <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">Upcoming</span>

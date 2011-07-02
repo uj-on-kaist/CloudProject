@@ -162,7 +162,7 @@ class DirectMessageReply(models.Model):
 ## Notification Queue
 ##
 class EmailQueue(models.Model):
-    target_user = models.ForeignKey(User)
+    target_email = models.CharField(max_length=60, default='')
     subject = models.TextField(null=False)
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)

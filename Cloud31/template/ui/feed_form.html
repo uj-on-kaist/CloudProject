@@ -1,8 +1,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
-    $("#feed_message_input").click(function(){
-
-        $(".feed_rest").show();
+    $("#feed_message_input").bind('focus',function(){
+        $(this).parent().parent().css('border','1px solid #34b0d9');
+    });
+    $("#feed_message_input").bind('blur',function(){
+        $(this).parent().parent().css('border','1px solid #ccc');
     });
     
     $("#feed_message_input").keyup(function(event){
@@ -38,18 +40,28 @@ $(document).ready(function(){
         },
     });
     
-    $("#file-uploader .custom_zone").prepend("<b class='attach_label'>Add:</b>");
+    $("#file-uploader .custom_zone").prepend("<p class='attach_label'>Attach</p> ");
     var update_btn_layout = $(".item.update").clone();
     update_btn_layout.removeClass("template");
     $("#file-uploader .custom_zone").after(update_btn_layout);
     
 });
 </script>
+<h4 style="padding-left:5px">Share Your Feed!</h4>
+<div class="feed_box ui-corner-all">
+    <div>
+    <textarea id="feed_message_input" class="autogrow ui-corner-all" placeholder="Write your Feed"></textarea>
+    </div>
+    <div id="file-uploader" class="ui-corner-all">       
+    <noscript>          
+        <p>Please enable JavaScript to use file uploader.</p>
+        <!-- or put a simple form for upload here -->
+    </noscript>         
+</div>
+</div>
 
-<div><textarea id="feed_message_input" class="autogrow ui-corner-all" style="resize:none; width:513px; padding:5px 5px; height:20px;font-family:'Tahoma','Helvetica', Arial, sans-serif; margin:0; " placeholder="Write your Feed"></textarea></div>
 
-
-<div class="feed" style="margin-bottom:13px;">
+<div class="feed" style="margin-bottom:20px;">
 
 <div class="feed_form">
 <div id="auto_complete_list" class="ui-corner-all">
@@ -75,7 +87,6 @@ $(document).ready(function(){
 </div>
 
 <div class="feed_rest" style="display:none;">
-<div style="display:none;"><ul id="attach_list"><b style="margin-right:10px;">Attatched</b></ul></div>
 
 <div class="control">
 
@@ -94,7 +105,8 @@ $(document).ready(function(){
 </div><!-- item attach -->
 
 <div class="item update template">
-    <button type="submit" class="button_m" onblur="return false" onClick="upload_feed(); return false;">Update</button>
+    <p class="loading" style="display:inline; padding:0; margin:0; display:none; padding-top:8px; padding-bottom:6px;padding-right:5px"><img src="/static/image/ajax-loader.gif?asdf"></p>
+    <button type="submit" class="button_m" onblur="return false;" onClick="upload_feed($(this)); return false;" >Update</button>
 </div>
 
 </div><!-- control -->

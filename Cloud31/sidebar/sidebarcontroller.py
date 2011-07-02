@@ -17,9 +17,11 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
 
-import json
+import json, re
 import my_utils
 import parser
+
+import my_emailer
 
 DEFAULT_LOAD_LENGTH = 5
  
@@ -116,3 +118,27 @@ def process_dialogs(dialogs):
         except:
             pass
     return result
+    
+    
+    
+    
+def send_invite(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    emails = request.GET.get('emails',False)
+    
+    if emails:
+        try:
+            temp_emails = list(set(emails.split('|')))
+            target_emails = list()
+            for email in temp_emails:
+                if re.match('[\w.]*@\w*\.[\w.]*',email):
+                    target_emails.append(email)
+            print target_emails
+            my_emailer.send_invitation_mail(request.user, target_emails)
+        except:
+            pass
+        
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')

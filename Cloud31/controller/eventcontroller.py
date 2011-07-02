@@ -37,6 +37,16 @@ def main(request):
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     return HttpResponse(t.render(context))
     
+@login_required(login_url='/signin/')
+def new(request):
+    t = loader.get_template('event_new.html')
+    context = RequestContext(request)
+#     user = get_object_or_404(User,username=request.user.username)
+    context['page_event'] = "selected"
+    context['side_list']=['event_calendar']
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
+    return HttpResponse(t.render(context))
+    
 
 # Event 하나를 상세히 보여주는 페이지
 @login_required(login_url='/signin/')

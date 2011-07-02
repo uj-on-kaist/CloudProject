@@ -1,3 +1,7 @@
+textarea:focus,input:focus{
+    outline: none; border: 1px solid #34b0d9;
+}
+
 .wrapper{}
 
 header{
@@ -698,4 +702,9 @@ ul.index_list li.previous span, ul.index_list li.next span{
 
 .stream_element .event_delete.right{
     top:5px;
+}
+
+
+.page_title .title_link{
+    font-size:12px; font-weight:normal; letter-spacing:0px; margin-left:10px;
 }

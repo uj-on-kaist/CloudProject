@@ -1,7 +1,15 @@
 <div class="side_item">
 <h3 class="sidebar_header">Invite</h3>
 <div title="invite_user" class="invite_box">
-<input id="q" type="text" placeholder="someone@email.com" name="q" class="invite_input input_167_25">
-<span class="ui_icon ui_icon_enter" style="margin: 7px 0px 0 1px;" onclick="invite_user(); return false;"></span>
+<input id="invite_user_input" type="text" placeholder="someone@email.com" name="q" class="invite_input input_167_25" onkeyup="if(event.keyCode == 13) send_invite($(this)); return false;">
+<span class="ui_icon ui_icon_enter" style="margin: 7px 0px 0 1px;" onclick="send_invite($('#invite_user_input')); return false;"></span>
+</div>
+
+<div class="ui-widget invi_sent" style="display:none;">
+    <div class="ui-state-highlight ui-corner-all" style="display: inline-block;"> 
+        <span class="ui_icon ui_icon_notice"></span>
+        <p style="margin:0; padding-left:30px; width:102px; font-weight:bold; line-height:22px;">
+        Invitation is Sent!</p>
+    </div>
 </div>
 </div>

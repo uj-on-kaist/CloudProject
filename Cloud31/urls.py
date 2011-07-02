@@ -81,6 +81,7 @@ urlpatterns = patterns('',
     
     
     url(r'^event/$', 'controller.eventcontroller.main'),
+    url(r'^event/new$', 'controller.eventcontroller.new'),
     url(r'^event/detail/(?P<event_id>\w+)$', 'controller.eventcontroller.detail_event'),
     url(r'^api/event/detail/(?P<event_id>\w+)$', 'controller.eventcontroller.event_detail'),
     url(r'^api/event/attend/(?P<event_id>\w+)$', 'controller.eventcontroller.attend_event'),
@@ -114,4 +115,5 @@ urlpatterns = patterns('',
     url(r'^api/sidebar/dialog/add$', 'sidebar.sidebarcontroller.add_dialog'),
     url(r'^api/sidebar/dialog/delete$', 'sidebar.sidebarcontroller.delete_dialog'),
     url(r'^api/sidebar/dialog/get$', 'sidebar.sidebarcontroller.load_dialog'),
+    url(r'^api/sidebar/invite$', 'sidebar.sidebarcontroller.send_invite'),
 )

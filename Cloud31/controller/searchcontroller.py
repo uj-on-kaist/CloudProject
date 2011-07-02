@@ -51,7 +51,7 @@ def search_feeds(request, inStr):
         query_type = Q()
         for item in arr:
             query_type = query_type & Q(contents__icontains=item)
-        feeds = Message.objects.filter(query_type, is_deleted=False)
+        feeds = Message.objects.filter(query_type, is_deleted=False).order_by('-reg_date')
         result = my_utils.process_messages(request,feeds)
     except Exception as e:
         print str(e)
@@ -127,7 +127,7 @@ def ajax_user(request):
     else:
         return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
-    users = User.objects.filter(username__istartswith=q)
+    users = User.objects.filter(Q(username__istartswith=q) | Q(last_name__icontains=q))[:15]
     
     for user in users:
         try:
