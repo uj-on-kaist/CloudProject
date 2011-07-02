@@ -22,6 +22,7 @@ import my_utils
 def main(request, keyword):
     t = loader.get_template('search.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     keyword=my_utils.remove_special(keyword)
     context['keyword']=keyword
     

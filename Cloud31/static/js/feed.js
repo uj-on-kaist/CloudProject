@@ -172,10 +172,15 @@ function display_feeds(feeds, type){
         }
         
         feed_layout.find('abbr.feed_time').text(humane_date(feed.reg_date));
-        feed_layout.find('img.avatar.author').attr('src','/picture/'+feed.author);
+        feed_layout.find('img.avatar.author').attr('src',feed.author_picture);
 
-        display_files(feed.file_list, feed_layout);
-        feed_layout.find("a.fancy_image").fancybox();
+        display_files(feed.file_list, feed_layout, feed.id);
+        feed_layout.find("a.fancy_image").fancybox({
+            'titlePosition'     : 'over',
+            'titleFormat'       : function(title, currentArray, currentIndex, currentOpts) {
+            return '<span id="fancybox-title-over"><b style="float:right;">' +  (currentIndex + 1) + ' / ' + currentArray.length + ' </b>' + title + '</span>';
+            }
+        });
         
         
         if(feed.author == $("#user_name_info").text()){
@@ -252,11 +257,11 @@ function display_feeds(feeds, type){
 }
 
 
-function display_files(file_list, feed_layout){
+function display_files(file_list, feed_layout, feed_id){
     for(var i=0; i<file_list.length; i++){
         var file = file_list[i];
         if(file.type == "img"){
-            var image_layout = '<a class="fancy_image" href="'+file.url+'" onfocus="this.blur()">'+
+            var image_layout = '<a class="fancy_image" title="'+file.name+'" rel="group'+feed_id+'" href="'+file.url+'" onfocus="this.blur()">'+
                 '<img  src="'+file.url+'">' +
                 '</a>';
         
@@ -321,11 +326,11 @@ function add_comment(feed_layout, comment, index, total){
     comment_layout.find('p.comment_text').html(nl2br(comment.contents));
     comment_layout.find('abbr.comment_time').text(humane_date(comment.reg_date));
     comment_layout.find('.user_link').attr('href','/user/'+comment.author);
-    comment_layout.find('img.avatar').attr('src','/picture/'+comment.author);
+    comment_layout.find('img.avatar').attr('src',comment.author_picture);
     
     var current_user = $("#user_name_info").text();
-    comment_layout.find('img.current_user.avatar').attr('src','/picture/'+current_user);
-    
+    var current_user_picture = $("#user_picture_info").text();
+    comment_layout.find('img.current_user.avatar').attr('src',current_user_picture);
     comment_layout.find('.from a').text(comment.author);
     comment_layout.find('.from span.author_name').text(comment.author_name);
     if(index <= total-3){

@@ -4,7 +4,7 @@
 from django.contrib.auth.models import User
 
 from controller.models import *
-
+from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_unicode
 from django.http import HttpResponse
 
@@ -13,6 +13,25 @@ import parser
 import re
 
 from django.conf import settings
+
+def load_basic_info(request, context):
+    user_profile = get_object_or_404(UserProfile,user=request.user)
+    context['user_profile'] = user_profile
+       
+    try:
+        context['user_favorite_topics']=get_favorite_topics(request.user)
+    except:
+        pass
+
+def load_side_profile_info(username, context):
+    user = get_object_or_404(User,username=username)
+    user_profile = get_object_or_404(UserProfile,user=user)
+    target_user = get_object_or_404(UserProfile, user=user)
+    
+    context['target_user']=target_user
+    context['target_user_profile']=user_profile
+    context['related_topics'] = get_related_topics(username)
+    context['load_type']='user#'+username
 
 def get_favorite_topics(user):
     result=list()
@@ -42,6 +61,11 @@ def process_messages(request, messages):
         feed = dict()
         feed['id']=message.id
         feed['author']=message.author.username
+        try:
+            user_profile = UserProfile.objects.get(user=message.author)
+            feed['author_picture']= user_profile.picture.url
+        except:
+            feed['author_picture']='/media/default.png'
         feed['author_name']=message.author.last_name
         feed['contents']= parser.parse_text(message.contents)
         feed['location']= message.location
@@ -60,6 +84,11 @@ def process_messages(request, messages):
                 item['id']=comment.id
                 item['author']=comment.author.username
                 item['author_name']=comment.author.last_name
+                try:
+                    user_profile = UserProfile.objects.get(user=comment.author)
+                    item['author_picture']= user_profile.picture.url
+                except:
+                    item['author_picture']='/media/default.png'
                 item['contents']= parser.parse_text(comment.contents)
                 item['reg_date']= str(comment.reg_date)
                 feed['comments'].append(item)
@@ -124,7 +153,7 @@ def process_files(files):
                 item['type']='etc'
                 item['type_name']='Unknown type' 
             item['name']=smart_unicode(a_file.file_name, encoding='utf-8', strings_only=False, errors='strict')
-            item['url']='/media/'+a_file.file_contents.url
+            item['url']=a_file.file_contents.url
             result.append(item)
         except Exception as e:
             print str(e)

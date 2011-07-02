@@ -26,8 +26,9 @@ import my_utils
 def setting(request):
     t = loader.get_template('setting.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    
     context['page_setting'] = "selected"
-    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     user = get_object_or_404(User,username=request.user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
     context['user'] = user

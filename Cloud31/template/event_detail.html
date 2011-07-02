@@ -20,7 +20,7 @@ $(document).ready(function(){
   </div>
   <div class="sm_body">
     <a href="/user/{{ event.host }}" class="user_link">
-      <img class="avatar author" src="/picture/{{ event.host }}" data-person_id="2">
+      <img class="avatar author" src="{{ event.host_picture }}" data-person_id="2">
     </a>
     <div class="content">
       <div class="from">
@@ -64,7 +64,7 @@ $(document).ready(function(){
         <a href="#" class="delete stream_element_delete" title="지우기" style="display:none;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
     </div>
     <a href="/people/1" class="user_link">
-      <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="/picture/test" title="ujlikes@localhost">
+      <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="" title="ujlikes@localhost">
     </a>
     <div class="content">
       <div class="from">
@@ -89,7 +89,7 @@ $(document).ready(function(){
         {% endif %}
     </div>
     <a href="/user/{{ comment.author }}" class="user_link">
-      <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="/picture/{{ comment.author }}" title="ujlikes@localhost">
+      <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="{{ comment.author_picture }}" title="ujlikes@localhost">
     </a>
     <div class="content">
       <div class="from">
@@ -112,7 +112,7 @@ $(document).ready(function(){
 
 <ul class="comments" id="1">
    <li class="write_box" style="border-left-width: 3px; border-left-style: solid; border-left-color: rgb(149, 189, 237); ">
-    <img alt="ujlikes@localhost" class="current_user avatar" src="/picture/{{ user.username }}" title="ujlikes@localhost">
+    <img alt="ujlikes@localhost" class="current_user avatar" src="{{ user_profile.picture.url }}" title="ujlikes@localhost">
     <p style="position:relative; left:35px; margin-bottom:3px;">
         <textarea class="comment_area" id="comment_area_{{ event.id }}" style="width:405px; margin:0px; height:15px;" placeholder="Write Comment" onclick="$('.submit_button').removeClass('hidden'); return false;"></textarea>
     </p>

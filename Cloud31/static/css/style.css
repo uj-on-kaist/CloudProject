@@ -96,8 +96,8 @@ textarea{overflow-y: hidden;}
 .message_form div div.label{
     float:left; width:60px; text-align: right; font-weight: bold; margin:3px 10px 0 0; 
 }
-.message_form div textarea{width: 425px; font-size: 12px;margin:5px 0;}
-.message_form div.item.update{margin: 15px 0 0 65px;}
+.message_form div textarea{width: 415px; font-size: 12px;margin:5px 0;}
+.message_form div.item.update{margin: 15px 0 0 69px;}
 
 
 #message_list .stream_element:hover{
@@ -151,17 +151,17 @@ p.event_content{padding:10px 0px;}
 .attendees_list p{font-size: 1.2em; color:#777; font-weight: bold; margin:5px 0;}
 li.attendee img{width:30px; height: 30px;}
 
-.main_info_div,.attendees_list{padding:0px 10px; padding-bottom: 10px;float:left; width:460px;}
-.main_info{width:410px;float: left;}
+.main_info_div,.attendees_list{padding:0px 10px; padding-bottom: 10px;float:left; width:450px;}
+.main_info{width:400px;float: left;}
 .main_info  p{margin-bottom: 0}
 .main_info .event_title{font-size: 1.5em; color:#777; font-weight: bold;}
 
 img.host_avatar{float:left; width:50px; height: 50px;}
 
-.attend_action {float:left;width:460px; padding:10px;}
+.attend_action {float:left;width:450px; padding:10px;}
 .attending_status{margin:0;}
 .attend_action div{font-size: 1.2em; color:black; font-weight: bold;float:left;}
-.attend_action div.description{width:320px;}
+.attend_action div.description{width:310px;}
 
 
 .attendees_list, .attend_action{border-top: 1px solid #e7e7e7; }

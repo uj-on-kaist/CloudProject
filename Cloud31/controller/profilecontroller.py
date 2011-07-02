@@ -27,34 +27,23 @@ import my_utils
 def user(request, username):
     t = loader.get_template('profile.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     
-    user = get_object_or_404(User,username=username)
-    user_profile = get_object_or_404(UserProfile,user=user)
-    target_user = get_object_or_404(UserProfile, user=user)
-    
-    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     context['side_list']=['user_profile']
-    context['target_user']=target_user
-    context['user_profile']=user_profile
+    my_utils.load_side_profile_info(username, context)
     
-    context['related_topics'] = my_utils.get_related_topics(username)
-    context['load_type']='user#'+username
+    
     return HttpResponse(t.render(context))
 
 @login_required(login_url='/signin/')
 def favorite(request):
     t = loader.get_template('favorite.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     
-    user = get_object_or_404(User,username=request.user.username)
-    user_profile = get_object_or_404(UserProfile,user=user)
-    target_user = get_object_or_404(UserProfile, user=user)
-    
-    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     context['page_favorite']='selected'
     context['side_list']=['user_profile']
-    context['target_user']=target_user
-    context['related_topics'] = my_utils.get_related_topics(request.user.username)
+    my_utils.load_side_profile_info(request.user.username, context)
     
     return HttpResponse(t.render(context))
 

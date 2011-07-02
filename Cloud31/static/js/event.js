@@ -1,4 +1,7 @@
-function register_event(){
+function register_event(item){
+    item.attr('disabled','disabled');
+    item.parent().find('.loading').show();
+    item.hide();
     var title=$("#input_title").val();
     
     var start_date=$("#start_time input").val();
@@ -38,8 +41,10 @@ function register_event(){
 		success : function(json) {
 		  console.log(json);
           if(json.success){
-            clear_event_input();
-            load_event($("#event_list").attr('type'));
+            document.location.href='/event/'
+          }else{
+            item.parent().find('.loading').hide();
+            item.show();
           }
 		},
 		error : function(data){
@@ -162,7 +167,7 @@ function display_event(events){
         }
         
         event_layout.find('abbr.event_time').text(humane_date(event.reg_date));
-        event_layout.find('img.avatar.author').attr('src','/picture/'+event.host);
+        event_layout.find('img.avatar.author').attr('src',event.host_picture);
         
         if(event.host == $("#user_name_info").text()){
             event_layout.find('.stream_element_delete.event').show();
@@ -242,7 +247,7 @@ function add_event_comment(event_layout, comment, index, total){
     comment_layout.find('p.comment_text').html(nl2br(comment.contents));
     comment_layout.find('abbr.comment_time').text(humane_date(comment.reg_date));
     comment_layout.find('.user_link').attr('href','/user/'+comment.author);
-    comment_layout.find('img.avatar.author').attr('src','/picture/'+comment.author);
+    comment_layout.find('img.avatar.author').attr('src',comment.author_picture);
     
     comment_layout.find('.from a').text(comment.author);
     comment_layout.find('.from span.author_name').text(comment.author_name);
@@ -369,7 +374,7 @@ function show_event_detail(event_id){
             var event = json.event;
             detail_box.find('a.attend_btn').attr('event_id',event.id);
             detail_box.find('.event_title').text(event.title);
-            detail_box.find('img.host_avatar').attr('src','/picture/'+event.host);
+            detail_box.find('img.host_avatar').attr('src',event.host_picture);
             detail_box.find('.event_content').html(nl2br(event.contents));
             detail_box.find('.event_location').html("<b>Where? </b> "+event.location);
             detail_box.find('.start_time').html("<b>From</b> "+event.start_time);
@@ -397,7 +402,7 @@ function show_event_detail(event_id){
             }
             
             for(var a=0; a<event.attendees.length; a++){
-                var layout = '<li class="attendee"><img src="/picture/'+event.attendees[a].username+'" /></li>';
+                var layout = '<li class="attendee" username="'+event.attendees[a].username+'"><img src="'+event.attendees[a].picture+'" /></li>';
                 detail_box.find(".attendees_list ul").append(layout);
             }
             $.facebox({ div: '#event_detail_box' });
@@ -431,19 +436,20 @@ function attend_event(item, type){
 		    $(".attend_action .attend_btn").show();
 		    if(type == 'yes'){
 		        var user_name = $("#user_name_info").text();
-		        attendee_list.append('<li class="attendee"><img src="/picture/'+user_name+'" /></li>').hide().fadeIn();
+		        var user_picture = $("#user_picture_info").text();
+		        attendee_list.append('<li class="attendee" username="'+user_name+'"><img src="'+user_picture+'" /></li>').hide().fadeIn();
                 description.text("참가 하셨습니다.");
                 $(".attend_action .yes_btn").hide();
             }else if(type == 'no'){
                 var user_name = $("#user_name_info").text();
-                attendee_list.find("img[src='/picture/"+user_name+"']").parent().fadeOut(1000,function(){
+                attendee_list.find("li[username='"+user_name+"']").fadeOut(1000,function(){
                     $(this).remove();
                 });
                 description.text("참가 하지 않으시고 계십니다.");
                 $(".attend_action .no_btn").hide();
             }else if(type == 'wait'){
                 var user_name = $("#user_name_info").text();
-                attendee_list.find("img[src='/picture/"+user_name+"']").parent().fadeOut(1000,function(){
+                attendee_list.find("li[username='"+user_name+"']").fadeOut(1000,function(){
                     $(this).remove();
                 });
                 description.text("참가 보류 하셨습니다.");

@@ -28,7 +28,7 @@ $(document).ready(function(){
   </div>
   <div class="sm_body">
     <a href="/user/{{ message.author.username }}" class="user_link">
-      <img class="avatar" src="/picture/{{ message.author.username }}">
+      <img class="avatar" src="{{ message.author_profile.picture.url }}">
     </a>
     <div class="content">
       <div class="from">
@@ -88,7 +88,7 @@ $(document).ready(function(){
   </div>
   <div class="sm_body">
     <a href="/user/{{ reply.author.username }}" class="user_link">
-      <img class="avatar" src="/picture/{{ reply.author.username }}">
+      <img class="avatar" src="{{ reply.author_profile.picture.url }}">
     </a>
     <div class="content">
       <div class="from">
@@ -120,7 +120,7 @@ $(document).ready(function(){
   <div class="right controls"></div>
   <div class="sm_body">
     <a href="/user/" class="user_link">
-      <img class="avatar" src="/picture/{{ user.username }}">
+      <img class="avatar" src="{{ user_profile.picture.url }}">
     </a>
     <div class="content">
       <p style=" margin-bottom:3px;">

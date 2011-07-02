@@ -29,9 +29,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def main(request):
     t = loader.get_template('file.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    
     context['side_list']=['search_file']
     context['page_files'] = "selected"
-    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
+    
     my_utils.prepare_search_topic(context)
     
     context['files']=list()

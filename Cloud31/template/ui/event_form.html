@@ -59,7 +59,11 @@ $(document).ready(function(){
 <td style="padding-top:10px; text-align:left; padding-right:0px;">
     <input id="input_public" type="checkbox" style="display:inline; vertical-align:3px;" />
     <span style="margin:0 10px 0 2px;font-weight:bold;">공개로 설정 (누구나 이벤트 조회 및 참석 가능)</span>
-    <a href="/" class="button update" onClick="register_event(); return false;" id="update_btn" style="float:right;">등록</a>
+    
+    <div style="float:right;">
+    <p class="loading" style="display:inline; padding:0; margin:0; display:none; padding-top:2px; padding-bottom:6px;padding-right:5px"><img src="/static/image/ajax-loader.gif?asdf"></p>
+    <a href="/" class="button update" onClick="register_event($(this)); return false;" id="update_btn" >등록</a>
+    </div>
 </td>
 </tr>
 

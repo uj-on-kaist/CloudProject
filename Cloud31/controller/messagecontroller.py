@@ -26,7 +26,9 @@ DEFAULT_LOAD_LENGTH = 10
 def main(request):
     t = loader.get_template('message.html')
     context = RequestContext(request)
-#     user = get_object_or_404(User,username=request.user.username)
+    my_utils.load_basic_info(request, context)
+#   user = get_object_or_404(User,username=request.user.username)
+    
     context['page_dm'] = "selected"
     context['type'] = 'all'
     if request.GET.get('type',False):
@@ -40,6 +42,7 @@ def main(request):
 def message_detail(request, message_id):
     t = loader.get_template('message_detail.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     
     try:
         user = User.objects.get(username=request.user.username)
@@ -53,6 +56,7 @@ def message_detail(request, message_id):
     try:
         d_message = DirectMessage.objects.filter(query_type,is_deleted=False,id=message_id)[0]
         context['message']=d_message
+        context['message'].author_profile=UserProfile.objects.get(user=d_message.author)
         context['message'].contents=parser.parse_text(d_message.contents)
         context['message'].receivers=context['message'].receivers.replace(",", ", ")[:-2]
         context['message'].reg_date = d_message.reg_date.strftime('%Y-%m-%d %H:%M:%S')
@@ -67,6 +71,7 @@ def message_detail(request, message_id):
     try:
         replies = DirectMessageReply.objects.filter(direct_message=d_message, is_deleted=False).order_by('reg_date')
         for reply in replies:
+            reply.author_profile = UserProfile.objects.get(user=reply.author)
             reply.reg_date = reply.reg_date.strftime('%Y-%m-%d %H:%M:%S')
         context['replies']= replies
         print replies
@@ -245,6 +250,12 @@ def process_messages(messages):
         d_message['id']=message.id
         d_message['base_id']=message.id
         d_message['author']=message.author.username
+        try:
+            user_profile = UserProfile.objects.get(user=message.author)
+            d_message['author_picture']= user_profile.picture.url
+        except:
+            d_message['author_picture']='/media/default.png'
+            
         d_message['contents']= parser.parse_text(message.contents)
         d_message['receivers']= message.receivers.replace(",", ", ")[:-2]
         d_message['reg_date']= str(message.reg_date)

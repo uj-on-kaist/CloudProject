@@ -29,6 +29,7 @@ from operator import itemgetter
 def topic(request):
     t = loader.get_template('topic.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     
@@ -92,6 +93,8 @@ def topic(request):
 def topic_detail(request,topic_name):
     t = loader.get_template('topic_detail.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    
     topic_name = smart_unicode(topic_name, encoding='utf-8', strings_only=False, errors='strict')
     
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)

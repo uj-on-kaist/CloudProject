@@ -21,7 +21,7 @@
 #facebox .content {
   display:table;
   width: 370px;
-  padding: 10px;
+  padding: 0px;
   background: #fff;
   -webkit-border-radius:4px;
   -moz-border-radius:4px;
@@ -77,4 +77,16 @@
 .facebox_overlayBG {
   background-color: #000;
   z-index: 99;
+}
+
+
+#facebox .box_header{
+  font-size: 16px;
+  background-color: #F0F0F0;
+  border-bottom: 2px solid #B4B4B4;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+#facebox .box_main{
+  padding: 0px 5px 0 5px;
 }

@@ -117,7 +117,7 @@ function display_messages(messages){
         message_layout.find('.from a').text(message.author);
         message_layout.find('.from span').text(message.receivers);
         message_layout.find('abbr.message_time').text(humane_date(message.reg_date));
-        message_layout.find('img.avatar').attr('src','/picture/'+message.author);
+        message_layout.find('img.avatar').attr('src',message.author_picture);
         message_layout.find('.message_content').html(nl2br(message.contents));
         
         message_layout.find('.content').attr('message_id',message.id);
@@ -203,7 +203,7 @@ function add_reply(reply){
     reply_layout.find('p.reply_contents').html(nl2br(reply.contents));
     reply_layout.find('abbr.reply_time').text(humane_date(reply.reg_date));
     reply_layout.find('.user_link').attr('href','/user/'+reply.author);
-    reply_layout.find('img.avatar').attr('src','/picture/'+reply.author);
+    reply_layout.find('img.avatar').attr('src',reply.author_picture);
     reply_layout.find('.from a').text(reply.author);
     
     if(reply.author == $("#user_name_info").text()){

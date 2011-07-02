@@ -2,7 +2,7 @@
 {% if user.is_authenticated %}
 
 <div class="user_box">
-    <a href="/user/{{ user.username }}"><img src="/picture/{{ user.username }}" class="user_picture"/></a>
+    <a href="/user/{{ user.username }}"><img src="{{ user_profile.picture.url }}" class="user_picture"/></a>
     <div>
         <p class="user_id">
             <a href="/user/{{ user.username }}">{{ user.username }}</a>

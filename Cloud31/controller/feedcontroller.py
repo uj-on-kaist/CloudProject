@@ -33,17 +33,14 @@ DEFAULT_LOAD_LENGTH = 10
 def feed(request):
     t = loader.get_template('feed.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     context['load_type']='me'
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     context['side_list']=['']
     
-    user = get_object_or_404(User,username=request.user.username)
-    user_profile = get_object_or_404(UserProfile,user=user)
     
-    
-    context['current_user'] = user
+    context['current_user'] = request.user
     context['page_feed'] = "selected"
-    context['user_profile'] = user_profile
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     
     print context['user_favorite_topics']
@@ -460,6 +457,7 @@ def update_comment(request):
         item = dict()
         item['id']=new_comment.id
         item['author']=new_comment.author.username
+        item['author_picture']=UserProfile.objects.get(user=new_comment.author).picture.url
         item['author_name']=new_comment.author.last_name
         item['contents']= parser.parse_text(new_comment.contents)
         item['reg_date']= str(new_comment.reg_date)

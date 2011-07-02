@@ -11,7 +11,7 @@ class UserProfile(models.Model):
 	receive_email = models.BooleanField(default=True)
 	receive_apns = models.BooleanField(default=True)
 	device_id = models.CharField(max_length=50)
-	picture = models.ImageField(upload_to="profile", blank=True)
+	picture = models.ImageField(upload_to="profile", default='/media/default.png')
     
 ##  
 ## Message Related

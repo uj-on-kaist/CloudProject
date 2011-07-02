@@ -31,7 +31,8 @@ DEFAULT_LOAD_LENGTH = 3
 def main(request):
     t = loader.get_template('event.html')
     context = RequestContext(request)
-#     user = get_object_or_404(User,username=request.user.username)
+    my_utils.load_basic_info(request, context)
+    
     context['page_event'] = "selected"
     context['side_list']=['event_calendar']
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
@@ -41,7 +42,8 @@ def main(request):
 def new(request):
     t = loader.get_template('event_new.html')
     context = RequestContext(request)
-#     user = get_object_or_404(User,username=request.user.username)
+    my_utils.load_basic_info(request, context)
+    
     context['page_event'] = "selected"
     context['side_list']=['event_calendar']
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
@@ -53,6 +55,8 @@ def new(request):
 def detail_event(request, event_id):
     t = loader.get_template('event_detail.html')
     context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    
     context['page_event'] = "selected"
     context['side_list']=['event_calendar']
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
@@ -192,6 +196,7 @@ def process_events(events, user):
         item['id']=event.id
         item['base_id']=event.id
         item['host']=event.host.username
+        item['host_picture']=UserProfile.objects.get(user=event.host).picture.url
         item['host_name']=event.host.last_name
         item['title']= event.title
         item['location']= event.location
@@ -216,6 +221,7 @@ def process_events(events, user):
                 c_item = dict()
                 c_item['id']=comment.id
                 c_item['author']=comment.author.username
+                c_item['author_picture']=UserProfile.objects.get(user=comment.author).picture.url
                 c_item['author_name']=comment.author.last_name
                 c_item['contents']= parser.parse_text(comment.contents)
                 c_item['reg_date']= str(comment.reg_date)
@@ -228,6 +234,7 @@ def process_events(events, user):
             for attendee in attendees:
                 a_item=dict()
                 a_item['username']=attendee.user.username
+                a_item['picture']=UserProfile.objects.get(user=attendee.user).picture.url
                 a_item['name']=attendee.user.last_name
                 item['attendees'].append(a_item)
         except:
@@ -377,6 +384,8 @@ def update_event_comment(request):
         item = dict()
         item['id']=new_comment.id
         item['author']=new_comment.author.username
+        item['author_picture']=UserProfile.objects.get(user=new_comment.author).picture.url
+        item['author_name']=new_comment.author.last_name
         item['contents']= parser.parse_text(new_comment.contents)
         item['reg_date']= str(new_comment.reg_date)
         result['comment']=item
