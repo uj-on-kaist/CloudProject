@@ -32,7 +32,7 @@ $(document).ready(function(){
             console.log(responseJSON);
             
             $(document).find(".setting_picture").each(function(){
-               var src="/media/" + responseJSON.url;
+               var src= responseJSON.url;
                if($(this)[0].tagName == 'A')
                  $(this).attr("href",src+"?"+new Date().getTime());
                else

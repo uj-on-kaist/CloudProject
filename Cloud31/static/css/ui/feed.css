@@ -186,3 +186,19 @@ span.author_name{font-size: 12px; line-height: 16px; margin-right: 5px;}
 #feed_message_input:focus{
     border: none;
 }
+
+
+
+#feed_div{
+    resize: none;
+width: 495px;
+padding: 10px 15px 0px 15px;
+font-family: 'Tahoma','Helvetica', Arial, sans-serif;
+margin: 0;
+border: none;
+font-size: 14px;
+}
+
+#feed_div:focus{
+    border: none; outline: none;
+}

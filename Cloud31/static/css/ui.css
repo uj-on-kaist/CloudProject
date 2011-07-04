@@ -100,7 +100,7 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 .ui_icon_file_pdf {width:30px;height:30px; background-position: -120px -88px; }
 .ui_icon_file_zip {width:30px;height:30px; background-position: -150px -88px; }
 .ui_icon_file_etc {width:30px;height:30px; background-position: -180px -88px; }
-.ui_icon_file_img {width:30px;height:30px; background-position: -180px -88px; }
+.ui_icon_file_img {width:30px;height:30px; background-position: -210px -88px; }
 
 .corner_top {-moz-border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;

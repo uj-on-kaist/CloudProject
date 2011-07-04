@@ -128,25 +128,25 @@ def process_files(files):
             item['type']=a_file.file_type
             item['uploader']=a_file.uploader.username
             item['upload_date']=str(a_file.upload_date)
-            if a_file.file_type in ['xls','xlsx']:
+            if a_file.file_type.lower() in ['xls','xlsx']:
                 item['type']='excel'
                 item['type_name']='Excel file'
-            elif a_file.file_type in ['doc','docx']:
+            elif a_file.file_type.lower() in ['doc','docx']:
                 item['type']='word'
                 item['type_name']='Word file'
-            elif a_file.file_type in ['ppt','pptx']:
+            elif a_file.file_type.lower() in ['ppt','pptx']:
                 item['type']='ppt'
                 item['type_name']='Powerpoint file'
-            elif a_file.file_type in ['ppt','pptx']:
+            elif a_file.file_type.lower() in ['ppt','pptx']:
                 item['type']='ppt'
                 item['type_name']='Powerpoint file'
-            elif a_file.file_type in ['hwp']:
+            elif a_file.file_type.lower() in ['hwp']:
                 item['type_name']='HWP file'
-            elif a_file.file_type in ['pdf']:
+            elif a_file.file_type.lower() in ['pdf']:
                 item['type_name']='PDF file'
-            elif a_file.file_type in ['zip']:
+            elif a_file.file_type.lower() in ['zip']:
                 item['type_name']='Zip file'
-            elif a_file.file_type in ['png', 'jpg', 'jpeg', 'gif']:
+            elif a_file.file_type.lower() in ['png', 'jpg', 'jpeg', 'gif']:
                 item['type']='img'
                 item['type_name']='Image file'
             else:

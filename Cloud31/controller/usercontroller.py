@@ -37,8 +37,7 @@ def signin(request):
         context['next_url'] = request.GET['next']
     
     if request.user.is_authenticated():
-        context['message'] = 'You are already logined'
-        return HttpResponse(t.render(context))
+        return HttpResponseRedirect('/feed')
       
     if request.method != 'POST':
         return HttpResponse(t.render(context))
