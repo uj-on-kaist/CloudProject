@@ -706,7 +706,7 @@ ul.index_list li.previous span, ul.index_list li.next span{
 }
 
 
-#message_list .stream_element:hover, #event_list .stream_element:hover{
+#message_list .stream_element:hover, #event_list .stream_element:hover, #notice_list .stream_element:hover{
     background-color: rgb(245,245,245);
     cursor: pointer;
 }
@@ -715,4 +715,11 @@ ul.index_list li.previous span, ul.index_list li.next span{
 .event_attendee{
     font-size: 12px;
     color: #323232;
+}
+
+
+.notice_item .stream_element .content p{font-size: 12px;}
+.notice_item .stream_element .content p.notice_time{font-size: 11px;}
+.notice_item .notice_content b{
+    color: #325AAA;   
 }

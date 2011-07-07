@@ -180,9 +180,9 @@ def get_info(request):
     print end_date
     print '--'
     query_type  = Q(start_time__range=(start_date,end_date))
-    
+    additional = Q(host=user) | Q(invited_users__contains=user.username) | Q(is_public=True)
     try:
-        events = Event.objects.filter(query_type,is_deleted=False)
+        events = Event.objects.filter(query_type,additional,is_deleted=False)
         result['events']=process_events(events , user) 
     except Exception as e:
         print str(e)
@@ -213,9 +213,9 @@ def get_info_date(request):
     date = int(date)
     
     query_type = Q(start_time__range=(dt.date(year, month, date), dt.date(year, month, date) + dt.timedelta(1) ))
-    
+    additional = Q(host=user) | Q(invited_users__contains=user.username) | Q(is_public=True)
     try:
-        events = Event.objects.filter(query_type,is_deleted=False)
+        events = Event.objects.filter(query_type,additional,is_deleted=False)
         result['events']=process_events(events , user) 
     except Exception as e:
         print str(e)

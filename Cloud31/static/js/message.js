@@ -50,6 +50,8 @@ function clear_message_input(){
 
 
 function load_message(type, load_more, base_id){
+    $("#load_more_box").hide();
+    $("#loading_box").show();
     console.log(type);
     
     var url="/api/message/get/"+type+"/";
@@ -58,6 +60,9 @@ function load_message(type, load_more, base_id){
         url+="?base_id="+base_id;
     }
     
+    if(!load_more)
+        $("div.stream.message_item").remove();
+                
     $.ajax({
 		type : "GET",
 		url : url,
@@ -67,8 +72,7 @@ function load_message(type, load_more, base_id){
 		  $("#loading_box").hide();
           if(json.success){
             $("#message_list").attr('type',type);
-            if(!load_more)
-                $("div.stream.message_item").remove();
+            
             display_messages(json.messages);
             
             
@@ -95,9 +99,6 @@ function load_more_message(){
     }
     var type = $("#message_list").attr('type');
     
-    
-    $("#load_more_box").hide();
-    $("#loading_box").show();
     load_message(type, true, base_id);
 
 }

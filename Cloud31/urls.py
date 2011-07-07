@@ -101,8 +101,12 @@ urlpatterns = patterns('',
     
     
     
-    url(r'^notification/$', 'controller.notificationcontroller.main'),
+    url(r'^notifications/$', 'controller.notificationcontroller.main'),
+    url(r'^notifications/read$', 'controller.notificationcontroller.read'),
+    url(r'^notifications/unread$', 'controller.notificationcontroller.unread'),
+    
     url(r'^api/noti/get/$', 'controller.notificationcontroller.get_notifications'),
+    url(r'^api/noti/get/(?P<typed>\w+)$', 'controller.notificationcontroller.get_typed_notifications'),
     url(r'^api/noti/read/(?P<noti_id>\w+)$', 'controller.notificationcontroller.read_notification'),
     
     
@@ -121,4 +125,12 @@ urlpatterns = patterns('',
     url(r'^api/sidebar/dialog/delete$', 'sidebar.sidebarcontroller.delete_dialog'),
     url(r'^api/sidebar/dialog/get$', 'sidebar.sidebarcontroller.load_dialog'),
     url(r'^api/sidebar/invite$', 'sidebar.sidebarcontroller.send_invite'),
+    
+    
+    
+    url(r'^chart/test','controller.admincontroller.test'),
+    url(r'^chart/recent_user','controller.admincontroller.recent_user_graph'),
+    url(r'^chart/recent_message','controller.admincontroller.recent_message_graph'),
+    
+    url(r'^admin/overview','controller.admincontroller.overview'),
 )

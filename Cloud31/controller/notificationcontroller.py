@@ -17,10 +17,55 @@ from django.views.decorators.cache import never_cache
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_unicode
 
+from django.db.models import Q
 
 import json
 import parser
 import my_utils
+
+DEFAULT_LOAD_LENGTH = 3
+
+
+@login_required(login_url='/signin/')
+def main(request):
+    t = loader.get_template('notifications.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['load_type']='unread'
+    context['unread_selected']='selected'
+    context['read_selected']=''
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
+    context['side_list']=['']
+    
+    
+    context['current_user'] = request.user
+    context['page_feed'] = "selected"
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
+    
+    print context['user_favorite_topics']
+    
+    return HttpResponse(t.render(context))
+    
+@login_required(login_url='/signin/')
+def read(request):
+    t = loader.get_template('notifications.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['load_type']='read'
+    context['unread_selected']=''
+    context['read_selected']='selected'
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
+    context['side_list']=['']
+    
+    
+    context['current_user'] = request.user
+    context['page_feed'] = "selected"
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
+    
+    print context['user_favorite_topics']
+    
+    return HttpResponse(t.render(context))
+
 
 @never_cache
 def get_notifications(request):
@@ -36,6 +81,43 @@ def get_notifications(request):
             read_notis = UserNotification.objects.filter(user=user, is_read=True).order_by('-reg_date')[:5]
             result['unread_notis']=process_notis(request,unread_notis)
             result['read_notis']=process_notis(request,read_notis)
+        except Exception as e:
+            print str(e)
+            result['success']=True
+            result['message']='Invalid action'
+            
+    except:
+            return my_utils.return_error('Please Sign in First')
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+@never_cache
+def get_typed_notifications(request, typed):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    result['notis']=list()
+    
+    try:
+        base_id = request.GET.get("base_id",False)
+        additional = Q()
+        if base_id:
+            additional = Q(id__lt=base_id)
+        
+        user = User.objects.get(username=request.user.username)
+        try:
+            if typed == 'unread':
+                unread_notis = UserNotification.objects.filter(additional,user=user,is_read=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+                result['notis']=process_notis(request,unread_notis)
+            
+                if len(unread_notis) == DEFAULT_LOAD_LENGTH:
+                    result['load_more']=True
+            else:
+                read_notis = UserNotification.objects.filter(additional,user=user,is_read=True).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+                result['notis']=process_notis(request,read_notis)
+            
+                if len(read_notis) == DEFAULT_LOAD_LENGTH:
+                    result['load_more']=True
+            
         except Exception as e:
             print str(e)
             result['success']=True
@@ -72,6 +154,7 @@ def process_notis(request, notis):
         try:
             item = dict()
             item['id']=noti.id
+            item['base_id']=noti.id
             item['receiver']=noti.user.username
             item['sender']=noti.sender.username
             item['noti_type']=noti.notification_type
@@ -80,6 +163,13 @@ def process_notis(request, notis):
             item['contents']=noti.contents
             item['reg_date']=str(noti.reg_date)
             item['is_read']=noti.is_read
+            
+            try:
+                user_profile = UserProfile.objects.get(user=noti.sender)
+                item['sender_picture']= user_profile.picture.url
+            except:
+                item['sender_picture']='/media/default.png'
+            
             result.append(item)
         except Exception as e:
             pass

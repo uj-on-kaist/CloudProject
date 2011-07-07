@@ -9,11 +9,14 @@
 
 
 <div class="noti_box">
-    <div id="noti_selector" onclick="load_notis(); return false;">
+    <div id="noti_selector" onclick="load_notis(event); return false;">
         <b class="noti_count"></b>
     </div>
     <ul id="noti_list">
         <li class="header"><b>Notifications</b></li>
+        <li class="loading" style="text-align: center; float: left; width: 310px; padding:0px; margin:5px 10px; border-bottom:none;">
+            <img src="/static/image/loading.gif">
+        </li>
         <li class="noti_item_template">
             <img class="user_picture"/>
             <div class="noti_contents">
@@ -23,7 +26,7 @@
             </p>
             </div>
         </li>
-        <a href="/" class="see_more"><li class="noti_load_more">See All Notifications</li></a>
+        <a href="/notifications" class="see_more"><li class="noti_load_more">See All Notifications</li></a>
         
     </ul>
 </div>

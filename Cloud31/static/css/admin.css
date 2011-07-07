@@ -1,0 +1,31 @@
+.overview_table{
+    margin: 0;
+}
+.overview_table tr th{
+    border-bottom: 1px solid #B4B4B4;
+}
+.overview_table tr td{
+    border-bottom: 1px solid #F0F0F0;
+}
+.overview_table tr th, .overview_table tr td{
+    padding-left: 10px;
+    font-size: 12px;
+    color: #323232;
+}
+
+.overview_item{
+    margin-bottom: 30px;
+    color: #323232;
+}
+
+.overview_item .title{
+    font-size: 14px;
+    padding-left: 6px;
+}
+
+object{
+    margin: 10px 0px;
+}
+.title_box{
+    padding-bottom: 10px;
+}

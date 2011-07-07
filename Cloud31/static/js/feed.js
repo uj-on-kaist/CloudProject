@@ -66,6 +66,9 @@ function clear_feed_input(){
 
 
 function load_feed(type, load_more, base_id){
+    $("#load_more_box").hide();
+    $("#loading_box").show();
+    
     if(type == '') return false;
     console.log("load_type: "+type);
     
@@ -94,6 +97,9 @@ function load_feed(type, load_more, base_id){
     if(load_more){
         url+="?base_id="+base_id;
     }
+    
+    if(!load_more)
+        $("div.stream.feed_item").remove();
 
     $.ajax({
 		type : "GET",
@@ -104,8 +110,7 @@ function load_feed(type, load_more, base_id){
 		  $("#loading_box").hide();
 		  if(json.success){
 		      $("#feed_list").attr('type',type);
-		      if(!load_more)
-		          $("div.stream.feed_item").remove();
+		      
 		      display_feeds(json.feeds, type);
 		      
 		      if(json.load_more){
@@ -131,8 +136,6 @@ function load_more(){
     var type = $("#feed_list").attr('type');
     console.log(base_id, type);
     
-    $("#load_more_box").hide();
-    $("#loading_box").show();
     load_feed(type, true, base_id);
 
 }

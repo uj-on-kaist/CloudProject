@@ -24,6 +24,9 @@
 http://bitkickers.blogspot.com/2010/07/djangocelery-quickstart-or-how-i.html
 
 
+### PyOFC2
+https://github.com/btbytes/pyofc2
+
 
 ### Django OFC2( PyOFC2 )
 https://github.com/btbytes/djofc2_demo

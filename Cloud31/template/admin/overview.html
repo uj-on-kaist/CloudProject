@@ -1,0 +1,93 @@
+{% include "meta_open.html" %}
+
+<h2 class="page_title">
+    Overview
+    
+    <a href="/event/new" class="title_link">
+        <p style="padding:0; margin:0; height:20px; display:inline;">Download Excel File</p>
+    </a>
+</h2>
+<div class="overview_item">
+<div class="title_box">
+<span class="ui_icon ui_icon_overview"></span>
+<b class="title">Overview Info(for last 7 days)</b>
+</div>
+<table class="overview_table">
+    <tr>
+        <th># Users</th>
+        <th># Feeds</th>
+        <th># Topics</th>
+        <th># Files</th>    
+    </tr>
+    <tr>
+        <td>{{ user_length }}</td>
+        <td>{{ feed_length }}</td>
+        <td>{{ topic_length }}</td>
+        <td>{{ file_length }}</td>
+    </tr>
+</table>
+</div>
+
+
+<div class="overview_item">
+<div class="title_box">
+<span class="ui_icon ui_icon_feed"></span>
+<b class="title">Recent Feeds (for last 7 days)</b>
+</div>
+<script type="text/javascript">
+swfobject.embedSWF(
+    	  "/static/open-flash-chart.swf", "recent_messages", 
+    	  "525", "180", "9.0.0", "/static/expressInstall.swf",
+    	  {"data-file":"/chart/recent_message", "bgcolor":"#FFFFFF"} );
+</script>
+<div class="chart" id="recent_messages"></div>
+
+<table class="recent_message_table overview_table">
+    <tr>
+        <th>User</th>
+        <th>Feed</th> 
+    </tr>
+    {% for message in recent_messages %}
+    <tr>
+        <td><a href="/user/{{message.author.username}}">@{{message.author.username}}</a></td>
+        <td>
+            <p style="margin:0; padding:0; line-height:20px; height:20px;overflow:hidden; width:400px;" class="ellipsis">{{ message.contents|safe}}
+            </p>
+            <span style="color:#b2b2b2; font-size:11px;">{{ message.reg_date }}</span>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</div>
+
+
+<div class="overview_item">
+<div class="title_box">
+<span class="ui_icon ui_icon_member"></span>
+<b class="title">Recent User (for last 7 days)</b>
+</div>
+<script type="text/javascript">
+swfobject.embedSWF(
+    	  "/static/open-flash-chart.swf", "recent_users", 
+    	  "525", "180", "9.0.0", "/static/expressInstall.swf",
+    	  {"data-file":"/chart/recent_user", "bgcolor":"#FFFFFF"} );
+</script>
+<div class="chart" id="recent_users"></div>
+
+<table class="recent_user_table overview_table">
+    <tr>
+        <th>User</th>
+        <th>Last Login</th> 
+    </tr>
+    {% for user in recent_users %}
+    <tr>
+        <td><a href="/user/{{user.username}}"><b style="margin-right:10px;">{{user.last_name}}</b> @{{ user.username }}</a></td>
+        <td>{{ user.last_login }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</div>
+
+{% include "meta_close.html" %}

@@ -89,12 +89,19 @@ function clear_event_input(){
 }
 
 function load_event(type, load_more, base_id){
+    $("#load_more_box").hide();
+    $("#loading_box").show();
+    
     if(type == '') return false;
     console.log("load_type: "+type);
     
     var url='/api/event/get/'+type;
     if(load_more)
         url +="?base_id="+base_id;
+        
+    if(!load_more)
+        $("div.stream.event_item").remove();
+    
     var tokenValue = $("#csrf_token").text();
     var data ="&csrfmiddlewaretoken="+tokenValue;
     $.ajax({
@@ -107,8 +114,7 @@ function load_event(type, load_more, base_id){
 		  $("#loading_box").hide();
 		  if(json.success){
 		      $("#event_list").attr('type',type);
-		      if(!load_more)
-		          $("div.stream.event_item").remove();
+		      
 		      display_event(json.events);
 		      
               if(json.load_more){
@@ -132,9 +138,6 @@ function load_more_event(){
     }
     var type = $("#event_list").attr('type');
     
-    
-    $("#load_more_box").hide();
-    $("#loading_box").show();
     load_event(type, true, base_id);
 
 }
