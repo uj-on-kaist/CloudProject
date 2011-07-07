@@ -27,6 +27,7 @@ function update_description(){
 		url : "/api/feed/update/desc",
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -49,6 +50,7 @@ function load_dialog(){
 		type : "GET",
 		url : url,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  /* console.log(json); */
           if(json.success){
@@ -101,7 +103,7 @@ function make_dialog_layout(dialog, last){
 function upload_dialog(){
 
     var dialog=$('input#dialog_input').val();
-    
+    $('input#dialog_input').val("");
     var tokenValue = $("#csrf_token").text();
     
     data= "dialog=" + dialog;
@@ -111,6 +113,7 @@ function upload_dialog(){
 		url : "/api/sidebar/dialog/add",
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -139,6 +142,7 @@ function delete_dialog(item){
         url : "/api/sidebar/dialog/delete",
         data : "dialog_id="+dialog_id+"&csrfmiddlewaretoken="+tokenValue,
         dataType : "JSON",
+        cache : false,
         success : function(json) {
             console.log(json);
             if(json.success){
@@ -153,4 +157,77 @@ function delete_dialog(item){
         }
     });
 
+}
+
+
+function send_invite(item){
+    var emails = item.val().replace(' ',"|");
+    item.val("");
+    $.ajax({
+		type : "GET",
+		url : "/api/sidebar/invite",
+		data : "&emails="+emails,
+		cache : false,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json);
+		  item.parent().parent().find('.invi_sent').fadeIn(500).delay(2000).fadeOut(500)
+		},
+		error : function(data){
+		  console.log(data);
+		}
+  });
+}
+
+
+function get_month_event_info(year, month, callback){
+  if(month == '' || year == ''){
+      var now = new Date();
+      year = now.getFullYear();
+      month = now.getMonth()+1;
+  }
+  $.ajax({
+		type : "GET",
+		async : false,
+		cache : false,
+		url : "/api/event/get_info",
+		data : "&year="+year+"&month="+month,
+		dataType : "JSON",
+		success : function(json) {
+		  callback(json.events);
+		},
+		error : function(data){
+		  callback(json.events);
+		}
+  });
+}
+
+function get_date_event_info(inst){
+  var year = inst.selectedYear;
+  var month = inst.selectedMonth+1;
+  var date = inst.selectedDay;
+  
+  $.ajax({
+		type : "GET",
+		async : false,
+		cache : false,
+		url : "/api/event/get_info_date",
+		data : "&year="+year+"&month="+month+"&date="+date,
+		dataType : "JSON",
+		success : function(json) {
+		  console.log(json.events);
+		  
+		  $("#side_event_list").find("li").remove();
+		  for(var k=0; k<json.events.length; k++){
+		      $("#side_event_list").append("<li><p>- <a href='/event/detail/"+json.events[k].id+"'>"+json.events[k].title+"</a></p></li>");
+		  }
+		  if(json.events.length == 0){
+		      $("#side_event_list").append("<li><p>- There is no event on this day.</p></li>");
+		  }
+		  
+		},
+		error : function(data){
+		  console.log(data);
+		}
+  });
 }

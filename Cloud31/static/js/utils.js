@@ -129,6 +129,7 @@ function detect_auto_complete(item){
 		type : "GET",
 		url : url,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  if(json.success){
 		      display_auto_complete(type,json.items, result.left, result.right, keyword);

@@ -37,6 +37,7 @@ function detail_feed_like(item, action){
 		url : url,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  if(action){
             $("span.favor").hide();
@@ -94,19 +95,4 @@ $.fn.getCursorPosition = function() {
 
 
 
-function send_invite(item){
-    var emails = item.val().replace(' ',"|");
-    $.ajax({
-		type : "GET",
-		url : "/api/sidebar/invite",
-		data : "&emails="+emails,
-		dataType : "JSON",
-		success : function(json) {
-		  console.log(json);
-		  item.parent().parent().find('.invi_sent').fadeIn(500).delay(2000).fadeOut(500)
-		},
-		error : function(data){
-		  console.log(data);
-		}
-  });
-}
+

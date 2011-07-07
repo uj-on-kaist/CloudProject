@@ -140,9 +140,9 @@ width: 157px;
 
 #dialog_list{
     position: relative;
-    padding: 0 5px;
+    padding: 0;
 /*     border: 1px solid #F0F0F0; */
-    float: left; width:180px;
+    float: left; width:190px;
 }
 .dialog_item {
     position: relative;
@@ -171,4 +171,23 @@ width: 157px;
 }
 .dialog_item  .dialog_time{
     font-size: 10px;
+}
+
+
+.date_header{
+    color: #325AAA;
+}
+
+#side_event_list{
+    padding:0; margin:0;
+    margin-bottom: 6px;
+}
+#side_event_list a{
+    color: #323232;
+}
+
+#side_event_list p{
+    margin: 0; padding: 0;
+    line-height: 14px; height: 14px;
+    overflow: hidden;
 }

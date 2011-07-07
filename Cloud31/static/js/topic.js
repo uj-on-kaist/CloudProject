@@ -5,6 +5,7 @@ function favor_topic(topic_name){
 		url : "/api/topic/favor/"+topic_name,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  if(json.success){
 		      $(".tab .topic_favor_action").hide();
@@ -39,6 +40,7 @@ function unfavor_topic(topic_name){
 		url : "/api/topic/unfavor/"+topic_name,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  if(json.success){
 		      $(".tab .topic_favor_action").show();

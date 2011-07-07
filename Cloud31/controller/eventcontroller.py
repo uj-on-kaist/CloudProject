@@ -21,6 +21,7 @@ import my_utils
 import parser
 
 from datetime import datetime
+import datetime as dt
 from django.db.models import Q
 
 from controller.notificationcontroller import *
@@ -148,6 +149,87 @@ def load_event(request, load_type):
     
     
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+    
+def get_info(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    month = request.GET.get("month",False)
+    year = request.GET.get("year",False)
+    
+    
+    if not (month and year):
+        return my_utils.return_error('No Parameter')
+    
+    month = int(month)
+    year = int(year)
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Sign in')
+        
+    
+    start_date = first_day_of_month(month,year)
+    end_date = first_day_of_month(month+1,year)
+    print 'hi'
+    print start_date
+    print end_date
+    print '--'
+    query_type  = Q(start_time__range=(start_date,end_date))
+    
+    try:
+        events = Event.objects.filter(query_type,is_deleted=False)
+        result['events']=process_events(events , user) 
+    except Exception as e:
+        print str(e)
+        pass
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
+
+def get_info_date(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Sign in')
+    
+    date = request.GET.get("date",False)
+    month = request.GET.get("month",False)
+    year = request.GET.get("year",False)
+    
+    if not (month and year and date):
+        return my_utils.return_error('No Parameter')
+    
+    month = int(month)
+    year = int(year)
+    date = int(date)
+    
+    query_type = Q(start_time__range=(dt.date(year, month, date), dt.date(year, month, date) + dt.timedelta(1) ))
+    
+    try:
+        events = Event.objects.filter(query_type,is_deleted=False)
+        result['events']=process_events(events , user) 
+    except Exception as e:
+        print str(e)
+        pass
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
+
+
+def first_day_of_month(month, year):
+    return dt.date(year, month, 1)
+
+def last_day_of_month(month, year):
+    return dt.date(year, month+1, 1) - dt.timedelta(1)
+    
 
 def attend_event(request, event_id):
     result=dict()

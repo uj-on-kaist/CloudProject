@@ -3,6 +3,7 @@ function get_notis_count(){
 		type : "GET",
 		url : "/api/noti/get/",
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  if(json.success){
 		      if(json.unread_notis.length == 0){
@@ -34,6 +35,7 @@ function load_notis(){
 		type : "GET",
 		url : "/api/noti/get/",
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  if(json.success){
 		      console.log(json.unread_notis, json.read_notis);
@@ -106,6 +108,7 @@ function show_noti(notis){
 		      type : "POST",
 		      url : "/api/noti/read/"+noti_id,
 		      dataType : "JSON",
+		      cache : false,
 		      data : "&csrfmiddlewaretoken="+tokenValue,
 		      success : function(json) {
 		          location.href=url; 

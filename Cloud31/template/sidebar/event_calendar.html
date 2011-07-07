@@ -2,31 +2,57 @@
 var month_event_info = new Array();
 
 $(document).ready(function(){
-    $('.event_calendar').datepicker({
-        inline: true,
-        dateFormat: 'yy-mm-dd',
-        beforeShowDay: function(date) {
-            //console.log(date.getDate());
-            if(month_event_info.indexOf(date.getDate()) != -1)
-                return [true, "bold"];
-            else
-                return [true, "normal"]
-        },
-        onSelect: function(dateText, inst){
-            $(".date_header").text("* Events on "+dateText);
-        },
-        onChangeMonthYear: function(year, month, inst) { 
-            month_event_info=new Array(); 
-            //console.log('hi '+ month); 
-        },
+    
+    get_month_event_info('','',function(event_info) { 
+        month_event_info = event_info;
+        prepare_event_calendar();
     });
 });
+
+function prepare_event_calendar(){
+    $('.event_calendar').datepicker({
+        dateFormat: 'yy-mm-dd',
+        width : 190,
+        beforeShowDay: function(date) {
+            var this_date = date.getDate();
+            for(var k=0; k<month_event_info.length; k++){
+                var event_date = month_event_info[k].start_time.split("-")[2].split(" ")[0];
+                if( event_date == this_date )
+                    return [true, "bold"];
+            }
+            return [true, "normal"];
+        },
+        onSelect: function(dateText, inst){
+            console.log(inst);
+            $(".date_header").text("Events on "+dateText);
+            get_date_event_info(inst);
+        },
+        onChangeMonthYear: function(year, month, inst) {
+            month_event_info = new Array();
+            get_month_event_info(year,month,function(event_info) { 
+                month_event_info = event_info;
+            });
+        },
+    });
+    
+    var now = new Date();
+    var inst = new Object(); 
+    var year = now.getFullYear();
+    var month = (now.getMonth()+1 > 9)? now.getMonth()+1: "0"+(now.getMonth()+1);
+    var date = (now.getDate() > 9)? now.getDate(): "0"+now.getDate();
+    $(".date_header").text("Events on "+year+"-"+month+"-"+date);
+    
+    inst.selectedYear = now.getFullYear();
+    inst.selectedMonth = now.getMonth();
+    inst.selectedDay = now.getDate();
+    get_date_event_info(inst);
+}
 </script>
 <div class="side_item" >
 <h4>Event Calendar</h4>
 <div class="event_calendar"></div>
-<div class="event_list">
+<ul class="event_list" id="side_event_list">
 <b class="date_header"></b>
-</div>
+</ul>
 </div>
 

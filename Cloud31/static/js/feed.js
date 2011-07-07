@@ -27,6 +27,7 @@ function upload_feed(item){
 		url : "/api/feed/update/",
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
 		  item.removeAttr('disabled');
@@ -98,6 +99,7 @@ function load_feed(type, load_more, base_id){
 		type : "GET",
 		url : url,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  $("#loading_box").hide();
 		  if(json.success){
@@ -296,6 +298,7 @@ function feed_like(item, action){
     $.ajax({
 		type : "POST",
 		url : url,
+		cache : false,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
 		success : function(json) {
@@ -364,6 +367,7 @@ function delete_feed(item){
 		url : "/api/feed/delete/"+feed_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -390,6 +394,7 @@ function delete_comment(item){
 		url : "/api/feed/comment/delete/"+comment_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
 		  item.parent().parent().slideToggle("",function(){
@@ -448,6 +453,7 @@ function update_comment(feed_id){
 		url : "/api/feed/update/comment/",
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
 		  $("#comment_area_"+feed_id).val("");
@@ -490,6 +496,7 @@ function delete_detail_feed(item){
 		url : "/api/feed/delete/"+feed_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -514,6 +521,7 @@ function delete_detail_comment(item){
 		url : "/api/feed/comment/delete/"+comment_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
 		  item.parent().parent().slideToggle("",function(){

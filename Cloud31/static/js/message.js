@@ -27,6 +27,7 @@ function send_message(){
 		url : "/api/message/update/",
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -61,6 +62,7 @@ function load_message(type, load_more, base_id){
 		type : "GET",
 		url : url,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  $("#loading_box").hide();
           if(json.success){
@@ -151,6 +153,7 @@ function delete_message(item){
 		url : "/api/message/delete/"+message_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -177,6 +180,7 @@ function send_reply(message_id){
 		url : "/api/message/reply/update/",
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -236,6 +240,7 @@ function delete_reply(item){
 		type : "POST",
 		url : "/api/message/reply/delete/"+reply_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
+		cache : false,
 		dataType : "JSON",
 		success : function(json) {
 		  console.log(json);

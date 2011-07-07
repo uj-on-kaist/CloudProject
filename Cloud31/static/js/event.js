@@ -38,6 +38,7 @@ function register_event(item){
 		url : "/api/event/register/",
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -101,6 +102,7 @@ function load_event(type, load_more, base_id){
 		url : url,
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  $("#loading_box").hide();
 		  if(json.success){
@@ -142,7 +144,7 @@ function display_event(events){
     for(var i=0; i<events.length; i++){
         
         var event=events[i];
-        console.log(event);
+        //console.log(event);
         
         
         var event_layout= $("div.stream.template").clone();
@@ -284,6 +286,7 @@ function update_event_comment(event_id){
 		url : "/api/event/update/comment/",
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
 		  $("#comment_area_"+event_id).val("");
@@ -319,6 +322,7 @@ function delete_event(item){
 		url : "/api/event/delete/"+event_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -345,6 +349,7 @@ function delete_event_comment(item){
 		url : "/api/event/comment/delete/"+comment_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
 		  item.parent().parent().slideToggle("",function(){
@@ -368,6 +373,7 @@ function show_event_detail(event_id){
 		url : "/api/event/detail/"+event_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -427,6 +433,7 @@ function attend_event(item, type){
 		url : url,
 		data : data,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
 		  if(json.success){
@@ -480,6 +487,7 @@ function delete_detail_event(item){
 		url : "/api/event/delete/"+event_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
           if(json.success){
@@ -504,6 +512,7 @@ function delete_detail_event_comment(item){
 		url : "/api/event/comment/delete/"+comment_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
+		cache : false,
 		success : function(json) {
 		  console.log(json);
 		  item.parent().parent().slideToggle("",function(){

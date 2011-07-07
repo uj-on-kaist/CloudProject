@@ -170,7 +170,7 @@ def return_error(msg):
     result=dict()
     result['success']=False
     result['message']=msg
-    return HttpResponse(json.dumps(result, indent=4))
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 
 
