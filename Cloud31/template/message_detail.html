@@ -1,7 +1,8 @@
 {% include "meta_open.html"%}
 
-<h2>Direct Message</h2>
+<h2 class="page_title">Direct Message</h2>
 
+{% if message %}
 <script type="text/javascript">
 $(document).ready(function(){
     $("abbr").each(function(){
@@ -23,7 +24,7 @@ $(document).ready(function(){
 <div class="stream" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
   <div class="right controls">
     {% if user.username == message.author.username %}
-    <a href="#" class="delete stream_element_delete message" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+    <a href="#" class="delete stream_element_delete message" title="지우기"><span class="ui_icon ui_icon_delete"></span></a>
     {% endif %}
   </div>
   <div class="sm_body">
@@ -83,7 +84,7 @@ $(document).ready(function(){
 <div class="stream" id="reply_{{ reply.id }}"><div class="stream_element reply_element" data-guid="1">
   <div class="right controls">
     {% if user.username == reply.author.username %}
-    <a href="#" class="delete stream_element_delete message" title="지우기" onclick="delete_reply($(this)); return false;" reply_id="{{ reply.id }}"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+    <a href="#" class="delete stream_element_delete message" title="지우기" onclick="delete_reply($(this)); return false;" reply_id="{{ reply.id }}"><span class="ui_icon ui_icon_delete"></span></a>
     {% endif %}
   </div>
   <div class="sm_body">
@@ -124,7 +125,7 @@ $(document).ready(function(){
     </a>
     <div class="content">
       <p style=" margin-bottom:3px;">
-        <textarea class="reply_area autogrow" id="reply_area_{{ message.id }}" style=" margin:0px; height:40px; width:445px; resize:none;"></textarea>
+        <textarea class="reply_area autogrow" id="reply_area_{{ message.id }}" style=" margin:0px; height:40px; width:455px; resize:none;"></textarea>
       </p>
       
       <div class="submit_button ">
@@ -139,6 +140,10 @@ $(document).ready(function(){
 
 
 </div>
+{% else %}
+<span>{{ error_message }}</span>
+<a href="#" onclick="history.back(); return false;">go back</a>
+{% endif %}
 
 
 {% include "meta_close.html"%}

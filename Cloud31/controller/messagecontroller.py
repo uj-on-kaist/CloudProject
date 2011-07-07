@@ -66,7 +66,9 @@ def message_detail(request, message_id):
             context['type'] = request.GET['type']
     except Exception as e:
         print str(e)
-        return HttpResponseServerError(str(e))
+        context['message']=None
+        context['error_message'] = 'You cannot access to this message.'
+        return HttpResponse(t.render(context))
         
     try:
         replies = DirectMessageReply.objects.filter(direct_message=d_message, is_deleted=False).order_by('reg_date')

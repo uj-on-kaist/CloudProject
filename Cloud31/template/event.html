@@ -23,7 +23,6 @@
 $(document).ready(function(){
     load_event('upcoming');
     $("#input_title").click(function(){
-        console.log(1);
         $("#event_form tr").removeClass("hidden");
     });
 });
@@ -39,5 +38,4 @@ $(document).ready(function(){
 </a>
 </div>
 
-{% include "ui/facebox_event.html" %}
 {% include "meta_close.html" %}

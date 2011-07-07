@@ -6,7 +6,7 @@ $(document).ready(function(){
         inline: true,
         dateFormat: 'yy-mm-dd',
         beforeShowDay: function(date) {
-            console.log(date.getDate());
+            //console.log(date.getDate());
             if(month_event_info.indexOf(date.getDate()) != -1)
                 return [true, "bold"];
             else
@@ -17,7 +17,7 @@ $(document).ready(function(){
         },
         onChangeMonthYear: function(year, month, inst) { 
             month_event_info=new Array(); 
-            console.log('hi '+ month); 
+            //console.log('hi '+ month); 
         },
     });
 });

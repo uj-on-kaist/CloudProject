@@ -156,6 +156,9 @@ function display_event(events){
 
         event_layout.find('.event_title').html(nl2br(event.title));
         event_layout.find('.event_content').html(nl2br(event.contents));
+        if(event.contents == ""){
+            event_layout.find('.event_content').remove();
+        }
         event_layout.find('.event_location').html("<b>Where? </b> "+event.location);
         event_layout.find('.start_time').html("<b>From</b> "+event.start_time);
         if(event.end_time != undefined && event.end_time != 'None'){
@@ -230,12 +233,10 @@ function display_event(events){
         });    
         event_layout.find('textarea').elastic();
         
-        event_layout.find('.event_open_action').attr('event_id',event.id);
-        event_layout.find('.event_open_action').click(function(){
-            show_event_detail($(this).attr('event_id'));
-            return false;
+        event_layout.find('.content').attr('event_id',event.id);
+        event_layout.find('.content').click(function(){
+            location.href="/event/detail/"+$(this).attr('event_id');
         });
-        
         
     }
 }
@@ -405,7 +406,6 @@ function show_event_detail(event_id){
                 var layout = '<li class="attendee" username="'+event.attendees[a].username+'"><img src="'+event.attendees[a].picture+'" /></li>';
                 detail_box.find(".attendees_list ul").append(layout);
             }
-            $.facebox({ div: '#event_detail_box' });
           }
 		},
 		error : function(data){
@@ -430,10 +430,10 @@ function attend_event(item, type){
 		success : function(json) {
 		  console.log(json);
 		  if(json.success){
-		    var attendee_list=$("#facebox .attendees_list ul");
+		    var attendee_list=$("#attendees_list");
 		    
-		    var description=$("#facebox .attending_status");
-		    $(".attend_action .attend_btn").show();
+		    var description=$("#attend_info .attending_status");
+		    $("#attend_info .attend_action .attend_btn").show();
 		    if(type == 'yes'){
 		        var user_name = $("#user_name_info").text();
 		        var user_picture = $("#user_picture_info").text();

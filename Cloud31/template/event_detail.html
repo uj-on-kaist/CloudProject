@@ -12,10 +12,21 @@ $(document).ready(function(){
 </script>
 
 {% if event %}
+<h2 class="page_title">Event Detail</h2>
+
+<div class="tab">
+<a href="#" onclick="return false;">
+    <span class="tab_item back" onclick="history.back();">&laquo;</span>
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;" style="font-weight:normal;">
+        {{ event.title }}
+    </span>
+</a>
+</div>
+
 <div class="stream" id="event_{{ event.id }}" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
   <div class="right controls">
     {% if user.username == event.host %}
-    <a href="#" class="delete stream_element_delete message" onclick="delete_detail_event($(this));" event_id="{{ event.id }}" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png"></a>
+    <a href="#" class="delete stream_element_delete message" onclick="delete_detail_event($(this));" event_id="{{ event.id }}" title="지우기"><span class="ui_icon ui_icon_delete"></span></a>
     {% endif %}
   </div>
   <div class="sm_body">
@@ -33,26 +44,64 @@ $(document).ready(function(){
           <abbr class="timeago event_time" title="2011-06-08 13:01:46 UTC">{{ event.reg_date }}</abbr>
         </span>
       </div>
-      <p class="event_title" style="font-size:20px; margin:10px 0;">
+      <p class="event_title" style="font-size:20px; border-left: 3px solid #E0E0E0; padding: 5px 10px; margin-top:5px;">
         {{ event.title }}
       </p>
-      <p class="event_time">
+      <p class="event_time" style="border-left: 3px solid #E0E0E0; padding: 0 10px;">
         <span class="start_time"><b>From</b> {{ event.start_time }}</span>
         {% if event.end_time != "None" %}<span class="end_time"><b>To</b> {{ event.end_time }}</span>{% endif %}
       </p>
-      <p class="event_location">
+      <p class="event_location" style="border-left: 3px solid #E0E0E0; padding: 0 10px;">
         <b>Where?</b> {{ event.location }}
       </p>
-      <p class="event_content">
+      <p style="border-left: 3px solid #E0E0E0; padding: 0 10px 5px 10px; margin-bottom:10px;">
+          <b class="public_info">{% if event.public %}공개된 이벤트 입니다.{% else %}비공개 이벤트 입니다.{% endif %}</b>
+      </p>
+      {% if event.contents %}
+      <p class="event_content" style="padding:10px 0px 20px 0px;">
         {{ event.contents }}
       </p>
-      
-      <div class="info">
-        <span class="check_action">
-          <b class="public_info">{% if event.public %}공개된 이벤트 입니다.{% endif %}</b>
-          <a href="#" class="event_open_action"  onclick="show_event_detail('{{ event.id }}');">Check who is attending.</a>
-        </span>
+      {% endif %}
+      <div class="info" id="attend_info" style="margin-bottom:2px; background-color: #F0F4F5; padding:0.4em; border-left: 3px solid #F0F4F5;">
+        <div class="event_attendee">
+          <b class="public_info">참석자 리스트</b>
+          <ul id="attendees_list" class="nostyle">
+            {% for attendee in event.attendees %}
+            <li class="attendee" username="{{ attendee.username }}" tipsy-text="@{{ attendee.username }}"><img src="{{ attendee.picture }}" /></li>
+            {% endfor %}
+          </ul>
+        </div>
+        
+        {% if event.attend_open %}
+        <div class="attend_action">
+            <div>
+                <span class="attending_status">
+                {% if event.attend_status == 'yes' %}
+                    회원님은 현재 참석 중입니다.
+                {% else%}
+                    {% if event.attend_status == 'no' %}
+                    회원님은 현재 참석 중이 아닙니다.
+                    {% endif %}
+                    {% if event.attend_status == 'wait'%}
+                    회원님은 현재 참석를 보류하셨습니다.
+                    {% endif %}
+                {% endif %}
+                </span>
+                <span class="description">이벤트에 참가 하시겠습니까?</span>
+                <span class="actions">
+            <a href="/" class="attend_btn yes_btn {% if event.attend_status == 'yes' %}hidden{% endif %}" event_id="{{ event.id }}" onClick="attend_event($(this),'yes'); return false;" id="update_btn">예</a>
+            <a href="/" class="attend_btn no_btn {% if event.attend_status == 'no' %}hidden{% endif %}" event_id="{{ event.id }}" onClick="attend_event($(this), 'no'); return false;" id="update_btn">아니오</a>
+            <a href="/" class="attend_btn wait_btn {% if event.attend_status == 'wait' %}hidden{% endif %}" event_id="{{ event.id }}" onClick="attend_event($(this), 'wait'); return false;" id="update_btn">보류</a>
+            </span>
+            </div>
+            
+            
+        </div>
+        {% endif %}
       </div>
+      
+      
+      
       
 <ul class="comments comment_count" id="1" >
 <li><span><span class="comment_count_text">{{ event.comments|length }}</span>개의 댓글이 있습니다.</span></li>
@@ -133,7 +182,5 @@ $(document).ready(function(){
 {{ error_message }}
 {% endif %}
 
-
-{% include "ui/facebox_event.html" %}
 
 {% include "meta_close.html" %}

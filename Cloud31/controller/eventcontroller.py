@@ -230,13 +230,17 @@ def process_events(events, user):
             pass
         item['attendees']=list()
         try:
-            attendees = EventParticipate.objects.filter(event=event, attend_status='yes')
+            attendees = EventParticipate.objects.filter(event=event)
             for attendee in attendees:
                 a_item=dict()
                 a_item['username']=attendee.user.username
                 a_item['picture']=UserProfile.objects.get(user=attendee.user).picture.url
                 a_item['name']=attendee.user.last_name
-                item['attendees'].append(a_item)
+                if attendee.attend_status == 'yes':
+                    item['attendees'].append(a_item)
+                if attendee.user.username == user.username:
+                    item['attend_status']=attendee.attend_status
+                    print attendee.attend_status
         except:
             pass
             

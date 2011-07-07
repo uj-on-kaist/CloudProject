@@ -77,8 +77,12 @@ ul.comment_count{font-size: 11px;}
     line-height: 22px;
 }
 .stream_element .content .info span{
-    padding-bottom: 9px;
 }
+
+.stream_element .content .info span.public{
+    padding-bottom: 0px;
+}
+
 .stream_element .content .info .favor, .stream_element .content .info .unfavor{
     padding-left:18px;
     background-repeat: no-repeat;
@@ -91,7 +95,7 @@ ul.comment_count{font-size: 11px;}
     background-image: url(/static/image/Icon_favorite_on.png);
 }
 .stream .stream_element {
-    padding: 15px 0px;
+    padding: 7px 0px;
 }
 
 span.author_name{font-size: 12px; line-height: 16px; margin-right: 5px;}
@@ -135,7 +139,7 @@ span.author_name{font-size: 12px; line-height: 16px; margin-right: 5px;}
 
 
 .d_message .stream_element, #message_list .stream_element{
-    padding: 10px 0px;
+    padding: 7px 0px;
 }
 
 

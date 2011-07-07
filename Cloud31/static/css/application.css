@@ -338,9 +338,9 @@ ul.dropdown {
       opacity: 1; }
   .stream_element .right {
     position: absolute;
-    right: -5px; 
+    right: -10px; 
     }
-.stream_element .right.top {top:5px;}
+.stream_element .right.top {top:0px;}
   .stream_element .controls {
     display: none;
     z-index: 6;
