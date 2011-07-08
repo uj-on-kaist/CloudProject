@@ -6,6 +6,17 @@ $(document).ready(function(){
     });
     
     reset_start_time();
+    
+    
+    $("#input_invites").keyup(function(event){
+        detect_auto_complete($(this));
+    });
+    
+    
+    $("#auto_complete_list li").click(function(event){
+        event.stopPropagation();
+    });
+    
 });
 </script>
 
@@ -46,7 +57,29 @@ $(document).ready(function(){
 
 <tr id="event_invites" class="canHide">
 <td width="60" class="label"><b>Who?</b></td>
-<td><input type="text" id="input_invites"/></td>
+<td>
+    <textarea type="text" id="input_invites"></textarea>
+    
+    <div id="auto_complete_list" class="ui-corner-all">
+        <ul>
+            <li class="first corner_top type_msg"><span></span></li>
+            <li class="first corner_top search_msg"><span>Search Result</span></li>
+            <li class="user_item template">
+            <div class="user">
+                <span class="user_picture"><img src="/picture/test" /></span>
+                <p class="user_info">
+                    <span class="user_name"></span>
+                    <span class="user_real_name"></span>
+                </p>
+            </div>
+            </li>
+            <li class="add ui-corner-bottom">Make Topic "<b><span class="topic_name"></span></b>"</li>
+        </ul>
+    </div>
+
+    
+    
+</td>
 </tr>
 
 <tr id="event_message" class="canHide">

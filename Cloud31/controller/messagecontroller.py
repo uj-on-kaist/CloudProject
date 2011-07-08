@@ -35,7 +35,18 @@ def main(request):
         context['type'] = request.GET['type']
     
     return HttpResponse(t.render(context))
+
+@login_required(login_url='/signin/')
+def new(request):
+    t = loader.get_template('message_new.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     
+    context['page_dm'] = "selected"
+    context['side_list']=['']
+    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
+    return HttpResponse(t.render(context))
+       
     
 
 @login_required(login_url='/signin/')

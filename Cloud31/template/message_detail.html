@@ -22,16 +22,17 @@ $(document).ready(function(){
 
 <div class="d_message">
 <div class="stream" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
-  <div class="right controls">
+  <div class="left controls">
     {% if user.username == message.author.username %}
     <a href="#" class="delete stream_element_delete message" title="지우기"><span class="ui_icon ui_icon_delete"></span></a>
     {% endif %}
   </div>
   <div class="sm_body">
     <a href="/user/{{ message.author.username }}" class="user_link">
-      <img class="avatar" src="{{ message.author_profile.picture.url }}">
+      <img class="avatar {% if user.username == message.author.username %}right_avatar{% endif %}" 
+        src="{{ message.author_profile.picture.url }}">
     </a>
-    <div class="content">
+    <div class="content {% if user.username == message.author.username %}right_content{% endif %}">
       <div class="from">
         <a href="/user/{{ message.author.username }}" class="user_link">
           {{ message.author.username }}
@@ -57,14 +58,14 @@ $(document).ready(function(){
 <div id="message_reply_list" message_id={{ message.id }}>
 
 <div class="stream template" data-guids="3,4" id="main_stream"><div class="stream_element reply_element" data-guid="1">
-  <div class="right controls">
+  <div class="left controls">
     <a href="#" class="delete stream_element_delete message" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
   </div>
   <div class="sm_body">
     <a href="/user/" class="user_link">
-      <img class="avatar" src="/media/default.png" />
+      <img class="avatar right_avatar" src="/media/default.png" />
     </a>
-    <div class="content">
+    <div class="content right_content">
       <div class="from">
         <a href="/user/" class="user_link"></a>
       </div>
@@ -82,16 +83,17 @@ $(document).ready(function(){
 
 {% for reply in replies %}
 <div class="stream" id="reply_{{ reply.id }}"><div class="stream_element reply_element" data-guid="1">
-  <div class="right controls">
+  <div class="left controls">
     {% if user.username == reply.author.username %}
     <a href="#" class="delete stream_element_delete message" title="지우기" onclick="delete_reply($(this)); return false;" reply_id="{{ reply.id }}"><span class="ui_icon ui_icon_delete"></span></a>
     {% endif %}
   </div>
   <div class="sm_body">
     <a href="/user/{{ reply.author.username }}" class="user_link">
-      <img class="avatar" src="{{ reply.author_profile.picture.url }}">
+      <img class="avatar {% if user.username == reply.author.username %}right_avatar{% endif %}" 
+        src="{{ reply.author_profile.picture.url }}">
     </a>
-    <div class="content">
+    <div class="content {% if user.username == reply.author.username %}right_content{% endif %}">
       <div class="from">
         <a href="/user/{{ reply.author.username }}" class="user_link">
           {{ reply.author.username }}

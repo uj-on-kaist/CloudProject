@@ -135,7 +135,13 @@ def ajax_user(request):
             item = dict()
             item['username'] = user.username
             item['name'] = user.last_name
-            user_profile = UserProfile.objects.get(user=user)
+            
+            try:
+                user_profile = UserProfile.objects.get(user=user)
+                item['picture']= user_profile.picture.url
+            except:
+                item['picture']='/media/default.png'
+            
             result['items'].append(item)
         except:
             pass

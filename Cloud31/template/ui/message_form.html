@@ -1,4 +1,19 @@
-<div  id="message_form" style="display:none;">
+<script type="text/javascript">
+$(document).ready(function(){
+    
+    $("#input_users").keyup(function(event){
+        detect_auto_complete($(this));
+    });
+    
+    
+    $("#auto_complete_list li").click(function(event){
+        event.stopPropagation();
+    });
+    
+});
+</script>
+
+<div  id="message_form">
 <div class="message_form" style="width: 525px;">
 <h4 class="box_header">Send a Message</h4>
 <div class="box_main">
@@ -6,7 +21,24 @@
     <div class="label">
     To
     </div>
-    <textarea id="input_users" class="autogrow"  placeholder="Add user" style="overflow-y:hidden; padding:5px 10px; height:16px; resize:none;"></textarea>
+    <textarea id="input_users" class=""  placeholder="Add user" style="overflow-y:hidden; padding:5px 10px; height:16px; resize:none;"></textarea>
+    <div id="auto_complete_list" class="ui-corner-all">
+        <ul>
+            <li class="first corner_top type_msg"><span></span></li>
+            <li class="first corner_top search_msg"><span>Search Result</span></li>
+            <li class="user_item template">
+            <div class="user">
+                <span class="user_picture"><img src="/picture/test" /></span>
+                <p class="user_info">
+                    <span class="user_name"></span>
+                    <span class="user_real_name"></span>
+                </p>
+            </div>
+            </li>
+            <li class="add ui-corner-bottom">Make Topic "<b><span class="topic_name"></span></b>"</li>
+        </ul>
+    </div>
+    
 </div>
 <div class="item">
     <div class="label">
@@ -17,7 +49,7 @@
 
 
 <div class="item update">
-    <a href="/" class="button update" onClick="send_message(); $.facebox.close(); return false;" id="update_btn">보내기</a>
+    <a href="/" class="button update" onClick="send_message(); return false;" id="update_btn">보내기</a>
     <div class="loading" style="text-align:right; display:none;"><img src="{{ STATIC_URL }}image/loading.gif" /></div>
 </div>
 

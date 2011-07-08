@@ -1,6 +1,6 @@
 function send_message(){
-    var receivers_text = $('#facebox #input_users').val();
-    var message = $('#facebox #input_message').val();
+    var receivers_text = $('#input_users').val();
+    var message = $('#input_message').val();
     /*
 
     receivers_text = receivers_text.replace(/[^a-zA-Z 0-9]+/g,'');
@@ -13,8 +13,8 @@ function send_message(){
 
     
     console.log(receivers_list);
-    */
     console.log(message);
+    */
     
     
     
@@ -32,7 +32,7 @@ function send_message(){
 		  console.log(json);
           if(json.success){
             clear_message_input();
-            load_message($("#message_list").attr('type'));
+            document.location.href='/message/'
           }
 		},
 		error : function(data){

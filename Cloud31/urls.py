@@ -69,6 +69,7 @@ urlpatterns = patterns('',
     
     
     url(r'^message/$', 'controller.messagecontroller.main'),
+    url(r'^message/new$', 'controller.messagecontroller.new'),
     url(r'^message/detail/(?P<message_id>\w+)$', 'controller.messagecontroller.message_detail'),
     url(r'^api/message/update/$','controller.messagecontroller.send_message'),
     url(r'^api/message/reply/update/$','controller.messagecontroller.reply_message'),

@@ -84,8 +84,8 @@ function cursor_postion_text(item){
 }
 
 
-function detect_auto_complete(item){
-    var result = cursor_postion_text(item);
+function detect_auto_complete(textarea){
+    var result = cursor_postion_text(textarea);
     
     var text=result.text;
     
@@ -132,7 +132,8 @@ function detect_auto_complete(item){
 		cache : false,
 		success : function(json) {
 		  if(json.success){
-		      display_auto_complete(type,json.items, result.left, result.right, keyword);
+		      //console.log(json.items);
+		      display_auto_complete(type,json.items, result.left, result.right, keyword, textarea);
 		  }
 		},
 		error : function(data){
@@ -142,7 +143,7 @@ function detect_auto_complete(item){
     
 }
 
-function display_auto_complete(type,items, left, right, keyword){
+function display_auto_complete(type,items, left, right, keyword, textarea){
     $("#auto_complete_list .type_msg").hide();
     $("#auto_complete_list .search_msg").show();
     if(!$("#auto_complete_list").is(":visible")){
@@ -165,6 +166,7 @@ function display_auto_complete(type,items, left, right, keyword){
     }
     for(var i=0; i<items.length; i++){
         var item=items[i];
+        
         if(type == 'user'){
             $('#auto_complete_list li.add').hide();
             
@@ -174,16 +176,16 @@ function display_auto_complete(type,items, left, right, keyword){
             layout.addClass("list_item");
             layout.attr('left',left);
             layout.attr('right',right);
-            layout.find(".user_picture img").attr("src","/picture/"+item.username);
+            layout.find(".user_picture img").attr("src",item.picture);
+            layout.find(".user_picture img").attr("title","@"+item.username);
             layout.find(".user_name").text("@"+item.username);
             layout.find(".user_real_name").text(item.name);
             
             layout.click(function(){
                 var left=$(this).attr('left');
                 var right=$(this).attr('right');
-                replace_input_text($("#feed_message_input"), $(this).find('.user_name').text(),left, right);
+                replace_input_text(textarea, $(this).find('.user_name').text(),left, right);
             });
-            
             $('#auto_complete_list li.add').before(layout);
             
         }else{
@@ -200,7 +202,7 @@ function display_auto_complete(type,items, left, right, keyword){
             layout.click(function(){
                 var left=$(this).attr('left');
                 var right=$(this).attr('right');
-                replace_input_text($("#feed_message_input"), $(this).find('.topic_name').text(),left, right);
+                replace_input_text(textarea, $(this).find('.topic_name').text(),left, right);
             });
 
             $('#auto_complete_list li.add').before(layout);
@@ -218,5 +220,5 @@ function replace_input_text(item, text, left, right){
     new_str+=str.substring(right,str.length);
     new_str+=' ';
     item.val(new_str);
-    setCaretToPos(document.getElementById("feed_message_input"), left+text.length+1);
+    setCaretToPos(item[0], left+text.length+1);
 }

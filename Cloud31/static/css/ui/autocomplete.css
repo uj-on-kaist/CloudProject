@@ -1,12 +1,15 @@
 #auto_complete_list{
     position: absolute;
-    top:-41px;
     background: #ffffff;
     padding:0 0;
     width: 525px;
     z-index: 100;
     border: 1px solid #323232;
     display: none;
+}
+
+.feed #auto_complete_list{
+    top:-41px;
 }
 
 #auto_complete_list ul{
@@ -58,3 +61,20 @@
 }
 
 #auto_complete_list .topic_item .topic_name{color: #325AAA;}
+
+
+#event_invites #auto_complete_list{
+    width:468px;
+}
+
+#event_invites #auto_complete_list li{
+    width: 448px;
+}
+
+#message_form #auto_complete_list{
+    width:437px;
+    margin-left: 70px;
+}
+#message_form #auto_complete_list li{
+    width: 417px;
+}
