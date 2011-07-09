@@ -6,6 +6,11 @@
     display: none;
 }
 
+.login_form{
+    width:200px;
+}
+.register_form{width:460px;}
+
 .signin_logo{
     margin-bottom: 28px;
 }
@@ -49,9 +54,56 @@
 }
 
 .register_form{
-    margin: 0 auto;
+    padding-left: 480px;
 }
 
 .register_btn{
-    margin-top: 10px;
 }
+.register_desc{
+    float: left;
+    width: 470px;
+    height: 345px;
+    background-image: url(/static/image/Introduction_logo.png);
+    background-repeat: no-repeat;
+    background-position: 200px 80px;
+}
+
+
+
+.input_box{
+    text-align: left;
+    margin-bottom: 10px;
+    font-size: 11px;
+    display: inline-block;
+    width: 100%;
+}
+.input_box label{
+    font-size: 11px;
+    padding-bottom: 5px;
+    display: block;
+    
+}
+.sign_form .input_box .password, .sign_form .input_box .id{
+    margin: 0;
+    float:left;
+}
+
+.input_alert{
+}
+.input_desc{
+    padding: 0;
+    margin: 0;
+    line-height: 30px;
+    padding-left: 10px;
+    float:left;
+    color: #ff4848;
+    display: none;
+}
+
+h3.register_title{
+    text-shadow: #eee 0 1px 1px;
+    text-align:left; width:600px; margin:0 auto; font-size:20px;color:#323232;
+    padding-bottom: 20px;
+}
+
+

@@ -1,7 +1,8 @@
 function upload_feed(item){
     item.attr('disabled','disabled');
-    item.parent().find('.loading').show();
-    item.hide();
+    
+    start_loading(item);
+    
     var attach_list='';
     var count=$(".qq-upload-list").find('li').length;
     $(".qq-upload-list").find('li').each(function(i, val){
@@ -20,6 +21,11 @@ function upload_feed(item){
     
     var tokenValue = $("#csrf_token").text();
     
+    if(message == ""){
+        finish_loading(item);
+        return false;
+    }
+    
     data= "message=" + message + "&attach_list=" + attach_list + "&location_info="+location_info;
     data +="&csrfmiddlewaretoken="+tokenValue;
 	$.ajax({
@@ -35,11 +41,9 @@ function upload_feed(item){
             clear_feed_input();
             var feed_type=$("#feed_list").attr('type');
             load_feed(feed_type);
-            
-            
           }
-          item.parent().find('.loading').hide();
-            item.show();
+          
+          finish_loading(item);
 		},
 		error : function(data){
 		  console.log(data);

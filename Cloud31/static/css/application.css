@@ -676,12 +676,9 @@ form p.checkbox_select {
     top: 6px; }
 
 label {
-  font-weight: normal;
-  color: #999999;
-  position: absolute;
-  top: 3px;
-  left: 0.48em;
-  text-shadow: 0 1px 1px #eeeeee; }
+  font-weight: bold;
+  color: #323232;
+}
 
 #file-upload input {
   height: 100%;

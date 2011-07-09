@@ -1,21 +1,15 @@
 function send_message(){
     var receivers_text = $('#input_users').val();
     var message = $('#input_message').val();
-    /*
-
-    receivers_text = receivers_text.replace(/[^a-zA-Z 0-9]+/g,'');
-    var receivers = receivers_text.split(' ');
     
-    var receivers_list='';
-    for(var i=0; i<receivers.length; i++){
-        receivers_list+=receivers[i]+',';
+    if(receivers_text == ""){
+        alert("No Receiver.");
+        return false;
     }
-
-    
-    console.log(receivers_list);
-    console.log(message);
-    */
-    
+    if(message == ""){
+        alert("No Message.");
+        return false;
+    }
     
     
     var tokenValue = $("#csrf_token").text();

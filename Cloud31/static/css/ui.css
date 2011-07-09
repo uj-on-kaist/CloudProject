@@ -160,40 +160,47 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 input[type='text'].input_144_25,input[type='password'].input_144_25{
     font-size: 14px;
     border: 0;
-    background-image: url('/static/image/Box_144x25_nor.png');
+    background-image: url('/static/image/Box_144x25.jpg');
     background-repeat: no-repeat;
+    background-position: 0px 0px;
     width: 147px;
     height: 17px;
     padding: 4px 10px;
 }
 input[type='text'].input_144_25:focus,input[type='password'].input_144_25:focus{
-    background-image: url('/static/image/Box_144x25_over.png');
+    background-position: 0px -25px;
 }
 
 input[type='text'].input_167_25,input[type='password'].input_167_25{
     font-size: 14px;
     border: 0;
-    background-image: url('/static/image/Box_167x25_nor.png');
+    background-image: url('/static/image/Box_167x25.jpg');
     background-repeat: no-repeat;
+    background-position: 0px 0px;
     width: 147px;
     height: 17px;
     padding: 4px 10px;
 }
 input[type='text'].input_167_25:focus,input[type='password'].input_167_25:focus{
-    background-image: url('/static/image/Box_167x25_over.png');
+    background-position: 0px -25px;
+    outline: none;
+    border: none;
 }
 
 input[type='text'].input_167_32,input[type='password'].input_167_32{
     font-size: 14px;
     border: 0;
-    background-image: url('/static/image/Box_167x32_nor.png');
+    background-image: url('/static/image/Box_167x32.jpg');
     background-repeat: no-repeat;
+    background-position: 0px 0px;
     width: 147px;
     height: 16px;
     padding: 8px 10px;
 }
 input[type='text'].input_167_32:focus,input[type='password'].input_167_32:focus{
-    background-image: url('/static/image/Box_167x32_over.png');
+    background-position: 0px -32px;
+    outline: none;
+    border: none;
 }
 
 

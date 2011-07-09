@@ -26,6 +26,15 @@ function humane_date(time){
 }
 
 
+function start_loading(item){
+    item.parent().find('.loading').show();
+    item.hide();
+}
+
+function finish_loading(item){
+    item.parent().find('.loading').hide();
+    item.show();
+}
 
 
 function nl2br (str, is_xhtml) {   

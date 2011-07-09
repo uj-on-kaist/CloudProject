@@ -15,21 +15,25 @@
 <script src="{{ STATIC_URL }}js/jquery-1.6.1.min.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/jquery.tipsy.js?{{ csrf_token }}" type="text/javascript"></script>
 <link rel="stylesheet" href="{{ STATIC_URL }}css/tipsy/tipsy.css?{{ csrf_token }}" type="text/css" />
+<script src="{{ STATIC_URL }}js/signin.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/etc.js?{{ csrf_token }}" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     var page_height = $.getDocHeight();
-    var container_pos = page_height/2.0 - 240;
+    var container_pos = page_height/2.0 - 250;
     if(container_pos <= 10)
         container_pos = 10;
     $(".sign_container").css('padding-top',container_pos+'px');
-     $(".sign_container").fadeIn(1000);
-     
-      $('#sign_form input[placeholder]').tipsy({always: true, gravity: 'e',title:'placeholder', fade: true});
-      $('#sign_form input[placeholder]').each(function(){
-            $(this).tipsy("show");
-      });
-      
+    $(".sign_container").fadeIn(1000);
+    
+    
+    $("#id_username").keyup(function(event){ validate_userid($(this)); });
+    $("#id_real_name").keyup(function(event){ validate_username($(this)); });
+    $("#id_email").blur(function(event){ validate_email($(this)); });
+    
+    $("#id_password1").keyup(function(event){ validate_password($(this)); });
+    $("#id_password2").keyup(function(event){ validate_password_equal($(this)); });
+    
 });
 $.getDocHeight = function(){
     return Math.max(
@@ -48,23 +52,57 @@ $.getDocHeight = function(){
 
 <div class="container sign_container">
 
-<h3>Register</h3>
+<h3 class="register_title">Cloud31 - Register</h3>
 <div class="sign_form" id="sign_form">
-<form action="/signup/" method="POST" class="register_form">
+<div class="register_desc">
+
+</div>
+
+<form action="/signup/" method="POST" class="register_form" onsubmit="return check_form($(this));">
 {% csrf_token %}
 
-<div><input id="id_username" type="text" placeholder="Enter ID" name="username" class="ui-corner-all id input_167_32" /></div>
-<div><input id="id_real_name" type="text" placeholder="이름" name="name" class="ui-corner-all id input_167_32" /></div>
-<div><input id="id_email" type="text" placeholder="이메일 주소" name="email" class="ui-corner-all id input_167_32" /></div>
-<div><input type="password" placeholder="비밀번호" name="password1" id="id_password1" class="ui-corner-all id input_167_32" /></div>
-<div><input type="password" placeholder="비밀번호 확인" name="password2" id="id_password2" class="ui-corner-all id input_167_32" /></div>
+<div class="input_box">
+    <label>사용자 ID</label>
+    <input id="id_username" type="text" placeholder="Enter ID" name="username" class="ui-corner-all id input_167_32" tipsy-text="영어로" />
+    <p class="input_desc"></p>
+</div>
+
+<div class="input_box">
+    <label>이름</label>
+    <input id="id_real_name" type="text" placeholder="이름" name="name" class="ui-corner-all id input_167_32" />
+    <p class="input_desc"></p>
+</div>
+
+<div class="input_box">
+    <label>이메일 주소</label>
+    <input id="id_email" type="text" placeholder="이메일 주소" name="email" class="ui-corner-all id input_167_32" />
+    <p class="input_desc">유효한 이메일 주소를 입력해 주세요.</p>
+</div>
+
+<div class="input_box">
+    <label>비밀번호 (6자 이상)</label>
+    <input type="password" placeholder="비밀번호" name="password1" id="id_password1" class="ui-corner-all id input_167_32" />
+    <p class="input_desc">6자 이상의 비밀번호를 입력해 주세요.</p>
+</div>
+
+<div class="input_box">
+    <label>비밀번호 확인</label>
+    <input type="password" placeholder="비밀번호 확인" name="password2" id="id_password2" class="ui-corner-all id input_167_32" />
+    <p class="input_desc">비밀번호가 일치하지 않습니다.</p>
+</div>
+
+<!--
+
 <div><input id="id_dept" type="text" placeholder="부서" name="dept" class="ui-corner-all id input_167_32" /></div>
 <div><input id="id_position" type="text" placeholder="직급" name="position" class="ui-corner-all id input_167_32" /></div>
+-->
 
-
+<div class="input_box">
 <button type="submit" class="button_m register_btn" onblur="return false">
     Register
 </button>
+</div>
+
 </form>
 </div>
 

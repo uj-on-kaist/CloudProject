@@ -49,12 +49,6 @@ footer .container .description{
 }
 
 
-.login_form, .register_form{
-    width:200px;
-}
-.register_form label{
-    display: none;
-}
 
 .button{
     margin:0;

@@ -1,8 +1,12 @@
 function register_event(item){
     item.attr('disabled','disabled');
-    item.parent().find('.loading').show();
-    item.hide();
+    start_loading(item);
     var title=$("#input_title").val();
+    if(title == ""){
+        finish_loading(item);
+        return false;
+    }
+    
     
     var start_date=$("#start_time input").val();
     var start_time_text=$("#start_time select option[value='"+$("#start_time select").val()+"']").text();
@@ -44,8 +48,7 @@ function register_event(item){
           if(json.success){
             document.location.href='/event/'
           }else{
-            item.parent().find('.loading').hide();
-            item.show();
+            finish_loading(item);
           }
 		},
 		error : function(data){

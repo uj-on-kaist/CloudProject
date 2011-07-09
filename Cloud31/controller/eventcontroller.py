@@ -137,7 +137,7 @@ def load_event(request, load_type):
             pass
     
     try:
-        events = Event.objects.filter(query_type,additional,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+        events = Event.objects.filter(query_type,additional,is_deleted=False).order_by('-start_time')[:DEFAULT_LOAD_LENGTH]
         result['events']=process_events(events , user)
         
         if len(events) == DEFAULT_LOAD_LENGTH:

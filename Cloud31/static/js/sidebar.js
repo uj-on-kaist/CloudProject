@@ -103,6 +103,9 @@ function make_dialog_layout(dialog, last){
 function upload_dialog(){
 
     var dialog=$('input#dialog_input').val();
+    if(dialog.replace(" ","") == ""){
+        return false;
+    }
     $('input#dialog_input').val("");
     var tokenValue = $("#csrf_token").text();
     
