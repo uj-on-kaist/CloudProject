@@ -102,12 +102,16 @@ def search_members(request, inStr):
             query_type_1 = query_type_1 & Q(username__icontains=item)
         for item in arr:
             query_type_2 = query_type_2 & Q(last_name__icontains=item)
-        members = User.objects.filter(query_type_1 | query_type_2)
+        members = User.objects.filter(query_type_1 | query_type_2, is_active=True)
         members_list = list()
         for member in members:
             try:
                 member_profile = UserProfile.objects.get(user=member)
                 member.profile = member_profile
+                try:
+                    member.picture = member_profile.picture.url
+                except:
+                    member.picture = "/media/default.png"
                 members_list.append(member)
             except:
                 pass

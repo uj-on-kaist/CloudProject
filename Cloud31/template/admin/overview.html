@@ -1,16 +1,30 @@
 {% include "meta_open.html" %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.datepicker').datepicker({
+        inline: true,
+        dateFormat: 'yy-mm-dd',
+    });
+    
+    var end = new Date();
+    var curr_date = end.getDate();
+    var curr_month = end.getMonth();
+    curr_month++;
+    var curr_year = end.getFullYear();
+    
+    var start = new Date(curr_year, curr_month-1, curr_date - 90);
+    $(".startpicker").val(start.getFullYear()+"-"+(start.getMonth()+1)+"-"+start.getDate());
+    $(".endpicker").val(curr_year+"-"+curr_month+"-"+curr_date);
+});
+</script>
 
 <h2 class="page_title">
     Overview
-    
-    <a href="/event/new" class="title_link">
-        <p style="padding:0; margin:0; height:20px; display:inline;">Download Excel File</p>
-    </a>
 </h2>
 <div class="overview_item">
 <div class="title_box">
 <span class="ui_icon ui_icon_overview"></span>
-<b class="title">Overview Info(for last 7 days)</b>
+<b class="title">Overview Info (Total)</b>
 </div>
 <table class="overview_table">
     <tr>
@@ -32,15 +46,28 @@
 <div class="overview_item">
 <div class="title_box">
 <span class="ui_icon ui_icon_feed"></span>
-<b class="title">Recent Feeds (for last 7 days)</b>
+<b class="title">Recent Feeds (for last 3 month)</b>
+
+
 </div>
+
+<div class="chart_date_select">
+<b>Data From </b>
+<input type="text" class="datepicker startpicker" />
+<b>To </b>
+<input type="text" class="datepicker endpicker" />
+<a href="#" onclick="reloadSWFRange($(this),'recent_messages','/chart/recent_message'); return false;">change</a>
+<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_messages','/chart/recent_message')"/> Accumulative</span>
+</div>
+
 <script type="text/javascript">
 swfobject.embedSWF(
-    	  "/static/open-flash-chart.swf", "recent_messages", 
-    	  "525", "180", "9.0.0", "/static/expressInstall.swf",
-    	  {"data-file":"/chart/recent_message", "bgcolor":"#FFFFFF"} );
+    	  "/static/open-flash-chart2.swf", "recent_messages", 
+    	  "525", "200", "9.0.0", "/static/expressInstall.swf",
+    	  {"data-file":"/chart/recent_message"}, {"wmode":"transparent"} );
 </script>
 <div class="chart" id="recent_messages"></div>
+
 
 <table class="recent_message_table overview_table">
     <tr>
@@ -62,16 +89,28 @@ swfobject.embedSWF(
 </div>
 
 
+
+
 <div class="overview_item">
 <div class="title_box">
 <span class="ui_icon ui_icon_member"></span>
-<b class="title">Recent User (for last 7 days)</b>
+<b class="title">Recent User Logined (for last 3 month)</b>
+
 </div>
+
+<div class="chart_date_select">
+<b>Data From </b>
+<input type="text" class="datepicker startpicker" />
+<b>To </b>
+<input type="text" class="datepicker endpicker" />
+<a href="#" onclick="reloadSWFRange($(this),'recent_users','/chart/recent_user'); return false;">change</a>
+</div>
+
 <script type="text/javascript">
 swfobject.embedSWF(
-    	  "/static/open-flash-chart.swf", "recent_users", 
-    	  "525", "180", "9.0.0", "/static/expressInstall.swf",
-    	  {"data-file":"/chart/recent_user", "bgcolor":"#FFFFFF"} );
+    	  "/static/open-flash-chart2.swf", "recent_users", 
+    	  "525", "200", "9.0.0", "/static/expressInstall.swf",
+    	  {"data-file":"/chart/recent_user"}, {"wmode":"transparent"} );
 </script>
 <div class="chart" id="recent_users"></div>
 

@@ -29,3 +29,19 @@ object{
 .title_box{
     padding-bottom: 10px;
 }
+
+
+.chart_date_select{
+    width: 100%;
+    text-align: left;
+}
+
+.chart_date_select input[type=text].datepicker{
+    padding: 2px;
+    background-image: none;
+    font-size: 11px;
+}
+.chart_date_select b{
+    padding-left: 10px;
+    padding-right: 5px;
+}

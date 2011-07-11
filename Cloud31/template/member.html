@@ -11,7 +11,7 @@
     
     {% for member in members.object_list %}
     <tr class="member_item list_item" onclick="document.location.href='/user/{{ member.username }}';">
-        <td class="first member_picture"><img src='/picture/{{ member.username}}' /></td>
+        <td class="first member_picture"><img src='{{ member.picture }}' /></td>
         <td class="name">
             <p class="ellipsis username"><a>@{{ member.username }}</a></p>
             <p class="ellipsis real_name">{{ member.last_name }}</p>

@@ -66,19 +66,14 @@ def overview(request):
     start_time = dt.date(year, month, day) - dt.timedelta(6)
     end_time = dt.date(year, month, day)  + dt.timedelta(1)
     
-    context['user_length'] = User.objects.filter(last_login__range=(start_time,end_time) \
-                                                ,is_active=True).count()
-    context['feed_length'] = Message.objects.filter(reg_date__range=(start_time,end_time) \
-                                                ,is_deleted=False).count()
-    context['topic_length'] = Topic.objects.filter(reg_date__range=(start_time,end_time)).count()
-    context['file_length'] = File.objects.filter(upload_date__range=(start_time,end_time) \
-                                                ,is_attached=True).count()
+    context['user_length'] = User.objects.filter(is_active=True).count()
+    context['feed_length'] = Message.objects.filter(is_deleted=False).count()
+    context['topic_length'] = Topic.objects.all().count()
+    context['file_length'] = File.objects.filter(is_attached=True).count()
     
     
-    context['recent_messages'] = Message.objects.filter(reg_date__range=(start_time,end_time) \
-                        ,is_deleted=False).order_by("-reg_date")[:5]
-    context['recent_users'] = User.objects.filter(last_login__range=(start_time,end_time) \
-                        ,is_active=True).order_by("-last_login")[:5]
+    context['recent_messages'] = Message.objects.filter(is_deleted=False).order_by("-reg_date")[:5]
+    context['recent_users'] = User.objects.filter(is_active=True).order_by("-last_login")[:5]
     return HttpResponse(t.render(context))
     
 
@@ -94,37 +89,56 @@ def recent_user_graph(request):
         now = datetime.now()
         year,month,day = now.year, now.month, now.day
     
-    date_before = 6
+    date_before = 90
     range_const = 1
     
     end_time = dt.date(year, month, day)
     start_time = end_time - dt.timedelta(date_before)
     
+    in_start =request.GET.get("start",False)
+    in_end = request.GET.get("end",False)
+        
+    if in_start and in_end:
+        start = in_start.split("-")
+        start_time = dt.date(int(start[0]),int(start[1]),int(start[2]))
+        end = in_end.split("-")
+        end_time = dt.date(int(end[0]),int(end[1]),int(end[2]))
+        delta = end_time - start_time
+        date_before = delta.days
+        
+    
     data = list()
     time = start_time
     label_list = list()
-    
+
     while time <= end_time:
         next_time = time + dt.timedelta(range_const)
         data.append(User.objects.filter(last_login__range=(time, next_time)).count())
-        label_list.append((" "+str(time.month)+"/"+str(time.day)+" <br>"+str(time.year)).replace("-","/"))
+        label_list.append(time.strftime("%B %d, %Y"))
         time = next_time
     
-    t = title(text="<b>Recent Users From "+str(start_time)+" to "+str(end_time)+"</b>")
-    t.style = "{font-size: 12px; font-weight: bold; text-align: center;padding-bottom:5px;}"
+    #t = title(text="Data From "+start_time.strftime("%B %d, %Y")+" - To "+end_time.strftime("%B %d, %Y")+"")
+    #t.style = "{font-size: 12px;text-align: right;padding-bottom:5px;}"
     l = line()
     l.values = data
+    l.colour = "#325AAA"
+    l.tip = "#x_label#<br>#val# Users Logined"
     chart = open_flash_chart()
-    chart.title = t
+    #chart.title = t
+    
+    y = y_axis()
+    y.steps = 5
+    chart.y_axis = y
     
     x = x_axis()
     x.style = "{text-align:center}"
-    lbl = labels(labels=label_list)
-    lbl.steps = int(len(data) / 3)
+    lbl = x_axis_labels(steps=30,labels=label_list)
     x.labels = lbl
-    x.steps = int(len(data) / 6)
+    x.steps = 15
     chart.x_axis = x
+    chart.bg_colour = '#FAFAFA'
     chart.add_element(l)
+    
     return HttpResponse(chart.render())
 
 
@@ -140,38 +154,74 @@ def recent_message_graph(request):
         now = datetime.now()
         year,month,day = now.year, now.month, now.day
     
-    date_before = 6
+    date_before = 90
     range_const = 1
     
     end_time = dt.date(year, month, day)
     start_time = end_time - dt.timedelta(date_before)
     
+    in_start =request.GET.get("start",False)
+    in_end = request.GET.get("end",False)
+        
+    if in_start and in_end:
+        start = in_start.split("-")
+        start_time = dt.date(int(start[0]),int(start[1]),int(start[2]))
+        end = in_end.split("-")
+        end_time = dt.date(int(end[0]),int(end[1]),int(end[2]))
+        delta = end_time - start_time
+        date_before = delta.days
+        
+    
     data = list()
     time = start_time
     label_list = list()
     
-    while time <= end_time:
-        next_time = time + dt.timedelta(range_const)
-        data.append(Message.objects.filter(is_deleted=False,reg_date__range=(time, next_time)).count())
-        label_list.append((" "+str(time.month)+"/"+str(time.day)+" <br>"+str(time.year)).replace("-","/"))
-        time = next_time
     
-    t = title(text="<b>Recent Message From "+str(start_time)+" to "+str(end_time)+"</b>")
-    t.style = "{font-size: 12px; font-weight: bold; text-align: center;padding-bottom:5px;}"
+    y = y_axis()
+    y.min, y.max, y.steps = 0, 20, 5
+    
+    accu = request.GET.get("accu", False)
+    if accu == "1":
+        count = Message.objects.filter(is_deleted=False,reg_date__lt=time).count()
+        while time <= end_time:
+            next_time = time + dt.timedelta(range_const)
+            count+=Message.objects.filter(is_deleted=False,reg_date__range=(time, next_time)).count()
+            data.append(count)
+            if count > y.max:
+                y.max = count
+            label_list.append(time.strftime("%B %d, %Y"))
+            time = next_time
+    else:
+        while time <= end_time:
+            next_time = time + dt.timedelta(range_const)
+            count = Message.objects.filter(is_deleted=False,reg_date__range=(time, next_time)).count()
+            data.append(count)
+            if count > y.max:
+                y.max = count
+            label_list.append(time.strftime("%B %d, %Y"))
+            time = next_time
+    
+    #t = title(text="Data From "+start_time.strftime("%B %d, %Y")+" - To "+end_time.strftime("%B %d, %Y")+"")
+    #t.style = "{font-size: 12px;text-align: right;padding-bottom:5px;}"
     l = line()
+    l.tip = "#x_label#<br>#val# Feeds"
     l.values = data
+    l.colour = "#325AAA"
     chart = open_flash_chart()
-    chart.title = t
+    #chart.title = t
+    
+    chart.y_axis = y
+    
     
     x = x_axis()
     x.style = "{text-align:center}"
-    lbl = labels(labels=label_list)
-    lbl.steps = int(len(data) / 3)
+    lbl = x_axis_labels(steps=date_before/3,labels=label_list)
     lbl.style = "{text-align:center}"
     x.labels = lbl
-    x.steps = int(len(data) / 6)
+    x.steps = date_before / 6
     chart.x_axis = x
-    chart.add_element(l)
+    chart.bg_colour = '#FAFAFA'
+    chart.add_element(l)    
     return HttpResponse(chart.render())
 
     

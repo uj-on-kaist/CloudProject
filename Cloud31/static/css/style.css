@@ -749,3 +749,8 @@ ul.index_list li.previous span, ul.index_list li.next span{
     padding-right: 60px;
     text-align: right;
 }
+
+
+.setting_field .change_field input{
+    margin: 0 0 5px 0;
+}

@@ -50,12 +50,16 @@ def main(request):
                 this_index,next_index=my_utils.next_search_index(search_index)
                 query_type = Q(username__gt=this_index, username__lt=next_index)
         
-        members = User.objects.filter(query_type).order_by('username')
+        members = User.objects.filter(query_type, is_active=True).order_by('username')
         members_list = list()
         for member in members:
             try:
                 member_profile = UserProfile.objects.get(user=member)
                 member.profile = member_profile
+                try:
+                    member.picture = member_profile.picture.url
+                except:
+                    member.picture = "/media/default.png"
                 members_list.append(member)
             except:
                 pass

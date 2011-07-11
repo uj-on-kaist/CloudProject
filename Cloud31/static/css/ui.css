@@ -102,6 +102,12 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 .ui_icon_file_etc {width:30px;height:30px; background-position: -180px -88px; }
 .ui_icon_file_img {width:30px;height:30px; background-position: -210px -88px; }
 
+
+.ui_icon_excel{
+    background-image: url(/static/image/File_icon_excel.png);
+    background-position: 1px 1px;
+}
+
 .corner_top {-moz-border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
     border-radius: 5px 5px 0px 0px; }
