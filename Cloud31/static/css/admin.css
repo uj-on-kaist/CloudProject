@@ -16,6 +16,8 @@
 .overview_item{
     margin-bottom: 30px;
     color: #323232;
+    float: left;
+width: 100%;
 }
 
 .overview_item .title{

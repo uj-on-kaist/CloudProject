@@ -68,6 +68,7 @@ class Topic(models.Model):
     # Comma Seperated
     related_topics = models.TextField(default='')
     topic_detail = models.TextField(default='')
+    reference_count = models.IntegerField(default=0)
 
     
 class TopicTimeline(models.Model):

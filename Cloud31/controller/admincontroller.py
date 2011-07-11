@@ -6,6 +6,8 @@ from django.http import HttpResponse
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
+from django.http import HttpResponseNotFound  
+
 
 from controller.models import *
 
@@ -18,6 +20,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_unicode
 
 from django.db.models import Q
+
 
 import json
 import parser
@@ -34,23 +37,11 @@ from datetime import datetime
 import datetime as dt
 from django.db.models import Q
 
-
-
-def test(request):
-    t = title(text=time.strftime('%a %Y %b %d'))
-    b1 = bar()
-    b1.values = range(9,0,-1)
-    b2 = bar()
-    b2.values = [random.randint(0,9) for i in range(9)]
-    b2.colour = '#56acde'
-    chart = open_flash_chart()
-    chart.title = t    
-    chart.add_element(b1)
-    chart.add_element(b2)
-    return HttpResponse(chart.render())
-    
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
     
 def overview(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound()
     t = loader.get_template('admin/overview.html')
     context = RequestContext(request)
     my_utils.load_basic_info(request, context)
@@ -75,153 +66,91 @@ def overview(request):
     context['recent_messages'] = Message.objects.filter(is_deleted=False).order_by("-reg_date")[:5]
     context['recent_users'] = User.objects.filter(is_active=True).order_by("-last_login")[:5]
     return HttpResponse(t.render(context))
-    
 
-def recent_user_graph(request):
+def stats_topic(request):
     if not request.user.is_staff:
-        return my_utils.return_error('You cannot access to this')
+        return HttpResponseNotFound()
     
-    year = request.GET.get("year", False)
-    month = request.GET.get("month", False)
-    day = request.GET.get("day", False)
+    t = loader.get_template('admin/stats_topic.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     
-    if not (year and month and day):
-        now = datetime.now()
-        year,month,day = now.year, now.month, now.day
+    context['page_stats_by_topic'] = 'selected'
+    context['popular_topics'] = Topic.objects.all().order_by("-reference_count")[:20]
     
-    date_before = 90
-    range_const = 1
+    context['side_list']=['search_topic']
+    my_utils.prepare_search_topic(context)
     
-    end_time = dt.date(year, month, day)
-    start_time = end_time - dt.timedelta(date_before)
-    
-    in_start =request.GET.get("start",False)
-    in_end = request.GET.get("end",False)
+    try:
+        keyword = request.GET.get('q', '')
+        query_type = Q()
+        if keyword is not '':
+            print keyword
+            query_type = Q(topic_name__istartswith=keyword)
         
-    if in_start and in_end:
-        start = in_start.split("-")
-        start_time = dt.date(int(start[0]),int(start[1]),int(start[2]))
-        end = in_end.split("-")
-        end_time = dt.date(int(end[0]),int(end[1]),int(end[2]))
-        delta = end_time - start_time
-        date_before = delta.days
+        search_index = request.GET.get('index', '')
+        print search_index
+        if search_index is not '':
+            if search_index in map(chr, range(65, 91)):
+                query_type = Q(topic_name__istartswith=search_index)
+            elif search_index == 'number':
+                query_type = Q(topic_name__gt="0",topic_name__lt="9")
+            else:
+                this_index,next_index=my_utils.next_search_index(search_index)
+                query_type = Q(topic_name__gt=this_index, topic_name__lt=next_index)
         
+        topics = Topic.objects.filter(query_type).order_by('topic_name')
+        
+        
+        paginator = Paginator(topics, 5)
+        
+        page = request.GET.get('page', 1)
+        try:
+            context['topics'] = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            context['topics'] = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            context['topics'] = paginator.page(paginator.num_pages)
+        
+        context['index_info'] = my_utils.get_index_list(context['topics'].number, paginator.num_pages)
+        
+        
+    except Exception as e:
+        print str(e)
     
-    data = list()
-    time = start_time
-    label_list = list()
-
-    while time <= end_time:
-        next_time = time + dt.timedelta(range_const)
-        data.append(User.objects.filter(last_login__range=(time, next_time)).count())
-        label_list.append(time.strftime("%B %d, %Y"))
-        time = next_time
     
-    #t = title(text="Data From "+start_time.strftime("%B %d, %Y")+" - To "+end_time.strftime("%B %d, %Y")+"")
-    #t.style = "{font-size: 12px;text-align: right;padding-bottom:5px;}"
-    l = line()
-    l.values = data
-    l.colour = "#325AAA"
-    l.tip = "#x_label#<br>#val# Users Logined"
-    chart = open_flash_chart()
-    #chart.title = t
+    return HttpResponse(t.render(context))
     
-    y = y_axis()
-    y.steps = 5
-    chart.y_axis = y
-    
-    x = x_axis()
-    x.style = "{text-align:center}"
-    lbl = x_axis_labels(steps=30,labels=label_list)
-    x.labels = lbl
-    x.steps = 15
-    chart.x_axis = x
-    chart.bg_colour = '#FAFAFA'
-    chart.add_element(l)
-    
-    return HttpResponse(chart.render())
-
-
-def recent_message_graph(request):
+def stats_topic_detail(request ,topic_name):
     if not request.user.is_staff:
-        return my_utils.return_error('You cannot access to this')
-    
-    year = request.GET.get("year", False)
-    month = request.GET.get("month", False)
-    day = request.GET.get("day", False)
-    
-    if not (year and month and day):
-        now = datetime.now()
-        year,month,day = now.year, now.month, now.day
-    
-    date_before = 90
-    range_const = 1
-    
-    end_time = dt.date(year, month, day)
-    start_time = end_time - dt.timedelta(date_before)
-    
-    in_start =request.GET.get("start",False)
-    in_end = request.GET.get("end",False)
+        return HttpResponseNotFound()
         
-    if in_start and in_end:
-        start = in_start.split("-")
-        start_time = dt.date(int(start[0]),int(start[1]),int(start[2]))
-        end = in_end.split("-")
-        end_time = dt.date(int(end[0]),int(end[1]),int(end[2]))
-        delta = end_time - start_time
-        date_before = delta.days
-        
+    t = loader.get_template('admin/stats_topic_detail.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     
-    data = list()
-    time = start_time
-    label_list = list()
+    context['popular_topics'] = Topic.objects.all().order_by("-reference_count")[:20]
     
-    
-    y = y_axis()
-    y.min, y.max, y.steps = 0, 20, 5
-    
-    accu = request.GET.get("accu", False)
-    if accu == "1":
-        count = Message.objects.filter(is_deleted=False,reg_date__lt=time).count()
-        while time <= end_time:
-            next_time = time + dt.timedelta(range_const)
-            count+=Message.objects.filter(is_deleted=False,reg_date__range=(time, next_time)).count()
-            data.append(count)
-            if count > y.max:
-                y.max = count
-            label_list.append(time.strftime("%B %d, %Y"))
-            time = next_time
-    else:
-        while time <= end_time:
-            next_time = time + dt.timedelta(range_const)
-            count = Message.objects.filter(is_deleted=False,reg_date__range=(time, next_time)).count()
-            data.append(count)
-            if count > y.max:
-                y.max = count
-            label_list.append(time.strftime("%B %d, %Y"))
-            time = next_time
-    
-    #t = title(text="Data From "+start_time.strftime("%B %d, %Y")+" - To "+end_time.strftime("%B %d, %Y")+"")
-    #t.style = "{font-size: 12px;text-align: right;padding-bottom:5px;}"
-    l = line()
-    l.tip = "#x_label#<br>#val# Feeds"
-    l.values = data
-    l.colour = "#325AAA"
-    chart = open_flash_chart()
-    #chart.title = t
-    
-    chart.y_axis = y
-    
-    
-    x = x_axis()
-    x.style = "{text-align:center}"
-    lbl = x_axis_labels(steps=date_before/3,labels=label_list)
-    lbl.style = "{text-align:center}"
-    x.labels = lbl
-    x.steps = date_before / 6
-    chart.x_axis = x
-    chart.bg_colour = '#FAFAFA'
-    chart.add_element(l)    
-    return HttpResponse(chart.render())
+    return HttpResponse(t.render(context))  
 
+def stats_member(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound()    
+    t = loader.get_template('admin/stats_member.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
     
+    context['page_stats_by_member'] = 'selected'
+    
+    return HttpResponse(t.render(context))      
+
+def stats_member_detail(request, user_name):
+    t = loader.get_template('admin/stats_topic_detail.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    
+    context['popular_topics'] = Topic.objects.all().order_by("-reference_count")[:20]
+    
+    return HttpResponse(t.render(context))  

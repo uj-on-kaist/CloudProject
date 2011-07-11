@@ -129,9 +129,14 @@ urlpatterns = patterns('',
     
     
     
-    url(r'^chart/test','controller.admincontroller.test'),
-    url(r'^chart/recent_user','controller.admincontroller.recent_user_graph'),
-    url(r'^chart/recent_message','controller.admincontroller.recent_message_graph'),
+    url(r'^chart/test$','controller.statisticcontroller.test'),
+    url(r'^chart/recent_user$','controller.statisticcontroller.recent_user_graph'),
+    url(r'^chart/recent_message$','controller.statisticcontroller.recent_message_graph'),
+    url(r'^chart/recent_pop_topics$','controller.statisticcontroller.recent_pop_topics'),
     
     url(r'^admin/overview','controller.admincontroller.overview'),
+    url(r'^admin/stats/topic/$','controller.admincontroller.stats_topic'),
+    url(r'^admin/stats/topic/(?P<topic_name>\w+)/$','controller.admincontroller.stats_topic_detail'),
+    url(r'^admin/stats/member','controller.admincontroller.stats_member'),
+    url(r'^admin/stats/member/(?P<user_name>\w+)/$','controller.admincontroller.stats_member_detail'),
 )

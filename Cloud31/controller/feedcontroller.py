@@ -42,9 +42,6 @@ def feed(request):
     context['current_user'] = request.user
     context['page_feed'] = "selected"
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
-    
-    print context['user_favorite_topics']
-    
     return HttpResponse(t.render(context))
 
 
@@ -80,6 +77,22 @@ def delete_feed(request, feed_id):
             message = Message.objects.get(author=user, id=feed_id)
             message.is_deleted=True
             message.save()
+            
+            try:
+                related_topics = message.related_topics.split(",")
+                for topic_name in related_topics:
+                    if topic_name:
+                        topic = Topic.objects.get(topic_name=topic_name)
+                        topic.reference_count -=1
+                        topic.save()
+                
+                related_topic_timelines = TopicTimeline.objects.filter(message=message)
+                for timeline in related_topic_timelines:
+                    timeline.delete()
+            
+            except Exception as e:
+                print str(e)+"[11234]"
+                pass
         except:
             result['success']=True
             result['message']='Invalid action'
@@ -355,13 +368,15 @@ def update_feed(request):
             for i,topic_name in enumerate(target_topics):
                 try:
                     topic = Topic.objects.get_or_create(topic_name=topic_name)[0]
+                    topic.reference_count +=1
                     topic.save()
                     
                     topic_timeline_new = TopicTimeline(message=new_message, topic=topic)
                     topic_timeline_new.save()
+                    
                     new_message.related_topics+=topic_name+','
                 except Exception as e:
-                    print str(e)
+                    print "QWER: "+str(e)
                     pass
                     
             new_message.save()

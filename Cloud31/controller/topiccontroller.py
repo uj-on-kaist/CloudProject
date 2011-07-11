@@ -25,6 +25,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from operator import itemgetter
 
+DEFAULT_LOAD_LENGTH = 10
+
 @login_required(login_url='/signin/')
 def topic(request):
     t = loader.get_template('topic.html')
@@ -38,6 +40,13 @@ def topic(request):
     
     context['page_topic'] = "selected"
     context['topics']=list()
+    
+    context['popular_topics'] = Topic.objects.all().order_by("-reference_count")[:20]
+    # try:
+#         topics = 
+#     except:
+#         pass
+    
     try:
         keyword = request.GET.get('q', '')
         query_type = Q()
@@ -58,14 +67,6 @@ def topic(request):
         
         topics = Topic.objects.filter(query_type).order_by('topic_name')
         
-        
-        for topic in topics:
-            try:
-                topic.message_length = len(Message.objects.filter(related_topics__contains=topic.topic_name+","))
-            except Exception as e:
-                print str(e)
-                topic.message_length = 0
-                pass
         
         paginator = Paginator(topics, 15)
         
@@ -121,18 +122,27 @@ def load_topic_timeline(request,topic_name):
     result['message']='success'
     
     try:
+        base_id = request.GET.get("base_id",False)
+        additional = Q()
+        if base_id:
+            additional = Q(id__lt=base_id)
+        
         topic = Topic.objects.get(topic_name=topic_name)
         try:
-            timelines = TopicTimeline.objects.filter(topic=topic).order_by('-update_date')
+            timelines = TopicTimeline.objects.filter(additional, topic=topic).order_by('-update_date')[:DEFAULT_LOAD_LENGTH]
             if not timelines:
                 return return_error('No Such Topic #2') 
             messages = list()
             for timeline in timelines:
                 try:
                     if not timeline.message.is_deleted:
+                        timeline.message.base_id=timeline.id
                         messages.append(timeline.message)
                 except:
                     pass
+            
+            if len(timelines) == DEFAULT_LOAD_LENGTH:
+                result['load_more']=True
             
             result['feeds']=my_utils.process_messages(request, messages)
                 

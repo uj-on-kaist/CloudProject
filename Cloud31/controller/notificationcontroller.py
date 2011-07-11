@@ -23,7 +23,7 @@ import json
 import parser
 import my_utils
 
-DEFAULT_LOAD_LENGTH = 3
+DEFAULT_LOAD_LENGTH = 10
 
 
 @login_required(login_url='/signin/')

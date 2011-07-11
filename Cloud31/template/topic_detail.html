@@ -1,6 +1,6 @@
 {% include "meta_open.html"%}
 
-<h2>Topics > {{ topic_name }}</h2>
+<h2>Topics &gt; {{ topic_name }}</h2>
 
 
 <div class="tab">
@@ -21,5 +21,14 @@ $(document).ready(function(){
 });
 </script>
 {% include "ui/feed_list.html"%}
+
+<div id="loading_box">
+<img src="/static/image/loading.gif" />
+</div>
+<div id="load_more_box">
+<a href="#" onclick="load_more(); return false">
+<p>Load more</p>
+</a>
+</div>
 
 {% include "meta_close.html"%}

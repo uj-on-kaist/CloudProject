@@ -415,7 +415,7 @@ li.topic_favor_item.last{
 .profile_title b.user_id{font-size: 20px; color: #727272; font-weight: normal;}
 .page_title .header_map{font-size: 16px; margin-right: 5px;}
 
-div.tab{display: inline-block; width: 100%; height: 25px; border-bottom: 1px solid #b4b4b4; margin: 10px 0 0 0;}
+div.tab{display: inline-block; width: 100%; height: 25px; border-bottom: 1px solid #b4b4b4; margin: 0;}
 span.tab_item{min-width:83px; display: block; float: left; text-align: center; font-size: 12px; padding:3px 10px; color: #323232; 
     border: 1px solid transparent; border-bottom: 1px solid #b4b4b4;   
     max-width: 300px;
@@ -603,6 +603,9 @@ ul.comments textarea,
 .list_table tr.list_item:hover{
     background-color: rgb(235,250,250);   
 }
+.list_table tr.list_item.tagcloud:hover{
+    background-color: #fff;
+}
 
 .file_table .ui_icon{
     height: 33px;
@@ -754,3 +757,29 @@ ul.index_list li.previous span, ul.index_list li.next span{
 .setting_field .change_field input{
     margin: 0 0 5px 0;
 }
+
+
+.popular_topics{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    float: left;
+    width: 100%;
+    color:#ccc;font-size:12px;line-height:1.5;text-align:justify;
+    padding: 10px 0;
+}
+.popular_topics li{display: inline;float: left; margin: 5px 3px;
+    border: 1px solid #F0F0F0; padding: 1px 5px;
+    font-size: 12px;
+    background-color: #FAFAFA;
+}
+
+.popular_topics li:hover{
+    text-decoration: none;
+    border: 1px solid #323232;
+    background-color: #EBFAFA;
+}
+.popular_topics a{
+        text-decoration: none;
+}
+
