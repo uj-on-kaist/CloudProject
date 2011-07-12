@@ -3,7 +3,6 @@
     text-align: center;
     height: 100%;
     overflow-y: hidden;
-    display: none;
 }
 
 .login_form{
@@ -35,6 +34,9 @@
 
 .keep_box{
     margin: 10px; 0;
+}
+.keep_box input{
+    padding-left: 10px;
 }
 
 .submit_box{

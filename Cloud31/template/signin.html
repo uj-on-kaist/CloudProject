@@ -23,7 +23,6 @@ $(document).ready(function(){
     if(container_pos <= 10)
         container_pos = 10;
     $(".sign_container").css('padding-top',container_pos+'px');
-     $(".sign_container").fadeIn(1000);
      
       $('#sign_form input[placeholder]').tipsy({trigger: 'focus', gravity: 'w',title:'placeholder'});
     /*
@@ -48,7 +47,7 @@ $.getDocHeight = function(){
 
 <div class="container sign_container">
 <div class="signin_logo">
-<img src="/static/image/Introduction_logo.png" />
+<img src="/static/image/Introduction_logo.png" width="190" height="145"/>
 </div>
 {% if message %}
 <div class="ui-widget">

@@ -22,35 +22,10 @@ $(document).ready(function(){
     Stats By Topic
 </h2>
 
-<div class="overview_item">
-<h4>[Topic List]</h4>
-<table class="topic_table list_table">
-    <tr>
-        <th width="160" class="first"><p>Topic Name</p></th>
-        <th width="90" ><p>Feeds</p></th>
-        <th width="265"><p>Topic Detail</p></th>
-    </tr>
-    
-    {% for topic in topics.object_list %}
-    <tr class="topic_item list_item" onclick="document.location.href='/topic/{{ topic.topic_name }}';">
-        <td class="topic_name first"><p>{{ topic.topic_name }}</p></td>
-        <td ><p>{{ topic.reference_count }}</p></td>
-        <td><p class="ellipsis topic_detail">{{ topic.topic_detail|striptags|safe }}</p></td>
-    </tr>
-    {% endfor%}
-</table>
-
-{% include "ui/pagination.html" %}
-</div>
-
 
 <div class="overview_item">
-<div class="title_box">
-<span class="ui_icon ui_icon_topic"></span>
-<b class="title">Popular Topics (for last 3 month)</b>
+<h4><span class="ui_icon ui_icon_stats_by_topic"></span> <b class="title">Popular Topics (for last 3 month)</b></h4>
 
-
-</div>
 
 <div class="chart_date_select">
 <b>Data From </b>
@@ -58,7 +33,7 @@ $(document).ready(function(){
 <b>To </b>
 <input type="text" class="datepicker endpicker" />
 <a href="#" onclick="reloadSWFRange($(this),'recent_pop_topics','/chart/recent_pop_topics'); return false;">change</a>
-<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_pop_topics','/chart/recent_pop_topics')"/> Accumulative</span>
+<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_pop_topics','/chart/recent_pop_topics')"/> View Line chart</span>
 </div>
 
 <script type="text/javascript">
@@ -74,11 +49,11 @@ swfobject.embedSWF(
     <tr>
         <th>Most Popular Topics</th>
     </tr>
-    <tr class=" list_item tagcloud" onclick="document.location.href='/topic/{{ topic.topic_name }}';">
+    <tr class=" list_item tagcloud" onclick="return false;">
         <td class="topic_name first" style="padding:0px;">
             <ul class="popular_topics">
             {% for topic in popular_topics %}
-            <a href="./{{ topic.topic_name }}/"><li class="ui-corner-all">#{{ topic.topic_name }}</li></a>
+            <a href="#" onclick="return false;"><li class="ui-corner-all">#{{ topic.topic_name }}</li></a>
             {% endfor%}    
             </ul>
         </td>
@@ -86,6 +61,31 @@ swfobject.embedSWF(
 </table>
 
 </div>
+
+
+<div class="overview_item">
+<h4><span class="ui_icon ui_icon_topic"></span> <b class="title">Topic List</b></h4>
+<table class="topic_table list_table">
+    <tr>
+        <th width="160" class="first"><p>Topic Name</p></th>
+        <th width="90" ><p>Feeds</p></th>
+        <th width="265"><p>Topic Detail</p></th>
+    </tr>
+    
+    {% for topic in topics.object_list %}
+    <tr class="topic_item list_item" onclick="return false;">
+        <td class="topic_name first"><p>{{ topic.topic_name }}</p></td>
+        <td ><p>{{ topic.reference_count }}</p></td>
+        <td><p class="ellipsis topic_detail">{{ topic.topic_detail|striptags|safe }}</p></td>
+    </tr>
+    {% endfor%}
+</table>
+
+{% include "ui/pagination.html" %}
+</div>
+
+
+
 
 
 

@@ -19,12 +19,9 @@
     float: left;
 width: 100%;
 }
-
-.overview_item .title{
-    font-size: 14px;
-    padding-left: 6px;
+.overview_item h4{
+    line-height: 24px;
 }
-
 object{
     margin: 10px 0px;
 }
@@ -46,4 +43,13 @@ object{
 .chart_date_select b{
     padding-left: 10px;
     padding-right: 5px;
+}
+
+
+#user_name_input, #topic_input{
+    padding: 2px;
+background-image: none;
+font-size: 11px;
+width: 167px;
+display: inline;
 }

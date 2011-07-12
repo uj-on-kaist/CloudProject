@@ -122,18 +122,6 @@ def stats_topic(request):
     
     
     return HttpResponse(t.render(context))
-    
-def stats_topic_detail(request ,topic_name):
-    if not request.user.is_staff:
-        return HttpResponseNotFound()
-        
-    t = loader.get_template('admin/stats_topic_detail.html')
-    context = RequestContext(request)
-    my_utils.load_basic_info(request, context)
-    
-    context['popular_topics'] = Topic.objects.all().order_by("-reference_count")[:20]
-    
-    return HttpResponse(t.render(context))  
 
 def stats_member(request):
     if not request.user.is_staff:
@@ -143,14 +131,55 @@ def stats_member(request):
     my_utils.load_basic_info(request, context)
     
     context['page_stats_by_member'] = 'selected'
+    context['side_list']=['search_member']
+    my_utils.prepare_search_topic(context)
+    
+    try:
+        keyword = request.GET.get('q', '')
+        search_index = request.GET.get('index', '')
+        query_type = Q()
+        if keyword is not '':
+            print keyword
+            query_type = Q(username__icontains=keyword) | Q(last_name__icontains=keyword)
+        
+        if search_index is not '':
+            if search_index in map(chr, range(65, 91)):
+                query_type = Q(username__istartswith=search_index)
+            elif search_index == 'number':
+                query_type = Q(username__gt="0",username__lt="9")
+            else:
+                this_index,next_index=my_utils.next_search_index(search_index)
+                query_type = Q(username__gt=this_index, username__lt=next_index)
+        
+        members = User.objects.filter(query_type, is_active=True).order_by('username')
+        members_list = list()
+        for member in members:
+            try:
+                member_profile = UserProfile.objects.get(user=member)
+                member.profile = member_profile
+                try:
+                    member.picture = member_profile.picture.url
+                except:
+                    member.picture = "/media/default.png"
+                members_list.append(member)
+            except:
+                pass
+        
+        paginator = Paginator(members_list, 5)
+        
+        page = request.GET.get('page', 1)
+        try:
+            context['members'] = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            context['members'] = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            context['members'] = paginator.page(paginator.num_pages)
+        
+        context['index_info'] = my_utils.get_index_list(context['members'].number, paginator.num_pages)
+        
+    except Exception as e:
+        print str(e)
     
     return HttpResponse(t.render(context))      
-
-def stats_member_detail(request, user_name):
-    t = loader.get_template('admin/stats_topic_detail.html')
-    context = RequestContext(request)
-    my_utils.load_basic_info(request, context)
-    
-    context['popular_topics'] = Topic.objects.all().order_by("-reference_count")[:20]
-    
-    return HttpResponse(t.render(context))  

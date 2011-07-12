@@ -4,15 +4,10 @@
 
 
 <!-- UI Object -->
-<h4 style="margin-bottom:2px;">[Popular Topics]</h4>
-<table class="topic_table list_table" style="margin-bottom:30px;">
-    <tr>
-        <th class="first"></th>
-    </tr>
-    
-    
+<h4 class="section_title"><span class="ui_icon ui_icon_stats_by_topic"></span><b class="title">Popular Topics</b></h4>
+<table class="topic_table list_table" style="margin-bottom:20px;">
     <tr class="topic_item list_item tagcloud" onclick="document.location.href='/topic/{{ topic.topic_name }}';">
-        <td class="topic_name first" style="padding:0px;">
+        <td class="topic_name first" style="padding:0px; border-bottom:none;">
             <ul class="popular_topics">
             {% for topic in popular_topics %}
             <a href="/topic/{{ topic.topic_name }}"><li class="ui-corner-all">#{{ topic.topic_name }}</li></a>
@@ -25,7 +20,7 @@
 <!-- //UI Object -->
 
 
-<h4>[Topic List]</h4>
+<h4 class="section_title"><span class="ui_icon ui_icon_topic"></span><b class="title">Topic List</b></h4>
 <table class="topic_table list_table">
     <tr>
         <th width="160" class="first"><p>Topic Name</p></th>

@@ -187,8 +187,8 @@ def recent_pop_topics(request):
         
     for item in topics:
         topic = Topic.objects.get(id=item['topic'])
-        value = pie_value(label=topic.topic_name, value=item['topic_count'])
-        value.tip = "#label#<br> "+str("%.2f" % (float(item['topic_count'])*100.0/total))+"% (#val#/"+str(total)+" Feeds)"
+        value = pie_value(label="#"+topic.topic_name, value=item['topic_count'])
+        value.tip = "#label#<br> #val# Feeds ("+str("%.2f" % (float(item['topic_count'])*100.0/total))+"%)"
         values.append(value)
 
     p = pie()
@@ -203,4 +203,113 @@ def recent_pop_topics(request):
     t = title(text=str(total)+" Total Feeds")
     t.style = "{font-size: 12px;text-align: right;padding-bottom:5px;}"
     chart.title = t
+    return HttpResponse(chart.render())
+    
+    
+
+def recent_active_users(request):
+    date_before = 90
+    
+    end_time = now_datetime()
+    start_time = end_time - dt.timedelta(date_before)
+    
+    in_start =request.GET.get("start",False)
+    in_end = request.GET.get("end",False)
+        
+    if in_start and in_end:
+        start_time, end_time, delta, date_before = get_start_end_time(in_start, in_end)
+        
+    users = Message.objects.filter(is_deleted=False,reg_date__range=(start_time, end_time)).values('author').annotate(author_count=Count('author')).order_by("-author_count")[:10]
+    
+    values = list()
+    total = 0
+    for item in users:
+        total += int(item['author_count'])
+        
+    for item in users:
+        author = User.objects.get(id=item['author'])
+        value = pie_value(label="@"+author.username, value=item['author_count'])
+        value.tip = "#label# ("+author.last_name+")<br>#val# Feeds ("+str("%.2f" % (float(item['author_count'])*100.0/total))+"%)"
+        values.append(value)
+
+    p = pie()
+    #values = [ pie_value(label="crap", value=4), pie_value(label="face", value=20)]
+    p.values = values
+    p.tip = "#label#<br>#val# Feeds"
+    #p.colours = ['#1C9E05','#FF368D']
+    chart = open_flash_chart()
+    chart.bg_colour = '#FAFAFA'
+    chart.add_element(p)
+    
+    t = title(text=str(total)+" Total Feeds")
+    t.style = "{font-size: 12px;text-align: right;padding-bottom:5px;}"
+    chart.title = t
+    return HttpResponse(chart.render())
+
+def recent_user_stats(request, user_name):
+    date_before = 90
+    range_const = 1
+    
+    end_time = now_datetime()
+    start_time = end_time - dt.timedelta(date_before)
+    
+    in_start =request.GET.get("start",False)
+    in_end = request.GET.get("end",False)
+    
+    data = list()
+    time = start_time
+    label_list = list()
+    
+    
+    y = y_axis()
+    y.min, y.max, y.steps = 0, 10, 5
+    
+    accu = request.GET.get("accu", False)
+    try:
+        user = User.objects.get(username=user_name)
+        if accu == "1":
+            count = Message.objects.filter(is_deleted=False,author=user,reg_date__lt=time).count()
+            while time <= end_time:
+                next_time = time + dt.timedelta(range_const)
+                count+=Message.objects.filter(is_deleted=False,author=user,reg_date__range=(time, next_time)).count()
+                data.append(count)
+                if count > y.max:
+                    y.max = count
+                label_list.append(time.strftime("%B %d, %Y"))
+                time = next_time
+        else:
+            while time <= end_time:
+                next_time = time + dt.timedelta(range_const)
+                count = Message.objects.filter(is_deleted=False,author=user,reg_date__range=(time, next_time)).count()
+                data.append(count)
+                if count > y.max:
+                    y.max = count
+                label_list.append(time.strftime("%B %d, %Y"))
+                time = next_time
+                
+    except Exception as e:
+        print str(e)
+        chart = open_flash_chart()
+        return HttpResponse(chart.render())
+        
+    l = line()
+    l.tip = "#x_label#<br>#val# Feeds"
+    l.values = data
+    l.colour = "#325AAA"
+    chart = open_flash_chart()
+        
+    chart.y_axis = y
+    
+    x = x_axis()
+    lbl = x_axis_labels(steps=date_before/3,labels=label_list)
+    x.labels = lbl
+    x.steps = date_before / 6
+    chart.x_axis = x
+    chart.bg_colour = '#FAFAFA'
+    chart.add_element(l)
+    
+    t = title(text="User @"+user_name)
+    t.style = "{font-size: 12px;text-align: center;padding:5px 0px 5px 0; color: #325AAA; font-weight:bold;}"
+    chart.title = t
+    
     return HttpResponse(chart.render())
