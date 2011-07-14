@@ -126,7 +126,6 @@ def load_comany_feed(request):
     result=dict()
     result['success']=True
     result['message']='success'
-    
     try:
         base_id = request.GET.get("base_id",False)
         additional = Q()
@@ -180,7 +179,6 @@ def load_my_timeline(request):
     result=dict()
     result['success']=True
     result['message']='success'
-    
     try:
         user = User.objects.get(username=request.user.username)
         try:

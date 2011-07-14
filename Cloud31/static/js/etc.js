@@ -91,3 +91,70 @@ $.fn.getCursorPosition = function() {
     return pos;
 }
 }(jQuery);
+
+
+
+
+
+
+
+function detect_email_list(){
+    var text = $("#email_list_input").val();
+    var re = /[\{\}\[\]\/?,;:|\)*~`!^\+┼<>\#$%&\'\"\\\(\=\n\r\tㄱ-ㅎ가-힣]/gi;
+    text = text.trim().replace(re, " ");
+    
+    var arr = text.replace(/\s{2,}/g, ' ').split(" ");
+    var email_list = new Array();
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    for(var k=0; k < arr.length ; k++){
+        var item = arr[k];
+        if (filter.test(item)) {
+            email_list.push(item);
+            var email_layout = "<li class='ui-corner-all' onclick='$(this).remove();'>"+item+"</li>";
+            $("#detect_list ul").append(email_layout);
+        }
+    }
+}
+
+function send_invites_admin(item){
+    item.attr('disabled','disabled');
+    var email_list="";
+    $("#detect_list ul li").each(function(){
+        var email = $(this).text();
+        email_list+=email+"|";
+    });
+    console.log("Send Invites to : "+email_list);
+    
+    if(email_list == ""){
+        alert('Error: Empty Email List');
+        item.removeAttr('disabled');
+        return false;
+    }
+    
+    var tokenValue = $("#csrf_token").text();
+    data= "email_list=" + email_list + "&csrfmiddlewaretoken="+tokenValue;
+	$.ajax({
+		type : "POST",
+		url : "/admin/invite/send/",
+		data : data,
+		dataType : "JSON",
+		cache : false,
+		success : function(json) {
+		  console.log(json);
+		  item.removeAttr('disabled');
+          if(json.success){
+            alert("Invite Successful.");
+            //$('#detect_list').hide(); $('#detect_list ul').remove(); $('#email_list_input').val('');
+          }else{
+            alert("Error: Invite Failed.");
+          }
+          item.removeAttr('disabled');
+          
+		},
+		error : function(data){
+		  console.log(data);
+		  alert('Error Occured');
+		}
+	});
+    
+}

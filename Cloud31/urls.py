@@ -142,4 +142,9 @@ urlpatterns = patterns('',
     url(r'^admin/stats/member','controller.admincontroller.stats_member'),
     
     url(r'^admin/invite/$','controller.admincontroller.invite'),
+    url(r'^admin/invite/send/$','controller.admincontroller.send_invites'),
+    
+    url(r'^admin/notice/$','controller.admincontroller.notice'),
+    url(r'^api/notice/update/$','controller.admincontroller.update_notice'),
+    url(r'^api/notice/delete/(?P<notice_id>\w+)$','controller.admincontroller.delete_notice'),
 )

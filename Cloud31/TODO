@@ -1,8 +1,22 @@
+##IMPORTANT
+
+
+# Export Data
+
+# Authority
+
+# Notification Email
+
+# Location Based Service
+핀을 움직이는 식으로 한다.
+
+
+##OTHERS
+
+
 #Notification 에서 Feed 디테일 페이지 접속시,
 권한이 안되어있으면 에러 메시지 출력
 (Event에 구현 해 놓았으니 참고)
-
-#Event Detail 페이지에서 참석자 리스트 보이기 & 참석 여부 결정
 
 
 #Timeline
@@ -15,19 +29,3 @@ Rectangle 로 짜르기
 
 #Search
 - Indexing 추가
-
-
-#autocomplete
-- Direect Message 쓸 때, Event 초대 할 때
-
-# Stats by Member
-
-# Export Data
-
-# Authority
-
-# Invite
-
-# Notice
-
-# Notification Email

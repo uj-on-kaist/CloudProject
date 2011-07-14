@@ -1,0 +1,39 @@
+{% include "meta_open.html"%}
+
+<h2 class="page_title">Notice</h2>
+
+<h4 style="padding-left:5px">Upload Notice</h4>
+{% include "ui/feed_form.html"%}
+
+
+
+<div class="tab">
+
+<a href="#" onclick="load_feed('notice'); return false;">
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">Notice</span>
+</a>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    load_feed('notice');
+    
+     $("#update_btn").click(function(){
+        upload_notice($(this)); 
+        return false;
+    });
+});
+</script>
+{% include "ui/feed_list.html"%}
+
+
+<div id="loading_box">
+<img src="/static/image/loading.gif" />
+</div>
+<div id="load_more_box">
+<a href="#" onclick="load_more(); return false">
+<p>Load more</p>
+</a>
+</div>
+{% include "meta_close.html"%}

@@ -195,9 +195,15 @@ function display_feeds(feeds, type){
         if(feed.author == $("#user_name_info").text()){
             feed_layout.find('.stream_element_delete.feed').show();
             feed_layout.find('.stream_element_delete.feed').attr('feed_id',feed.id);
-            feed_layout.find('.stream_element_delete.feed').click(function(){
-                delete_feed($(this));
-            });
+            if(type != 'notice'){
+                feed_layout.find('.stream_element_delete.feed').click(function(){
+                    delete_feed($(this));
+                });
+            }else{
+                feed_layout.find('.stream_element_delete.feed').click(function(){
+                    delete_notice($(this));
+                });
+            }
         }
         
         
@@ -261,6 +267,12 @@ function display_feeds(feeds, type){
         
         if(feed.comments.length != 0)
             feed_layout.find('ul.comments').show();
+            
+        if(type == 'notice'){
+            feed_layout.find("span.like_action").remove();
+            feed_layout.find("span.comment_action").remove();
+            feed_layout.find("ul.comments").remove();
+        }
         
     }
 }
@@ -372,6 +384,33 @@ function delete_feed(item){
     $.ajax({
 		type : "POST",
 		url : "/api/feed/delete/"+feed_id,
+		data : "&csrfmiddlewaretoken="+tokenValue,
+		dataType : "JSON",
+		cache : false,
+		success : function(json) {
+		  console.log(json);
+          if(json.success){
+            $("#feed_"+feed_id).slideToggle("",function(){
+		      $(this).remove();
+		    });
+          }
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});
+}
+
+function delete_notice(item){
+    var answer = confirm ("Really Delete?");
+    if (!answer)
+        return false;
+
+    var feed_id=item.attr('feed_id');
+    var tokenValue = $("#csrf_token").text();
+    $.ajax({
+		type : "POST",
+		url : "/api/notice/delete/"+feed_id,
 		data : "&csrfmiddlewaretoken="+tokenValue,
 		dataType : "JSON",
 		cache : false,

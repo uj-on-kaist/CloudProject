@@ -24,7 +24,7 @@ from django.db.models import Q
 
 import json
 import parser
-import my_utils
+import my_utils, my_emailer
 
 
 from controller.notificationcontroller import *
@@ -52,6 +52,8 @@ def invite(request):
     context['page_invite'] = "selected"
     
     return HttpResponse(t.render(context))
+    
+
     
 def overview(request):
     if not request.user.is_staff:
@@ -194,4 +196,109 @@ def stats_member(request):
     except Exception as e:
         print str(e)
     
-    return HttpResponse(t.render(context))      
+    return HttpResponse(t.render(context))
+    
+
+def notice(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound() 
+    t = loader.get_template('admin/notice.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['side_list']=['']
+    context['current_user'] = request.user
+    context['page_notice'] = "selected"
+    
+    return HttpResponse(t.render(context))
+    
+
+def send_invites(request):
+    if not request.user.is_staff:
+        return my_utils.return_error('Invalid')
+    
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    email_list = request.POST.get('email_list',False)
+    if not email_list:
+        return my_utils.return_error('No list')
+    
+    try:
+        temp_emails = list(set(email_list.split('|')))
+        target_emails = list()
+        for email in temp_emails:
+            if re.match('[\w.]*@\w*\.[\w.]*',email):
+                target_emails.append(email)
+        print target_emails
+        my_emailer.send_invitation_mail(request.user, target_emails)
+        
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Failed')
+    
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+
+def update_notice(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    message=''
+    attach_list=''
+    location_info=''
+    if request.method == 'POST':
+        if request.POST['message']:
+            message=smart_unicode(request.POST['message'], encoding='utf-8', strings_only=False, errors='strict')
+        
+        if request.POST['attach_list']:
+            attach_list=request.POST['attach_list']
+            
+        if request.POST['location_info']:
+            attach_list=request.POST['location_info']
+    
+    if message is not '':
+        try:
+            user = User.objects.get(username=request.user.username)
+            try: 
+                new_notice = Notice(author=user,contents=message,location=location_info,attach_files=attach_list)
+                new_notice.save()   
+            except:
+                return my_utils.return_error('Insert Failed')
+
+            #FILE CHECK
+            attach_arr = attach_list.split('.')
+            for attach_id in attach_arr:
+                try:
+                    if attach_id is '':
+                        continue
+                    attach = File.objects.get(id=attach_id)
+                    attach.is_attached=True
+                    attach.save()
+                except Exception as e:
+                    print str(e)
+        except:
+            return my_utils.return_error('No such User')
+    else:
+        return my_utils.return_error('Empty Message')
+    
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+def delete_notice(request, notice_id):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+        try:
+            notice = Notice.objects.get(author=user, id=notice_id)
+            notice.is_deleted=True
+            notice.save()
+        except:
+            result['success']=True
+            result['message']='Invalid action'
+    except:
+            return my_utils.return_error('Please Sign in First')
+            
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')

@@ -30,3 +30,59 @@ function reloadSWFRange(item, name, url){
     
 }
 
+function upload_notice(item){
+    item.attr('disabled','disabled');
+    
+    start_loading(item);
+    
+    var attach_list='';
+    var count=$(".qq-upload-list").find('li').length;
+    $(".qq-upload-list").find('li').each(function(i, val){
+        var file_id = $(this).attr('id').split('#');
+        if(file_id.length != 2)
+            return false;
+        if (i == count-1)
+            attach_list+=file_id[1];
+        else
+            attach_list+=file_id[1]+'.';
+    });
+    console.log("Attach: " + attach_list);
+    
+    var message=$('textarea#feed_message_input').val();
+    var location_info='';
+    
+    var tokenValue = $("#csrf_token").text();
+    
+    if(message == ""){
+        finish_loading(item);
+        return false;
+    }
+    
+    data= "message=" + message + "&attach_list=" + attach_list + "&location_info="+location_info;
+    data +="&csrfmiddlewaretoken="+tokenValue;
+	$.ajax({
+		type : "POST",
+		url : "/api/notice/update/",
+		data : data,
+		dataType : "JSON",
+		cache : false,
+		success : function(json) {
+		  console.log(json);
+		  item.removeAttr('disabled');
+          if(json.success){
+            clear_feed_input();
+            var feed_type=$("#feed_list").attr('type');
+            load_feed(feed_type);
+          }
+          
+          finish_loading(item);
+		},
+		error : function(data){
+		  console.log(data);
+		  alert('Error Occured');
+		}
+	});
+    
+}
+
+

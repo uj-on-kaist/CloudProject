@@ -23,6 +23,7 @@ import my_utils
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+@login_required(login_url='/signin/')
 def main(request):
     t = loader.get_template('member.html')
     context = RequestContext(request)

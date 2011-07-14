@@ -47,7 +47,6 @@ $(document).ready(function(){
     
 });
 </script>
-<h4 style="padding-left:5px">Share Your Feed!</h4>
 <div class="feed_box ui-corner-all">
     <!-- <div id="feed_div" onClick="this.contentEditable='true';">Write your Feed</div> -->
     <div>
@@ -107,7 +106,7 @@ $(document).ready(function(){
 
 <div class="item update template">
     <p class="loading" style="display:inline; padding:0; margin:0; display:none; padding-top:8px; padding-bottom:6px;padding-right:5px"><img src="/static/image/ajax-loader.gif?asdf"></p>
-    <button type="submit" class="button_m" onblur="return false;" onClick="upload_feed($(this)); return false;" >Update</button>
+    <button type="submit" id="update_btn" class="button_m" onblur="return false;">Update</button>
 </div>
 
 </div><!-- control -->

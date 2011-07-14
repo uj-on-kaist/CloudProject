@@ -8,7 +8,7 @@ from io import BufferedWriter,FileIO
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files import File
-
+from django.contrib.auth.decorators import login_required
 from controller import models
 from django.contrib.auth.models import User
 
@@ -26,6 +26,8 @@ import os, json
 import my_utils
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+@login_required(login_url='/signin/')
 def main(request):
     t = loader.get_template('file.html')
     context = RequestContext(request)
