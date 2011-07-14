@@ -135,8 +135,11 @@ urlpatterns = patterns('',
     url(r'^chart/recent_pop_topics$','controller.statisticcontroller.recent_pop_topics'),
     url(r'^chart/recent_active_users$','controller.statisticcontroller.recent_active_users'),
     url(r'^chart/recent_user_stats/(?P<user_name>\w+)$','controller.statisticcontroller.recent_user_stats'),
+    url(r'^chart/recent_topic_stats/(?P<topic_name>\w+)$','controller.statisticcontroller.recent_topic_stats'),
         
     url(r'^admin/overview','controller.admincontroller.overview'),
     url(r'^admin/stats/topic/$','controller.admincontroller.stats_topic'),
     url(r'^admin/stats/member','controller.admincontroller.stats_member'),
+    
+    url(r'^admin/invite/$','controller.admincontroller.invite'),
 )

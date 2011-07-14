@@ -31,7 +31,7 @@ $(document).ready(function(){
 <b>To </b>
 <input type="text" class="datepicker endpicker" />
 <a href="#" onclick="reloadSWFRange($(this),'recent_active_users','/chart/recent_active_users'); return false;">change</a>
-<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_active_users','/chart/recent_active_users')"/> View Line chart</span>
+<!-- <span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_active_users','/chart/recent_active_users')"/> View Line chart</span> -->
 </div>
 
 <script type="text/javascript">
@@ -57,7 +57,7 @@ swfobject.embedSWF(
 <b>To </b>
 <input type="text" class="datepicker endpicker" />
 <a href="#" onclick="reloadSWFRange($(this),'recent_user_stats','/chart/recent_user_stats/'+$('#user_name_input').val()); return false;" class="change_btn">change</a>
-<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_user_stats','/chart/recent_user_stats/'+$('#user_name_input').val())"/> Accumulative</span>
+<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="reloadSWFRange($(this).parent(),'recent_user_stats','/chart/recent_user_stats/'+$('#user_name_input').val())"/> Accumulative</span>
 </div>
 
 <script type="text/javascript">

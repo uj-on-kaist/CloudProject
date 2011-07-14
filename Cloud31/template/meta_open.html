@@ -13,9 +13,7 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}css/facebox.css?{{ csrf_token }}" type="text/css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css?{{ csrf_token }}" type="text/css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/sidebar.css?{{ csrf_token }}" type="text/css" />
-{% if user.is_staff %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/admin.css?{{ csrf_token }}" type="text/css" />
-{% endif %}
+
 <link rel="stylesheet" href="{{ STATIC_URL }}css/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 
 <script src="{{ STATIC_URL }}js/jquery-1.6.1.min.js?{{ csrf_token }}" type="text/javascript"></script>
@@ -54,6 +52,10 @@
     <script src="{{ STATIC_URL }}js/ie.js?1307079878" type="text/javascript"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/ie.css" type="text/css" media="screen" />
 <![endif]-->
+{% if user.is_staff %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/admin.css?123" type="text/css" />
+<script src="{{ STATIC_URL }}js/admin.js?{{ csrf_token }}" type="text/javascript"></script>
+{% endif %}
 
 <script type="text/javascript">
 $(document).ready(function(){

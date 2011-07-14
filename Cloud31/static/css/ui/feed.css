@@ -100,7 +100,7 @@ ul.comment_count{font-size: 11px;}
 
 span.author_name{font-size: 12px; line-height: 16px; margin-right: 5px;}
 
-.stream_element .content p.feed_content{color:#323232; padding-top:2px; padding-bottom: 2px;}
+.stream_element .content p.feed_content,.stream_element .content p.message_content{font-size:12px; color:#323232; padding-top:2px; padding-bottom: 2px;}
 
 
 .stream_element .content p.feed_attach_image, .stream_element .content p.feed_attach{

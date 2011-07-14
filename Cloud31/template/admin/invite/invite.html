@@ -4,4 +4,30 @@
     Invite User
 </h2>
 
+
+
+<div>
+<h4><span class="ui_icon ui_icon_invite"></span> <b class="title">Type Email list.</b></h4>
+<textarea id="email_list_input" style="width:515px; resize:none; height:300px;"></textarea>
+<p style="text-align:right;">
+<input type="button" value="Detect" onclick="$('#detect_list').show(); return false;" class="button_s"/>
+</p>
+
+</div>
+
+
+
+<div id="detect_list">
+<p><b>Email list </b>(Click each to remove.)</p>
+<ul>
+<li class="ui-corner-all" onclick="$(this).remove();">ujlikes@naver.com</li>
+</ul>
+</div>
+<form action="/admin/invite/send" method="POST" style="display:inline-block; width:100%;">
+<p style="text-align:right;">
+<input type="submit" value="Invite" class="button_s" onclick="return false;"/>
+<input type="button" value="Cancel" onclick="$('#detect_list').hide(); $('#detect_list ul').remove(); $('#email_list_input').val(''); return false;" class="button_s"/>
+</p>
+</form>
+
 {% include "meta_close.html" %}

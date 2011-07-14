@@ -33,7 +33,7 @@ $(document).ready(function(){
 <b>To </b>
 <input type="text" class="datepicker endpicker" />
 <a href="#" onclick="reloadSWFRange($(this),'recent_pop_topics','/chart/recent_pop_topics'); return false;">change</a>
-<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_pop_topics','/chart/recent_pop_topics')"/> View Line chart</span>
+<!-- <span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_pop_topics','/chart/recent_pop_topics')"/> View Line chart</span> -->
 </div>
 
 <script type="text/javascript">
@@ -44,27 +44,35 @@ swfobject.embedSWF(
 </script>
 <div class="chart" id="recent_pop_topics"></div>
 
-
-<table class="recent_message_table overview_table">
-    <tr>
-        <th>Most Popular Topics</th>
-    </tr>
-    <tr class=" list_item tagcloud" onclick="return false;">
-        <td class="topic_name first" style="padding:0px;">
-            <ul class="popular_topics">
-            {% for topic in popular_topics %}
-            <a href="#" onclick="return false;"><li class="ui-corner-all">#{{ topic.topic_name }}</li></a>
-            {% endfor%}    
-            </ul>
-        </td>
-    </tr>
-</table>
-
 </div>
 
 
-<div class="overview_item">
-<h4><span class="ui_icon ui_icon_topic"></span> <b class="title">Topic List</b></h4>
+<div class="overview_item" id="topic_statistics">
+<h4><span class="ui_icon ui_icon_topic"></span> <b class="title">Topic Statistics</b></h4>
+
+<div class="chart_date_select">
+
+<div>
+    <b>Topic Name</b>
+    <input type="text" id="topic_name_input" value="{{ topics.object_list.0.topic_name }}" />
+</div>
+
+<b>Data From </b>
+<input type="text" class="datepicker startpicker" />
+<b>To </b>
+<input type="text" class="datepicker endpicker" />
+<a href="#" onclick="reloadSWFRange($(this),'recent_topic_stats','/chart/recent_topic_stats/'+$('#topic_name_input').val()); return false;" class="change_btn">change</a>
+<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="reloadSWFRange($(this).parent(),'recent_topic_stats','/chart/recent_topic_stats/'+$('#topic_name_input').val())"/> Accumulative</span>
+</div>
+
+<script type="text/javascript">
+swfobject.embedSWF(
+    	  "/static/open-flash-chart2.swf", "recent_topic_stats", 
+    	  "525", "200", "9.0.0", "/static/expressInstall.swf",
+    	  {"data-file":"/chart/recent_topic_stats/{{ topics.object_list.0.topic_name }}"}, {"wmode":"transparent"} );
+</script>
+<div class="chart" id="recent_topic_stats"></div>
+
 <table class="topic_table list_table">
     <tr>
         <th width="160" class="first"><p>Topic Name</p></th>
@@ -73,7 +81,7 @@ swfobject.embedSWF(
     </tr>
     
     {% for topic in topics.object_list %}
-    <tr class="topic_item list_item" onclick="return false;">
+    <tr class="topic_item list_item" onclick="$('#topic_name_input').val($(this).find('.topic_name p').text()); $('#topic_statistics .change_btn').click(); return false;">
         <td class="topic_name first"><p>{{ topic.topic_name }}</p></td>
         <td ><p>{{ topic.reference_count }}</p></td>
         <td><p class="ellipsis topic_detail">{{ topic.topic_detail|striptags|safe }}</p></td>

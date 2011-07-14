@@ -30,10 +30,10 @@ function load_notis(event){
         hide_noti();
         return false;
     }
-    
+    $("#noti_list li.noti_item").remove();
     $("#noti_list li.loading").show();
     $('#noti_list').show();
-    event.stopPropagation();
+    stopEvent(event);
 
     $.ajax({
 		type : "GET",

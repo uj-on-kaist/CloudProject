@@ -38,6 +38,20 @@ import datetime as dt
 from django.db.models import Q
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
+
+def invite(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound() 
+    t = loader.get_template('admin/invite/invite.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['side_list']=['']
+    context['current_user'] = request.user
+    context['page_invite'] = "selected"
+    
+    return HttpResponse(t.render(context))
     
 def overview(request):
     if not request.user.is_staff:
@@ -46,7 +60,6 @@ def overview(request):
     context = RequestContext(request)
     my_utils.load_basic_info(request, context)
     context['load_type']='me'
-    context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     context['side_list']=['']
     context['current_user'] = request.user
     context['page_overview'] = "selected"
@@ -76,7 +89,6 @@ def stats_topic(request):
     my_utils.load_basic_info(request, context)
     
     context['page_stats_by_topic'] = 'selected'
-    context['popular_topics'] = Topic.objects.all().order_by("-reference_count")[:20]
     
     context['side_list']=['search_topic']
     my_utils.prepare_search_topic(context)
