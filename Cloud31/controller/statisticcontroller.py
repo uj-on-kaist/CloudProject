@@ -364,7 +364,7 @@ def recent_user_stats(request, user_name):
     
     return HttpResponse(chart.render())
     
-def recent_topic_stats(request, topic_name):
+def recent_topic_stats(request, topic_id):
     date_before = 90
     range_const = 1
     
@@ -387,7 +387,7 @@ def recent_topic_stats(request, topic_name):
     
     accu = request.GET.get("accu", False)
     try:
-        topic = Topic.objects.get(topic_name=topic_name)
+        topic = Topic.objects.get(id=topic_id)
         if accu == "1":
             count = TopicTimeline.objects.filter(topic=topic,update_date__lt=time).count()
             while time < end_time:
@@ -432,7 +432,7 @@ def recent_topic_stats(request, topic_name):
     chart.bg_colour = '#FAFAFA'
     chart.add_element(l)
     
-    t = title(text="Topic #"+topic_name)
+    t = title(text="Topic #"+topic.topic_name)
     t.style = "{font-size: 12px;text-align: center;padding:5px 0px 5px 0; color: #325AAA; font-weight:bold;}"
     chart.title = t
     

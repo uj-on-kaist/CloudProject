@@ -54,22 +54,23 @@ swfobject.embedSWF(
 
 <div>
     <b>Topic Name</b>
-    <input type="text" id="topic_name_input" value="{{ topics.object_list.0.topic_name }}" />
+    <input type="text" id="topic_name_input" value="{{ topics.object_list.0.topic_name }}" disabled="disabled"/>
+    <input type="hidden" id="topic_id_input" value="{{ topics.object_list.0.id }}" />
 </div>
 
 <b>Data From </b>
 <input type="text" class="datepicker startpicker" />
 <b>To </b>
 <input type="text" class="datepicker endpicker" />
-<a href="#" onclick="reloadSWFRange($(this),'recent_topic_stats','/chart/recent_topic_stats/'+$('#topic_name_input').val()); return false;" class="change_btn">change</a>
-<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="reloadSWFRange($(this).parent(),'recent_topic_stats','/chart/recent_topic_stats/'+$('#topic_name_input').val())"/> Accumulative</span>
+<a href="#" onclick="reloadSWFRange($(this),'recent_topic_stats','/chart/recent_topic_stats/'+$('#topic_id_input').val()); return false;" class="change_btn">change</a>
+<span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="reloadSWFRange($(this).parent(),'recent_topic_stats','/chart/recent_topic_stats/'+$('#topic_id_input').val())"/> Accumulative</span>
 </div>
 
 <script type="text/javascript">
 swfobject.embedSWF(
     	  "/static/open-flash-chart2.swf", "recent_topic_stats", 
     	  "525", "200", "9.0.0", "/static/expressInstall.swf",
-    	  {"data-file":"/chart/recent_topic_stats/{{ topics.object_list.0.topic_name }}"}, {"wmode":"transparent"} );
+    	  {"data-file":"/chart/recent_topic_stats/{{ topics.object_list.0.id }}"}, {"wmode":"transparent"} );
 </script>
 <div class="chart" id="recent_topic_stats"></div>
 
@@ -81,7 +82,7 @@ swfobject.embedSWF(
     </tr>
     
     {% for topic in topics.object_list %}
-    <tr class="topic_item list_item" onclick="$('#topic_name_input').val($(this).find('.topic_name p').text()); $('#topic_statistics .change_btn').click(); return false;">
+    <tr class="topic_item list_item" onclick="$('#topic_name_input').val($(this).find('.topic_name p').text()); $('#topic_id_input').val($(this).attr('topic_id')); $('#topic_statistics .change_btn').click(); return false;" topic_id="{{ topic.id }}">
         <td class="topic_name first"><p>{{ topic.topic_name }}</p></td>
         <td ><p>{{ topic.reference_count }}</p></td>
         <td><p class="ellipsis topic_detail">{{ topic.topic_detail|striptags|safe }}</p></td>
