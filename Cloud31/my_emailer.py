@@ -29,7 +29,7 @@ def send_activation_mail(user,user_profile):
     
     t = loader.get_template('email/activation.html')
     context = Context()
-    context['activation_link'] = 'http://localhost:8000/confirm/?key='+activation_key
+    context['activation_link'] = 'http://cloud31.co.kr/confirm/?key='+activation_key
     email_body = t.render(context)
     email_subject = smart_unicode('Cloud31 계정 인증을 완료해 주세요!', encoding='utf-8', strings_only=False, errors='strict')
     
@@ -42,6 +42,7 @@ def send_invitation_mail(from_user, target_emails):
     context['from_user'] = from_user.username
     context['from_user_name'] = from_user.last_name
     context['SERVICE_BASE_URL'] = settings.SERVICE_BASE_URL
+    context['link'] = "http://cloud31.co.kr"
     email_body = t.render(context)
     email_subject = smart_unicode('Cloud31를 사용해 보세요!', encoding='utf-8', strings_only=False, errors='strict')
     

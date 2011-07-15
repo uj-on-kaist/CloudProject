@@ -4,7 +4,7 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 import socket
 SERVICE_IP = socket.gethostbyname(socket.gethostname())
-SERVICE_BASE_URL = 'http://'+SERVICE_IP+':8000'
+SERVICE_BASE_URL = 'http://cloud31.co.kr'
 
 # Django settings for Cloud31 project.
 
