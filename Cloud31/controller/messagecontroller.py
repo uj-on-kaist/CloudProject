@@ -22,6 +22,7 @@ from controller.notificationcontroller import *
 
 DEFAULT_LOAD_LENGTH = 10
 
+
 @login_required(login_url='/signin/')
 def main(request):
     t = loader.get_template('message.html')

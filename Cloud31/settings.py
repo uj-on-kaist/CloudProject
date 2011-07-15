@@ -134,9 +134,10 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     
     # My Applications
-    'controller',
-    'sidebar',
-    'django_cron',
+    'Cloud31.controller',
+    'Cloud31.sidebar',
+    'Cloud31.django_cron',
+    
 )
 
 
