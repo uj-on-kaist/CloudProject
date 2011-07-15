@@ -18,10 +18,10 @@ from django.contrib.auth.decorators import login_required
 
 
 import json, re
-import my_utils
-import parser
+from controller import my_utils
+from controller import parser
 
-import my_emailer
+from controller import my_emailer
 
 DEFAULT_LOAD_LENGTH = 5
  
