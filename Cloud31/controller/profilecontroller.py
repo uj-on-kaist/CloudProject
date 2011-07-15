@@ -53,7 +53,7 @@ def picture(request,username):
         user = get_object_or_404(User,username=username)
         user_profile = UserProfile.objects.get(user=user)
         if user_profile.picture.name:
-            return HttpResponseRedirect('/media/'+user_profile.picture.name)
+            return HttpResponseRedirect(user_profile.picture.name)
     except Exception as e:
         print str(e)
             

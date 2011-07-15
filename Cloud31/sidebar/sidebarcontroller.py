@@ -71,7 +71,8 @@ def add_dialog(request):
     try: 
         new_dialog = Dialog(author=user,contents=dialog)
         new_dialog.save()
-        result['dialog']=process_dialogs([new_dialog])[0]
+        dialog = Dialog.objects.get(id=new_dialog.id)
+        result['dialog']=process_dialogs([dialog])[0]
     except:
         return my_utils.return_error('Send Message Failure')
     
