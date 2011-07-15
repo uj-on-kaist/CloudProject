@@ -320,11 +320,12 @@ def update_feed(request):
             attach_list=request.POST['attach_list']
             
         if request.POST['location_info']:
-            attach_list=request.POST['location_info']
+            location_info=request.POST['location_info']
     
     if message is not '':
         try:
             user = User.objects.get(username=request.user.username)
+            print location_info
             try: 
                 new_message = Message(author=user,contents=message,location=location_info,attach_files=attach_list)
                 new_message.save()   

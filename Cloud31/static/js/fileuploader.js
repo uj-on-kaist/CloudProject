@@ -492,6 +492,7 @@ qq.FileUploader = function(o){
                 '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
                 '<div class="custom_zone">' +
                 '<div class="qq-upload-button">'+(this._options.params.title || 'Select a File')+'</div>' +
+                ( this._options.params.additional || '') +
                 '</div>' +
              '</div>',
 

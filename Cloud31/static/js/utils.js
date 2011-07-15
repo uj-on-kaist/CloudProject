@@ -221,7 +221,7 @@ function display_auto_complete(type,items, left, right, keyword, textarea){
 }
 
 function replace_input_text(item, text, left, right){
-    console.log("["+left+"/"+right+"]hi "+text);
+    //console.log("["+left+"/"+right+"]hi "+text);
     var str = item.val();
     
     var new_str = str.substring(0,left);

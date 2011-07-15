@@ -127,7 +127,7 @@ def recent_message_graph(request):
             count+=Message.objects.filter(is_deleted=False,reg_date__range=(time, next_time)).count()
             data.append(count)
             if count > y.max:
-                y.max = count
+                y.max = count+5
             label_list.append(time.strftime("%B %d, %Y"))
             time = next_time
     else:
@@ -136,7 +136,7 @@ def recent_message_graph(request):
             count = Message.objects.filter(is_deleted=False,reg_date__range=(time, next_time)).count()
             data.append(count)
             if count > y.max:
-                y.max = count
+                y.max = count+5
             label_list.append(time.strftime("%B %d, %Y"))
             time = next_time
 
@@ -203,7 +203,7 @@ def recent_pop_topics(request):
                 count = TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
                 data.append(count)
                 if count > y.max:
-                    y.max = count
+                    y.max = count+5
                 label_list.append(time.strftime("%B %d, %Y"))
                 time = next_time
             l = line()
@@ -322,7 +322,7 @@ def recent_user_stats(request, user_name):
                 count+=Message.objects.filter(is_deleted=False,author=user,reg_date__range=(time, next_time)).count()
                 data.append(count)
                 if count > y.max:
-                    y.max = count
+                    y.max = count+5
                 label_list.append(time.strftime("%B %d, %Y"))
                 time = next_time
         else:
@@ -331,7 +331,7 @@ def recent_user_stats(request, user_name):
                 count = Message.objects.filter(is_deleted=False,author=user,reg_date__range=(time, next_time)).count()
                 data.append(count)
                 if count > y.max:
-                    y.max = count
+                    y.max = count+5
                 label_list.append(time.strftime("%B %d, %Y"))
                 time = next_time
                 
@@ -395,7 +395,7 @@ def recent_topic_stats(request, topic_id):
                 count+=TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
                 data.append(count)
                 if count > y.max:
-                    y.max = count
+                    y.max = count+5
                 label_list.append(time.strftime("%B %d, %Y"))
                 time = next_time
         else:
@@ -404,7 +404,7 @@ def recent_topic_stats(request, topic_id):
                 count = TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
                 data.append(count)
                 if count > y.max:
-                    y.max = count
+                    y.max = count+5
                 label_list.append(time.strftime("%B %d, %Y"))
                 time = next_time
                 

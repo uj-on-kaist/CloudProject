@@ -121,7 +121,7 @@ swfobject.embedSWF(
     </tr>
     {% for user in recent_users %}
     <tr>
-        <td><a href="/user/{{user.username}}"><b style="margin-right:10px;">{{user.last_name}}</b> @{{ user.username }}</a></td>
+        <td><a href="/user/{{user.username}}"><b>{{user.last_name}}</b> @{{ user.username }}</a></td>
         <td>{{ user.last_login }}</td>
     </tr>
     {% endfor %}
