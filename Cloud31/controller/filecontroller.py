@@ -88,7 +88,9 @@ def save_upload(request, uploaded, filename, raw_data ):
     as the file, rather than a Django UploadedFile from request.FILES
     """
     try:
+        print '123'
         filename = os.path.normpath(os.path.join(settings.MEDIA_ROOT+'/files/', filename))
+        print '321'
         with BufferedWriter( FileIO( filename, "w" ) ) as dest:
             # if the "advanced" upload, read directly from the HTTP request
             # with the Django 1.3 functionality
