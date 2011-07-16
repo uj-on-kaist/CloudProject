@@ -34,6 +34,7 @@ from django.conf import settings
 @login_required(login_url='/signin/')
 def download_file(request, file_id):
     target_file = get_object_or_404(models.File,id=file_id)
+    agent = request.META['HTTP_USER_AGENT']
     try:
         path = target_file.file_contents.path
         content_type = mimetypes.guess_type( path )[0]
@@ -41,7 +42,17 @@ def download_file(request, file_id):
         response = HttpResponse(my_data,content_type=content_type)
         response['Content-Length'] = target_file.file_contents.size
         #file_name = smart_unicode('attachment; filename=%s' % target_file.file_name, encoding='utf-8', strings_only=False, errors='strict')
-        response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(target_file.file_name)
+        response['Content-Disposition'] = 'attachment; filename=\"' + smart_str(target_file.file_name) +'\"'
+        if 'MSIE' in agent:
+            try:
+                print smart_str(target_file.file_name).encode("ascii",'ignore')
+            except:
+                (fileBaseName, fileExtension)=os.path.splitext(smart_str(target_file.file_name))
+                response['Content-Disposition'] = 'attachment; filename=\"download'+fileExtension+'\"'
+            
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+        response['Cache-Control'] = 'no-cache'
     except Exception as e:
         print str(e)
     return response
