@@ -81,16 +81,18 @@ def main(request):
     
     return HttpResponse(t.render(context))
 
-
+import uuid
 def save_upload(request, uploaded, filename, raw_data ):
     """
     raw_data: if True, upfile is a HttpRequest object with raw post data
     as the file, rather than a Django UploadedFile from request.FILES
     """
     try:
-        print '123'
-        filename = os.path.normpath(os.path.join(settings.MEDIA_ROOT+'/files/', filename))
-        print '321'
+        user = get_object_or_404(User,username=request.user.username)
+        (fileBaseName, fileExtension)=os.path.splitext(filename)
+        real_file_name = user.username + "_" + str(uuid.uuid1()) + fileExtension
+        filename = os.path.normpath(os.path.join(settings.MEDIA_ROOT+'/files/', real_file_name))
+        
         with BufferedWriter( FileIO( filename, "w" ) ) as dest:
             # if the "advanced" upload, read directly from the HTTP request
             # with the Django 1.3 functionality
@@ -100,7 +102,7 @@ def save_upload(request, uploaded, filename, raw_data ):
                 fileExtension=fileExtension[1:]
                 print fileName+"['"+fileBaseName+ "','"+fileExtension+"']"
                 
-                user = get_object_or_404(User,username=request.user.username)
+                
                 new_file = models.File(file_type=fileExtension,file_name=fileName, uploader=user)
                 new_file.file_contents.save(fileName,ContentFile(uploaded.read()))
             # if not raw, it was a form upload so read in the normal Django chunks fashion
@@ -113,7 +115,7 @@ def save_upload(request, uploaded, filename, raw_data ):
                 # TODO: figure out when this gets called, make it work to save into a Photo like above
                 for c in uploaded.chunks( ):
                     dest.write( c )
-                user = get_object_or_404(User,username=request.user.username)
+
                 new_file = models.File(file_type=fileExtension,file_name=fileName, uploader=user)
                 new_file.file_contents.save(fileName,File(open(filename)))
 
