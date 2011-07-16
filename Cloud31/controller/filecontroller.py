@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import get_object_or_404
 
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_unicode, smart_str
 
 def upload_page( request ):
     t = loader.get_template('upload_page.html')
@@ -22,11 +22,32 @@ def upload_page( request ):
     return HttpResponse(t.render(context))
     
 
-import os, json
+import os, json, mimetypes
 import my_utils
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from django.core.servers.basehttp import FileWrapper
+
+from django.conf import settings
+
+@login_required(login_url='/signin/')
+def download_file(request, file_id):
+    target_file = get_object_or_404(models.File,id=file_id)
+    try:
+        path = target_file.file_contents.path
+        content_type = mimetypes.guess_type( path )[0]
+        my_data = File(open(path))
+        response = HttpResponse(my_data,content_type=content_type)
+        response['Content-Length'] = target_file.file_contents.size
+        #file_name = smart_unicode('attachment; filename=%s' % target_file.file_name, encoding='utf-8', strings_only=False, errors='strict')
+        response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(target_file.file_name)
+    except Exception as e:
+        print str(e)
+    return response
+    
+    
+    
 @login_required(login_url='/signin/')
 def main(request):
     t = loader.get_template('file.html')
@@ -89,6 +110,7 @@ def save_upload(request, uploaded, filename, raw_data ):
     """
     try:
         user = get_object_or_404(User,username=request.user.username)
+        input_file_name = filename
         (fileBaseName, fileExtension)=os.path.splitext(filename)
         real_file_name = user.username + "_" + str(uuid.uuid1()) + fileExtension
         filename = os.path.normpath(os.path.join(settings.MEDIA_ROOT+'/files/', real_file_name))
@@ -103,7 +125,7 @@ def save_upload(request, uploaded, filename, raw_data ):
                 print fileName+"['"+fileBaseName+ "','"+fileExtension+"']"
                 
                 
-                new_file = models.File(file_type=fileExtension,file_name=fileName, uploader=user)
+                new_file = models.File(file_type=fileExtension,file_name=input_file_name, uploader=user)
                 new_file.file_contents.save(fileName,ContentFile(uploaded.read()))
             # if not raw, it was a form upload so read in the normal Django chunks fashion
             else:
@@ -116,7 +138,7 @@ def save_upload(request, uploaded, filename, raw_data ):
                 for c in uploaded.chunks( ):
                     dest.write( c )
 
-                new_file = models.File(file_type=fileExtension,file_name=fileName, uploader=user)
+                new_file = models.File(file_type=fileExtension,file_name=input_file_name, uploader=user)
                 new_file.file_contents.save(fileName,File(open(filename)))
 
     except IOError:

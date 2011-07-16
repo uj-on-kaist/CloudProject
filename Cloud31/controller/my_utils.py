@@ -125,6 +125,7 @@ def process_files(files):
             #if not os.path.isfile(file_path):
             #    print file_path
             #    print 'not file'
+            item['id']=a_file.id
             item['type']=a_file.file_type
             item['uploader']=a_file.uploader.username
             item['upload_date']=str(a_file.upload_date)
