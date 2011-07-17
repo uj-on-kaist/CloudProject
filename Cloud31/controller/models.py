@@ -21,7 +21,8 @@ class Message(models.Model):
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False)
-    location = models.CharField(max_length=30,default='')
+    lat = models.CharField(max_length=30,default='')
+    lng = models.CharField(max_length=30,default='')
     write_from = models.CharField(max_length=30,default='')
     # Comma Seperated
     attach_files = models.TextField(default='')

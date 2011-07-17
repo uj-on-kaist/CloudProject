@@ -68,6 +68,10 @@ urlpatterns = patterns('',
     
     url(r'^members/$', 'controller.membercontroller.main'),
     
+    url(r'^location/$', 'controller.locationcontroller.main'),
+    url(r'^api/location/random$', 'controller.locationcontroller.get_random_feeds'),
+    url(r'^api/location/get$', 'controller.locationcontroller.get_location_feeds'),
+    
     
     url(r'^message/$', 'controller.messagecontroller.main'),
     url(r'^message/new$', 'controller.messagecontroller.new'),

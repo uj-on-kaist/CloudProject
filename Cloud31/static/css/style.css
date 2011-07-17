@@ -807,3 +807,24 @@ h4.section_title{
 
 
 .select_inline_box{margin: 0 5px;}
+
+
+.map_area{
+    border: 1px solid #F0F0F0;
+    padding: 3px;
+    width: 517px;
+    height: 300px;
+    margin: 0px 0px 17px 0px;
+}
+.map_area:hover{
+    border: 1px solid #b4b4b4;
+}
+
+.map_area #map_canvas{
+    width: 517px;
+    height: 300px;
+}
+
+.stream_element .content p.feed_location.small img{
+    height:80px;
+}

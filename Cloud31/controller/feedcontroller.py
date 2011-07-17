@@ -312,6 +312,8 @@ def update_feed(request):
     message=''
     attach_list=''
     location_info=''
+    lat = ''
+    lng = ''
     if request.method == 'POST':
         if request.POST['message']:
             message=smart_unicode(request.POST['message'], encoding='utf-8', strings_only=False, errors='strict')
@@ -321,13 +323,19 @@ def update_feed(request):
             
         if request.POST['location_info']:
             location_info=request.POST['location_info']
+            try:
+                location = location_info.split("|")
+                lat = location[0]
+                lng = location[1]
+            except:
+                pass
     
     if message is not '':
         try:
             user = User.objects.get(username=request.user.username)
             print location_info
             try: 
-                new_message = Message(author=user,contents=message,location=location_info,attach_files=attach_list)
+                new_message = Message(author=user,contents=message,lat=lat,lng=lng,attach_files=attach_list)
                 new_message.save()   
             except:
                 return my_utils.return_error('Insert Failed')

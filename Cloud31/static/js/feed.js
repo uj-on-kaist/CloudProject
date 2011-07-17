@@ -201,10 +201,13 @@ function display_feeds(feeds, type){
         });
         
         
-        if(feed.location){
-            var location = feed.location.replace("|",",");
-            var layout="<img src='http://maps.google.com/maps/api/staticmap?center="+location+"&zoom=12&size=240x120&maptype=roadmap&markers=color:red|color:red|label:Here|"+location+"&sensor=false' />";
-            feed_layout.find('p.feed_location').html(layout);
+        if(feed.lat && feed.lng){
+            var location = feed.lat+","+feed.lng;
+            var layout="<img src='http://maps.google.com/maps/api/staticmap?center="+location+"&zoom=15&size=240x120&maptype=roadmap&markers=color:red|color:red|label:Here|"+location+"&sensor=false' location='"+location+"'/>";
+            var item = feed_layout.find('p.feed_location').html(layout);
+            item.find('img').click(function(){
+                window.open('http://maps.google.com/?q='+$(this).attr('location'));
+            });
         }else{
             feed_layout.find('p.feed_location').remove();
         }
