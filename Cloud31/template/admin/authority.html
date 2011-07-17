@@ -1,0 +1,52 @@
+{% include "meta_open.html" %}
+
+<h2 class="page_title">
+    Authority
+</h2>
+
+<div class="tab">
+<a href="#" onclick="document.location.href='/admin/authority/?show_staff=1'">
+    <span class="tab_item corner_top {{ show_staff }}" onclick="select_this_tab($(this)); return false;">Admin</span>
+</a>
+<a href="#" onclick="document.location.href='/admin/authority/?show_staff=0'">
+    <span class="tab_item corner_top {{ show_user }}" onclick="select_this_tab($(this)); return false;">Users</span>
+</a>
+</div>
+<table class="member_table list_table" id="user_list_table">
+    <tr class="member_item list_item" style="height:25px;">
+        <td class="name" style="height:25px; border-bottom:1px solid #F0F0F0; padding-left:10px; color:#323232"><b>Users</b></td>
+        <td class="first member_picture" width="25px" style="height:20px;border-bottom:1px solid #F0F0F0"><input type="checkbox" onclick="check_all_users($(this));"/></td>
+    </tr>
+    {% for member in members.object_list %}
+    <tr class="member_item list_item authority_item">
+        <td class="name">
+            <img src='{{ member.picture }}'/>
+            <p class="ellipsis username"><a>@{{ member.username }}</a></p>
+            <p class="ellipsis real_name">{{ member.last_name }}</p>
+        </td>
+        <td class="first member_picture" width="20px"><input type="checkbox" user_id='{{ member.id }}' /></td>
+    </tr>
+    {% endfor%}
+</table>
+
+<div class="index_box">
+
+Make selected user as 
+<select id="authority_select" class="select_inline_box" >
+{% if show_user == 'selected' %}
+<option value="admin">Admin</option>
+<option value="user">User</option>
+{% else %}
+<option value="user">User</option>
+<option value="admin">Admin</option>
+{% endif %}
+
+</select>
+<a href="#" onclick="authority_apply($(this)); return false;">apply</a>
+
+</div>
+
+
+{% include "ui/pagination.html" %}
+
+{% include "meta_close.html" %}

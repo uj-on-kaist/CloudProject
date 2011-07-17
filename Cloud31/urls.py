@@ -142,6 +142,11 @@ urlpatterns = patterns('',
     url(r'^admin/stats/topic/$','controller.admincontroller.stats_topic'),
     url(r'^admin/stats/member','controller.admincontroller.stats_member'),
     
+    url(r'^admin/export/$','controller.admincontroller.export'),
+    
+    url(r'^admin/authority/$','controller.admincontroller.authority'),
+    url(r'^admin/authority/update/$','controller.admincontroller.authority_update'),
+    
     url(r'^admin/invite/$','controller.admincontroller.invite'),
     url(r'^admin/invite/send/$','controller.admincontroller.send_invites'),
     

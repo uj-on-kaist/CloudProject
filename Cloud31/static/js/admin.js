@@ -86,3 +86,59 @@ function upload_notice(item){
 }
 
 
+
+function check_all_users(item){
+    if(!item.attr("checked")){
+        $("#user_list_table input[type=checkbox]").removeAttr('checked');
+    }else{
+        $("#user_list_table input[type=checkbox]").attr('checked','checked');
+    }
+}
+
+function authority_apply(item){
+    item.attr('disabled','disabled');
+    
+    var user_list = '';
+    $('#user_list_table tr.authority_item input[type=checkbox]:checked').each(function(){
+    
+        user_list+=$(this).attr('user_id')+'|';
+    });
+    
+    var action = $("#authority_select option:selected").attr('value');
+    
+    console.log( user_list, action);
+    
+    var tokenValue = $("#csrf_token").text();
+    data= "user_list=" + user_list + "&action=" + action;
+    data +="&csrfmiddlewaretoken="+tokenValue;
+	$.ajax({
+		type : "POST",
+		url : "/admin/authority/update/",
+		data : data,
+		dataType : "JSON",
+		cache : false,
+		success : function(json) {
+		  console.log(json);
+		  item.removeAttr('disabled');
+          if(json.success){
+            alert('Success');
+            if(action == 'user'){
+                document.location.href='/admin/authority/?show_staff=0';
+            }else{
+                document.location.href='/admin/authority/?show_staff=1';
+            }
+          }else{
+            alert(json.message);
+          }
+		},
+		error : function(data){
+		  console.log(data);
+		  alert('Error Occured');
+		}
+	});
+    
+   
+}
+
+
+

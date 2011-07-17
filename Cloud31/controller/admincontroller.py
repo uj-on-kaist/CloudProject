@@ -39,6 +39,19 @@ from django.db.models import Q
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+def export(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound() 
+    t = loader.get_template('admin/export.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['side_list']=['']
+    context['current_user'] = request.user
+    context['page_export'] = "selected"
+    
+    return HttpResponse(t.render(context))
+
+
 
 
 def invite(request):
@@ -301,4 +314,106 @@ def delete_notice(request, notice_id):
     except:
             return my_utils.return_error('Please Sign in First')
             
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+    
+def authority(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound() 
+    t = loader.get_template('admin/authority.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['side_list']=['']
+    context['current_user'] = request.user
+    context['page_authority'] = "selected"
+    
+    try:
+        keyword = request.GET.get('q', '')
+        search_index = request.GET.get('index', '')
+        show_staff = request.GET.get('show_staff','')
+        
+        query_type = Q()
+        if keyword is not '':
+            print keyword
+            query_type = Q(username__icontains=keyword) | Q(last_name__icontains=keyword)
+        
+        if search_index is not '':
+            if search_index in map(chr, range(65, 91)):
+                query_type = Q(username__istartswith=search_index)
+            elif search_index == 'number':
+                query_type = Q(username__gt="0",username__lt="9")
+            else:
+                this_index,next_index=my_utils.next_search_index(search_index)
+                query_type = Q(username__gt=this_index, username__lt=next_index)
+        
+        if (keyword is '' and search_index is '') and show_staff == '1':
+            context['show_staff']='selected'
+            query_type = Q(is_staff=True)
+        elif (keyword is '' and search_index is ''):
+            context['show_user']='selected'
+            query_type = Q(is_staff=False)
+        
+        members = User.objects.filter(query_type & ~Q(id = request.user.id), is_active=True).order_by('username')
+        members_list = list()
+        for member in members:
+            try:
+                member_profile = UserProfile.objects.get(user=member)
+                member.profile = member_profile
+                try:
+                    member.picture = member_profile.picture.url
+                except:
+                    member.picture = "/media/default.png"
+                members_list.append(member)
+            except:
+                pass
+        
+        paginator = Paginator(members_list, 10)
+        
+        page = request.GET.get('page', 1)
+        try:
+            context['members'] = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            context['members'] = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            context['members'] = paginator.page(paginator.num_pages)
+        
+        context['index_info'] = my_utils.get_index_list(context['members'].number, paginator.num_pages)
+        
+    except Exception as e:
+        print str(e)
+    
+    return HttpResponse(t.render(context))   
+
+def authority_update(request):
+    if not request.user.is_staff:
+        return my_utils.return_error('You don\'t have access.')
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    user_list = request.POST.get('user_list',False)
+    action = request.POST.get('action',False)
+    if not user_list:
+        return my_utils.return_error('No user.')
+    if not action:
+        return my_utils.return_error('No Action.')
+        
+    user_list = user_list.split('|')
+
+    for user_id in user_list:
+        if user_id == '':
+            continue
+        try:
+            user = User.objects.get(id=user_id)
+            if action == 'user':
+                user.is_staff=False
+            if action == 'admin':
+                user.is_staff=True
+            user.save()
+        except Exception as e:
+            print str(e)
+            pass
+        
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')

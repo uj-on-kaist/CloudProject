@@ -791,3 +791,19 @@ h4.section_title{
     line-height: 24px;
 }
 
+
+
+.member_table tr.authority_item td{
+    height: 40px;
+    max-height: 40px;
+    overflow: hidden;
+}
+.member_table tr.authority_item td.name p,.member_table tr.authority_item td.name img{
+    float: left;
+    margin-left: 10px;
+}
+.member_table tr.authority_item td.name img{width: 25px; height: 25px;}
+#user_list_table tr:hover{background-color: #fff;}
+
+
+.select_inline_box{margin: 0 5px;}
