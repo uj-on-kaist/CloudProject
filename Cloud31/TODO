@@ -1,30 +1,18 @@
 ##IMPORTANT
 
-
 # Export Data
-
-# Authority
 
 # Notification Email
 
-# Location Based Service : View
 
 
 ##OTHERS
 
-
-#Notification 에서 Feed 디테일 페이지 접속시,
-권한이 안되어있으면 에러 메시지 출력
-(Event에 구현 해 놓았으니 참고)
-
-
 #Timeline
 is_read option
 
-
 #image 
 Rectangle 로 짜르기
-
 
 #Search
 - Indexing 추가
