@@ -157,4 +157,7 @@ urlpatterns = patterns('',
     url(r'^admin/notice/$','controller.admincontroller.notice'),
     url(r'^api/notice/update/$','controller.admincontroller.update_notice'),
     url(r'^api/notice/delete/(?P<notice_id>\w+)$','controller.admincontroller.delete_notice'),
+    
+    
+    url(r'^mobile/',include('mobile.urls')),
 )

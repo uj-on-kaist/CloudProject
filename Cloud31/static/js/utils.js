@@ -111,7 +111,7 @@ function detect_auto_complete(textarea){
             $("#auto_complete_list .search_msg").hide();
             $("#auto_complete_list li.list_item").remove();
             
-            if($("#location_selector").is(":visible")){
+            if($("#location_selector") != 0 && $("#location_selector").is(":visible")){
                 $("#auto_complete_list").css("top","-286px");
             }else{
                 $("#auto_complete_list").css("top","-41px");

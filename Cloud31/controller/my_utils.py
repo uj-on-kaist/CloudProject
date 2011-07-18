@@ -68,6 +68,7 @@ def process_messages(request, messages):
             feed['author_picture']='/media/default.png'
         feed['author_name']=message.author.last_name
         feed['contents']= parser.parse_text(message.contents)
+        feed['contents_original']= message.contents
         if message.lat != '' and message.lng != '':
             feed['lat'] = message.lat
             feed['lng'] = message.lng

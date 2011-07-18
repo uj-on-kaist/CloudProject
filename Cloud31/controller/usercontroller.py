@@ -11,7 +11,6 @@ from django.template import RequestContext, loader
 from django.core.mail import send_mail
 
 from controller.models import *
-from controller.forms import *
 
 import datetime,json
 
