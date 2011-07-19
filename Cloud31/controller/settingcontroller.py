@@ -178,8 +178,9 @@ def user_picture_upload(request, uploaded, filename, raw_data ):
                 print dirName
                 print fileName           
                 user_profile = UserProfile.objects.get(user=user)
+                user_profile.thumbnail = None
                 user_profile.picture.save(fileName,ContentFile(uploaded.read()))
-                
+                user_profile.save()
             # if not raw, it was a form upload so read in the normal Django chunks fashion
             else:
                 (dirName, fileName) = os.path.split(filename)
@@ -188,7 +189,9 @@ def user_picture_upload(request, uploaded, filename, raw_data ):
                 for c in uploaded.chunks( ):
                     dest.write( c )
                 user_profile = UserProfile.objects.get(user=user)
+                user_profile.thumbnail = None
                 user_profile.picture.save(fileName,File(open(filename)))
+                user_profile.save()
         return True, user_profile.picture.url
     except IOError:
         # could not open the file most likely

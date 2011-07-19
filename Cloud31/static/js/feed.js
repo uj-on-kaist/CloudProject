@@ -228,7 +228,7 @@ function display_feeds(feeds, type){
         
         
         
-        
+         
         feed_layout.find('.comment_action a').attr("feed_id",feed.id);
         feed_layout.find('.comment_action a').click(function(){
             $("#feed_"+$(this).attr("feed_id")+" ul.comments").show();
@@ -254,7 +254,7 @@ function display_feeds(feeds, type){
                     var id=$(this).attr('id').split('_')[2];
                     $('#feed_'+id+' ul.comments.comment_list li').show();
                 }else{
-                    $(this).text('모두 보기');
+                    $(this).text("모두 보기");
                     var id=$(this).attr('id').split('_')[2];
                     var total=$('#feed_'+id+' ul.comments.comment_list li').length;
                     $('#feed_'+id+' ul.comments.comment_list li').each(function(i){
@@ -293,6 +293,7 @@ function display_feeds(feeds, type){
             feed_layout.find("span.comment_action").remove();
             feed_layout.find("ul.comments").remove();
         }
+        
         
     }
 }

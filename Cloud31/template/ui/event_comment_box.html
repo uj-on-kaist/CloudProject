@@ -34,8 +34,9 @@
     <p style="position:relative; left:35px; margin-bottom:3px;">
         <textarea class="comment_area" id="comment_area_" style="width:404px; margin:0px; height:15px;" placeholder="Write Comment"></textarea>
     </p>
-    <div class="submit_button hidden">
+    <div class="submit_button">
        <input class="comment_submit button" id="comment_submit_" name="commit" type="submit" value="Reply">
+       <input id="comment_submit_" type="submit" class="button_s" onblur="return false"  name="reply" value="Reply" onclick="send_reply('{{ message.id }}'); return false;"/>
     </div>
     </li>
 </ul>

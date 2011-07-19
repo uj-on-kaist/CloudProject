@@ -77,7 +77,7 @@ function show_noti(notis){
     $('#noti_selector').addClass("sel");
     
     $('#noti_list li.noti_item').remove();
-    for(var i=0; i<notis.length; i++){
+    for(var i=notis.length-1; i>=0; i--){
         var noti=notis[i];
         console.log(noti);
         var noti_layout= $("#noti_list li.noti_item_template").clone();
@@ -125,7 +125,7 @@ function show_noti(notis){
             
             stopEvent(event);
         });
-        $('#noti_list a.see_more').before(noti_layout);
+        $('#noti_list li.loading').after(noti_layout);
     }
 
 }

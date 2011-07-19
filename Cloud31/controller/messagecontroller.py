@@ -193,6 +193,11 @@ def reply_message(request):
             item['author']=new_dm_reply.author.username
             item['contents']= parser.parse_text(new_dm_reply.contents)
             item['reg_date']= str(new_dm_reply.reg_date)
+            try:
+                user_profile = UserProfile.objects.get(user=new_dm_reply.author)
+                item['author_picture']= user_profile.picture.url
+            except:
+                item['author_picture']='/media/default.png'
             result['reply']=item
         except Exception as e:
             print str(e)
@@ -269,10 +274,16 @@ def process_messages(messages):
             d_message['author_picture']= user_profile.picture.url
         except:
             d_message['author_picture']='/media/default.png'
-            
+        try:
+            latest_reply = DirectMessageReply.objects.filter(direct_message=message, is_deleted=False).order_by('-reg_date')[0]
+            d_message['latest_reply']=latest_reply.contents
+        except Exception as e:
+            d_message['latest_reply']=message.contents  
         d_message['contents']= parser.parse_text(message.contents)
+        d_message['contents_original']=message.contents 
         d_message['receivers']= message.receivers.replace(",", ", ")[:-2]
         d_message['reg_date']= str(message.reg_date)
+        d_message['pretty_date'] = my_utils.pretty_date(message.reg_date)
         d_messages.append(d_message)
     return d_messages
     

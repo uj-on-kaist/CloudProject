@@ -159,7 +159,7 @@ function addNewMarker(feed){
     var latlng = new google.maps.LatLng(parseFloat(feed.lat),parseFloat(feed.lng));
     var marker = new google.maps.Marker({
       position: latlng, 
-      map: map, 
+      map: map
     });
     marker.feed = feed;
     marker_arr.push(marker);

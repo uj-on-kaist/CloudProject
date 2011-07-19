@@ -1,10 +1,13 @@
+<ul style="display:none;">
 <li class="comment posted template" data-guid="2">
     <div class="right controls">
         <a href="#" class="delete stream_element_delete" title="지우기" style="display:none;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
     </div>
+    <div class="user_image_box">
     <a href="/people/1" class="user_link">
       <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="{{ user_profile.picture.url }}" title="ujlikes@localhost">
     </a>
+    </div>
     <div class="content">
       <div class="from">
         <a href="/user/" class="user_link">
@@ -19,6 +22,7 @@
       <p class="comment_text"></p>
     </div>
 </li>
+</ul>
 
 <ul class="comments comment_count" id="1">
 <li><span><span></span>개의 댓글이 있습니다.</span><a href="#" class="show_all">모두 보기</a></li>
@@ -35,7 +39,7 @@
         <textarea class="comment_area" id="comment_area_" placeholder="Write Comment"></textarea>
     </p>
     <div class="submit_button hidden">
-       <input class="comment_submit button" id="comment_submit_" name="commit" type="submit" value="Reply">
+        <input id="comment_submit_" type="submit" class="comment_submit button_s" onblur="return false"  name="commit" value="Reply" />
     </div>
     </li>
 </ul>

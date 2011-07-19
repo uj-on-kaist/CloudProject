@@ -22,18 +22,16 @@
 </div>
 
 
+
+{% include "ui/feed_list.html"%}
 <script type="text/javascript">
-$(document).ready(function(){
-    load_feed('{{ load_type }}');
+load_feed('{{ load_type }}');
     
     $("#update_btn").click(function(){
         upload_feed($(this)); 
         return false;
     });
-});
 </script>
-{% include "ui/feed_list.html"%}
-
 
 <div id="loading_box">
 <img src="/static/image/loading.gif" />

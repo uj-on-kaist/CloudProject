@@ -51,6 +51,9 @@
 <!--[if IE]>
     <script src="{{ STATIC_URL }}js/ie.js?1307079878" type="text/javascript"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/ie.css" type="text/css" media="screen" />
+    <style>
+    .author_name{margin-left:5px;}
+    </style>
 <![endif]-->
 {% if user.is_staff %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/admin.css?123" type="text/css" />
@@ -58,7 +61,14 @@
 {% endif %}
 
 <script type="text/javascript">
+function bluring() {
+    if(event.srcElement.tagName=="A"||event.srcElement.tagName=="IMG") 
+        document.body.focus();
+}
+document.onfocusin=bluring;
+
 $(document).ready(function(){
+    $("a").attr("onfocus","this.blur()");
     $('a[rel*=facebox]').facebox();
     $("a.fancy_image").fancybox();
     $('[tipsy-text]').tipsy({trigger: 'hover', gravity: 'w',title:'tipsy-text'});

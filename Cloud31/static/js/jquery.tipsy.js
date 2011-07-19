@@ -181,7 +181,7 @@
         opacity: 0.8,
         title: 'title',
         trigger: '',
-        always: false,
+        always: false
     };
     
     // Overwrite this method to provide options on a per-element basis.

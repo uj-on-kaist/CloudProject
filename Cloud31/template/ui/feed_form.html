@@ -1,53 +1,3 @@
-<script type="text/javascript">
-$(document).ready(function(){
-    $("#feed_message_input").bind('focus',function(){
-        $(this).parent().parent().css('border','1px solid #34b0d9');
-    });
-    $("#feed_message_input").bind('blur',function(){
-        $(this).parent().parent().css('border','1px solid #ccc');
-    });
-    
-    $("#feed_message_input").keyup(function(event){
-        detect_auto_complete($(this));
-    });
-    
-    
-    $("#auto_complete_list li").click(function(event){
-        
-        event.stopPropagation();
-    });
-    
-    $('#auto_complete_list li.add').click(function(){
-        var left=$(this).attr('left');
-        var right=$(this).attr('right');
-        replace_input_text($("#feed_message_input"), $(this).find('.topic_name').text(),left, right);
-        $("#auto_complete_list").hide();
-    });
-    
-    
-    var uploader = new qq.FileUploader({
-        element: document.getElementById('file-uploader'),
-        action: '/file/ajax_upload',
-        sizeLimit: 0, // max size
-        minSizeLimit: 0, // min size
-        debug: true,
-        params:{
-            title: '<span class="ui_icon ui_icon_attach_file"></span>',
-            delete_btn: '<span class="ui_icon ui_icon_delete"></span>',
-            additional: '<div class="location_box" onClick="attach_gps(); return false;"><span class="ui_icon ui_icon_location"></span></div>',
-        },
-        onComplete: function(id, fileName, responseJSON){
-            /* $("#attach_list").append("<li id='file_"+responseJSON.id+"'>"+responseJSON.id+"</li>"); */
-        },
-    });
-    
-    $("#file-uploader .custom_zone").prepend("<p class='attach_label'>Attach</p> ");
-    var update_btn_layout = $(".item.update").clone();
-    update_btn_layout.removeClass("template");
-    $("#file-uploader .custom_zone").after(update_btn_layout);
-    
-});
-</script>
 <div class="feed_box ui-corner-all">
     <!-- <div id="feed_div" onClick="this.contentEditable='true';">Write your Feed</div> -->
     <div>
@@ -109,7 +59,7 @@ $(document).ready(function(){
 
 <div class="item update template">
     <p class="loading" style="display:inline; padding:0; margin:0; display:none; padding-top:8px; padding-bottom:6px;padding-right:5px"><img src="/static/image/ajax-loader.gif?asdf"></p>
-    <button type="submit" id="update_btn" class="button_m" onblur="return false;">Update</button>
+    <input type="submit" id="update_btn" class="button_m" onblur="return false;" value="Update" />
 </div>
 
 </div><!-- control -->
@@ -119,3 +69,51 @@ $(document).ready(function(){
 </div><!-- feed_form -->
 
 </div><!-- feed -->
+<script type="text/javascript">
+    $("#feed_message_input").bind('focus',function(){
+        $(this).parent().parent().css('border','1px solid #34b0d9');
+    });
+    $("#feed_message_input").bind('blur',function(){
+        $(this).parent().parent().css('border','1px solid #ccc');
+    });
+    
+    $("#feed_message_input").keyup(function(event){
+        detect_auto_complete($(this));
+    });
+    
+    
+    $("#auto_complete_list li").click(function(event){
+        
+        event.stopPropagation();
+    });
+    
+    $('#auto_complete_list li.add').click(function(){
+        var left=$(this).attr('left');
+        var right=$(this).attr('right');
+        replace_input_text($("#feed_message_input"), $(this).find('.topic_name').text(),left, right);
+        $("#auto_complete_list").hide();
+    });
+    
+    
+    var uploader = new qq.FileUploader({
+        element: document.getElementById('file-uploader'),
+        action: '/file/ajax_upload',
+        sizeLimit: 0, // max size
+        minSizeLimit: 0, // min size
+        debug: true,
+        params:{
+            title: '<span class="ui_icon ui_icon_attach_file"></span>',
+            delete_btn: '<span class="ui_icon ui_icon_delete"></span>',
+            additional: '<div class="location_box" onClick="attach_gps(); return false;"><span class="ui_icon ui_icon_location"></span></div>'
+        },
+        onComplete: function(id, fileName, responseJSON){
+            /* $("#attach_list").append("<li id='file_"+responseJSON.id+"'>"+responseJSON.id+"</li>"); */
+        }
+    });
+    
+    $("#file-uploader .custom_zone").prepend("<p class='attach_label'>Attach</p> ");
+    var update_btn_layout = $(".item.update").clone();
+    update_btn_layout.removeClass("template");
+    $("#file-uploader .custom_zone").after(update_btn_layout);
+
+</script>

@@ -27,7 +27,7 @@ import my_utils
 from controller.notificationcontroller import *
 
 
-DEFAULT_LOAD_LENGTH = 10
+DEFAULT_LOAD_LENGTH = 20
 
 @login_required(login_url='/signin/')
 def feed(request):

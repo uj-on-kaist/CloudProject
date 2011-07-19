@@ -2,7 +2,7 @@
 $(document).ready(function(){
     $('.datepicker').datepicker({
         inline: true,
-        dateFormat: 'yy-mm-dd',
+        dateFormat: 'yy-mm-dd'
     });
     
     reset_start_time();
@@ -32,20 +32,22 @@ $(document).ready(function(){
 <tr id="event_time" class="canHide">
 <td width="60" class="label"><b>When?</b></td>
 <td>
-    <div id="start_time">
-        <div style="display:inline-block; width:60px;">Start Time</div>
-        <input type="text" class="datepicker" />
-        {% include "ui/time_select.html" %}
-        <a href="#" onclick="$(this).remove(); $('#end_time').show(); return false;">Add End time</a>
-    </div>
-    
-    
-    
-    <div id="end_time" style="display:none;">
-        <div style="display:inline-block; width:60px;">End Time</div>
-        <input type="text" class="datepicker" />
-        {% include "ui/time_select.html" %}
-    </div>
+
+    <table style="margin:0;">
+        <tr id="start_time">
+            <td style="width:70px;">Start Time</td>
+            <td style="width:120px;"><input type="text" class="datepicker" /></td>
+            <td style="width:90px;">{% include "ui/time_select.html" %}</td>
+            <td><a href="#" onfocus="this.blur();" onclick="$(this).css('color','#fff'); $('#end_time').show(); return false;">Add End time</a></td>
+        </tr>
+        <tr id="end_time" style="display:none;">
+            <td style="width:70px;">End Time</td>
+            <td style="width:120px;"><input type="text" class="datepicker" /></td>
+            <td style="width:90px;">{% include "ui/time_select.html" %}</td>
+            <td></td>
+        </tr>
+    </table>
+
 </td>
 </tr>
 
@@ -89,14 +91,15 @@ $(document).ready(function(){
 
 <tr id="event_submit" class="canHide">
 <td width="60" class="label"><b></b></td>
-<td style="padding-top:10px; text-align:left; padding-right:0px;">
-    <input id="input_public" type="checkbox" style="display:inline; vertical-align:3px;" />
-    <span style="margin:0 10px 0 2px;font-weight:bold;">공개로 설정 (누구나 이벤트 조회 및 참석 가능)</span>
+<td style="padding-top:5px; text-align:left; padding-right:0px;">
+    <input id="input_public" type="checkbox" style="display:inline; vertical-align:3px; float:left" />
+    <b style="margin-left:3px;">공개로 설정 (누구나 이벤트 조회 및 참석 가능)</b>
     
-    <div style="float:right;">
+    <div style="width:460px; display:block; padding-top:10px;">
     <p class="loading" style="display:inline; padding:0; margin:0; display:none; padding-top:2px; padding-bottom:6px;padding-right:5px"><img src="/static/image/ajax-loader.gif?asdf"></p>
-    <a href="/" class="button update" onClick="register_event($(this)); return false;" id="update_btn" >등록</a>
-    <a href="/" class="button update" onClick="history.back(); return false;" id="update_btn" >취소</a>
+    
+    <input type="button" class="button_s" onblur="return false" onClick="register_event($(this)); return false;" value="등록" id="update_btn"/>
+    <input type="button" class="button_s" onblur="return false" onClick="history.back(); return false;" value="취소" id="update_btn"/>
     </div>
 </td>
 </tr>

@@ -19,6 +19,7 @@ from django.utils.encoding import smart_unicode
 from django.conf import settings
 
 import my_emailer
+from controller.forms import *
 
 def signin(request):
     t = loader.get_template('signin.html')

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
@@ -12,7 +13,7 @@ class UserProfile(models.Model):
 	receive_apns = models.BooleanField(default=True)
 	device_id = models.CharField(max_length=50)
 	picture = models.ImageField(upload_to="profile", default='/media/default.png')
-    
+	
 ##  
 ## Message Related
 ##
@@ -172,7 +173,7 @@ class EmailQueue(models.Model):
 
 
 class NotificationQueue(models.Model):
-    notification_type = models.CharField(max_length=10)
+    notification_type = models.CharField(max_length=20)
     target_user = models.ForeignKey(User)
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)

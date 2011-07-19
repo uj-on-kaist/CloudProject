@@ -42,7 +42,7 @@ tinyMCE.init({
 <div class="list_header"><b>Related Users</b></div>
 
 {% for user in related_users %}
-<li><a href="/user/{{ user }}" title="{{ user }}"><img src="/picture/{{ user }}" /></a></li>
+<li><a href="/user/{{ user.username }}" title="{{ user.username }}"><img src="{{ user.picture_url }}"  tipsy-text="@{{ user.username }}"/></a></li>
 {% endfor %}
 </ul>
 {% endif %}

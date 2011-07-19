@@ -16,6 +16,7 @@ from django.conf import settings
 
 def load_basic_info(request, context):
     user_profile = get_object_or_404(UserProfile,user=request.user)
+    user_profile.picture = user_profile.picture.url
     context['user_profile'] = user_profile
        
     try:
@@ -73,6 +74,7 @@ def process_messages(request, messages):
             feed['lat'] = message.lat
             feed['lng'] = message.lng
         feed['reg_date']= str(message.reg_date)
+        feed['pretty_date'] = pretty_date(message.reg_date)
         feed['comments'] = list()
         feed['file_list'] = list()
         try:
@@ -252,7 +254,13 @@ def get_related_users(topic_name):
             user_id = int(author['author'])
             try:
                 user = User.objects.filter(id=user_id, is_active=True)[0]
-                result.append(user.username)
+                user_profile = UserProfile.objects.get(user=user)
+                try:
+                    user.picture_url = user_profile.picture.url
+                except Exception as e:
+                    print str(e)
+                    user.picture_url = '/media/default.png'
+                result.append(user)
             except Exception as e:
                 print str(e)
                 pass
@@ -266,3 +274,46 @@ def get_related_users(topic_name):
 def prepare_search_topic(context):
     context['ko_list']=[u'ㄱ', u'ㄲ', u'ㄴ', u'ㄷ', u'ㄸ', u'ㄹ', u'ㅁ', u'ㅂ', u'ㅃ', u'ㅅ', u'ㅆ', u'ㅇ', u'ㅈ', u'ㅉ', u'ㅊ', u'ㅋ', u'ㅌ', u'ㅍ', u'ㅎ']
     context['en_list']=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    
+def pretty_date(time=False):
+    """
+    Get a datetime object or a int() Epoch timestamp and return a
+    pretty string like 'an hour ago', 'Yesterday', '3 months ago',
+    'just now', etc
+    """
+    from datetime import datetime
+    now = datetime.now()
+    if type(time) is int:
+        diff = now - datetime.fromtimestamp(time)
+    elif isinstance(time,datetime):
+        diff = now - time 
+    elif not time:
+        diff = now - now
+    second_diff = diff.seconds
+    day_diff = diff.days
+
+    if day_diff < 0:
+        return ''
+
+    if day_diff == 0:
+        if second_diff < 10:
+            return "방금 전"
+        if second_diff < 60:
+            return str(second_diff) + "초 전"
+        if second_diff < 120:
+            return  "1분 전"
+        if second_diff < 3600:
+            return str( second_diff / 60 ) + "분 전"
+        if second_diff < 7200:
+            return "1시간 전"
+        if second_diff < 86400:
+            return str( second_diff / 3600 ) + "시간 전"
+    if day_diff == 1:
+        return "어제"
+    if day_diff < 7:
+        return str(day_diff) + "일 전"
+    if day_diff < 31:
+        return str(day_diff/7) + "주 전"
+    if day_diff < 365:
+        return str(day_diff/30) + "개월 전"
+    return str(day_diff/365) + "년 전"

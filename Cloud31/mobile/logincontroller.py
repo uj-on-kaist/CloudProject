@@ -43,6 +43,14 @@ def signin(request):
                 login(request, user)
             else:
                 return my_utils.return_error('That User is not Active')
+            user_profile = UserProfile.objects.get(user=user)
+            result['profile']=dict()
+            try:
+                result['profile']['username']= user.last_name
+                result['profile']['picture']= user_profile.picture.url
+            except:
+                 result['profile']['picture']='/media/default.png'
+            
         else:
             return my_utils.return_error('Signin Failed')
     except Exception as e:
