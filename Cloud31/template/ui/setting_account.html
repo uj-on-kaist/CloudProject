@@ -38,19 +38,48 @@ Email Address:
 Password:
 </div>
 <div class="setting_field">
-<a href="#" onclick="$(this).parent().find('.change_field').show(); $(this).remove();  return false;">(change)</a>
-
-<div class="change_field">
-<input type="password" placeholder="새 비밀번호" name="new_password" class="setting_input input_167_25">
-<input type="password" placeholder="현재 비밀번호" name="password1" class="setting_input input_167_25">
-<input type="password" placeholder="현재 비밀번호 (확인)" name="password2" class="setting_input input_167_25">
-</div>
 {% if password_error_msg %}
     <div class="ui-widget"><div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
         <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
         {{ password_error_msg }}</p>
     </div>
+    <div class="change_field" style="display:block; margin-top:5px;">
+    <table style="margin:0px">
+    <tr>
+        <td>새 비밀번호</td>
+        <td><input type="password" name="new_password" class="setting_input input_167_25"></td>
+    </tr>
+    <tr>
+        <td>현재 비밀번호</td>
+        <td><input type="password" name="password1" class="setting_input input_167_25"></td>
+    </tr>
+    <tr>
+        <td>현재 비밀번호 (확인)</td>
+        <td><input type="password" name="password2" class="setting_input input_167_25"></td>
+    </tr>
+    </table>
+    </div>
+{% else %}
+    <a href="#" onclick="$(this).parent().find('.change_field').show(); $(this).remove();  return false;">(change)</a>
+    <div class="change_field">
+    <table style="margin:0px">
+    <tr>
+        <td>새 비밀번호</td>
+        <td><input type="password" name="new_password" class="setting_input input_167_25"></td>
+    </tr>
+    <tr>
+        <td>현재 비밀번호</td>
+        <td><input type="password" name="password1" class="setting_input input_167_25"></td>
+    </tr>
+    <tr>
+        <td>현재 비밀번호 (확인)</td>
+        <td><input type="password" name="password2" class="setting_input input_167_25"></td>
+    </tr>
+    </table>
+    </div>
 {% endif %}
+
+
 
 </div>
 </li>

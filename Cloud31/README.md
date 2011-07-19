@@ -31,3 +31,8 @@ https://github.com/btbytes/pyofc2
 ### Django OFC2( PyOFC2 )
 https://github.com/btbytes/djofc2_demo
 Open Flash Chart
+
+
+### 권한 관련
+media 폴더의 files와 profile 폴더의 권한 소유 유저와 그룹을 아파치 세팅에 맞게 변환해주어야 함.
+ex) chown daemon:daemon files
