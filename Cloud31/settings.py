@@ -136,7 +136,7 @@ INSTALLED_APPS = (
     # My Applications
     'Cloud31.controller',
     'Cloud31.sidebar',
-    'Cloud31.django_cron',
+    'django_cron',
     'Cloud31.mobile',   
 )
 
