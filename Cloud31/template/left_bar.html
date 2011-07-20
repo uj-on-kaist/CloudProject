@@ -37,8 +37,10 @@
         <span class="ui_icon ui_icon_topic"></span>
         Topics
     </li></a>
+    <li class="topic_menu_item">
     {% if user_favorite_topics %}
-    <div id="topic_favor_list">
+    
+    <ul id="topic_favor_list" style="margin:0; padding:0; float:left;width:100%;">
     {% for topic in user_favorite_topics %}
     <li class="menu_item topic_favor_item {% if forloop.last %}last{% endif%}" topic="{{topic}}">
         <a href="/topic/{{topic}}">
@@ -48,9 +50,16 @@
         </a>
          <a href="#" class="del_btn" style="float:right;margin-top:7px;" onclick="unfavor_topic('{{ topic }}'); return false;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
     </li>
+    
     {% endfor %}
-    </div>
+    </ul>
+    
+    {% else %}
+    <ul id="topic_favor_list" style="margin:0; padding:0; float:left;width:100%; display:none;">
+    </ul>
     {% endif %}
+    </li>
+    
         <a href="/members/"><li class="menu_item {{ page_member }}">
         <span class="ui_icon ui_icon_member"></span>
         Members

@@ -35,20 +35,22 @@ from django.conf import settings
 def download_file(request, file_id):
     target_file = get_object_or_404(models.File,id=file_id)
     agent = request.META['HTTP_USER_AGENT']
+    print agent
     try:
         path = target_file.file_contents.path
         content_type = mimetypes.guess_type( path )[0]
         my_data = File(open(path))
         response = HttpResponse(my_data,content_type=content_type)
         response['Content-Length'] = target_file.file_contents.size
-        #file_name = smart_unicode('attachment; filename=%s' % target_file.file_name, encoding='utf-8', strings_only=False, errors='strict')
+        file_name = smart_unicode(target_file.file_name, encoding='utf-8', strings_only=False, errors='strict')
         response['Content-Disposition'] = 'attachment; filename=\"' + smart_str(target_file.file_name) +'\"'
         if 'MSIE' in agent:
-            try:
-                print smart_str(target_file.file_name).encode("ascii",'ignore')
-            except:
-                (fileBaseName, fileExtension)=os.path.splitext(smart_str(target_file.file_name))
-                response['Content-Disposition'] = 'attachment; filename=\"download'+fileExtension+'\"'
+            print "1Agent "+agent
+            (fileBaseName, fileExtension)=os.path.splitext(smart_str(file_name))
+            asdf = unicode("attachment; filename=\"download"+fileExtension+"\"")
+            import unicodedata
+            asdf = unicodedata.normalize('NFKD', asdf).encode('ascii','ignore')
+            response['Content-Disposition'] = asdf
             
         response['Pragma'] = 'no-cache'
         response['Expires'] = '0'
@@ -143,14 +145,17 @@ def save_upload(request, uploaded, filename, raw_data ):
                 (dirName, fileName) = os.path.split(filename)
                 (fileBaseName, fileExtension)=os.path.splitext(fileName)
                 fileExtension=fileExtension[1:]
-                print fileName+"['"+fileBaseName+ "','"+fileExtension+"']"
+                print "2 " + fileName+"['"+fileBaseName+ "','"+fileExtension+"']"
                 
                 # TODO: figure out when this gets called, make it work to save into a Photo like above
-                for c in uploaded.chunks( ):
+                for c in uploaded.chunks():
                     dest.write( c )
-
+                
+                dest.close()
                 new_file = models.File(file_type=fileExtension,file_name=input_file_name, uploader=user)
-                new_file.file_contents.save(fileName,File(open(filename)))
+                fileName2 = user.username + "_" + str(uuid.uuid1()) +'.'+ fileExtension
+                new_file.file_contents.save(fileName2,File(open(filename)))
+                new_file.save()
 
     except IOError:
         # could not open the file most likely

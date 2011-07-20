@@ -261,3 +261,8 @@ font-size: 14px;
 #lng_value{
     display: none;
 }
+
+#feed_list, #message_list, #event_list{
+    float: left;
+width: 100%;
+}

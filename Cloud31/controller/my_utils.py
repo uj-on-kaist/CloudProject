@@ -65,6 +65,9 @@ def process_messages(request, messages):
         try:
             user_profile = UserProfile.objects.get(user=message.author)
             feed['author_picture']= user_profile.picture.url
+            feed['author_name']=message.author.last_name
+            feed['author_dept']=user_profile.dept
+            feed['author_position']=user_profile.position
         except:
             feed['author_picture']='/media/default.png'
         feed['author_name']=message.author.last_name
@@ -95,6 +98,7 @@ def process_messages(request, messages):
                 except:
                     item['author_picture']='/media/default.png'
                 item['contents']= parser.parse_text(comment.contents)
+                item['contents_original']= comment.contents
                 item['reg_date']= str(comment.reg_date)
                 feed['comments'].append(item)
         except:
