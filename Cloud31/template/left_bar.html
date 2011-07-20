@@ -43,7 +43,7 @@
     <ul id="topic_favor_list" style="margin:0 0 10px 0; padding:0; float:left;width:100%;">
     {% for topic in user_favorite_topics %}
     <li class="menu_item topic_favor_item {% if forloop.last %}last{% endif%}" topic="{{topic.id}}">
-        <a href="/topic/{{topic.name}}">
+        <a href="/topic/{{topic.id}}">
             <p style="margin:0; padding:0; float:left; width:130px; overflow:hidden;{% if topic_name == topic.name %}font-weight:bold;{% endif %}">
                 #{{topic.name}}
             </p>

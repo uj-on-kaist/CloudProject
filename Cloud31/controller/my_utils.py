@@ -107,14 +107,17 @@ def process_messages(request, messages):
         except:
             pass
         
-        attach_files = message.attach_files.split('.')
-        if attach_files[0] is not u'':
-            try:
-                files = File.objects.filter(id__in=attach_files)
-                feed['file_list']=process_files(files)
-            except Exception as e:
-                print str(e)
-                pass
+        attach_list = message.attach_files.split('.')
+        attach_files = list()
+        for a_file in attach_list:
+            if a_file != '':
+                attach_files.append(a_file)
+        try:
+            files = File.objects.filter(id__in=attach_files)
+            feed['file_list']=process_files(files)
+        except Exception as e:
+            print str(e)
+            pass
         
         try:
             user = User.objects.get(username=request.user.username)

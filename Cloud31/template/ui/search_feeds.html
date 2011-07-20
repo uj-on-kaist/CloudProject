@@ -9,7 +9,7 @@ No Result
 <div class="stream feed_item search_feed_item" id="feed_{{ feed.id }}" data-guids="3,4" id="main_stream" onclick="location.href='/feed/detail/{{ feed.id }}'"><div class="stream_element">
   <div class="sm_body">
     <a href="/user/{{ feed.author }}" class="user_link">
-      <img class="avatar author" src="/picture/{{ feed.author }}" data-person_id="2">
+      <img class="avatar author" src="{{ feed.author_picture }}" data-person_id="2">
     </a>
     <div class="content">
       <div class="from">

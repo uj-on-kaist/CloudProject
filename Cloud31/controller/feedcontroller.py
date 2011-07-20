@@ -128,11 +128,16 @@ def load_comany_feed(request):
     result['message']='success'
     try:
         base_id = request.GET.get("base_id",False)
+        to_id = request.GET.get("to_id",False)
         additional = Q()
+        load_length = DEFAULT_LOAD_LENGTH
         if base_id:
             additional = Q(id__lt=base_id)
+        if to_id:
+            load_length = 10000
+            additional = Q(id__gte=base_id)
         
-        messages = Message.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+        messages = Message.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:load_length]
         result['feeds']=my_utils.process_messages(request,messages)
         
         if len(messages) == DEFAULT_LOAD_LENGTH:
@@ -183,16 +188,23 @@ def load_my_timeline(request):
         user = User.objects.get(username=request.user.username)
         try:
             base_id = request.GET.get("base_id",False)
+            to_id = request.GET.get("to_id",False)
             additional = Q()
+            load_length=DEFAULT_LOAD_LENGTH
             if base_id:
                 try:
                     timeline = UserTimeline.objects.get(id=base_id)
                     additional = Q(update_date__lt=timeline.update_date)
                 except:
                     pass
-                    
+            if to_id:
+                try:
+                    timeline = UserTimeline.objects.get(id=base_id)
+                    additional = Q(update_date__gte=timeline.update_date)
+                except:
+                    pass               
             
-            timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-update_date')[:DEFAULT_LOAD_LENGTH]
+            timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-update_date')[:load_length]
             
             if len(timelines) == DEFAULT_LOAD_LENGTH:
                 result['load_more']=True

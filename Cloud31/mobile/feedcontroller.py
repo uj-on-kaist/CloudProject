@@ -26,6 +26,21 @@ from controller import parser
 
 from django.views.decorators.csrf import csrf_exempt
 
+
+def get_feed(request,feed_id):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    try:
+        feed = Message.objects.filter(id=feed_id)
+        print feed
+        result['feed']=my_utils.process_messages(request, feed)
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Empty Message')
+        
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
 @csrf_exempt
 def update(request):
     result=dict()
@@ -124,4 +139,85 @@ def update(request):
     else:
         return my_utils.return_error('Empty Message')
     
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+@csrf_exempt
+def update_comment(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    input_message=''
+    if request.method == 'POST':
+        if request.POST['message']:
+            input_message=smart_unicode(request.POST['message'], encoding='utf-8', strings_only=False, errors='strict')
+        if request.POST['feed_id']:
+            feed_id = request.POST['feed_id']
+
+    if input_message is not '':
+        try:
+            user = User.objects.get(username=request.user.username)
+        except:
+            return my_utils.return_error('Please Sign in first')
+        
+        try:
+            message = Message.objects.filter(id=feed_id,is_deleted=False)[0]
+        except:
+            return my_utils.return_error('No such Message')
+            
+        try: 
+            new_comment = Comment(author=user,contents=input_message,message=message)
+            new_comment.save()
+        except:
+            return my_utils.return_error('Insert Failed')
+        
+        #Add To author Timeline
+        try:
+            author_timeline_new = UserTimeline.objects.filter(message=message,user=user)[0]
+        except:
+            #현재 없는 경우에만 넣는다.
+            try:
+                print 'hi'
+                author_timeline_new = UserTimeline.objects.get_or_create(message=message,user=user)[0]
+                author_timeline_new.save()
+            except:
+                pass
+        
+        try:
+            related_timelines = UserTimeline.objects.filter(message=message)
+            if not related_timelines:
+                pass
+            for timeline in related_timelines:
+                try:
+                    if timeline.user.username != request.user.username:
+                        timeline.save()
+                        
+                        #SEND NOTIFICATION
+                        info = dict()
+                        info['from'] = request.user
+                        info['to'] = timeline.user
+                        info['comment'] = input_message
+                        info['target_object'] = message
+                        register_noti(request, "new_comment",info)
+                except:
+                    pass
+        except Exception as e:
+            print str(e)
+            return my_utils.return_error('Related Timelilne Failed')
+            
+        #Question! Should do insert into related Topic timeline?
+    else:
+        return my_utils.return_error('Empty Message')
+    
+    try:
+        item = dict()
+        item['id']=new_comment.id
+        item['author']=new_comment.author.username
+        item['author_picture']=UserProfile.objects.get(user=new_comment.author).picture.url
+        item['author_name']=new_comment.author.last_name
+        item['contents']= parser.parse_text(new_comment.contents)
+        item['reg_date']= str(new_comment.reg_date)
+        result['comment']=item
+    except Exception as e:
+        print str(e)
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')

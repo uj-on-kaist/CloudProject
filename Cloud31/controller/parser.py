@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.utils.encoding import smart_unicode
 
+from controller.models import *
 
 import re
 def parse_text(text):
@@ -12,8 +13,17 @@ def parse_text(text):
         prefix = item[:1]
         link_prefix = item[:7]
         if prefix == "#":
-            item_text = item[1:]
-            item = '<a class="detect_item" href="/topic/'+item_text+'">'+prefix+'<span>'+item_text+'</span></a>'
+            topic_name = item[1:]
+            topic_name = smart_unicode(topic_name, encoding='utf-8', strings_only=False, errors='strict')
+            try:
+                topic = Topic.objects.get(topic_name=topic_name)
+                item_link=str(topic.id)
+                item_text = topic.topic_name
+            except Exception as e:
+                print str(e)
+                item_link='-1'
+                item_text=topic_name
+            item = '<a class="detect_item" href="/topic/'+item_link+'">'+prefix+'<span>'+item_text+'</span></a>'
             
         if prefix == "@":
             item_text=re.sub("\W","",item)

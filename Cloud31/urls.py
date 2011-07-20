@@ -43,7 +43,7 @@ urlpatterns = patterns('',
     
     
     url(r'^topic/$','controller.topiccontroller.topic'),
-    url(r'^topic/(?P<topic_name>\w+)/$','controller.topiccontroller.topic_detail'),
+    url(r'^topic/(?P<topic_id>\w+)/$','controller.topiccontroller.topic_detail'),
     url(r'^api/topic/favor/(?P<topic_id>\w+)$','controller.topiccontroller.topic_favorite'),
     url(r'^api/topic/unfavor/(?P<topic_id>\w+)$','controller.topiccontroller.topic_unfavorite'),
     

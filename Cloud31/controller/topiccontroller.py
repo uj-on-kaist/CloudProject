@@ -13,7 +13,6 @@ from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_unicode
 
 from django.db.models import Q
@@ -91,24 +90,21 @@ def topic(request):
     
     
 @login_required(login_url='/signin/')
-def topic_detail(request,topic_name):
+def topic_detail(request,topic_id):
     t = loader.get_template('topic_detail.html')
     context = RequestContext(request)
     my_utils.load_basic_info(request, context)
     
-    topic_name = smart_unicode(topic_name, encoding='utf-8', strings_only=False, errors='strict')
     
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     print context['user_favorite_topics']
     context['side_list']=['topic_detail']
     context['topic']=list()
-    try:
-        context['topic'] = Topic.objects.filter(topic_name=topic_name)[0]
-    except Exception as e:
-        pass
+    context['topic'] = get_object_or_404(Topic,id=int(topic_id))
+    
     
     context['page_topic'] = "selected"
-    context['load_type']='topic#' + topic_name
+    context['load_type']='topic#' + context['topic'].topic_name
     context['topic_name']=context['topic'].topic_name
     context['topic_id']=context['topic'].id
     
