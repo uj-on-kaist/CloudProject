@@ -231,12 +231,17 @@ function display_feeds(feeds, type){
          
         feed_layout.find('.comment_action a').attr("feed_id",feed.id);
         feed_layout.find('.comment_action a').click(function(){
-            $("#feed_"+$(this).attr("feed_id")+" ul.comments").show();
+            $("#feed_"+$(this).attr("feed_id")+" ul.comments").each(function(){
+                $(this).show();
+                if($(this).find("li").length == 0){
+                    $(this).hide();
+                }
+                
+            });
         });
         
         feed_layout.find('span.comment_count_text').text(feed.comments.length);
         if(feed.comments.length == 0){
-            
             feed_layout.find('ul.comments.comment_count li span').text('댓글이 없습니다.');
             feed_layout.find('ul.comments.comment_list').hide();
             feed_layout.find("ul.comments.comment_count a.show_all").attr('id','comment_show_'+feed.id);

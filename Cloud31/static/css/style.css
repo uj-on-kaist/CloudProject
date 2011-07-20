@@ -391,12 +391,15 @@ li.menu_item{
 li.menu_item:hover{
     background-color: rgb(235,250,250);
 }
+ul#topic_favor_list{
+    margin-bottom: 10px;
+}
 li.selected.menu_item{background-color: rgb(196,231,241); font-weight: bold;}
 li.selected.menu_item:hover{background-color: rgb(196,231,241);}
 li.topic_menu_item{
     float: left;
     width: 174px;
-    padding: 0 8px;
+    padding: 0;
     line-height: 23px;
     font-size: 12px;list-style: none;
     font-weight: normal;
@@ -416,7 +419,6 @@ li.topic_favor_item:hover .del_btn{
     display: inline;
 }
 li.topic_favor_item.last{
-    margin-bottom: 5px;
 }
 
 .user_box{float:left; width:100%; padding:0px 14px 5px 14px;}

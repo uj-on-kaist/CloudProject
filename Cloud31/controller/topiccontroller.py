@@ -112,6 +112,11 @@ def topic_detail(request,topic_name):
     context['topic_name']=context['topic'].topic_name
     context['topic_id']=context['topic'].id
     
+    context['topic_favorited']=False
+    for favorite in context['user_favorite_topics']:
+        if context['topic_id'] == favorite['id']:
+            context['topic_favorited']=True
+    
     context['related_users']=my_utils.get_related_users(context['topic'].topic_name)
     return HttpResponse(t.render(context))
     
@@ -178,7 +183,7 @@ def update_description(request):
     
     
     
-def topic_favorite(request, topic_name):
+def topic_favorite(request, topic_id):
     result=dict()
     result['success']=True
     result['message']='success'
@@ -189,7 +194,8 @@ def topic_favorite(request, topic_name):
         return my_utils.return_error('Please Sign in first')
         
     try:
-        topic = Topic.objects.filter(topic_name=topic_name)[0]
+        topic = Topic.objects.filter(id=topic_id)[0]
+        result['topic_name']=topic.topic_name
     except:
         return my_utils.return_error('No such Topic')
     
@@ -202,7 +208,7 @@ def topic_favorite(request, topic_name):
     
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
-def topic_unfavorite(request, topic_name):
+def topic_unfavorite(request, topic_id):
     result=dict()
     result['success']=True
     result['message']='success'
@@ -213,7 +219,7 @@ def topic_unfavorite(request, topic_name):
         return my_utils.return_error('Please Sign in first')
         
     try:
-        topic = Topic.objects.filter(topic_name=topic_name)[0]
+        topic = Topic.objects.filter(id=topic_id)[0]
     except:
         return my_utils.return_error('No such Topic')
     

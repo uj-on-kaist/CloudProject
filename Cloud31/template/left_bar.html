@@ -40,22 +40,22 @@
     <li class="topic_menu_item">
     {% if user_favorite_topics %}
     
-    <ul id="topic_favor_list" style="margin:0; padding:0; float:left;width:100%;">
+    <ul id="topic_favor_list" style="margin:0 0 10px 0; padding:0; float:left;width:100%;">
     {% for topic in user_favorite_topics %}
-    <li class="menu_item topic_favor_item {% if forloop.last %}last{% endif%}" topic="{{topic}}">
-        <a href="/topic/{{topic}}">
-            <p style="margin:0; padding:0; float:left; width:130px; overflow:hidden;{% if topic_name == topic %}font-weight:bold;{% endif %}">
-                #{{topic}}
+    <li class="menu_item topic_favor_item {% if forloop.last %}last{% endif%}" topic="{{topic.id}}">
+        <a href="/topic/{{topic.name}}">
+            <p style="margin:0; padding:0; float:left; width:130px; overflow:hidden;{% if topic_name == topic.name %}font-weight:bold;{% endif %}">
+                #{{topic.name}}
             </p>
         </a>
-         <a href="#" class="del_btn" style="float:right;margin-top:7px;" onclick="unfavor_topic('{{ topic }}'); return false;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+         <a href="#" class="del_btn" style="float:right;margin-top:7px;" onclick="unfavor_topic('{{ topic.id }}'); return false;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
     </li>
     
     {% endfor %}
     </ul>
     
     {% else %}
-    <ul id="topic_favor_list" style="margin:0; padding:0; float:left;width:100%; display:none;">
+    <ul id="topic_favor_list" style="margin:0 0 10px 0;padding:0; float:left;width:100%; display:none;">
     </ul>
     {% endif %}
     </li>

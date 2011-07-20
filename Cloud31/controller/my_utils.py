@@ -39,7 +39,10 @@ def get_favorite_topics(user):
     try:
         favorites = UserTopicFavorite.objects.filter(user=user)
         for favorite in favorites:
-            result.append(favorite.topic.topic_name)
+            topic=dict()
+            topic['name']=favorite.topic.topic_name
+            topic['id']=favorite.topic.id
+            result.append(topic)
     except Exception as e:
         print 'Error '+str(e)
         pass
