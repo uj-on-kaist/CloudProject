@@ -283,7 +283,7 @@ def load_favorite(request, user_name):
     result['message']='success'
     
     try:
-        user = User.objects.get(username=request.user.username)
+        user = User.objects.get(username=user_name)
         try:
             base_id = request.GET.get("base_id",False)
             additional = Q()
