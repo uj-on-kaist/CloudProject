@@ -892,3 +892,13 @@ ul.comments li .user_image_box{
     float: left;
     width:525px;
 }
+
+
+ul#menu_list li.header_menu_item{
+    line-height: 23px;
+height: 23px;
+font-size: 12px;
+list-style: none;
+font-weight: normal;
+color: #323232;
+}
