@@ -256,7 +256,6 @@ def next_search_index(index):
         
 
 def get_related_users(topic_name):
-    print 123123
     try:
         users = Message.objects.filter(related_topics__contains=topic_name+',').values('author').distinct()[:20]
         result = list()

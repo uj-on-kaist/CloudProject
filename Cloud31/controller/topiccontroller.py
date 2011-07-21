@@ -132,7 +132,8 @@ def load_topic_timeline(request,topic_name):
         try:
             timelines = TopicTimeline.objects.filter(additional, topic=topic).order_by('-update_date')[:DEFAULT_LOAD_LENGTH]
             if not timelines:
-                return return_error('No Such Topic #2') 
+                result['feeds']=my_utils.process_messages(request, list())
+                return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
             messages = list()
             for timeline in timelines:
                 try:
@@ -152,7 +153,7 @@ def load_topic_timeline(request,topic_name):
             result['success']=True
             result['message']='Do not have any message'
     except:
-            return return_error('No Such Topic')
+            return my_utils.return_error('No Such Topic')
             
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     

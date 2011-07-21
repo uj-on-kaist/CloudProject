@@ -33,7 +33,6 @@ def get_feed(request,feed_id):
     result['message']='success'
     try:
         feed = Message.objects.filter(id=feed_id)
-        print feed
         result['feed']=my_utils.process_messages(request, feed)
     except Exception as e:
         print str(e)
@@ -140,7 +139,43 @@ def update(request):
         return my_utils.return_error('Empty Message')
     
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
-    
+
+@csrf_exempt
+def delete(request, feed_id):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    print feed_id
+    try:
+        user = User.objects.get(username=request.user.username)
+        try:
+            message = Message.objects.get(author=user, id=feed_id)
+            message.is_deleted=True
+            message.save()
+            
+            try:
+                related_topics = message.related_topics.split(",")
+                for topic_name in related_topics:
+                    if topic_name:
+                        topic = Topic.objects.get(topic_name=topic_name)
+                        topic.reference_count -=1
+                        topic.save()
+                
+                related_topic_timelines = TopicTimeline.objects.filter(message=message)
+                for timeline in related_topic_timelines:
+                    timeline.delete()
+            
+            except Exception as e:
+                print str(e)+"[11234]"
+                pass
+        except:
+            result['success']=True
+            result['message']='Invalid action'
+    except:
+            return my_utils.return_error('Please Sign in First')
+            
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
 @csrf_exempt
 def update_comment(request):
     result=dict()
