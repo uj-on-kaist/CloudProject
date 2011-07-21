@@ -67,10 +67,10 @@ def process_messages(request, messages):
         feed['author']=message.author.username
         try:
             user_profile = UserProfile.objects.get(user=message.author)
-            feed['author_picture']= user_profile.picture.url
             feed['author_name']=message.author.last_name
             feed['author_dept']=user_profile.dept
             feed['author_position']=user_profile.position
+            feed['author_picture']= user_profile.picture.url
         except:
             feed['author_picture']='/media/default.png'
         feed['author_name']=message.author.last_name

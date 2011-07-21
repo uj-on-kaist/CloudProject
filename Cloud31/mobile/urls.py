@@ -14,5 +14,6 @@ urlpatterns = patterns('',
     
     url(r'topic/detail/(?P<topic_id>\w+)','mobile.topiccontroller.detail'), 
     url(r'^feed/topic/(?P<topic_id>\w+)/$','mobile.topiccontroller.load_topic_timeline'),
-   
+    
+    url(r'^user/detail/(?P<username>\w+)/$','mobile.usercontroller.detail'),
 )
