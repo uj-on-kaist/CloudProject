@@ -27,6 +27,22 @@ from controller import parser
 from django.views.decorators.csrf import csrf_exempt
 
 
+
+def popular(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    result['topics']=list()
+    
+    topics = Topic.objects.all().order_by("-reference_count")[:20]
+    for topic in topics:
+        a_topic=dict()
+        a_topic['id']=topic.id
+        a_topic['topic_name']=topic.topic_name
+        result['topics'].append(a_topic)
+    
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
 def detail(request, topic_id):
     result=dict()
     result['success']=True

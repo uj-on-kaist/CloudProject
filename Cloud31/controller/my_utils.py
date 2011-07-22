@@ -63,6 +63,7 @@ def process_messages(request, messages):
     feeds=list()
     for message in messages:
         feed = dict()
+        feed['result_type']='feed'
         feed['id']=message.id
         feed['author']=message.author.username
         try:
@@ -136,6 +137,7 @@ def process_files(files):
     for a_file in files:
         try:
             item = dict()
+            item['result_type']='file'
             #file_path = settings.PROJECT_PATH + '/media/'+smart_unicode(a_file.file_contents.url, encoding='utf-8', strings_only=False, errors='strict')
             #if not os.path.isfile(file_path):
             #    print file_path
