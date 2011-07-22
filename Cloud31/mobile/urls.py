@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'feed/get/(?P<feed_id>\w+)','mobile.feedcontroller.get_feed'),
     
     url(r'file/upload','mobile.filecontroller.file_upload'),
+    url(r'picture/upload','mobile.filecontroller.picture_upload'),
     
     url(r'topic/detail/(?P<topic_id>\w+)','mobile.topiccontroller.detail'),
     url(r'^topic/popular/','mobile.topiccontroller.popular'),

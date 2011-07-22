@@ -107,10 +107,10 @@ def search_file(request):
     result['message']='success'
     result['items']=list()
     inStr = request.GET.get('q','')
+    inStr=smart_unicode(inStr, encoding='utf-8', strings_only=False, errors='strict')
     if inStr == '' or inStr.strip() == '':
         return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     base_id = request.GET.get("base_id",False)
-    
     try:
         arr = inStr.split(' ')
         query_type = Q()
@@ -139,7 +139,6 @@ def member(request):
         return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
     base_id = request.GET.get("base_id",False)
-    
     try:
         arr = inStr.split(' ')
         query_type_1 = Q()

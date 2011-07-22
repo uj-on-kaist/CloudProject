@@ -57,3 +57,31 @@ def file_upload(request):
         print str(e)
         return my_utils.return_error('Empty Message')
     return HttpResponse(json.dumps(result))
+    
+    
+@csrf_exempt
+def picture_upload(request):
+    result = dict()
+    result['code'] = 0
+    result['success'] = True
+    try:
+        if request.method == 'POST':
+            user=User.objects.get(id=request.user.id)
+            user_profile = UserProfile.objects.get(user=user)
+            if user:
+                file_content = ContentFile(request.FILES['photo'].read())
+                fileExtension=request.POST.get('fileExtension','')
+                file_name=request.FILES['photo'].name
+                new_file = File(file_type=fileExtension,file_name=file_name, uploader=user)
+                fileName2 = user.username + "_" + str(uuid.uuid1()) +'.'+ fileExtension
+                
+                
+                user_profile.picture.save(request.FILES['photo'].name, file_content)
+                user_profile.save()
+                result['changed_picture']=user_profile.picture.url
+            else:
+                return my_utils.return_error('No User')
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Empty Message')
+    return HttpResponse(json.dumps(result))
