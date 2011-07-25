@@ -65,9 +65,14 @@ def process_messages(request, messages):
         feed = dict()
         feed['result_type']='feed'
         feed['id']=message.id
-        feed['author']=message.author.username
         try:
             user_profile = UserProfile.objects.get(user=message.author)
+            feed['author']=message.author.username
+        except:
+            continue
+        
+        try:
+            
             feed['author_name']=message.author.last_name
             feed['author_dept']=user_profile.dept
             feed['author_position']=user_profile.position

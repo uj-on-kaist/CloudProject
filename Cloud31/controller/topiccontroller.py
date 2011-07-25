@@ -40,7 +40,7 @@ def topic(request):
     context['page_topic'] = "selected"
     context['topics']=list()
     
-    context['popular_topics'] = Topic.objects.all().order_by("-reference_count")[:20]
+    context['popular_topics'] = Topic.objects.filter(reference_count__gt=0,topic_name__gt='').order_by("-reference_count")[:20]
     # try:
 #         topics = 
 #     except:
@@ -64,7 +64,7 @@ def topic(request):
                 this_index,next_index=my_utils.next_search_index(search_index)
                 query_type = Q(topic_name__gt=this_index, topic_name__lt=next_index)
         
-        topics = Topic.objects.filter(query_type).order_by('topic_name')
+        topics = Topic.objects.filter(query_type, topic_name__gt='',reference_count__gt=0).order_by('topic_name')
         
         
         paginator = Paginator(topics, 15)

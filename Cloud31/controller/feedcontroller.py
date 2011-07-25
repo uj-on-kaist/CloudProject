@@ -142,7 +142,8 @@ def load_comany_feed(request):
         
         if len(messages) == DEFAULT_LOAD_LENGTH:
             result['load_more']=True
-    except:
+    except Exception as e:
+        print str(e)
         result['success']=True
         result['message']='Do not have any message'
             

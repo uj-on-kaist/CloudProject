@@ -16,19 +16,26 @@ def parse_text(text):
             topic_name = item[1:]
             topic_name = smart_unicode(topic_name, encoding='utf-8', strings_only=False, errors='strict')
             try:
-                topic = Topic.objects.get(topic_name=topic_name)
+                topic = Topic.objects.get(topic_name=topic_name, topic_name__gt='')
                 item_link=str(topic.id)
                 item_text = topic.topic_name
+                item = '<a class="detect_item" href="/topic/'+item_link+'">'+prefix+'<span>'+item_text+'</span></a>'
             except Exception as e:
-                print str(e)
-                item_link='-1'
-                item_text=topic_name
-            item = '<a class="detect_item" href="/topic/'+item_link+'">'+prefix+'<span>'+item_text+'</span></a>'
+                pass
             
         if prefix == "@":
-            item_text=re.sub("\W","",item)
-            item_remain=item[1:].replace(item_text,'')
-            item = '<a class="detect_item" href="/user/'+item_text+'">'+prefix+'<span>'+item_text+'</span></a>'+item_remain
+            item_text=item[1:]
+            user_name = smart_unicode(item[1:], encoding='utf-8', strings_only=False, errors='strict')
+            try:
+                user = User.objects.get(username=user_name)
+                item = '<a class="detect_item" href="/user/'+user.username+'">@<span>'+item_text+'</span></a>'
+            except:
+                pass
+            try:
+                user = User.objects.get(last_name=user_name)
+                item = '<a class="detect_item" href="/user/'+user.username+'">@<span>'+item_text+'</span></a>'
+            except:
+                pass
         
         if link_prefix == "http://":
             item = '<a href="'+item+'" target=_blank>'+item+'</a>'
@@ -49,8 +56,20 @@ def detect_users(text):
     for item in items:
         prefix = item[:1]
         if prefix == "@":
-            item_text=re.sub("\W","",item)
-            detected_users.append(item_text)
+            user_name=item[1:]
+            try:
+                user = User.objects.get(username=user_name)
+                detected_users.append(user.username)
+                continue
+            except:
+                pass
+            try:
+                user = User.objects.get(last_name=user_name)
+                detected_users.append(user.username)
+                continue
+            except:
+                pass            
+            
      
     return detected_users
 
