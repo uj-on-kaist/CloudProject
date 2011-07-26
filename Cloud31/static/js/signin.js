@@ -84,7 +84,11 @@ function check_form(item){
             input_desc.show();
         }
     });
+    item.find(".input_desc").each(function(){
+        if(all_valid && $(this).is(':visible')){
+            all_valid = false;
+        }
+    });
     
-    console.log(all_valid);
     return all_valid;
 }
