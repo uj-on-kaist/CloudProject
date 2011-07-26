@@ -173,7 +173,6 @@ def get_start_end_time(in_start,in_end):
 def recent_pop_topics(request):
     date_before = 90
     range_const = 1
-    
     end_time = now_datetime()
     start_time = end_time - dt.timedelta(date_before)
     
@@ -185,33 +184,35 @@ def recent_pop_topics(request):
     
     accu = request.GET.get("accu", False)
     if accu == "1":
-        topics = TopicTimeline.objects.filter(update_date__range=(start_time, end_time)).values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
+        topics = TopicTimeline.objects.filter(update_date__range=(start_time, end_time), topic__topic_name__gt='').values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
         
         x = x_axis()
         y = y_axis()
         y.min, y.max, y.steps = 0, 5, 5
         chart = open_flash_chart()
         chart.y_axis = y
-        
         for item in topics:
-            topic = Topic.objects.get(id=item['topic'])
-            data = list()
-            time = start_time
-            label_list = list()
-            while time < end_time:
-                next_time = time + dt.timedelta(range_const)
-                count = TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
-                data.append(count)
-                if count > y.max:
-                    y.max = count+5
-                label_list.append(time.strftime("%B %d, %Y"))
-                time = next_time
-            l = line()
-            l.tip = topic.topic_name+"<br>#val# Feeds"
-            l.values = data
-            l.colour = "#" + "%x" % random.randint(0,255) + "%x" % random.randint(0,255) + "%x" % random.randint(0,255)
-            l.text = "#" + topic.topic_name
-            chart.add_element(l)
+            try:
+                topic = Topic.objects.get(id=item['topic'])
+                data = list()
+                time = start_time
+                label_list = list()
+                while time < end_time:
+                    next_time = time + dt.timedelta(range_const)
+                    count = TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
+                    data.append(count)
+                    if count > y.max:
+                        y.max = count+5
+                    label_list.append(time.strftime("%B %d, %Y"))
+                    time = next_time
+                l = line()
+                l.tip = topic.topic_name+"<br>#val# Feeds"
+                l.values = data
+                l.colour = "#" + "%x" % random.randint(0,255) + "%x" % random.randint(0,255) + "%x" % random.randint(0,255)
+                l.text = "#" + topic.topic_name
+                chart.add_element(l)
+            except:
+                pass
         
         lbl = x_axis_labels(steps=date_before/3,labels=label_list)
         x.labels = lbl
@@ -224,7 +225,7 @@ def recent_pop_topics(request):
         return HttpResponse(chart.render())
         
     else:
-        topics = TopicTimeline.objects.filter(update_date__range=(start_time, end_time)).values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
+        topics = TopicTimeline.objects.filter(update_date__range=(start_time, end_time), topic__topic_name__gt='').values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
     
         values = list()
         total = 0
@@ -232,11 +233,13 @@ def recent_pop_topics(request):
             total += int(item['topic_count'])
             
         for item in topics:
-            topic = Topic.objects.get(id=item['topic'])
-            value = pie_value(label="#"+topic.topic_name, value=item['topic_count'])
-            value.tip = "#label#<br> #val# Feeds ("+str("%.2f" % (float(item['topic_count'])*100.0/total))+"%)"
-            values.append(value)
-
+            try:
+                topic = Topic.objects.get(id=item['topic'])
+                value = pie_value(label="#"+topic.topic_name, value=item['topic_count'])
+                value.tip = "#label#<br> #val# Feeds ("+str("%.2f" % (float(item['topic_count'])*100.0/total))+"%)"
+                values.append(value)
+            except:
+                pass
         p = pie()
         p.values = values
         p.tip = "#label#<br>#val# Feeds"
