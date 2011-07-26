@@ -73,7 +73,6 @@ swfobject.embedSWF(
         <th width="60" class="first"><p></p></th>
         <th width="160" ><p>User</p></th>
         <th width="160"><p>Department/Position</p></th>
-        <th width="60"><p>Feeds</p></th>
     </tr>
     
     {% for member in members.object_list %}
@@ -87,7 +86,6 @@ swfobject.embedSWF(
             <p>{{ member.profile.dept }}</p>
             <p>{{ member.profile.position }}</p>
         </td>
-        <td>hello</td>
     </tr>
     {% endfor%}
 </table>

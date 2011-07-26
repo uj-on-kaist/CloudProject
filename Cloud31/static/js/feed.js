@@ -109,6 +109,11 @@ function load_feed(type, load_more, base_id){
     
     if(load_more){
         url+="?base_id="+base_id;
+        if($("#feed_sort_method").length != 0){
+            url+="&sort="+$("#feed_sort_method").val();
+        }
+    }else if($("#feed_sort_method").length != 0){
+        url+="?sort="+$("#feed_sort_method").val();
     }
     
     if(!load_more)
@@ -662,4 +667,13 @@ function initialize_map() {
         $("#location_info_box").attr("attached","true");
         $("#location_info_box").show();
     });
+}
+
+
+function change_sort_method(item){
+    var val=item.val();    
+    var type = $("#feed_list").attr('type');
+    if(type == 'notice')
+        return;
+    load_feed(type);
 }

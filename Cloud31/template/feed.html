@@ -19,6 +19,14 @@
 <a href="#" onclick="load_feed('notice'); return false;">
     <span class="tab_item corner_top" onclick="select_this_tab($(this)); return false;">Notice</span>
 </a>
+
+<div style="float:right; position:relative; top:-5px">
+<select onchange="change_sort_method($(this));" id="feed_sort_method">
+<option value="reg_date">작성일 순</option>
+<option value="update_date">업데이트 순</option>
+</select>
+</div>
+
 </div>
 
 

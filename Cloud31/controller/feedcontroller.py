@@ -137,7 +137,13 @@ def load_comany_feed(request):
             load_length = 10000
             additional = Q(id__gte=base_id)
         
-        messages = Message.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:load_length]
+        sort_method = request.GET.get("sort","reg_date")
+        if sort_method == 'reg_date':
+            messages = Message.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:load_length]
+        else:
+            messages = Message.objects.filter(additional,is_deleted=False).order_by('-update_date')[:load_length]
+        
+        
         result['feeds']=my_utils.process_messages(request,messages)
         
         if len(messages) == DEFAULT_LOAD_LENGTH:
@@ -205,7 +211,11 @@ def load_my_timeline(request):
                 except:
                     pass               
             
-            timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-update_date')[:load_length]
+            sort_method = request.GET.get("sort","reg_date")
+            if sort_method == 'reg_date':
+                timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-message__reg_date')[:load_length]
+            else:
+                timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-message__update_date')[:load_length]
             
             if len(timelines) == DEFAULT_LOAD_LENGTH:
                 result['load_more']=True
@@ -220,7 +230,8 @@ def load_my_timeline(request):
             
             result['feeds']=my_utils.process_messages(request,messages)
                 
-        except:
+        except Exception as e:
+            print str(e)
             result['success']=True
             result['message']='Do not have any message'
     except:
@@ -447,6 +458,7 @@ def update_comment(request):
         try: 
             new_comment = Comment(author=user,contents=input_message,message=message)
             new_comment.save()
+            message.save()
         except:
             return my_utils.return_error('Insert Failed')
         
