@@ -203,6 +203,7 @@ def update_comment(request):
         try: 
             new_comment = Comment(author=user,contents=input_message,message=message)
             new_comment.save()
+            message.save()
         except:
             return my_utils.return_error('Insert Failed')
         
