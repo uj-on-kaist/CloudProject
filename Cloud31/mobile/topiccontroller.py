@@ -34,7 +34,7 @@ def popular(request):
     result['message']='success'
     result['topics']=list()
     
-    topics = Topic.objects.filter(reference_count__gt=0, topic_name__gl="").order_by("-reference_count")[:20]
+    topics = Topic.objects.filter(reference_count__gt=0, topic_name__gt="").order_by("-reference_count")[:20]
     for topic in topics:
         a_topic=dict()
         a_topic['id']=topic.id
