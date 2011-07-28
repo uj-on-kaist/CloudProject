@@ -294,7 +294,7 @@ def recent_active_users(request):
     chart.title = t
     return HttpResponse(chart.render())
 
-def recent_user_stats(request, user_name):
+def recent_user_stats(request, user_id):
     date_before = 90
     range_const = 1
     
@@ -317,7 +317,7 @@ def recent_user_stats(request, user_name):
     
     accu = request.GET.get("accu", False)
     try:
-        user = User.objects.get(username=user_name)
+        user = User.objects.get(id=user_id)
         if accu == "1":
             count = Message.objects.filter(is_deleted=False,author=user,reg_date__lt=time).count()
             while time < end_time:
@@ -361,7 +361,7 @@ def recent_user_stats(request, user_name):
     chart.bg_colour = '#FAFAFA'
     chart.add_element(l)
     
-    t = title(text="User @"+user_name)
+    t = title(text="User @"+user.username)
     t.style = "{font-size: 12px;text-align: center;padding:5px 0px 5px 0; color: #325AAA; font-weight:bold;}"
     chart.title = t
     
