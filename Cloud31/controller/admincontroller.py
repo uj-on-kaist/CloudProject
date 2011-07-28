@@ -36,6 +36,8 @@ import time
 from datetime import datetime
 import datetime as dt
 from django.db.models import Q
+from django.db.models import Count
+
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -110,7 +112,49 @@ def stats_thread(request):
     
     context['page_stats_by_thread'] = 'selected'
     
+    start_date=request.GET.get('start','')
+    end_date=request.GET.get('end','')
+    
+    now = dt.datetime.now().isocalendar()
+    this_week_start,this_week_end = get_week_days(now[0],now[1])
+    if start_date == '':
+        start_date=this_week_start.strftime("%Y-%m-%d")
+    if end_date == '':
+        end_date=this_week_end.strftime("%Y-%m-%d")
+    
+    context['start_date']=start_date
+    context['end_date']=end_date
+    
+    start_date=time.strptime(start_date,'%Y-%m-%d')
+    start_date=dt.datetime.fromtimestamp(time.mktime(start_date))
+    end_date=time.strptime(end_date,'%Y-%m-%d')
+    end_date=dt.datetime.fromtimestamp(time.mktime(end_date))
+    end_date=end_date+dt.timedelta(1)
+    
+    #print start_date,end_date
+    
+    messages = Comment.objects.filter(is_deleted=False,reg_date__range=(start_date,end_date), message__is_deleted=False).values('message').annotate(count = Count('message')).order_by('-count')
+    print messages
+    items=list()
+    for message in messages:
+        feed_id = message['message']
+        try:
+            feed= Message.objects.get(id=feed_id)
+            
+            comments = Comment.objects.filter(message=feed,reg_date__range=(start_date,end_date), is_deleted=False)
+            feed.comments = comments
+            items.append(feed)
+        except:
+            pass
+    
+    
+    context['items']=items
     return HttpResponse(t.render(context))
+    
+    
+    
+    
+    
     
 def stats_topic(request):
     if not request.user.is_staff:

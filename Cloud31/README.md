@@ -36,6 +36,10 @@ Open Flash Chart
 ### APNSWrapper (Python)
 http://code.google.com/p/apns-python-wrapper/wiki/APNSWrapperOverview
 
+
+### xlwt 
+http://www.python-excel.org/
+
 ### 권한 관련
 media 폴더의 files와 profile 폴더의 권한 소유 유저와 그룹을 아파치 세팅에 맞게 변환해주어야 함.
 ex) chown daemon:daemon files

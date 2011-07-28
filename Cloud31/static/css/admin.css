@@ -94,3 +94,35 @@ float: left;
     background-color: #EBFAFA;
 }
 
+
+
+.most_feed_table tr td{
+    padding-left: 5px;
+}
+
+.most_feed_table tr td p{
+    padding: 0;
+    margin: 0;
+}
+.most_feed_table tr td.first  p, .most_feed_table tr td  p.feed_contents{
+    line-height: 23px;
+    font-size: 12px;
+    color: black;
+}
+
+.most_feed_table tr td  .feed_date{
+    text-align: right;
+    font-size: 11px;
+    color: #A0A0A0;
+    padding-left: 10px;
+}
+
+.comment_item td{
+    padding: 5px 0px;
+}
+.feed_tr{
+    background-color:#FAFAFA;
+}
+.most_feed_table:hover .feed_tr{
+    background-color: rgb(235,250,250);
+}
