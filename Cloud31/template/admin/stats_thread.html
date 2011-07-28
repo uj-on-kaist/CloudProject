@@ -56,7 +56,7 @@ No Result
     </tr>
     {% for comment in feed.comments %}
     <tr class="comment_item" onclick="">
-        <td class="first" style="text-align:right;"><p>{% if forloop.first %}<span style="font-size:11px; padding-right:5px; color:#A0A0A0;">Replies</span>{% endif %}</p></td>
+        <td class="first" style="text-align:right;"><p>{% if forloop.first %}<span style="font-size:11px; padding-right:5px; color:#A0A0A0;"><b>{{ feed.comments|length }}</b> Replies</span>{% endif %}</p></td>
         <td class="name" style="border-bottom:1px dashed #EFEFEF;">
             <p><b style="font-weight:bold; color:#343434;padding-right:10px;">@{{ comment.author.username }}</b> {{ comment.contents|striptags|safe}} <span class="feed_date">{{ comment.reg_date }}</span></p>
         </td>
