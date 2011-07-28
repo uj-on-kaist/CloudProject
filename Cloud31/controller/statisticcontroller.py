@@ -184,7 +184,7 @@ def recent_pop_topics(request):
     
     accu = request.GET.get("accu", False)
     if accu == "1":
-        topics = TopicTimeline.objects.filter(update_date__range=(start_time, end_time), topic__topic_name__gt='').values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
+        topics = TopicTimeline.objects.filter(message__is_deleted=False,message__reg_date__range=(start_time, end_time), topic__topic_name__gt='').values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
         
         x = x_axis()
         y = y_axis()
@@ -199,7 +199,8 @@ def recent_pop_topics(request):
                 label_list = list()
                 while time < end_time:
                     next_time = time + dt.timedelta(range_const)
-                    count = TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
+                    count = Message.objects.filter(reg_date__range=(time,next_time),is_deleted=False,related_topics__contains=topic.topic_name).count()
+                    #count = TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
                     data.append(count)
                     if count > y.max:
                         y.max = count+5

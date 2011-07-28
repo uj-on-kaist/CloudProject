@@ -145,3 +145,15 @@ float: left;
 .export_option_box table input[type="checkbox"]{
     top:0;
 }
+
+
+a.download_btn{
+    text-decoration: none;
+    float: left;
+}
+a.download_btn div{
+    position: relative;
+    top:5px;
+    left:4px;
+    float: left;
+}

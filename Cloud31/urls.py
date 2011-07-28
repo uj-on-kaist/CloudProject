@@ -103,10 +103,6 @@ urlpatterns = patterns('',
     url(r'^api/event/update/comment/$','controller.eventcontroller.update_event_comment'),
     
     
-    
-    
-    
-    
     url(r'^notifications/$', 'controller.notificationcontroller.main'),
     url(r'^notifications/read$', 'controller.notificationcontroller.read'),
     url(r'^notifications/unread$', 'controller.notificationcontroller.unread'),
@@ -149,6 +145,7 @@ urlpatterns = patterns('',
     
     url(r'^admin/export/$','controller.admincontroller.export'),
     url(r'^admin/export/process/test$','controller.exportcontroller.process_test'),
+    url(r'^admin/export/process/$','controller.exportcontroller.process'),
     
     url(r'^admin/authority/$','controller.admincontroller.authority'),
     url(r'^admin/authority/update/$','controller.admincontroller.authority_update'),

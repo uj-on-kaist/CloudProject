@@ -121,7 +121,7 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 
 .button_m{
     background-color: transparent;
-    background-image: url("/static/image/Button_M_nor.png");
+    background-image: url("/static/image/Button_M2.png");
     background-repeat: no-repeat;
     width: 74px;
     height: 30px;
@@ -133,11 +133,11 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 }
 
 .button_m:hover{
-    background-image: url("/static/image/Button_M_over.png");border: 0;
+        background-position: 0px -30px;border: 0;
     outline: 0;
 }
 .button_m:active{
-    background-image: url("/static/image/Button_M_sel.png");
+        background-position: 0px -60px;
     border: 0;
     outline: 0;
 }

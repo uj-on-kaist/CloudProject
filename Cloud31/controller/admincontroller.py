@@ -106,7 +106,7 @@ def overview(request):
     today_start = dt.date(year, month, day)
     today_end = dt.date(year, month, day)  + dt.timedelta(1)
     context['feed_today_length'] = Message.objects.filter(is_deleted=False, reg_date__range=(today_start,today_end)).count()
-    context['topic_length'] = Topic.objects.all().count()
+    context['topic_length'] = Topic.objects.filter(topic_name__gt="").count()
     context['file_length'] = File.objects.filter(is_attached=True).count()
     
     
@@ -147,7 +147,6 @@ def stats_thread(request):
     #print start_date,end_date
     
     messages = Comment.objects.filter(is_deleted=False,reg_date__range=(start_date,end_date), message__is_deleted=False).values('message').annotate(count = Count('message')).order_by('-count')
-    print messages
     items=list()
     for message in messages:
         feed_id = message['message']
