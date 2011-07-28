@@ -31,27 +31,39 @@ object{
 
 
 .chart_date_select{
+    float: left;
     width: 100%;
     text-align: left;
+    line-height: 25px;
 }
 
 .chart_date_select input[type=text].datepicker{
-    padding: 2px;
+    padding: 5px 2px;
     background-image: none;
     font-size: 11px;
+    margin: 0px;
+    float: left;
 }
 .chart_date_select b{
+    float: left;
     padding-left: 10px;
     padding-right: 5px;
 }
-
+.chart_date_select input[type=submit]{
+    float: left;
+    margin-left: 10px;
+}
+.chart_date_select .first_line{
+    line-height:25px;float:left;width:100%;margin-bottom:5px;
+}
 
 #user_name_input, #topic_name_input{
-    padding: 2px;
+    padding: 5px 2px;
 background-image: none;
 font-size: 11px;
 width: 167px;
-display: inline;
+margin: 0px;
+float: left;
 }
 
 
@@ -81,3 +93,4 @@ display: inline;
     border: 1px solid #A0A0A0;
     background-color: #EBFAFA;
 }
+

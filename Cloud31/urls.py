@@ -144,6 +144,7 @@ urlpatterns = patterns('',
         
     url(r'^admin/overview','controller.admincontroller.overview'),
     url(r'^admin/stats/topic/$','controller.admincontroller.stats_topic'),
+    url(r'^admin/stats/thread/$','controller.admincontroller.stats_thread'),
     url(r'^admin/stats/member','controller.admincontroller.stats_member'),
     
     url(r'^admin/export/$','controller.admincontroller.export'),

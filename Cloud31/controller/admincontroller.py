@@ -87,14 +87,31 @@ def overview(request):
     
     context['user_length'] = User.objects.filter(is_active=True).count()
     context['feed_length'] = Message.objects.filter(is_deleted=False).count()
+    
+    today_start = dt.date(year, month, day)
+    today_end = dt.date(year, month, day)  + dt.timedelta(1)
+    context['feed_today_length'] = Message.objects.filter(is_deleted=False, reg_date__range=(today_start,today_end)).count()
     context['topic_length'] = Topic.objects.all().count()
     context['file_length'] = File.objects.filter(is_attached=True).count()
     
     
     context['recent_messages'] = Message.objects.filter(is_deleted=False).order_by("-reg_date")[:5]
-    context['recent_users'] = User.objects.filter(is_active=True).order_by("-last_login")[:5]
+    context['recent_users'] = UserLoginHistory.objects.all().order_by("-login_date")[:5]
     return HttpResponse(t.render(context))
 
+
+def stats_thread(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound()
+        
+    t = loader.get_template('admin/stats_thread.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    
+    context['page_stats_by_thread'] = 'selected'
+    
+    return HttpResponse(t.render(context))
+    
 def stats_topic(request):
     if not request.user.is_staff:
         return HttpResponseNotFound()
@@ -107,6 +124,31 @@ def stats_topic(request):
     
     context['side_list']=['search_topic']
     my_utils.prepare_search_topic(context)
+    
+    
+    
+    now = dt.datetime.now().isocalendar()
+    this_week_start,this_week_end = get_week_days(now[0],now[1])
+    this_week_end = this_week_end + dt.timedelta(1)
+    last_week_start,last_week_end = this_week_start - dt.timedelta(7),this_week_end - dt.timedelta(7)
+    
+    this_week_topics = Topic.objects.filter(reg_date__range=(this_week_start,this_week_end), topic_name__gt="")
+    for topic in this_week_topics:
+        try:
+            topic.recent_message=''
+            recent_message = TopicTimeline.objects.filter(topic=topic).order_by('-update_date')[:1][0]
+            topic.recent_message=recent_message.message.contents
+        except Exception as e:
+            print str(e)
+            pass
+    context['this_week_topics'] = this_week_topics     
+    context['this_week_length'] = Topic.objects.filter(reg_date__range=(this_week_start,this_week_end), topic_name__gt="").count()
+    context['last_week_length'] = Topic.objects.filter(reg_date__range=(last_week_start,last_week_end), topic_name__gt="").count()
+    if context['last_week_length'] == 0:
+        context['increase_rate'] = 100.0
+    else:
+        context['increase_rate'] = (float(context['this_week_length']) - context['last_week_length'])/context['last_week_length'] * 100
+    
     
     try:
         keyword = request.GET.get('q', '')
@@ -127,8 +169,15 @@ def stats_topic(request):
                 query_type = Q(topic_name__gt=this_index, topic_name__lt=next_index)
         
         topics = Topic.objects.filter(query_type, topic_name__gt='').order_by('topic_name')
-        
-        
+        for topic in topics:
+            try:
+                topic.recent_message=''
+                recent_message = TopicTimeline.objects.filter(topic=topic).order_by('-update_date')[:1][0]
+                topic.recent_message=recent_message.message.contents
+            except Exception as e:
+                print str(e)
+                pass
+                
         paginator = Paginator(topics, 5)
         
         page = request.GET.get('page', 1)
@@ -149,6 +198,15 @@ def stats_topic(request):
     
     
     return HttpResponse(t.render(context))
+
+def get_week_days(year,week):
+    d = dt.date(year,1,1)
+    if(d.weekday()>3):
+        d = d+dt.timedelta(7-d.weekday())
+    else:
+        d = d - dt.timedelta(d.weekday())
+    dlt = dt.timedelta(days = (week-1)*7)
+    return d + dlt,  d + dlt + dt.timedelta(days=6)
 
 def stats_member(request):
     if not request.user.is_staff:

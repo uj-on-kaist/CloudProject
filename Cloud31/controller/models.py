@@ -13,7 +13,11 @@ class UserProfile(models.Model):
 	receive_apns = models.BooleanField(default=True)
 	device_id = models.CharField(max_length=50)
 	picture = models.ImageField(upload_to="profile", default='/media/default.png')
-	
+
+class UserLoginHistory(models.Model):
+    user = models.ForeignKey(User)
+    login_date = models.DateTimeField(auto_now_add=True)
+
 ##  
 ## Message Related
 ##
@@ -179,4 +183,7 @@ class NotificationQueue(models.Model):
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
     is_sent = models.BooleanField(default=False)
+    
+    
+
 

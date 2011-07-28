@@ -59,6 +59,10 @@ def signin(request):
     if user is not None:
         if user.is_active:
             login(request, user)
+            
+            user_login = UserLoginHistory(user=user)
+            user_login.save()
+            
             if request.POST['next']:
                 return HttpResponseRedirect(request.POST['next'])
             else:

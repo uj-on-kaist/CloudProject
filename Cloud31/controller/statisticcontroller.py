@@ -61,7 +61,7 @@ def recent_user_graph(request):
 
     while time < end_time:
         next_time = time + dt.timedelta(range_const)
-        data.append(User.objects.filter(last_login__range=(time, next_time)).count())
+        data.append(UserLoginHistory.objects.filter(login_date__range=(time, next_time)).count())
         label_list.append(time.strftime("%B %d, %Y"))
         time = next_time
     

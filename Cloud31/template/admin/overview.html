@@ -28,16 +28,16 @@ $(document).ready(function(){
 </div>
 <table class="overview_table">
     <tr>
-        <th># Users</th>
-        <th># Feeds</th>
-        <th># Topics</th>
-        <th># Files</th>    
+        <th style="text-align:center"># Users</th>
+        <th style="text-align:center"># Today Feeds (Total)</th>
+        <th style="text-align:center"># Topics</th>
+        <th style="text-align:center"># Files</th>    
     </tr>
     <tr>
-        <td>{{ user_length }}</td>
-        <td>{{ feed_length }}</td>
-        <td>{{ topic_length }}</td>
-        <td>{{ file_length }}</td>
+        <td style="text-align:center">{{ user_length }}</td>
+        <td style="text-align:center">{{ feed_today_length }} ({{ feed_length }})</td>
+        <td style="text-align:center">{{ topic_length }}</td>
+        <td style="text-align:center">{{ file_length }}</td>
     </tr>
 </table>
 </div>
@@ -56,7 +56,7 @@ $(document).ready(function(){
 <input type="text" class="datepicker startpicker" />
 <b>To </b>
 <input type="text" class="datepicker endpicker" />
-<a href="#" onclick="reloadSWFRange($(this),'recent_messages','/chart/recent_message'); return false;">change</a>
+<input type="submit" class="button_s" onblur="return false" value="change" onclick="reloadSWFRange($(this),'recent_messages','/chart/recent_message'); return false;" />
 <span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_messages','/chart/recent_message')"/> Accumulative</span>
 </div>
 
@@ -94,7 +94,7 @@ swfobject.embedSWF(
 <div class="overview_item">
 <div class="title_box">
 <span class="ui_icon ui_icon_member"></span>
-<b class="title">Recent User Logined (for last 3 month)</b>
+<b class="title">Visitor Count (for last 3 month)</b>
 
 </div>
 
@@ -103,7 +103,7 @@ swfobject.embedSWF(
 <input type="text" class="datepicker startpicker" />
 <b>To </b>
 <input type="text" class="datepicker endpicker" />
-<a href="#" onclick="reloadSWFRange($(this),'recent_users','/chart/recent_user'); return false;">change</a>
+<input type="submit" class="button_s" onblur="return false" value="change" onclick="reloadSWFRange($(this),'recent_users','/chart/recent_user'); return false;" />
 </div>
 
 <script type="text/javascript">
@@ -121,8 +121,8 @@ swfobject.embedSWF(
     </tr>
     {% for user in recent_users %}
     <tr>
-        <td><a href="/user/{{user.username}}"><b>{{user.last_name}}</b> @{{ user.username }}</a></td>
-        <td>{{ user.last_login }}</td>
+        <td><a href="/user/{{user.username}}"><b>{{user.user.last_name}}</b> @{{ user.user.username }}</a></td>
+        <td>{{ user.login_date }}</td>
     </tr>
     {% endfor %}
 </table>
