@@ -117,10 +117,10 @@ float: left;
     padding-left: 10px;
 }
 
-.comment_item td{
+.most_feed_table .comment_item td{
     padding: 5px 0px;
 }
-.feed_tr{
+.most_feed_table .feed_tr{
     background-color:#FAFAFA;
 }
 .most_feed_table:hover .feed_tr{
