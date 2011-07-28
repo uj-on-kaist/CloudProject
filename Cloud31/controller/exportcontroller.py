@@ -496,7 +496,7 @@ def prepare_each_topic_total(wb,start_date,end_date):
     total = 0
     for topic in topics:
         try:
-            reference_count = Message.objects.filter(is_deleted=False,related_topics__contains=topic.topic_name).count()
+            reference_count = Message.objects.filter(is_deleted=False,related_topics__contains=topic.topic_name+",").count()
             total+=reference_count
             row+=1
             sheet.write(row,0,topic.topic_name)
@@ -558,7 +558,7 @@ def prepare_each_topic(wb,start_date,end_date):
     total = 0
     for topic in topics:
         try:
-            reference_count = Message.objects.filter(reg_date__range=(start_date,end_date),is_deleted=False,related_topics__contains=topic.topic_name).count()
+            reference_count = Message.objects.filter(reg_date__range=(start_date,end_date),is_deleted=False,related_topics__contains=topic.topic_name+",").count()
             total+=reference_count
             row+=1
             sheet.write(row,0,topic.topic_name,font_style)
