@@ -104,7 +104,7 @@ def topic_detail(request,topic_id):
     
     
     context['page_topic'] = "selected"
-    context['load_type']='topic#' + context['topic'].topic_name
+    context['load_type']='topic#' + str(context['topic'].id)
     context['topic_name']=context['topic'].topic_name
     context['topic_id']=context['topic'].id
     
@@ -117,7 +117,7 @@ def topic_detail(request,topic_id):
     return HttpResponse(t.render(context))
     
     
-def load_topic_timeline(request,topic_name):
+def load_topic_timeline(request,topic_id):
     result=dict()
     result['success']=True
     result['message']='success'
@@ -128,7 +128,7 @@ def load_topic_timeline(request,topic_name):
         if base_id:
             additional = Q(id__lt=base_id)
         
-        topic = Topic.objects.get(topic_name=topic_name)
+        topic = Topic.objects.get(id=topic_id)
         try:
             timelines = TopicTimeline.objects.filter(additional, topic=topic).order_by('-update_date')[:DEFAULT_LOAD_LENGTH]
             if not timelines:
