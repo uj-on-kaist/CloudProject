@@ -51,6 +51,19 @@ def export(request):
     context['current_user'] = request.user
     context['page_export'] = "selected"
     
+    start_date=request.GET.get('start','')
+    end_date=request.GET.get('end','')
+    
+    now = dt.datetime.now().isocalendar()
+    this_week_start,this_week_end = get_week_days(now[0],now[1])
+    if start_date == '':
+        start_date=this_week_start.strftime("%Y-%m-%d")
+    if end_date == '':
+        end_date=this_week_end.strftime("%Y-%m-%d")
+    
+    context['start_date']=start_date
+    context['end_date']=end_date
+    
     return HttpResponse(t.render(context))
 
 

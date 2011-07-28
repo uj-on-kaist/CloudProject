@@ -126,3 +126,22 @@ float: left;
 .most_feed_table:hover .feed_tr{
     background-color: rgb(235,250,250);
 }
+
+.export_option_box{
+    float: left;
+    width: 435px;
+    min-height: 20px;
+}
+.export_option_box table{margin:5px 0;}
+.export_option_box table .first{
+    width:20px; 
+    text-align:right;
+    padding: 0;
+}
+.export_option_box table tr th{
+    border-bottom: 1px dashed #F0F0F0;
+}
+
+.export_option_box table input[type="checkbox"]{
+    top:0;
+}

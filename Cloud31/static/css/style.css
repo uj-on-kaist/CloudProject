@@ -588,6 +588,8 @@ ul.comments textarea,
     border-bottom: 1px solid #E9E9E9;
     font-weight: bold;
     text-align: center;
+    float: left;
+    width:515px;
 }
 
 

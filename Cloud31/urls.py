@@ -148,6 +148,7 @@ urlpatterns = patterns('',
     url(r'^admin/stats/member','controller.admincontroller.stats_member'),
     
     url(r'^admin/export/$','controller.admincontroller.export'),
+    url(r'^admin/export/process/test$','controller.exportcontroller.process_test'),
     
     url(r'^admin/authority/$','controller.admincontroller.authority'),
     url(r'^admin/authority/update/$','controller.admincontroller.authority_update'),

@@ -141,4 +141,11 @@ function authority_apply(item){
 }
 
 
+function check_all_options(item){
+    if(!item.attr("checked")){
+        $(".export_option_box table input[type=checkbox]").removeAttr('checked');
+    }else{
+        $(".export_option_box table input[type=checkbox]").attr('checked','checked');
+    }
+}
 

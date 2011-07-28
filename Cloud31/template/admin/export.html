@@ -4,4 +4,101 @@
     Export Data
 </h2>
 
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $('.datepicker').datepicker({
+        inline: true,
+        dateFormat: 'yy-mm-dd'
+    });
+    
+    var start_date ="{{start_date}}";
+    var end_date ="{{end_date}}";
+    
+    if(start_date == "" || end_date == ""){
+        var end = new Date();
+        var curr_date = end.getDate();
+        var curr_month = end.getMonth();
+        curr_month++;
+        var curr_year = end.getFullYear();
+    
+        var start = new Date(curr_year, curr_month-1, curr_date - 7);
+        $(".startpicker").val(start.getFullYear()+"-"+(start.getMonth()+1)+"-"+start.getDate());
+        $(".endpicker").val(curr_year+"-"+curr_month+"-"+curr_date);
+    }else{
+        $(".startpicker").val(start_date);
+        $(".endpicker").val(end_date);
+    }
+});
+</script>
+<div class="overview_item" style="padding-top:10px; border-top:1px solid #A0A0A0;border-bottom:1px solid #A0A0A0;">
+
+<table style="width:525px; float:left; margin:0;">
+    <tr>
+        <td style="width:60px;border-bottom: 1px solid #F0F0F0; padding-bottom:10px;"><b>기간 선택</b></td>
+        <td style="border-bottom: 1px solid #F0F0F0; padding-bottom:10px;">
+            <div class="chart_date_select">
+            <input type="text" class="datepicker startpicker" />
+            <b style="padding-right:10px;"> - </b>
+            <input type="text" class="datepicker endpicker" />
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:60px;border-bottom: 1px solid #F0F0F0;"><b>옵션 선택</b></td>
+        <td style="border-bottom: 1px solid #F0F0F0; ">
+            <div class="export_option_box" style="">
+            <table>
+                <tr>
+                    <th class="first"><input type="checkbox" onclick="check_all_options($(this));"/></th>
+                    <th>All</th>
+                </tr>
+                <tr>
+                    <td class="first"><input type="checkbox" /></td>
+                    <td>전체 통계</td>
+                </tr>
+                <tr>
+                    <td class="first"><input type="checkbox" /></td>
+                    <td>Topic별 메시지 개수</td>
+                </tr>
+                <tr>
+                    <td class="first"><input type="checkbox" /></td>
+                    <td>사용자별 총 메시지 개수</td>
+                </tr>
+                <tr>
+                    <td class="first"><input type="checkbox" /></td>
+                    <td>일별 메세지 개수</td>
+                </tr>
+                <tr>
+                    <td class="first"><input type="checkbox" /></td>
+                    <td>최다 댓글 메세지</td>
+                </tr>
+                <tr>
+                    <td class="first"><input type="checkbox" /></td>
+                    <td>메시지 리스트</td>
+                </tr>
+            </table>
+            </div>
+            
+         </td>
+    </tr>
+    
+    <tr>
+        <td style="width:60px"></td>
+        <td style="padding:10px 10px;">
+            <input type="submit" class="button_s change_btn" onblur="return false" value="Process" onclick="return false;">
+ 
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+</div>
+
+
+<a href="/admin/export/process/test" target="_blank">Download</a>
+
 {% include "meta_close.html" %}
