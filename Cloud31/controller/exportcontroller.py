@@ -89,7 +89,7 @@ def process(request):
     each_day = request.POST.get('each_day',False)
     most_replied = request.POST.get('most_replied',False)
     message_list = request.POST.get('message_list',False)
-    
+    member_list = request.POST.get('member_list',False)
     start_date_str = request.POST.get('start_date','')
     end_date_str = request.POST.get('end_date','')
     
@@ -118,7 +118,10 @@ def process(request):
         prepare_most_replied(wb,start_date,end_date)
         
     if message_list:
-        prepare_message_list(wb,start_date,end_date)        
+        prepare_message_list(wb,start_date,end_date)
+        
+    if member_list:
+        prepare_member_list(wb,start_date,end_date)
 
     fname = 'Cloud31_Data_'+start_date_str+'_'+end_date_str+'.xls'
     response = HttpResponse(mimetype="application/ms-excel")
@@ -132,6 +135,40 @@ def process(request):
     return response
 
 font_style=easyxf('font: bold False, height 220;')
+
+def prepare_member_list(wb,start_date,end_date):
+    sheet = wb.add_sheet('사용자 리스트(전체)')
+    
+    header_style=easyxf( 'font: name Arial, bold True, height 220;' 'border: bottom thin;' 'pattern: pattern solid, fore_color light_green;')
+    
+    sheet.write(0,0,'사용자 리스트',font_style)
+    
+    row = 1
+    
+    sheet.write(row,0,'id',header_style)
+    sheet.write(row,1,'user_id',header_style)
+    sheet.write(row,2,'user_name',header_style)
+    sheet.write(row,3,'email',header_style)
+    sheet.write(row,4,'position',header_style)
+    sheet.write(row,5,'dept',header_style)
+    sheet.write(row,6,'picture',header_style)
+    
+    sheet.col(3).width=5000
+    sheet.col(4).width=4000
+    sheet.col(5).width=4000
+    sheet.col(6).width=4000
+    sheet.col(6).width=20000
+    
+    user_profiles = UserProfile.objects.filter(is_deactivated=False)
+    for user_profile in user_profiles:
+        row+=1
+        sheet.write(row,0,"User#"+str(user_profile.user.id),font_style)
+        sheet.write(row,1,user_profile.user.username,font_style)
+        sheet.write(row,2,user_profile.user.last_name,font_style)
+        sheet.write(row,3,user_profile.user.email,font_style)
+        sheet.write(row,4,user_profile.dept,font_style)
+        sheet.write(row,5,user_profile.position,font_style)
+        sheet.write(row,6,'http://cloud31.co.kr'+user_profile.picture.url,font_style)
 
 def prepare_most_replied(wb,start_date,end_date):
     sheet = wb.add_sheet('최다 댓글 메세지(기간 내)')
@@ -538,7 +575,7 @@ def prepare_each_topic(wb,start_date,end_date):
     sheet.col(3).width = 6000
     this_week_topics = Topic.objects.filter(reg_date__range=(start_date,end_date), topic_name__gt="")
     sheet.write(2,3,'기간 내 신규 토픽 ('+str(len(this_week_topics))+'개)',header_style)
-    new_row=3
+    new_row=2
     for topic in this_week_topics:
         new_row+=1
         sheet.write(new_row,3,topic.topic_name)
