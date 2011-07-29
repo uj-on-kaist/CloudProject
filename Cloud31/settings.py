@@ -2,6 +2,9 @@
 import os
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
+IPHONE_PEM_PATH = PROJECT_PATH +'/samil.cloud31.pem'
+print IPHONE_PEM_PATH
+
 import socket
 SERVICE_IP = socket.gethostbyname(socket.gethostname())
 SERVICE_BASE_URL = 'http://cloud31.co.kr'
@@ -134,9 +137,9 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     
     # My Applications
-    'Cloud31.controller',
+    'controller',
     'Cloud31.sidebar',
-    'django_cron',
+    'Cloud31.django_cron',
     'Cloud31.mobile',   
 )
 

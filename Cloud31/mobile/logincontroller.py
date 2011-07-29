@@ -32,7 +32,8 @@ def signin(request):
     
     userID = request.POST.get('userID',False)
     userPW = request.POST.get('userPW',False)
-    
+    deviceToken = request.POST.get('deviceToken',False)
+    print deviceToken
     if not userID or not userPW:
         return my_utils.return_error('Check Inputs')
     
@@ -41,6 +42,14 @@ def signin(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                try:
+                    user_profile = UserProfile.objects.get(user=user)
+                    user_profile.device_id = deviceToken
+                    user_profile.save()
+                except Exception as e:
+                    print str(e)
+                
+                
             else:
                 return my_utils.return_error('That User is not Active')
             user_profile = UserProfile.objects.get(user=user)
@@ -85,6 +94,12 @@ def signout(request):
     result=dict()
     result['success']=True
     result['message']='success'
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.device_id = ''
+        user_profile.save()
+    except Exception as e:
+        print str(e)
     logout(request)
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     

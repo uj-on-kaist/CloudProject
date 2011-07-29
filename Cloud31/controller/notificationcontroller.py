@@ -182,13 +182,11 @@ def register_noti(request, noti_type, info):
         target_user = info['to']
         sender = info['from']
         target_object = info['target_object']
-        print info
         if noti_type == 'new_comment':
             target_message = target_object.contents
             target_message = target_message[:10] + "..."
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
-            print target_message
             target_message=smart_unicode(target_message, encoding='ascii', strings_only=False, errors='strict')
             contents = u"<b>"+sender.username+u"</b>님께서 메시지 <b>"+target_message+u"</b>에 새 댓글을 다셨습니다."
             new_noti = UserNotification(user=target_user, sender=sender, \
@@ -200,7 +198,6 @@ def register_noti(request, noti_type, info):
             target_message = target_message[:10] + "..."
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
-            print target_message
             target_message=smart_unicode(target_message, encoding='ascii', strings_only=False, errors='strict')
             contents = u"<b>"+sender.username+u"</b>님께서 회원님에 관한 메시지 <b>"+target_message+u"</b>를 작성하셨습니다."
             new_noti = UserNotification(user=target_user, sender=sender, \
@@ -217,7 +214,6 @@ def register_noti(request, noti_type, info):
             target_message = target_object.contents
             target_message = target_message[:10] + "..."
             p = re.compile(r'<.*?>')
-            print target_message
             target_message = p.sub('', target_message)
             target_message=smart_unicode(target_message, encoding='ascii', strings_only=False, errors='strict')
             contents = u"<b>"+sender.username+u"</b>님께서 회원님에게 쪽지 <b>"+target_message+u"</b>를 보냈습니다."
@@ -240,6 +236,71 @@ def register_noti(request, noti_type, info):
         
         #TODO : EMAIL NOTI - User Option Check
         
+        #TODO : iPhone Notification
+        if not new_noti:
+            return
+        try:
+            register_iPhone_notification(new_noti, noti_type, info)
+        except Exception as e:
+            print str(e)
+            
+    except Exception as e:
+        print 'Error '+str(e)
+        pass
+
+def register_iPhone_notification(noti, noti_type, info):
+    print 'iPhone Noti'
+    target_user = noti.user
+    sender = noti.sender
+    try:
+        target_user_profile = UserProfile.objects.get(user=target_user)
+    except:
+        return
+    
+    if target_user_profile.device_id == "":
+        return
+
+    try:
+        notification_type='iphone'
+        target_object = info['target_object']
+        print info
+        if noti_type == 'new_comment':
+            target_message = target_object.contents
+            target_message = target_message[:20] + "..."
+            p = re.compile(r'<.*?>')
+            target_message = p.sub('', target_message)
+            contents = sender.username+u"님께서 메시지 \""+target_message+u"\"에 새 댓글을 다셨습니다."
+            new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
+            new_noti.save()
+        elif noti_type == 'new_at_feed':
+            target_message = target_object.contents
+            target_message = target_message[:20] + "..."
+            p = re.compile(r'<.*?>')
+            target_message = p.sub('', target_message)
+            contents = sender.username+u"님께서 회원님에 관한 메시지 \""+target_message+u"\"를 작성하셨습니다."
+            new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
+            new_noti.save()
+        elif noti_type == 'new_event_invite':
+            contents = sender.username+u"님께서 회원님을 이벤트 \""+target_object.title+u"\"에 초대하셨습니다."
+            new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
+            new_noti.save() 
+        elif noti_type == 'new_dm':
+            target_message = target_object.contents
+            target_message = target_message[:20] + "..."
+            p = re.compile(r'<.*?>')
+            target_message = p.sub('', target_message)
+            contents = sender.username+u"님께서 회원님에게 쪽지 \""+target_message+u"\"를 보냈습니다."
+            new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
+            new_noti.save()
+        elif noti_type == 'new_dm_reply':
+            target_message = target_object.contents
+            target_message = target_message[:20] + "..."
+            p = re.compile(r'<.*?>')
+            target_message = p.sub('', target_message)
+            contents = sender.username+u"님께서 회원님에게 쪽지 \""+target_message+u"\"에 답장을 작성하셨습니다."
+            new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
+            new_noti.save()
+            
     except Exception as e:
         print 'Error '+str(e)
         pass

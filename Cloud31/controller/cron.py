@@ -17,6 +17,52 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
+
+from APNSWrapper import *
+from django.conf import settings
+import binascii
+
+
+#TODO : iPhone Noti sender
+class iPhone_APNS_Worker(Job):
+    run_every = 3
+    def job(self):
+        notis = NotificationQueue.objects.filter(is_sent=False)
+        if len(notis) is not 0:
+            print '[Cron: iPhone_APNS_Worker] Start APNS'
+            for noti in notis:
+                try:
+                    noti.is_sent=True
+                    noti.save()
+                    target_user = noti.target_user
+                    try:
+                        target_user_profile = UserProfile.objects.get(user=target_user)
+                    except:
+                        continue
+                    
+                    if target_user_profile.device_id == "":
+                        continue
+                        
+                    unread_count = UserNotification.objects.filter(user=target_user,is_read=False).count()
+                    
+                    deviceToken = binascii.unhexlify(target_user_profile.device_id)
+                    wrapper = APNSNotificationWrapper(settings.IPHONE_PEM_PATH, True)
+                    message = APNSNotification()
+                    message.token(deviceToken)
+                    message.alert(noti.contents.encode('utf-8'))
+                    message.badge(unread_count)
+                    message.sound()
+                    wrapper.append(message)
+                    wrapper.notify()
+                    
+                except Exception as e:
+                    print str(e)
+            print '[Cron: iPhone_APNS_Worker] Finish APNS'
+            
+
+cronScheduler.register(iPhone_APNS_Worker)
+
+
 class Send_Email_Worker(Job):
     run_every = 3
     def job(self):
@@ -41,8 +87,8 @@ cronScheduler.register(Send_Email_Worker)
 
 
 
+
 #TODO : User 통계(1주일)
 
-#TODO : iPhone Noti sender
 
 #TODO : SQL Backup
