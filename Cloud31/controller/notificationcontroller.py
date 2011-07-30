@@ -76,9 +76,11 @@ def get_notifications(request):
     try:
         user = User.objects.get(username=request.user.username)
         try:
-            unread_notis = UserNotification.objects.filter(user=user, is_read=False).order_by('-reg_date')[:5]
             
+            unread_notis = UserNotification.objects.filter(user=user, is_read=False).order_by('-reg_date')[:5]
+            unread_notis_count = UserNotification.objects.filter(user=user, is_read=False).order_by('-reg_date').count()
             read_notis = UserNotification.objects.filter(user=user, is_read=True).order_by('-reg_date')[:5]
+            result['unread_notis_count']=unread_notis_count
             result['unread_notis']=process_notis(request,unread_notis)
             result['read_notis']=process_notis(request,read_notis)
         except Exception as e:
@@ -161,9 +163,12 @@ def process_notis(request, notis):
             item['related_type']=noti.related_type
             item['related_id']=noti.related_id
             item['contents']=noti.contents
+            p = re.compile(r'<.*?>')
+            contents_original = p.sub('', noti.contents)
+            item['contents_original']=contents_original
             item['reg_date']=str(noti.reg_date)
             item['is_read']=noti.is_read
-            
+            item['pretty_date'] = my_utils.pretty_date(noti.reg_date)
             try:
                 user_profile = UserProfile.objects.get(user=noti.sender)
                 item['sender_picture']= user_profile.picture.url
@@ -280,10 +285,6 @@ def register_iPhone_notification(noti, noti_type, info):
             contents = sender.username+u"님께서 회원님에 관한 메시지 \""+target_message+u"\"를 작성하셨습니다."
             new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
             new_noti.save()
-        elif noti_type == 'new_event_invite':
-            contents = sender.username+u"님께서 회원님을 이벤트 \""+target_object.title+u"\"에 초대하셨습니다."
-            new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
-            new_noti.save() 
         elif noti_type == 'new_dm':
             target_message = target_object.contents
             target_message = target_message[:20] + "..."
@@ -300,6 +301,12 @@ def register_iPhone_notification(noti, noti_type, info):
             contents = sender.username+u"님께서 회원님에게 쪽지 \""+target_message+u"\"에 답장을 작성하셨습니다."
             new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
             new_noti.save()
+        """
+        elif noti_type == 'new_event_invite':
+            contents = sender.username+u"님께서 회원님을 이벤트 \""+target_object.title+u"\"에 초대하셨습니다."
+            new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
+            new_noti.save() 
+        """
             
     except Exception as e:
         print 'Error '+str(e)

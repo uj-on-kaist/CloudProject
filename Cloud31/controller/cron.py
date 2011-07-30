@@ -22,6 +22,7 @@ from APNSWrapper import *
 from django.conf import settings
 import binascii
 
+from django.db.models import Q
 
 #TODO : iPhone Noti sender
 class iPhone_APNS_Worker(Job):
@@ -43,8 +44,7 @@ class iPhone_APNS_Worker(Job):
                     if target_user_profile.device_id == "":
                         continue
                         
-                    unread_count = UserNotification.objects.filter(user=target_user,is_read=False).count()
-                    
+                    unread_count = UserNotification.objects.filter(~Q(notification_type='new_event_invite'),user=target_user,is_read=False).count()
                     deviceToken = binascii.unhexlify(target_user_profile.device_id)
                     wrapper = APNSNotificationWrapper(settings.IPHONE_PEM_PATH, True)
                     message = APNSNotification()

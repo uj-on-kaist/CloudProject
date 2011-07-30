@@ -24,4 +24,7 @@ urlpatterns = patterns('',
     url(r'^search/topic/','mobile.searchcontroller.topic'),
     url(r'^search/member/','mobile.searchcontroller.member'),
     url(r'^search/file/','mobile.searchcontroller.search_file'),
+    
+    url(r'^noti/get/','mobile.notificationcontroller.get_notifications'),
+    url(r'^noti/read/(?P<noti_id>\w+)','mobile.notificationcontroller.read_notification'),
 )
