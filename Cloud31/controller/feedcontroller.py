@@ -129,15 +129,25 @@ def load_comany_feed(request):
     try:
         base_id = request.GET.get("base_id",False)
         to_id = request.GET.get("to_id",False)
+        sort_method = request.GET.get("sort","reg_date")
         additional = Q()
         load_length = DEFAULT_LOAD_LENGTH
         if base_id:
-            additional = Q(id__lt=base_id)
+            try:
+                if sort_method == 'reg_date':
+                    message = Message.objects.get(id=base_id)
+                    additional = Q(reg_date__lt=message.reg_date)
+                else:
+                    message = Message.objects.get(id=base_id)
+                    additional = Q(update_date__lt=message.update_date)
+            except:
+                pass
+            #additional = Q(id__lt=base_id)
         if to_id:
             load_length = 10000
             additional = Q(id__gte=base_id)
         
-        sort_method = request.GET.get("sort","reg_date")
+        
         if sort_method == 'reg_date':
             messages = Message.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:load_length]
         else:
@@ -196,12 +206,17 @@ def load_my_timeline(request):
         try:
             base_id = request.GET.get("base_id",False)
             to_id = request.GET.get("to_id",False)
+            sort_method = request.GET.get("sort","reg_date")
             additional = Q()
             load_length=DEFAULT_LOAD_LENGTH
             if base_id:
                 try:
-                    timeline = UserTimeline.objects.get(id=base_id)
-                    additional = Q(update_date__lt=timeline.update_date)
+                    if sort_method == 'reg_date':
+                        timeline = UserTimeline.objects.get(id=base_id)
+                        additional = Q(message__reg_date__lt=timeline.message.reg_date)
+                    else:
+                        timeline = UserTimeline.objects.get(id=base_id)
+                        additional = Q(message__update_date__lt=timeline.message.update_date)
                 except:
                     pass
             if to_id:
@@ -211,7 +226,7 @@ def load_my_timeline(request):
                 except:
                     pass               
             
-            sort_method = request.GET.get("sort","reg_date")
+            
             if sort_method == 'reg_date':
                 timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-message__reg_date')[:load_length]
             else:
