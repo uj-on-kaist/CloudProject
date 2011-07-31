@@ -27,4 +27,10 @@ urlpatterns = patterns('',
     
     url(r'^noti/get/','mobile.notificationcontroller.get_notifications'),
     url(r'^noti/read/(?P<noti_id>\w+)','mobile.notificationcontroller.read_notification'),
+    
+    
+    url(r'message/get/(?P<message_id>\w+)','mobile.messagecontroller.get_message'),
+    url(r'message/update/','mobile.messagecontroller.send_message'),
+    url(r'message/delete/(?P<message_id>\w+)','mobile.messagecontroller.delete_message'),
+    url(r'message/reply/update/','mobile.messagecontroller.reply_message'),
 )

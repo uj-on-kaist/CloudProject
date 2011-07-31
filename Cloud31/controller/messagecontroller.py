@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.core import serializers
 
 from django.contrib.auth.decorators import login_required
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_unicode, smart_str
 from django.db.models import Q
 
 import json
@@ -251,8 +251,8 @@ def load_message(request, load_type):
             pass
 
     try:
-        d_messages = DirectMessage.objects.filter(query_type, additional,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
-        result['messages'] = process_messages(d_messages)
+        d_messages = DirectMessage.objects.filter(query_type, additional,is_deleted=False).order_by('-update_date')[:DEFAULT_LOAD_LENGTH]
+        result['messages'] = process_messages(request, d_messages)
         
         if len(d_messages) == DEFAULT_LOAD_LENGTH:
             result['load_more']=True
@@ -262,13 +262,18 @@ def load_message(request, load_type):
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
 
-def process_messages(messages):
+def process_messages(request, messages):
     d_messages=list()
     for message in messages:
         d_message = dict()
         d_message['id']=message.id
         d_message['base_id']=message.id
         d_message['author']=message.author.username
+        d_message['author_name']=message.author.last_name
+        if request.user == message.author:
+            d_message['author_yn']=True
+        else:
+            d_message['author_yn']=False
         try:
             user_profile = UserProfile.objects.get(user=message.author)
             d_message['author_picture']= user_profile.picture.url
@@ -282,7 +287,45 @@ def process_messages(messages):
         d_message['contents']= parser.parse_text(message.contents)
         d_message['contents_original']=message.contents 
         d_message['receivers']= message.receivers.replace(",", ", ")[:-2]
-        d_message['reg_date']= str(message.reg_date)
+        name_list=''
+        split_list=message.receivers.split(',')
+        split_list.pop()
+        for i, receiver in enumerate(split_list):
+            try:
+                if receiver == '':
+                    continue
+                user = User.objects.get(username=receiver)
+                name_list += user.last_name 
+                if i != len(split_list)-1:
+                    name_list += ', '
+            except:
+                pass
+        
+        replies_list = DirectMessageReply.objects.filter(direct_message=message, is_deleted=False).order_by('reg_date')
+        replies=list()
+        for reply in replies_list:
+            item = dict()
+            if request.user == reply.author:
+                item['author_yn']=True
+            else:
+                item['author_yn']=False
+            item['author']=reply.author.username
+            item['author_name']=reply.author.last_name
+            item['contents']=reply.contents
+            item['reg_date']=str(reply.reg_date)[:-3]
+            item['pretty_date']= my_utils.pretty_date(reply.reg_date)
+            try:
+                user_profile = UserProfile.objects.get(user=reply.author)
+                item['author_picture']= user_profile.picture.url
+            except:
+                item['author_picture']='/media/default.png'
+            replies.append(item)
+        
+        d_message['replies']=replies
+        
+        d_message['receivers_name']= name_list
+        d_message['reg_date']= str(message.reg_date)[:-3]
+        d_message['update_date']= str(message.update_date)
         d_message['pretty_date'] = my_utils.pretty_date(message.reg_date)
         d_messages.append(d_message)
     return d_messages
