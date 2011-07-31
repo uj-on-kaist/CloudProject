@@ -156,11 +156,12 @@ def reply_message(request):
         try:
             author_name = d_message.author.username
             target_user = User.objects.get(username=author_name)
-            info = dict()
-            info['from'] = user
-            info['to'] = target_user
-            info['target_object'] = d_message
-            register_noti(request, "new_dm_reply",info)
+            if new_dm_reply.author != target_user:  
+                info = dict()
+                info['from'] = user
+                info['to'] = target_user
+                info['target_object'] = d_message
+                register_noti(request, "new_dm_reply",info)
         except:
             pass
     else:

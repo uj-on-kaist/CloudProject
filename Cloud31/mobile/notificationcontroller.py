@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 
 from controller.models import *
 from controller.forms import *
+from controller.messagecontroller import *
 
 import datetime,json
 
@@ -76,7 +77,7 @@ def read_notification(request, noti_id):
         elif noti.related_type == "DM" or noti.related_type == "DM_Reply":
             try:
                 message = DirectMessage.objects.filter(id=noti.related_id,is_deleted=False)
-                # result['dm']=my_utils.process_messages(request,message)[0]
+                result['dm']=process_messages(request,message)[0]
             except Exception as e:
                 print str(e)
                 pass

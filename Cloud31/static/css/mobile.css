@@ -30,6 +30,8 @@ ul.image_list li{
 ul.image_list li img{
     float: left;
     height: 66px;
+    max-width: 200px;
+    overflow: hidden;
 }
 
 
