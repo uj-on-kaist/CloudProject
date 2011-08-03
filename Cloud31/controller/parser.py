@@ -5,9 +5,30 @@ from django.utils.encoding import smart_unicode
 from controller.models import *
 
 import re
+import shlex
+
+
+def my_split(s, seps):
+    item = ''
+    res = list()
+    for ch in s:
+        if ch in [' ', '\n']:
+            if item != '':
+                res.append(item)
+            res.append(ch)
+            item = ''
+            continue
+        else:
+            item +=ch
+    if item != '':
+        res.append(item)
+    return res
+
+my_split('1\n2 34',[' ','\n'])
 def parse_text(text):
     text=smart_unicode(text, encoding='utf-8', strings_only=False, errors='strict')
-    items=text.split(" ")
+    #items=text.split(" ")
+    items = my_split(text,[' ','\n'])
     new_items = []
     for item in items:
         prefix = item[:1]
@@ -44,14 +65,16 @@ def parse_text(text):
             
     result = ""
     for item in new_items:
-        result += item + " "
+        result += item
     
     return result.strip()
     
 
 def detect_users(text):
     text=smart_unicode(text, encoding='utf-8', strings_only=False, errors='strict')
-    items=text.split(" ")
+    #items=text.split(" ")
+    #items = shlex.split(text)
+    items = my_split(text,[' ','\n'])
     detected_users = list()
     for item in items:
         prefix = item[:1]
@@ -75,7 +98,9 @@ def detect_users(text):
 
 def detect_topics(text):
     text=smart_unicode(text, encoding='utf-8', strings_only=False, errors='strict')
-    items=text.split(" ")
+    #items=text.split(" ")
+    #items = shlex.split(text)
+    items = my_split(text,[' ','\n'])
     detected_topics = list()
     for item in items:
        prefix = item[:1]

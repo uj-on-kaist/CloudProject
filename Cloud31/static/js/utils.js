@@ -78,10 +78,10 @@ function cursor_postion_text(item){
     var left=position-1;
     var right=position;
  
-    while(str.charAt(right) != ' ' && right < str.length){
+    while(str.charAt(right) != ' ' && str.charAt(right) != '\n' && right < str.length){
         right++;
     }
-    while(str.charAt(left) != ' ' && left >= 0){
+    while(str.charAt(left) != ' ' && str.charAt(left) != '\n' && left >= 0){
         left--;
     }
     
