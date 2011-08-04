@@ -274,6 +274,7 @@ def register_iPhone_notification(noti, noti_type, info):
             target_message = target_message[:20] + "..."
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
+            target_message = target_message.replace("\n","")
             contents = sender.username+u"님께서 메시지 \""+target_message+u"\"에 새 댓글을 다셨습니다."
             new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
             new_noti.save()
@@ -282,12 +283,14 @@ def register_iPhone_notification(noti, noti_type, info):
             target_message = target_message[:20] + "..."
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
+            target_message = target_message.replace("\n","")
             contents = sender.username+u"님께서 회원님에 관한 메시지 \""+target_message+u"\"를 작성하셨습니다."
             new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
             new_noti.save()
         elif noti_type == 'new_dm':
             target_message = target_object.contents
             target_message = target_message[:20] + "..."
+            target_message = target_message.replace("\n","")
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
             contents = sender.username+u"님께서 회원님에게 쪽지 \""+target_message+u"\"를 보냈습니다."
@@ -298,6 +301,7 @@ def register_iPhone_notification(noti, noti_type, info):
             target_message = target_message[:20] + "..."
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
+            target_message = target_message.replace("\n","")
             contents = sender.username+u"님께서 회원님에게 쪽지 \""+target_message+u"\"에 답장을 작성하셨습니다."
             new_noti = NotificationQueue(target_user=target_user, notification_type=notification_type, contents = contents)
             new_noti.save()
