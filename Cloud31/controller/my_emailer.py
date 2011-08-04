@@ -19,20 +19,17 @@ def encode(string) :
     return sha1(string).hexdigest()
     
 def send_activation_mail(user,user_profile):
-    shaSource= user.username + user.email
+    shaSource= str(datetime.datetime.now()) + user.email
     activation_key=encode(shaSource)
     key_expires = datetime.datetime.today() + datetime.timedelta(2)
-    
     user_profile.activation_key=activation_key
     user_profile.key_expires=key_expires
     user_profile.save()
-    
     t = loader.get_template('email/activation.html')
     context = Context()
     context['activation_link'] = 'http://cloud31.co.kr/confirm/?key='+activation_key
     email_body = t.render(context)
     email_subject = smart_unicode('Cloud31 계정 인증을 완료해 주세요!', encoding='utf-8', strings_only=False, errors='strict')
-    
     register_email_queue(user.email, email_subject, email_body)
 
 

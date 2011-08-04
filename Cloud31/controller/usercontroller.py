@@ -138,23 +138,20 @@ def signup(request):
             #new_user.is_active = True
             new_user.last_name = name
             
-            
             new_profile = UserProfile(user=new_user)
             new_profile.dept=dept
             new_profile.position=position
-            
             try:
                 my_emailer.send_activation_mail(new_user, new_profile)
-                
                 new_user.save()
                 new_profile.save()
             except Exception as e:
-                print str(e)
+                print "2 :" + str(e)
             
             request.session['message'] = username + ' Registered. Check your email and Click Activation Link.'
             return HttpResponseRedirect('/signin/')
     except Exception as e:
-        print str(e)
+        print "3 :" + str(e)
         return HttpResponse('Error Occured.')
 
 

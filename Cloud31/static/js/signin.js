@@ -6,11 +6,8 @@ function validate_userid(item){
     if(userid){
     
     }
-    if(!userid.match(/[0-9]|[a-z]|[A-Z]/)) { 
-        input_desc.text("영어, 숫자로 조합된 아이디를 입력해 주세요.");
-        input_desc.show(); 
-    }else if(userid.length > 10 || userid.length < 4 ){
-        input_desc.text("4자 이상, 10자 이하의 아이디를 입력해 주세요.");
+    if(userid.length > 10){
+        input_desc.text("10자 이하의 아이디를 입력해 주세요.");
         input_desc.show(); 
     }else{
         input_desc.hide();
