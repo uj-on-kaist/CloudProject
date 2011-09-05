@@ -41,7 +41,6 @@ import random
 def recent_user_graph(request):
     if not request.user.is_staff:
         return my_utils.return_error('You cannot access to this')
-    
     date_before = 90
     range_const = 1
     
@@ -58,10 +57,16 @@ def recent_user_graph(request):
     data = list()
     time = start_time
     label_list = list()
-
+    
+    y = y_axis()
+    y.min, y.max, y.steps = 0, 20, 5
+    
     while time < end_time:
         next_time = time + dt.timedelta(range_const)
-        data.append(UserLoginHistory.objects.filter(login_date__range=(time, next_time)).count())
+        visit_count = UserLoginHistory.objects.filter(login_date__range=(time, next_time)).count()
+        if visit_count > y.max:
+                y.max = visit_count+5
+        data.append(visit_count)
         label_list.append(time.strftime("%B %d, %Y"))
         time = next_time
     
@@ -74,8 +79,7 @@ def recent_user_graph(request):
     chart = open_flash_chart()
     #chart.title = t
     
-    y = y_axis()
-    y.steps = 5
+    
     chart.y_axis = y
     
     x = x_axis()
