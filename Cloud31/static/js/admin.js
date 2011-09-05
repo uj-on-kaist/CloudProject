@@ -50,6 +50,11 @@ function upload_notice(item){
     
     var message=$('textarea#feed_message_input').val();
     var location_info='';
+    if($("#location_info_box").attr("attached") == "true"){
+        var lat = $("#lat_value").text().substring(0,14);
+        var lng = $("#lng_value").text().substring(0,14);
+        location_info = lat+"|"+lng;
+    }
     
     var tokenValue = $("#csrf_token").text();
     

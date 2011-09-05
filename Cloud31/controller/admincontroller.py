@@ -420,6 +420,9 @@ def update_notice(request):
     message=''
     attach_list=''
     location_info=''
+    lat = ''
+    lng = ''
+    
     if request.method == 'POST':
         if request.POST['message']:
             message=smart_unicode(request.POST['message'], encoding='utf-8', strings_only=False, errors='strict')
@@ -428,13 +431,19 @@ def update_notice(request):
             attach_list=request.POST['attach_list']
             
         if request.POST['location_info']:
-            attach_list=request.POST['location_info']
+            location_info=request.POST['location_info']
+            try:
+                location = location_info.split("|")
+                lat = location[0]
+                lng = location[1]
+            except:
+                pass
     
     if message is not '':
         try:
             user = User.objects.get(username=request.user.username)
             try: 
-                new_notice = Notice(author=user,contents=message,location=location_info,attach_files=attach_list)
+                new_notice = Notice(author=user,contents=message,lat=lat,lng=lng,attach_files=attach_list)
                 new_notice.save()   
             except:
                 return my_utils.return_error('Insert Failed')
