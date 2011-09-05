@@ -161,14 +161,18 @@ def prepare_member_list(wb,start_date,end_date):
     
     user_profiles = UserProfile.objects.filter(is_deactivated=False)
     for user_profile in user_profiles:
-        row+=1
-        sheet.write(row,0,"User#"+str(user_profile.user.id),font_style)
-        sheet.write(row,1,user_profile.user.username,font_style)
-        sheet.write(row,2,user_profile.user.last_name,font_style)
-        sheet.write(row,3,user_profile.user.email,font_style)
-        sheet.write(row,4,user_profile.dept,font_style)
-        sheet.write(row,5,user_profile.position,font_style)
-        sheet.write(row,6,'http://cloud31.co.kr'+user_profile.picture.url,font_style)
+        try:
+            row+=1
+            sheet.write(row,0,"User#"+str(user_profile.user.id),font_style)
+            sheet.write(row,1,user_profile.user.username,font_style)
+            sheet.write(row,2,user_profile.user.last_name,font_style)
+            sheet.write(row,3,user_profile.user.email,font_style)
+            sheet.write(row,4,user_profile.dept,font_style)
+            sheet.write(row,5,user_profile.position,font_style)
+            sheet.write(row,6,'http://cloud31.co.kr'+user_profile.picture.url,font_style)
+        except:
+            row-=1
+            pass
 
 def prepare_most_replied(wb,start_date,end_date):
     sheet = wb.add_sheet('최다 댓글 메세지(기간 내)')
