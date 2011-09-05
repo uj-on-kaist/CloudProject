@@ -75,7 +75,7 @@ def recent_user_graph(request):
     l = line()
     l.values = data
     l.colour = "#325AAA"
-    l.tip = "#x_label#<br>#val# Users Logined"
+    l.tip = "#x_label#<br>#val# Users Visited"
     chart = open_flash_chart()
     #chart.title = t
     
