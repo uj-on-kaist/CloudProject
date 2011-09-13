@@ -163,7 +163,7 @@ function display_feeds(feeds, type){
     for(var i=0; i<feeds.length; i++){
         
         var feed=feeds[i];
-        console.log(feed);
+        //console.log(feed);
         
         var feed_layout= $("div.stream.template").clone();
         feed_layout.removeClass("template");

@@ -1,0 +1,54 @@
+<div id="poll_list">
+
+<div class="stream template" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
+  <div class="right controls event_delete top">
+    <a href="#" class="delete stream_element_delete event" title="지우기" style="display:none;"><span class="ui_icon ui_icon_delete"></span></a>
+  </div>
+  <div class="sm_body">
+    <a href="/user/" class="user_link">
+      <img class="avatar author" data-person_id="2">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/" class="user_link">
+          user_name
+        </a>
+        <span class="author_name">
+        </span>
+      </div>
+      <div style="border-left:3px solid #E0E0E0; padding:3px 10px; margin:5px 0px;">
+      <p class="event_title">
+        event_title
+      </p>
+      </div>
+      <p class="event_content">
+        event_content
+      </p>
+      <div class="info">
+        <span class="check_action">
+          <b class="public_info"></b>
+        </span>
+        
+      </div>
+      <div class="info">
+        <span class="timeago">
+          <abbr class="timeago event_time" title="2011-06-08 13:01:46 UTC">방금 전</abbr>
+        </span>
+        <span class="via">
+        </span>
+        |
+        <span class="comment_action">
+          <a href="#"  onclick="return false;">Comments (<span class="comment_count_text"></span>)</a>
+        </span>
+        
+      </div>
+      
+      {% include "ui/event_comment_box.html" %}
+      
+    </div>
+  </div>
+</div>
+</div>
+
+
+</div>

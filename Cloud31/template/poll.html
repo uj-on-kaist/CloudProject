@@ -1,0 +1,41 @@
+{% include "meta_open.html" %}
+
+<h2 class="page_title">
+    Poll
+    <a href="/poll/new" class="title_link">Make a Poll</a>
+</h2>
+
+<div class="tab">
+<a href="#" onclick="return false;">
+    <span class="tab_item selected corner_top" onclick="return false;">Polls</span>
+</a>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    load_event('upcoming');
+    $("#input_title").click(function(){
+        $("#event_form tr").removeClass("hidden");
+    });
+});
+</script>
+
+<table class="member_table list_table">
+    {% for poll in polls.object_list %}
+    <tr class="poll_item list_item" onclick="document.location.href='/poll/detail/{{ poll.id }}';">
+        <td width="60" class="first member_picture"><img src='{{ poll.author.picture }}' /></td>
+        <td class="text">
+            <p class="poll_title">{{ poll.title }}</p>
+            <div class="from">
+                by&nbsp;<a href="/user/test" class="user_link" onfocus="this.blur()">{{ poll.author.username }}</a>
+                <span class="author_name">{{ poll.author.last_name }}</span>
+                &nbsp;<span>{{ poll.reg_date }}</span>
+            </div>
+        </td>
+    </tr>
+    {% endfor%}
+</table>
+
+{% include "ui/pagination.html" %}
+
+{% include "meta_close.html" %}

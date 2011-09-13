@@ -85,8 +85,15 @@ urlpatterns = patterns('',
     url(r'^api/message/get/(?P<load_type>\w+)/$','controller.messagecontroller.load_message'),
     
     
-    
-    
+    url(r'^poll/$', 'controller.pollcontroller.main'),
+    url(r'^poll/new$', 'controller.pollcontroller.new'),
+    url(r'^poll/detail/(?P<poll_id>\w+)$', 'controller.pollcontroller.detail_poll'),
+    url(r'^api/poll/register/$','controller.pollcontroller.register_poll'),
+    url(r'^api/poll/delete/(?P<poll_id>\w+)$','controller.pollcontroller.delete_poll'),
+    url(r'^api/poll/update/comment/$','controller.pollcontroller.update_poll_comment'),
+    url(r'^api/poll/comment/delete/(?P<comment_id>\w+)$','controller.pollcontroller.delete_poll_comment'),
+    url(r'^api/poll/delete/(?P<poll_id>\w+)$','controller.pollcontroller.delete_poll'),
+    url(r'^api/poll/option/(?P<option_info>.+)$','controller.pollcontroller.check_option'),
     
     url(r'^event/$', 'controller.eventcontroller.main'),
     url(r'^event/new$', 'controller.eventcontroller.new'),
@@ -129,7 +136,8 @@ urlpatterns = patterns('',
     url(r'^api/sidebar/dialog/delete$', 'sidebar.sidebarcontroller.delete_dialog'),
     url(r'^api/sidebar/dialog/get$', 'sidebar.sidebarcontroller.load_dialog'),
     url(r'^api/sidebar/invite$', 'sidebar.sidebarcontroller.send_invite'),
-    
+    url(r'^api/sidebar/poll/get$', 'sidebar.sidebarcontroller.load_poll'),
+
     
     
     url(r'^chart/test$','controller.statisticcontroller.test'),

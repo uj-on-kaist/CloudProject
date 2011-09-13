@@ -1,0 +1,161 @@
+{% include "meta_open.html" %}
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("abbr").each(function(){
+        $(this).text( humane_date( $(this).text() ) );
+    });
+    $(".comments").show();
+    
+    $("textarea.comment_area").elastic();
+    
+    calculate_poll_options();
+});
+</script>
+
+{% if poll %}
+<h2 class="page_title">Poll Detail</h2>
+
+<div class="tab">
+<a href="#" onclick="return false;">
+    <span class="tab_item back" onclick="history.back();">&laquo;</span>
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;" style="font-weight:normal;">
+        {{ poll.title }}
+    </span>
+</a>
+</div>
+
+<div class="stream poll_stream" id="poll_{{ poll.id }}" data-guids="3,4" id="main_stream"><div class="stream_element" data-guid="1">
+  <div class="right controls">
+    {% if user == poll.author %}
+    <a href="#" class="delete stream_element_delete message" onclick="delete_detail_poll($(this));" poll_id="{{ poll.id }}" title="지우기"><span class="ui_icon ui_icon_delete"></span></a>
+    {% endif %}
+  </div>
+  <div class="sm_body">
+    <a href="/user/{{ poll.author.username }}" class="user_link">
+      <img class="avatar author" src="{{ poll.author.picture }}" data-person_id="2">
+    </a>
+    <div class="content">
+      <div class="from">
+        <a href="/user/{{ poll.author.username }}" class="user_link">
+          {{ poll.author }}
+        </a>
+        <span class="author_name">{{ poll.author.last_name }}
+        </span>
+        <span class="timeago" style="font-size:11px;">
+          <abbr class="timeago event_time" title="2011-06-08 13:01:46 UTC">{{ poll.reg_date }}</abbr>
+        </span>
+      </div>
+      <p class="event_title" style="font-size:16px; border-left: 3px solid #E0E0E0; padding: 5px 10px 0px 10px; margin-top:5px;">
+        {{ poll.title }}
+      </p>
+      
+      {% if poll.contents %}
+      <p class="poll_content" style="border-left: 3px solid #E0E0E0; padding:3px 0px 10px 10px;">
+        {{ poll.contents }}
+      </p>
+      {% endif %}
+      <div class="info" id="attend_info" style="margin-top:10px; margin-bottom:2px; background-color: #F0F4F5; padding:0.4em; border-left: 3px solid #F0F4F5; font-size:12px">
+        <div class="poll_options">
+            <b style="color:#343434;"></b>
+            <table class="option_list">
+                {% for option in poll.options %}
+                <tr class="option_item" option_id="{{ option.id }}" option_value="{{ option.value }}">
+                    <td>
+                        <input type="checkbox" style="top:0px; float:left" onclick="option_selected($(this).parent().parent());" {% if option.checked %}checked="checked"{% endif %}/>
+                        <p style="margin-left:5px;line-height:18px;width:300px; float:left">{{ option.detail }}</p>
+                    </td>
+                    <td style="width:100px; position:relative">
+                        <div style="width:0px; height:20px; background-color:#06C; text-align:center; color:white;position:absolute; top:5px;" class="option_percent">
+                        </div>
+                        <div style="width:100px; height:20px;text-align:center; color:#ACACAC; z-index:10; position:absolute; top:4px;">
+                            <b style="font-size:10px;" class="option_percent_text"></b>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                
+                <tr>
+                     <td ></td>
+                     <td style="width:100px; text-align:center;">
+                        <b style="font-size:10px;" class="option_total_text">Total</b>
+                     </td>
+                </tr>
+            </table>
+        </div>
+      </div>
+
+<ul class="comments comment_list" id="1">
+
+<li class="comment posted template event_comment" data-guid="2">
+    <div class="right controls">
+        <a href="#" class="delete stream_element_delete" title="지우기" style="display:none;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+    </div>
+    <div class="user_image_box">
+    <a href="/user/" class="user_link">
+      <img alt="ujlikes@localhost" class="author avatar">
+    </a>
+    </div>
+    <div class="content">
+      <div class="from">
+        <a href="/user/{{ comment.author }}" class="user_link"></a>
+        <span class="author_name"></span>
+        <time class="timeago">
+          <abbr class="timeago comment_time"></abbr>
+        </time>
+      </div>
+      <p class="comment_text"></p>
+    </div>
+</li>
+{% for comment in poll.comments %}
+<li class="comment posted event_comment" data-guid="2">
+    <div class="right controls">
+        {% if user == comment.author %}
+            <a href="#" class="delete stream_element_delete message" onclick="delete_detail_poll_comment($(this));" comment_id="{{ comment.id }}" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png"></a>
+        {% endif %}
+    </div>
+    <div class="user_image_box">
+    <a href="/user/{{ comment.author }}" class="user_link">
+      <img alt="ujlikes@localhost" class="author avatar" src="{{ comment.author_picture }}">
+    </a>
+    </div>
+    <div class="content">
+      <div class="from">
+        <a href="/user/{{ comment.author }}" class="user_link">{{ comment.author }}</a>
+        <span class="author_name">{{ comment.author_name }}</span>
+        <time class="timeago">
+          <abbr class="timeago comment_time">{{ comment.reg_date }}</abbr>
+        </time>
+      </div>
+      <p class="comment_text">{{ comment.contents|safe }}</p>
+    </div>
+</li>
+{% endfor %}
+</ul>
+ 
+
+<ul class="comments" id="1">
+   <li class="write_box" style="border-left-width: 3px; border-left-style: solid; border-left-color: rgb(149, 189, 237); ">
+    <img alt="ujlikes@localhost" class="current_user avatar" src="{{ user_profile.picture.url }}" title="ujlikes@localhost">
+    <p style="position:relative; left:35px; margin-bottom:3px;">
+        <textarea class="comment_area" id="comment_area_{{ poll.id }}" style="width:405px; margin:0px; height:15px;" placeholder="Write Comment" onclick="return false;"></textarea>
+    </p>
+    <div class="submit_button">
+       <input id="comment_submit_{{ poll.id }}" type="submit" class="button_s" onblur="return false"  name="commit" value="Reply" onclick="var id=$(this).attr('id').split('_')[2]; ; update_poll_comment(id); return false;"/>
+    </div>
+    </li>
+</ul>
+      
+      
+      
+      
+    </div>
+  </div>
+</div>
+</div>
+{% else %}
+{{ error_message }}
+{% endif %}
+
+
+{% include "meta_close.html" %}

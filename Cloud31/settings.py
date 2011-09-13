@@ -3,7 +3,7 @@ import os
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 IPHONE_PEM_PATH = PROJECT_PATH +'/samil.cloud31.pem'
-print IPHONE_PEM_PATH
+#print IPHONE_PEM_PATH
 
 import socket
 SERVICE_IP = socket.gethostbyname(socket.gethostname())

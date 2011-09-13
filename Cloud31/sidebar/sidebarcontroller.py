@@ -24,7 +24,44 @@ from controller import parser
 from controller import my_emailer
 
 DEFAULT_LOAD_LENGTH = 5
- 
+
+def load_poll(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    result['dialogs']=list()
+    if not request.user:
+        return my_utils.return_error('Please Sign in First')
+    
+    try:
+        base_id = request.GET.get("base_id",False)
+        additional = Q()
+        if base_id:
+            additional = Q(id__lt=base_id)
+        
+        polls = Poll.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+        
+        polls_list = list()
+        for poll in polls:
+            poll_item = dict()
+            poll_item['id'] = poll.id
+            poll_item['title'] = poll.title
+            poll_item['author'] = poll.author.username
+            poll_item['author_name'] = poll.author.last_name
+            poll_item['reg_date'] = str(poll.reg_date)
+            polls_list.append(poll_item)
+        
+        result['polls']=polls_list
+        
+        if len(polls_list) == DEFAULT_LOAD_LENGTH:
+            result['load_more']=True
+        
+    except Exception as e:
+        print str(e)
+        return my_utils.return_error('Internal Error')
+    
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
 
 def load_dialog(request):
     result=dict()

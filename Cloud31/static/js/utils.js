@@ -32,6 +32,7 @@ function start_loading(item){
 }
 
 function finish_loading(item){
+    item.removeAttr('disabled');
     item.parent().find('.loading').hide();
     item.show();
 }

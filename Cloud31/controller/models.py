@@ -188,4 +188,27 @@ class NotificationQueue(models.Model):
     
     
 
+class Poll(models.Model):
+    author = models.ForeignKey(User)
+    title = models.CharField(max_length=100)
+    contents = models.TextField(null=False)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
 
+class PollComment(models.Model):
+    poll = models.ForeignKey(Poll)
+    author = models.ForeignKey(User)
+    contents = models.TextField(null=False)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
+
+
+class PollItem(models.Model):
+    poll = models.ForeignKey(Poll)
+    detail = models.TextField(null=False)
+
+class PollAnswer(models.Model):
+    answer = models.ForeignKey(PollItem)
+    answerer = models.ForeignKey(User)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    

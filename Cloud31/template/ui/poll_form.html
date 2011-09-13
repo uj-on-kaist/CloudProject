@@ -1,0 +1,51 @@
+<div id="poll_form">
+<table class="input_table">
+
+<tr id="poll_title">
+<td width="60" class="label"><b>Title</b></td>
+<td><input type="text" id="input_title" /></td>
+</tr>
+
+<tr id="poll_message" class="canHide">
+<td width="60" class="label"><b>Detail</b></td>
+<td><textarea id="input_detail" class="autogrow" style="overflow-y:hidden;min-height:50px; resize:none;"></textarea></td>
+</tr>
+
+<tr id="poll_options" class="canHide">
+<td width="60" class="label"><b>Options</b></td>
+<td id="option_list">
+    <div id="option_template">
+        <input type="radio" disabled="disabled"/>
+        <input class="option_text" type="text" style="width:390px; display:inline; margin: 0px 5px;" />
+        <a href="#" onclick="$(this).parent().remove(); return false;">delete</a>
+    </div>
+    <div class="option_item">
+        <input type="radio" disabled="disabled"/>
+        <input class="option_text" type="text" style="width:390px; display:inline; margin: 0px 5px;" value="한글 테스트"/>
+        <a href="#" onclick="$(this).parent().remove(); return false;">delete</a>
+    </div>
+    <div class="option_item">
+        <input type="radio" disabled="disabled"/>
+        <input class="option_text" type="text" style="width:390px; display:inline; margin: 0px 5px;" value="test2"/>
+        <a href="#" onclick="$(this).parent().remove(); return false;">delete</a>
+    </div>
+    <div style="padding-top:8px">
+        <a href="#" onclick="add_poll_item($(this).parent()); return false;">Add an Option</a>
+    </div>
+</td>
+</tr>
+
+
+<tr id="event_submit" class="canHide">
+<td width="60" class="label"><b></b></td>
+<td style="padding-top:15px; text-align:left; padding-right:0px;">
+    <p class="loading" style="display:inline; padding:0; margin:0; display:none; padding-top:4px; padding-bottom:6px;padding-right:5px; float:left;"><img src="/static/image/ajax-loader.gif?asdf"></p>
+    
+    <input type="button" class="button_s" onblur="return false" onClick="register_poll($(this)); return false;" value="등록" id="update_btn"/>
+    <input type="button" class="button_s" onblur="return false" onClick="history.back(); return false;" value="취소" id="update_btn"/>
+</td>
+</tr>
+
+
+</table>
+</div><!-- End demo -->

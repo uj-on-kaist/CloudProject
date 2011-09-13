@@ -294,7 +294,6 @@ function update_event_comment(event_id){
 		  console.log(data);
 		}
 	});
- 
 }
 
 function delete_event(item){

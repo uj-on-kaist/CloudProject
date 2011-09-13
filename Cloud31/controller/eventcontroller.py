@@ -26,7 +26,7 @@ from django.db.models import Q
 
 from controller.notificationcontroller import *
 
-DEFAULT_LOAD_LENGTH = 3
+DEFAULT_LOAD_LENGTH = 10
 
 @login_required(login_url='/signin/')
 def main(request):
