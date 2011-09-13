@@ -40,7 +40,8 @@ def signin(request):
     try:
         user = authenticate(username=userID,password=userPW)
         if user is not None:
-            if user.is_active:
+            user_profile = UserProfile.objects.get(user=user)
+            if user.is_active and not user_profile.is_deactivated:
                 login(request, user)
                 try:
                     user_profile = UserProfile.objects.get(user=user)
@@ -48,8 +49,7 @@ def signin(request):
                     user_profile.save()
                 except Exception as e:
                     print str(e)
-                
-                
+
             else:
                 return my_utils.return_error('That User is not Active')
             user_profile = UserProfile.objects.get(user=user)
