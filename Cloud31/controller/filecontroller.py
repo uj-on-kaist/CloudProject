@@ -32,7 +32,8 @@ from django.core.servers.basehttp import FileWrapper
 from django.conf import settings
 
 @login_required(login_url='/signin/')
-def download_file(request, file_id):
+def download_file(request, file_id, file_name):
+    print file_name
     target_file = get_object_or_404(models.File,id=file_id)
     agent = request.META['HTTP_USER_AGENT']
     print agent
@@ -43,6 +44,8 @@ def download_file(request, file_id):
         response = HttpResponse(my_data,content_type=content_type)
         response['Content-Length'] = target_file.file_contents.size
         file_name = smart_unicode(target_file.file_name, encoding='utf-8', strings_only=False, errors='strict')
+        response['Content-Disposition'] = 'attachment;'
+        """
         response['Content-Disposition'] = 'attachment; filename=\"' + smart_str(target_file.file_name) +'\"'
         if 'MSIE' in agent:
             print "1Agent "+agent
@@ -51,7 +54,34 @@ def download_file(request, file_id):
             import unicodedata
             asdf = unicodedata.normalize('NFKD', asdf).encode('ascii','ignore')
             response['Content-Disposition'] = asdf
-            
+        """
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+        response['Cache-Control'] = 'no-cache'
+    except Exception as e:
+        print str(e)
+    return response
+
+
+def download_file_2(request, file_info):
+    """
+    THIS IS FILE_DOWNLOAD HANDLED VERSION FOR IE.
+    """
+    
+    file_info = file_info.split('/')
+    file_id = file_info[0]
+    file_name = file_info[1]
+    target_file = get_object_or_404(models.File,id=file_id)
+    agent = request.META['HTTP_USER_AGENT']
+    try:
+        path = target_file.file_contents.path
+        content_type = mimetypes.guess_type( path )[0]
+        if content_type is None:
+            content_type = 'application/octet-stream'
+        my_data = File(open(path))
+        response = HttpResponse(my_data,content_type=content_type)
+        response['Content-Length'] = target_file.file_contents.size
+        response['Content-Disposition'] = 'attachment;'
         response['Pragma'] = 'no-cache'
         response['Expires'] = '0'
         response['Cache-Control'] = 'no-cache'

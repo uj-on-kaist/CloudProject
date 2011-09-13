@@ -64,7 +64,8 @@ urlpatterns = patterns('',
     url(r'^picture/(?P<username>\w+)/$','controller.profilecontroller.picture'),
 
     url(r'^file/$', 'controller.filecontroller.main'),
-    url(r'^file/download/(?P<file_id>\w+)/$', 'controller.filecontroller.download_file'),
+    url(r'^file/download/(?P<file_id>\w+)$', 'controller.filecontroller.download_file'),
+    url(r'^file/download2/(?P<file_info>.+)$', 'controller.filecontroller.download_file_2'),
     url(r'^file/ajax_upload$', 'controller.filecontroller.ajax_upload'),
     
     url(r'^members/$', 'controller.membercontroller.main'),

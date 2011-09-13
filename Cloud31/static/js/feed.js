@@ -319,7 +319,7 @@ function display_files(file_list, feed_layout, feed_id){
         
             feed_layout.find('.feed_attach_image').append(image_layout);
         }else{
-            var file_layout = '<a class="attach_file" href="/file/download/'+file.id+'/">' +
+            var file_layout = '<a class="attach_file" href="/file/download2/'+file.id+'/'+file.name+'">' +
                 '<span class="ui_icon ui_icon_file_'+file.type+'" ></span>' +
                 '<span class="">'+file.name+'</span>' +
             '</a>';
