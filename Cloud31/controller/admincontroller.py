@@ -100,7 +100,7 @@ def overview(request):
     start_time = dt.date(year, month, day) - dt.timedelta(6)
     end_time = dt.date(year, month, day)  + dt.timedelta(1)
     
-    context['user_length'] = User.objects.filter(is_active=True).count()
+    context['user_length'] = UserProfile.objects.filter(is_deactivated=False).count()
     context['feed_length'] = Message.objects.filter(is_deleted=False).count()
     
     today_start = dt.date(year, month, day)
@@ -348,7 +348,8 @@ def stats_member(request):
                     member.picture = member_profile.picture.url
                 except:
                     member.picture = "/media/default.png"
-                members_list.append(member)
+                if not member_profile.is_deactivated:
+                    members_list.append(member)
             except:
                 pass
         
@@ -497,37 +498,23 @@ def authority(request):
     context['page_authority'] = "selected"
     
     try:
-        keyword = request.GET.get('q', '')
-        search_index = request.GET.get('index', '')
-        show_staff = request.GET.get('show_staff','')
-        
+        category = request.GET.get('category','')
         query_type = Q()
-        if keyword is not '':
-            print keyword
-            query_type = Q(username__icontains=keyword) | Q(last_name__icontains=keyword)
         
-        if search_index is not '':
-            if search_index in map(chr, range(65, 91)):
-                query_type = Q(username__istartswith=search_index)
-            elif search_index == 'number':
-                query_type = Q(username__gt="0",username__lt="9")
-            else:
-                this_index,next_index=my_utils.next_search_index(search_index)
-                query_type = Q(username__gt=this_index, username__lt=next_index)
-        
-        if (keyword is '' and search_index is '') and show_staff == '1':
+        if category == '1':
             context['show_staff']='selected'
-            query_type = Q(is_staff=True)
-        elif (keyword is '' and search_index is ''):
+            query_type = Q(user__is_staff=True, is_deactivated=False)
+        elif category == '2':
+            context['show_deactivated']='selected'
+            query_type = Q(is_deactivated=True)
+        else:
             context['show_user']='selected'
-            query_type = Q(is_staff=False)
+            query_type = Q(user__is_staff=False, is_deactivated=False)
         
-        members = User.objects.filter(query_type & ~Q(id = request.user.id), is_active=True).order_by('username')
+        members = UserProfile.objects.filter(query_type & ~Q(user = request.user), user__is_active=True).order_by('user__username')
         members_list = list()
         for member in members:
             try:
-                member_profile = UserProfile.objects.get(user=member)
-                member.profile = member_profile
                 try:
                     member.picture = member_profile.picture.url
                 except:
@@ -576,11 +563,17 @@ def authority_update(request):
             continue
         try:
             user = User.objects.get(id=user_id)
+            user_profile = UserProfile.objects.get(user=user)
             if action == 'user':
                 user.is_staff=False
             if action == 'admin':
                 user.is_staff=True
+            if action == 'activate':
+                user_profile.is_deactivated = False
+            if action == 'deactivate':
+                user_profile.is_deactivated = True   
             user.save()
+            user_profile.save()
         except Exception as e:
             print str(e)
             pass

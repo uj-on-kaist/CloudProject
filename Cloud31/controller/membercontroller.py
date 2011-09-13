@@ -60,7 +60,8 @@ def main(request):
                     member.picture = member_profile.picture.url
                 except:
                     member.picture = "/media/default.png"
-                members_list.append(member)
+                if not member_profile.is_deactivated:
+                    members_list.append(member)
             except:
                 pass
         

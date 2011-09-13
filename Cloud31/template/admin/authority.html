@@ -5,11 +5,14 @@
 </h2>
 
 <div class="tab">
-<a href="#" onclick="document.location.href='/admin/authority/?show_staff=1'">
+<a href="#" onclick="document.location.href='/admin/authority/?category=1'">
     <span class="tab_item corner_top {{ show_staff }}" onclick="select_this_tab($(this)); return false;">Admin</span>
 </a>
-<a href="#" onclick="document.location.href='/admin/authority/?show_staff=0'">
+<a href="#" onclick="document.location.href='/admin/authority/?category=0'">
     <span class="tab_item corner_top {{ show_user }}" onclick="select_this_tab($(this)); return false;">Users</span>
+</a>
+<a href="#" onclick="document.location.href='/admin/authority/?category=2'">
+    <span class="tab_item corner_top {{ show_deactivated }}" onclick="select_this_tab($(this)); return false;">Deactived</span>
 </a>
 </div>
 <table class="member_table list_table" id="user_list_table">
@@ -21,10 +24,10 @@
     <tr class="member_item list_item authority_item">
         <td class="name">
             <img src='{{ member.picture }}'/>
-            <p class="ellipsis username"><a>@{{ member.username }}</a></p>
-            <p class="ellipsis real_name">{{ member.last_name }}</p>
+            <p class="ellipsis username"><a>@{{ member.user.username }}</a></p>
+            <p class="ellipsis real_name">{{ member.user.last_name }}</p>
         </td>
-        <td class="first member_picture" width="20px"><input type="checkbox" user_id='{{ member.id }}' /></td>
+        <td class="first member_picture" width="20px"><input type="checkbox" user_id='{{ member.user.id }}' /></td>
     </tr>
     {% endfor%}
 </table>
@@ -36,9 +39,15 @@ Make selected user as
 {% if show_user == 'selected' %}
 <option value="admin">Admin</option>
 <option value="user">User</option>
+<option value="deactivate">Deactivate</option>
 {% else %}
+{% if show_staff == 'selected' %}
 <option value="user">User</option>
 <option value="admin">Admin</option>
+<option value="deactivate">Deactivate</option>
+{% else %}
+<option value="activate">Activate</option>
+{% endif %}
 {% endif %}
 
 </select>

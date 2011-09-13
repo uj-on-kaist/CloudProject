@@ -151,8 +151,8 @@ def ajax_user(request):
                 item['picture']= user_profile.picture.url
             except:
                 item['picture']='/media/default.png'
-            
-            result['items'].append(item)
+            if not user_profile.is_deactivated:
+                result['items'].append(item)
         except:
             pass
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
