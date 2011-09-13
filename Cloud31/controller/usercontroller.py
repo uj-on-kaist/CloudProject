@@ -72,7 +72,7 @@ def signin(request):
             context['message'] = user.username+' is not active. First check your email and click activation link'
             return HttpResponse(t.render(context))
         elif user_profile.is_deactivated:
-            context['message'] = user.username+' is not deactived. Please Contact with Administrator.'
+            context['message'] = user.username+' is deactivated. Please Contact with Administrator.'
             return HttpResponse(t.render(context))
     else:
         context['message'] = '<b>Sign in Failed.</b> Check Username and Password again.'
