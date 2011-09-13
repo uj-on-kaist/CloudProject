@@ -169,7 +169,8 @@ def member(request):
                     a_member['picture'] = member_profile.picture.url
                 except:
                     a_member['picture'] = "/media/default.png"
-                members_list.append(a_member)
+                if not member_profile.is_deactivated:
+                    members_list.append(a_member)
             except:
                 pass
                 

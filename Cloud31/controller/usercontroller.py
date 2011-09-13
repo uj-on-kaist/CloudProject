@@ -57,7 +57,8 @@ def signin(request):
     
     user = authenticate(username=username,password=password)
     if user is not None:
-        if user.is_active:
+        user_profile = UserProfile.objects.get(user=user)
+        if user.is_active and not user_profile.is_deactivated:
             login(request, user)
             
             user_login = UserLoginHistory(user=user)
@@ -67,8 +68,11 @@ def signin(request):
                 return HttpResponseRedirect(request.POST['next'])
             else:
                 return HttpResponseRedirect('/')
-        else:
+        elif not user.is_active:
             context['message'] = user.username+' is not active. First check your email and click activation link'
+            return HttpResponse(t.render(context))
+        elif user_profile.is_deactivated:
+            context['message'] = user.username+' is not deactived. Please Contact with Administrator.'
             return HttpResponse(t.render(context))
     else:
         context['message'] = '<b>Sign in Failed.</b> Check Username and Password again.'
