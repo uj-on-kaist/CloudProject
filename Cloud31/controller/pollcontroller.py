@@ -42,7 +42,7 @@ def main(request):
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     
     try:
-        polls = Poll.objects.filter(is_deleted=False).order_by('reg_date')
+        polls = Poll.objects.filter(is_deleted=False).order_by('-reg_date')
         polls_list = list()
         for poll in polls:
             try:

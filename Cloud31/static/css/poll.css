@@ -1,0 +1,63 @@
+
+#option_template{
+    display: none;
+}
+.option_item{
+    margin: 5px 0;
+}
+
+.poll_item td{
+    padding: 10px 0;
+    border-bottom: 1px solid #EDEDED;
+}
+.poll_item td.text{
+    position: relative;
+}
+.poll_item td.member_picture{
+    vertical-align: top;
+}
+.poll_item .poll_title{
+    height: 20px;
+    line-height: 20px;
+    font-size: 13px;
+    color: #343434;
+}
+.poll_item .from{
+    font-size: 11px;
+    color: #A0A0A0;
+}
+.poll_item .author_name{
+    font-size: 11px;
+}
+
+.poll_item:hover{
+    cursor: pointer;
+}
+
+.option_list{
+    margin: 0;
+    padding: 0;
+    color: #343434;
+}
+.poll_item .poll_title{
+    line-height: 20px;
+    height:20px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.poll_item:hover{
+    background-color:#
+}
+.poll_item p{
+    margin: 0;
+    padding: 0;
+}
+.poll_item{
+    border-bottom: 1px solid #F0F0F0;
+}
+.poll_item.last{
+    border-bottom: none;
+}
+.poll_item:hover{
+    background-color: rgb(250,250,250);
+}
