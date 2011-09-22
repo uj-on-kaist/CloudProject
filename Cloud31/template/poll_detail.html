@@ -58,18 +58,20 @@ $(document).ready(function(){
       <div class="info" id="attend_info" style="margin-top:10px; margin-bottom:2px; background-color: #F0F4F5; padding:0.4em; border-left: 3px solid #F0F4F5; font-size:12px">
         <div class="poll_options">
             <b style="color:#343434;"></b>
-            <table class="option_list">
+            <table class="option_list" style="position:relative;">
                 {% for option in poll.options %}
-                <tr class="option_item" option_id="{{ option.id }}" option_value="{{ option.value }}">
+                <tr class="option_item" option_id="{{ option.id }}" option_value="{{ option.value }}" style="position:relative;">
                     <td>
                         <input type="checkbox" style="top:0px; float:left" onclick="option_selected($(this).parent().parent());" {% if option.checked %}checked="checked"{% endif %}/>
                         <p style="margin-left:5px;line-height:18px;width:300px; float:left">{{ option.detail }}</p>
                     </td>
-                    <td style="width:100px; position:relative">
-                        <div style="width:0px; height:20px; background-color:#06C; text-align:center; color:white;position:absolute; top:5px;" class="option_percent">
+                    <td style="width:100px; position:relative; height:20px; overflow-y:hidden">
+                        <div style="width:100px; height:20px; overflow-y:hidden; position:relative">
+                        <div style="width:0px; height:20px; background-color:#06C; text-align:center; color:white;position:absolute; top:0px;" class="option_percent">
                         </div>
-                        <div style="width:100px; height:20px;text-align:center; color:#ACACAC; z-index:10; position:absolute; top:4px;">
+                        <div style="width:100px; height:20px;text-align:center; color:#ACACAC; z-index:10; position:absolute; top:0px;">
                             <b style="font-size:10px;" class="option_percent_text"></b>
+                        </div>
                         </div>
                     </td>
                 </tr>
