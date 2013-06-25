@@ -192,7 +192,7 @@ def user_picture_upload(request, uploaded, filename, raw_data ):
                 user_profile = UserProfile.objects.get(user=user)
                 user_profile.picture.save(fileName,File(open(filename)))
                 user_profile.save()
-        make_thumbnail(request)
+        make_thumbnail(user)
         return True, user_profile.picture.url
     except IOError:
         # could not open the file most likely
@@ -200,9 +200,8 @@ def user_picture_upload(request, uploaded, filename, raw_data ):
     return True, -1
 
 import Image, ImageOps
-def make_thumbnail(request):
+def make_thumbnail(user):
     try:
-        user = get_object_or_404(User,username=request.user.username)
         user_profile = get_object_or_404(UserProfile,user=user)
         if user_profile.picture.name:
             filename = os.path.join(settings.MEDIA_ROOT, user_profile.picture.name)

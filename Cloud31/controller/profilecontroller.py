@@ -69,7 +69,7 @@ def picture_size(request,size,username):
         if os.path.isfile(pathName):
             return HttpResponseRedirect("/media/"+filename)
         else:
-        	make_thumbnail(request)
+        	make_thumbnail(user)
         	return HttpResponseRedirect("/media/"+filename)
     except Exception as e:
         print str(e)

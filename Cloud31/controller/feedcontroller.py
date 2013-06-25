@@ -520,7 +520,7 @@ def update_comment(request):
         item['id']=new_comment.id
         item['author']=new_comment.author.username
         #item['author_picture']=UserProfile.objects.get(user=new_comment.author).picture.url
-        item['author_picture']=my_utils.get_user_thumbnail(request)
+        item['author_picture']=my_utils.get_user_thumbnail(new_comment.author)
         item['author_name']=new_comment.author.last_name
         item['contents']= parser.parse_text(new_comment.contents)
         item['reg_date']= str(new_comment.reg_date)

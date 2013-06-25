@@ -20,7 +20,7 @@ from django.conf import settings
 def load_basic_info(request, context):
     user_profile = get_object_or_404(UserProfile,user=request.user)
     user_profile.picture = user_profile.picture.url
-    user_profile.thumbnail = get_user_thumbnail(request)
+    user_profile.thumbnail = get_user_thumbnail(request.user)
     context['user_profile'] = user_profile
        
     try:
@@ -81,7 +81,7 @@ def process_messages(request, messages):
             feed['author_dept']=user_profile.dept
             feed['author_position']=user_profile.position
             #feed['author_picture']= user_profile.picture.url
-            feed['author_picture']= get_user_thumbnail(request)
+            feed['author_picture']= get_user_thumbnail(message.author)
         except:
             feed['author_picture']='/media/default.png'
         feed['author_name']=message.author.last_name
@@ -108,7 +108,7 @@ def process_messages(request, messages):
                 item['author_name']=comment.author.last_name
                 try:
                     user_profile = UserProfile.objects.get(user=comment.author)
-                    item['author_picture']= get_user_thumbnail(request)
+                    item['author_picture']= get_user_thumbnail(comment.author)
                 except:
                     item['author_picture']='/media/default.png'
                 item['contents']= parser.parse_text(comment.contents)
@@ -340,14 +340,18 @@ def pretty_date(time=False):
     return str(day_diff/365) + "년 전"
     
     
-def get_user_thumbnail(request):
-    user = get_object_or_404(User,username=request.user.username)
+def get_user_thumbnail(user):
+    user = get_object_or_404(User,username=user.username)
     user_profile = get_object_or_404(UserProfile,user=user)
-    filename = user_profile.picture.name+".thumb.png"
-    pathName = os.path.join(settings.MEDIA_ROOT, filename)
-    if os.path.isfile(pathName):
-        return "/media/"+filename
+    
+    if "profile/" in user_profile.picture.name:
+        filename = user_profile.picture.name+".thumb.png"
+        pathName = os.path.join(settings.MEDIA_ROOT, filename)
+        if os.path.isfile(pathName):
+            return "/media/"+filename
+        else:
+            make_thumbnail(user)
+            return "/media/"+filename
     else:
-        make_thumbnail(request)
-        return "/media/"+filename
+        return "/media/default.png"
 
