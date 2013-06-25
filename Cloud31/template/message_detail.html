@@ -131,7 +131,8 @@ $(document).ready(function(){
       </p>
       
       <div class="submit_button ">
-       <input class="reply_submit button" id="reply_submit_{{ message.id }}" name="reply" type="submit" value="Reply" onclick="send_reply('{{ message.id }}'); return false;">
+       <input id="reply_submit_{{ message.id }}" type="submit" class="button_s" onblur="return false"  name="reply" value="Reply" onclick="send_reply('{{ message.id }}'); return false;"/>
+
       </div>
     </div>
   </div>
@@ -140,8 +141,6 @@ $(document).ready(function(){
 
 </div>
 
-
-</div>
 {% else %}
 <span>{{ error_message }}</span>
 <a href="#" onclick="history.back(); return false;">go back</a>

@@ -25,6 +25,10 @@
         <span class="ui_icon ui_icon_event"></span>
         Event
     </li></a>
+    <a href="/poll/"><li class="menu_item {{ page_poll }}">
+        <span class="ui_icon ui_icon_poll"></span>
+        Poll
+    </li></a>
     <a href="/favorite/"><li class="menu_item {{ page_favorite }}">
         <span class="ui_icon ui_icon_favorite"></span>
         Favorite Messages
@@ -37,20 +41,29 @@
         <span class="ui_icon ui_icon_topic"></span>
         Topics
     </li></a>
+    <li class="topic_menu_item">
     {% if user_favorite_topics %}
-    <div id="topic_favor_list">
+    
+    <ul id="topic_favor_list" style="margin:0 0 10px 0; padding:0; float:left;width:100%;">
     {% for topic in user_favorite_topics %}
-    <li class="menu_item topic_favor_item {% if forloop.last %}last{% endif%}" topic="{{topic}}">
-        <a href="/topic/{{topic}}">
-            <p style="margin:0; padding:0; float:left; width:130px; overflow:hidden;{% if topic_name == topic %}font-weight:bold;{% endif %}">
-                #{{topic}}
+    <li class="menu_item topic_favor_item {% if forloop.last %}last{% endif%}" topic="{{topic.id}}">
+        <a href="/topic/{{topic.id}}">
+            <p style="margin:0; padding:0; float:left; width:130px; overflow:hidden;{% if topic_name == topic.name %}font-weight:bold;{% endif %}">
+                #{{topic.name}}
             </p>
         </a>
-         <a href="#" class="del_btn" style="float:right;margin-top:7px;" onclick="unfavor_topic('{{ topic }}'); return false;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
+         <a href="#" class="del_btn" style="float:right;margin-top:7px;" onclick="unfavor_topic('{{ topic.id }}'); return false;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
     </li>
+    
     {% endfor %}
-    </div>
+    </ul>
+    
+    {% else %}
+    <ul id="topic_favor_list" style="margin:0 0 10px 0;padding:0; float:left;width:100%; display:none;">
+    </ul>
     {% endif %}
+    </li>
+    
         <a href="/members/"><li class="menu_item {{ page_member }}">
         <span class="ui_icon ui_icon_member"></span>
         Members
@@ -59,9 +72,9 @@
         <span class="ui_icon ui_icon_file"></span>
         Files
     </li></a>
-    <a href="#/location/"><li class="menu_item {{ page_location }}">
+    <a href="/location/"><li class="menu_item {{ page_location }}">
         <span class="ui_icon ui_icon_location"></span>
-        Location <b>(N/A)</b>
+        Location
     </li></a>
 </ul>
 
@@ -76,15 +89,23 @@
         <span class="ui_icon ui_icon_stats_by_topic"></span>
         Stats by Topic
     </li></a>
+    <a href="/admin/stats/thread/"><li class="menu_item {{ page_stats_by_thread }}">
+        <span class="ui_icon ui_icon_stats_by_topic"></span>
+        Stats by Thread
+    </li></a>
+    <a href="/admin/stats/favorite/"><li class="menu_item {{ page_stats_by_favorite }}">
+        <span class="ui_icon ui_icon_stats_by_topic"></span>
+        Stats by Favorite
+    </li></a>
     <a href="/admin/stats/member/"><li class="menu_item {{ page_stats_by_member }}">
         <span class="ui_icon ui_icon_stats_by_member"></span>
         Stats by Member
     </li></a>
-    <a href="/admin/export/"><li class="menu_item {{ page_authority }}">
+    <a href="/admin/export/"><li class="menu_item {{ page_export }}">
         <span class="ui_icon ui_icon_excel"></span>
         Export Data
     </li></a>
-    <a href="/admin/stats/authority/"><li class="menu_item {{ page_authority }}">
+    <a href="/admin/authority"><li class="menu_item {{ page_authority }}">
         <span class="ui_icon ui_icon_authority"></span>
         Authority
     </li></a>

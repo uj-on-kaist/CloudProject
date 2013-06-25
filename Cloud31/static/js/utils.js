@@ -32,6 +32,7 @@ function start_loading(item){
 }
 
 function finish_loading(item){
+    item.removeAttr('disabled');
     item.parent().find('.loading').hide();
     item.show();
 }
@@ -78,10 +79,10 @@ function cursor_postion_text(item){
     var left=position-1;
     var right=position;
  
-    while(str.charAt(right) != ' ' && right < str.length){
+    while(str.charAt(right) != ' ' && str.charAt(right) != '\n' && right < str.length){
         right++;
     }
-    while(str.charAt(left) != ' ' && left >= 0){
+    while(str.charAt(left) != ' ' && str.charAt(left) != '\n' && left >= 0){
         left--;
     }
     
@@ -110,6 +111,16 @@ function detect_auto_complete(textarea){
             $("#auto_complete_list .type_msg").show();
             $("#auto_complete_list .search_msg").hide();
             $("#auto_complete_list li.list_item").remove();
+            
+            if($("#location_selector").length != 0){
+                if($("#location_selector").is(":visible")){
+                    $("#auto_complete_list").css("top","-286px");
+                }else{
+                    $("#auto_complete_list").css("top","-41px");
+                }
+            }
+            
+            
             $("#auto_complete_list").show();
         }else{
             $("#auto_complete_list li.list_item").remove();
@@ -221,7 +232,7 @@ function display_auto_complete(type,items, left, right, keyword, textarea){
 }
 
 function replace_input_text(item, text, left, right){
-    console.log("["+left+"/"+right+"]hi "+text);
+    //console.log("["+left+"/"+right+"]hi "+text);
     var str = item.val();
     
     var new_str = str.substring(0,left);

@@ -189,11 +189,6 @@ function display_event(events){
         }
         
         
-        event_layout.find('.comment_action a').attr("event_id",event.id);
-        event_layout.find('.comment_action a').click(function(){
-            $("#event_"+$(this).attr("event_id")+" ul.comments").show();
-        });
-        
         event_layout.find('span.comment_count_text').text(event.comments.length);
         if(event.comments.length == 0){
             event_layout.find('ul.comments.comment_count li span').text('댓글이 없습니다.');
@@ -207,21 +202,7 @@ function display_event(events){
             event_layout.find('ul.comments.comment_count span span').text(event.comments.length);
             event_layout.find("ul.comments.comment_count a.show_all").attr('id','comment_show_'+event.id);
         }
-        event_layout.find("ul.comments.comment_count a.show_all").click(function(){
-                if($(this).text().indexOf('보기') != -1){
-                    $(this).text('숨기기');
-                    var id=$(this).attr('id').split('_')[2];
-                    $('#event_'+id+' ul.comments.comment_list li').show();
-                }else{
-                    $(this).text('모두 보기');
-                    var id=$(this).attr('id').split('_')[2];
-                    var total=$('#event_'+id+' ul.comments.comment_list li').length;
-                    $('#event_'+id+' ul.comments.comment_list li').each(function(i){
-                        $(this).hide();
-                    });
-                }
-                return false;
-        });
+
         
         for(var j=0; j<event.comments.length; j++){
             add_event_comment(event_layout, event.comments[j], j, event.comments.length);
@@ -313,7 +294,6 @@ function update_event_comment(event_id){
 		  console.log(data);
 		}
 	});
- 
 }
 
 function delete_event(item){

@@ -14,6 +14,12 @@
 {% endfor %}
 </div>
 
+<div class="ko_index">
+{% for ko in ko_list %}
+<span class="keyword"><a href="./?index={{ko}}">{{ ko }}</a></span>
+{% endfor %}
+</div>
+
 <div class="num_index">
 <span class="keyword"><a href="./?index=number">#</a></span>
 </div>

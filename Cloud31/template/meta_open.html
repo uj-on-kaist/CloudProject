@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}css/facebox.css?{{ csrf_token }}" type="text/css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css?{{ csrf_token }}" type="text/css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/sidebar.css?{{ csrf_token }}" type="text/css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/poll.css?{{ csrf_token }}" type="text/css" />
 
 <link rel="stylesheet" href="{{ STATIC_URL }}css/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 
@@ -38,7 +39,7 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}css/ui/autocomplete.css?{{ csrf_token }}" type="text/css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/fileuploader.css" type="text/css" />
 
-
+<script src="{{ STATIC_URL }}js/poll.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/feed.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/topic.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/event.js?{{ csrf_token }}" type="text/javascript"></script>
@@ -47,18 +48,31 @@
 <script src="{{ STATIC_URL }}js/etc.js?{{ csrf_token }}" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/utils.js?{{ csrf_token }}" type="text/javascript"></script> 
 <script src="{{ STATIC_URL }}js/sidebar.js?{{ csrf_token }}" type="text/javascript"></script> 
-
+<script src="{{ STATIC_URL }}js/locations.js?{{ csrf_token }}" type="text/javascript"></script>
 <!--[if IE]>
     <script src="{{ STATIC_URL }}js/ie.js?1307079878" type="text/javascript"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/ie.css" type="text/css" media="screen" />
+    <style>
+    .author_name{margin-left:5px;}
+    </style>
 <![endif]-->
+<style>
+    body{overflow:scroll;}
+</style>
 {% if user.is_staff %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/admin.css?123" type="text/css" />
 <script src="{{ STATIC_URL }}js/admin.js?{{ csrf_token }}" type="text/javascript"></script>
 {% endif %}
 
 <script type="text/javascript">
+function bluring() {
+    if(event.srcElement.tagName=="A"||event.srcElement.tagName=="IMG") 
+        document.body.focus();
+}
+document.onfocusin=bluring;
+
 $(document).ready(function(){
+    $("a").attr("onfocus","this.blur()");
     $('a[rel*=facebox]').facebox();
     $("a.fancy_image").fancybox();
     $('[tipsy-text]').tipsy({trigger: 'hover', gravity: 'w',title:'tipsy-text'});

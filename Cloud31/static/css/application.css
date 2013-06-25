@@ -474,7 +474,7 @@ ul.comments,
 ul.show_comments,
 .likes_container {
   margin: 0;
-    margin-top: 0.2em;
+    margin-top: 2px;
   padding: 0;
   background-color: #f0f4f5;
   font-size: 12px;

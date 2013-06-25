@@ -11,7 +11,6 @@ from django.template import RequestContext, loader
 from django.core.mail import send_mail
 
 from controller.models import *
-from controller.forms import *
 
 import datetime,json
 
@@ -20,6 +19,7 @@ from django.utils.encoding import smart_unicode
 from django.conf import settings
 
 import my_emailer
+from controller.forms import *
 
 def signin(request):
     t = loader.get_template('signin.html')
@@ -57,14 +57,22 @@ def signin(request):
     
     user = authenticate(username=username,password=password)
     if user is not None:
-        if user.is_active:
+        user_profile = UserProfile.objects.get(user=user)
+        if user.is_active and not user_profile.is_deactivated:
             login(request, user)
+            
+            user_login = UserLoginHistory(user=user)
+            user_login.save()
+            
             if request.POST['next']:
                 return HttpResponseRedirect(request.POST['next'])
             else:
                 return HttpResponseRedirect('/')
-        else:
+        elif not user.is_active:
             context['message'] = user.username+' is not active. First check your email and click activation link'
+            return HttpResponse(t.render(context))
+        elif user_profile.is_deactivated:
+            context['message'] = user.username+' is deactivated. Please Contact with Administrator.'
             return HttpResponse(t.render(context))
     else:
         context['message'] = '<b>Sign in Failed.</b> Check Username and Password again.'
@@ -134,23 +142,20 @@ def signup(request):
             #new_user.is_active = True
             new_user.last_name = name
             
-            
             new_profile = UserProfile(user=new_user)
             new_profile.dept=dept
             new_profile.position=position
-            
             try:
                 my_emailer.send_activation_mail(new_user, new_profile)
-                
                 new_user.save()
                 new_profile.save()
             except Exception as e:
-                print str(e)
+                print "2 :" + str(e)
             
             request.session['message'] = username + ' Registered. Check your email and Click Activation Link.'
             return HttpResponseRedirect('/signin/')
     except Exception as e:
-        print str(e)
+        print "3 :" + str(e)
         return HttpResponse('Error Occured.')
 
 

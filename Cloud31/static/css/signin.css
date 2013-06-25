@@ -56,7 +56,7 @@
 }
 
 .register_form{
-    padding-left: 480px;
+    float:left
 }
 
 .register_btn{

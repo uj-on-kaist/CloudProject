@@ -18,6 +18,11 @@ function upload_feed(item){
     
     var message=$('textarea#feed_message_input').val();
     var location_info='';
+    if($("#location_info_box").attr("attached") == "true"){
+        var lat = $("#lat_value").text().substring(0,14);
+        var lng = $("#lng_value").text().substring(0,14);
+        location_info = lat+"|"+lng;
+    }
     
     var tokenValue = $("#csrf_token").text();
     
@@ -28,6 +33,7 @@ function upload_feed(item){
     
     data= "message=" + message + "&attach_list=" + attach_list + "&location_info="+location_info;
     data +="&csrfmiddlewaretoken="+tokenValue;
+    console.log(data);
 	$.ajax({
 		type : "POST",
 		url : "/api/feed/update/",
@@ -65,7 +71,10 @@ function clear_feed_input(){
     
     $(".qq-upload-list").find('li').each(function(){
         $(this).remove();
-    })
+    });
+    
+    $("#location_info_box").attr('attached','false'); $("#location_info_box").hide();
+    $("#location_selector").hide();
 }
 
 
@@ -100,6 +109,11 @@ function load_feed(type, load_more, base_id){
     
     if(load_more){
         url+="?base_id="+base_id;
+        if($("#feed_sort_method").length != 0){
+            url+="&sort="+$("#feed_sort_method").val();
+        }
+    }else if($("#feed_sort_method").length != 0){
+        url+="?sort="+$("#feed_sort_method").val();
     }
     
     if(!load_more)
@@ -149,7 +163,7 @@ function display_feeds(feeds, type){
     for(var i=0; i<feeds.length; i++){
         
         var feed=feeds[i];
-        console.log(feed);
+        //console.log(feed);
         
         var feed_layout= $("div.stream.template").clone();
         feed_layout.removeClass("template");
@@ -192,6 +206,17 @@ function display_feeds(feeds, type){
         });
         
         
+        if(feed.lat && feed.lng){
+            var location = feed.lat+","+feed.lng;
+            var layout="<img src='http://maps.google.com/maps/api/staticmap?center="+location+"&zoom=15&size=240x120&maptype=roadmap&markers=color:red|color:red|label:Here|"+location+"&sensor=false' location='"+location+"'/>";
+            var item = feed_layout.find('p.feed_location').html(layout);
+            item.find('img').click(function(){
+                window.open('http://maps.google.com/?q='+$(this).attr('location'));
+            });
+        }else{
+            feed_layout.find('p.feed_location').remove();
+        }
+        
         if(feed.author == $("#user_name_info").text()){
             feed_layout.find('.stream_element_delete.feed').show();
             feed_layout.find('.stream_element_delete.feed').attr('feed_id',feed.id);
@@ -208,15 +233,20 @@ function display_feeds(feeds, type){
         
         
         
-        
+         
         feed_layout.find('.comment_action a').attr("feed_id",feed.id);
         feed_layout.find('.comment_action a').click(function(){
-            $("#feed_"+$(this).attr("feed_id")+" ul.comments").show();
+            $("#feed_"+$(this).attr("feed_id")+" ul.comments").each(function(){
+                $(this).show();
+                if($(this).find("li").length == 0){
+                    $(this).hide();
+                }
+                
+            });
         });
         
         feed_layout.find('span.comment_count_text').text(feed.comments.length);
         if(feed.comments.length == 0){
-            
             feed_layout.find('ul.comments.comment_count li span').text('댓글이 없습니다.');
             feed_layout.find('ul.comments.comment_list').hide();
             feed_layout.find("ul.comments.comment_count a.show_all").attr('id','comment_show_'+feed.id);
@@ -234,7 +264,7 @@ function display_feeds(feeds, type){
                     var id=$(this).attr('id').split('_')[2];
                     $('#feed_'+id+' ul.comments.comment_list li').show();
                 }else{
-                    $(this).text('모두 보기');
+                    $(this).text("모두 보기");
                     var id=$(this).attr('id').split('_')[2];
                     var total=$('#feed_'+id+' ul.comments.comment_list li').length;
                     $('#feed_'+id+' ul.comments.comment_list li').each(function(i){
@@ -274,6 +304,7 @@ function display_feeds(feeds, type){
             feed_layout.find("ul.comments").remove();
         }
         
+        
     }
 }
 
@@ -288,7 +319,7 @@ function display_files(file_list, feed_layout, feed_id){
         
             feed_layout.find('.feed_attach_image').append(image_layout);
         }else{
-            var file_layout = '<a class="attach_file" href="'+file.url+'" target=_blank onfocus="this.blur()">' +
+            var file_layout = '<a class="attach_file" href="/file/download2/'+file.id+'/'+file.name+'">' +
                 '<span class="ui_icon ui_icon_file_'+file.type+'" ></span>' +
                 '<span class="">'+file.name+'</span>' +
             '</a>';
@@ -582,3 +613,67 @@ function delete_detail_comment(item){
 }
 
 
+
+
+function attach_gps(){
+    console.log("attach_gps");
+    $("#location_selector").toggle();
+    if($("#map_canvas").html() == ""){
+        initialize_map();
+    }
+}
+
+var geocoder;
+var map;
+var marker;
+function initialize_map() {
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(37.528068,126.967691);
+    var myOptions = {
+      zoom: 16,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    //map.enableGoogleBar(); 
+    
+    marker = new google.maps.Marker({
+      position: latlng, 
+      map: map, 
+      title:"Hello World!",
+      draggable: true
+    });
+    
+    google.maps.event.addListener(marker, "dragend", function() {
+        var lat = marker.getPosition().lat();
+		var lng = marker.getPosition().lng();
+		console.log(lat+","+lng);
+		$("#lat_value").text(lat);
+		$("#lng_value").text(lng);
+		var latlng = new google.maps.LatLng(lat, lng);
+		
+		if (geocoder) {
+            geocoder.geocode({'latLng': latlng}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        console.log(results[0].formatted_address);
+                        $("#address_info").text(results[0].formatted_address);
+                    }
+                } else {
+                    $("#address_info").text("");
+                }
+            });
+        }
+        $("#location_info_box").attr("attached","true");
+        $("#location_info_box").show();
+    });
+}
+
+
+function change_sort_method(item){
+    var val=item.val();    
+    var type = $("#feed_list").attr('type');
+    if(type == 'notice')
+        return;
+    load_feed(type);
+}

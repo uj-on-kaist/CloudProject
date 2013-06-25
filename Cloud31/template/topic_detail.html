@@ -9,8 +9,8 @@
     <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">
         #{{ topic_name }}
     </span>
-    <a href="#" class="topic_favor_action" onclick="favor_topic('{{ topic_name }}'); return false;" style="{% if topic_name in user_favorite_topics %}display:none;{% endif %}"><span class="tab_add ui_icon ui_icon_add" tipsy-text='Add Favorite'></span></a>
-    <a href="#" class="topic_unfavor_action" onclick="unfavor_topic('{{ topic_name }}'); return false;" style="{% if not topic_name in user_favorite_topics %}display:none;{% endif %}"><span class="tab_remove ui_icon ui_icon_remove" tipsy-text='Unfavorite this Topic'></span></a>
+    <a href="#" class="topic_favor_action" onclick="favor_topic('{{ topic_id }}'); return false;" style="{% if topic_favorited %}display:none;{% endif %}"><span class="tab_add ui_icon ui_icon_add" tipsy-text='Add Favorite'></span></a>
+    <a href="#" class="topic_unfavor_action" onclick="unfavor_topic('{{ topic_id }}'); return false;" style="{% if not topic_favorited %}display:none;{% endif %}"><span class="tab_remove ui_icon ui_icon_remove" tipsy-text='Unfavorite this Topic'></span></a>
 </a>
 </div>
 

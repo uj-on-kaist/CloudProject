@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import get_object_or_404
 
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_unicode, smart_str
 
 def upload_page( request ):
     t = loader.get_template('upload_page.html')
@@ -22,11 +22,75 @@ def upload_page( request ):
     return HttpResponse(t.render(context))
     
 
-import os, json
+import os, json, mimetypes
 import my_utils
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from django.core.servers.basehttp import FileWrapper
+
+from django.conf import settings
+
+@login_required(login_url='/signin/')
+def download_file(request, file_id, file_name):
+    print file_name
+    target_file = get_object_or_404(models.File,id=file_id)
+    agent = request.META['HTTP_USER_AGENT']
+    print agent
+    try:
+        path = target_file.file_contents.path
+        content_type = mimetypes.guess_type( path )[0]
+        my_data = File(open(path))
+        response = HttpResponse(my_data,content_type=content_type)
+        response['Content-Length'] = target_file.file_contents.size
+        file_name = smart_unicode(target_file.file_name, encoding='utf-8', strings_only=False, errors='strict')
+        response['Content-Disposition'] = 'attachment;'
+        """
+        response['Content-Disposition'] = 'attachment; filename=\"' + smart_str(target_file.file_name) +'\"'
+        if 'MSIE' in agent:
+            print "1Agent "+agent
+            (fileBaseName, fileExtension)=os.path.splitext(smart_str(file_name))
+            asdf = unicode("attachment; filename=\"download"+fileExtension+"\"")
+            import unicodedata
+            asdf = unicodedata.normalize('NFKD', asdf).encode('ascii','ignore')
+            response['Content-Disposition'] = asdf
+        """
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+        response['Cache-Control'] = 'no-cache'
+    except Exception as e:
+        print str(e)
+    return response
+
+
+def download_file_2(request, file_info):
+    """
+    THIS IS FILE_DOWNLOAD HANDLED VERSION FOR IE.
+    """
+    
+    file_info = file_info.split('/')
+    file_id = file_info[0]
+    file_name = file_info[1]
+    target_file = get_object_or_404(models.File,id=file_id)
+    agent = request.META['HTTP_USER_AGENT']
+    try:
+        path = target_file.file_contents.path
+        content_type = mimetypes.guess_type( path )[0]
+        if content_type is None:
+            content_type = 'application/octet-stream'
+        my_data = File(open(path))
+        response = HttpResponse(my_data,content_type=content_type)
+        response['Content-Length'] = target_file.file_contents.size
+        response['Content-Disposition'] = 'attachment;'
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+        response['Cache-Control'] = 'no-cache'
+    except Exception as e:
+        print str(e)
+    return response
+    
+    
+    
 @login_required(login_url='/signin/')
 def main(request):
     t = loader.get_template('file.html')
@@ -81,14 +145,19 @@ def main(request):
     
     return HttpResponse(t.render(context))
 
-
+import uuid
 def save_upload(request, uploaded, filename, raw_data ):
     """
     raw_data: if True, upfile is a HttpRequest object with raw post data
     as the file, rather than a Django UploadedFile from request.FILES
     """
     try:
-        filename = os.path.normpath(os.path.join(settings.MEDIA_ROOT+'/files/', filename))
+        user = get_object_or_404(User,username=request.user.username)
+        input_file_name = filename
+        (fileBaseName, fileExtension)=os.path.splitext(filename)
+        real_file_name = user.username + "_" + str(uuid.uuid1()) + fileExtension
+        filename = os.path.normpath(os.path.join(settings.MEDIA_ROOT+'/files/', real_file_name))
+        
         with BufferedWriter( FileIO( filename, "w" ) ) as dest:
             # if the "advanced" upload, read directly from the HTTP request
             # with the Django 1.3 functionality
@@ -98,22 +167,25 @@ def save_upload(request, uploaded, filename, raw_data ):
                 fileExtension=fileExtension[1:]
                 print fileName+"['"+fileBaseName+ "','"+fileExtension+"']"
                 
-                user = get_object_or_404(User,username=request.user.username)
-                new_file = models.File(file_type=fileExtension,file_name=fileName, uploader=user)
+                
+                new_file = models.File(file_type=fileExtension,file_name=input_file_name, uploader=user)
                 new_file.file_contents.save(fileName,ContentFile(uploaded.read()))
             # if not raw, it was a form upload so read in the normal Django chunks fashion
             else:
                 (dirName, fileName) = os.path.split(filename)
                 (fileBaseName, fileExtension)=os.path.splitext(fileName)
                 fileExtension=fileExtension[1:]
-                print fileName+"['"+fileBaseName+ "','"+fileExtension+"']"
+                print "2 " + fileName+"['"+fileBaseName+ "','"+fileExtension+"']"
                 
                 # TODO: figure out when this gets called, make it work to save into a Photo like above
-                for c in uploaded.chunks( ):
+                for c in uploaded.chunks():
                     dest.write( c )
-                user = get_object_or_404(User,username=request.user.username)
-                new_file = models.File(file_type=fileExtension,file_name=fileName, uploader=user)
-                new_file.file_contents.save(fileName,File(open(filename)))
+                
+                dest.close()
+                new_file = models.File(file_type=fileExtension,file_name=input_file_name, uploader=user)
+                fileName2 = user.username + "_" + str(uuid.uuid1()) +'.'+ fileExtension
+                new_file.file_contents.save(fileName2,File(open(filename)))
+                new_file.save()
 
     except IOError:
         # could not open the file most likely

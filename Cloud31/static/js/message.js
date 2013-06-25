@@ -181,8 +181,7 @@ function send_reply(message_id){
           if(json.success){
           
             var reply_layout = add_reply(json.reply);
-            reply_layout.hide();
-            reply_layout.slideToggle();
+
             
             $('#reply_area_'+message_id).val('');
             $('#reply_area_'+message_id).height(40);
@@ -211,6 +210,7 @@ function add_reply(reply){
         reply_layout.find('.stream_element_delete').attr('reply_id',reply.id);
         reply_layout.find('.stream_element_delete').click(function(){
             delete_reply($(this));
+            return false;
         });
     }else{
         //reply_layout.css("border-left","3px solid #F0F4F5");
@@ -244,6 +244,7 @@ function delete_reply(item){
 		      $(this).remove();
 		    });
           }
+          return false;
 		},
 		error : function(data){
 		  console.log(data);

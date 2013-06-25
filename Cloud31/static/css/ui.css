@@ -56,7 +56,7 @@
 .ui-corner-all { -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
 
 .ui_icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
-.ui_icon { width: 22px; height: 22px; background-image: url(/static/image/sprite_icons.png); float:left;}
+.ui_icon { width: 22px; height: 22px; background-image: url(/static/image/sprite_icons2.png); float:left;}
 li.menu_item .ui_icon{margin:0 4px 0 2px;}
 
 .ui_icon_feed { background-position: 0 0; }
@@ -92,6 +92,7 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 .ui_icon_radio_blank { background-position: -176px -44px; }
 .ui_icon_add { background-position: -198px -44px; }
 .ui_icon_remove { background-position: 0px -66px; }
+.ui_icon_poll { background-position: -22px -65px; }
 
 .ui_icon_file_excel {width:30px;height:30px; background-position: 0px -88px; }
 .ui_icon_file_word {width:30px;height:30px; background-position: -30px -88px; }
@@ -121,7 +122,7 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 
 .button_m{
     background-color: transparent;
-    background-image: url("/static/image/Button_M_nor.png");
+    background-image: url("/static/image/Button_M2.png");
     background-repeat: no-repeat;
     width: 74px;
     height: 30px;
@@ -133,20 +134,21 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 }
 
 .button_m:hover{
-    background-image: url("/static/image/Button_M_over.png");border: 0;
+        background-position: 0px -30px;border: 0;
     outline: 0;
 }
 .button_m:active{
-    background-image: url("/static/image/Button_M_sel.png");border: 0;
+        background-position: 0px -60px;
+    border: 0;
     outline: 0;
 }
 
 .button_s{
     background-color: transparent;
-    background-image: url("/static/image/Button_S_nor.png");
+    background-image: url("/static/image/Button_S2.png");
     background-repeat: no-repeat;
-    width: 67px;
-    height: 30px;
+    width: 60px;
+    height: 25px;
     border: 0;
     outline: 0;
     font-size: 13px;
@@ -155,11 +157,13 @@ li.menu_item .ui_icon{margin:0 4px 0 2px;}
 }
 
 .button_s:hover{
-    background-image: url("/static/image/Button_S_over.png");border: 0;
+    background-position: 0px -25px;
+    border: 0;
     outline: 0;
 }
 .button_s:active{
-    background-image: url("/static/image/Button_S_sel.png");border: 0;
+    background-position: 0px -50px;
+    border: 0;
     outline: 0;
 }
 

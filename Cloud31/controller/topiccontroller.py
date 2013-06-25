@@ -13,7 +13,6 @@ from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_unicode
 
 from django.db.models import Q
@@ -41,7 +40,7 @@ def topic(request):
     context['page_topic'] = "selected"
     context['topics']=list()
     
-    context['popular_topics'] = Topic.objects.all().order_by("-reference_count")[:20]
+    context['popular_topics'] = Topic.objects.filter(reference_count__gt=0,topic_name__gt='').order_by("-reference_count")[:20]
     # try:
 #         topics = 
 #     except:
@@ -65,7 +64,7 @@ def topic(request):
                 this_index,next_index=my_utils.next_search_index(search_index)
                 query_type = Q(topic_name__gt=this_index, topic_name__lt=next_index)
         
-        topics = Topic.objects.filter(query_type).order_by('topic_name')
+        topics = Topic.objects.filter(query_type, topic_name__gt='',reference_count__gt=0).order_by('topic_name')
         
         
         paginator = Paginator(topics, 15)
@@ -91,32 +90,34 @@ def topic(request):
     
     
 @login_required(login_url='/signin/')
-def topic_detail(request,topic_name):
+def topic_detail(request,topic_id):
     t = loader.get_template('topic_detail.html')
     context = RequestContext(request)
     my_utils.load_basic_info(request, context)
     
-    topic_name = smart_unicode(topic_name, encoding='utf-8', strings_only=False, errors='strict')
     
     context['user_favorite_topics'] = my_utils.get_favorite_topics(request.user)
     print context['user_favorite_topics']
     context['side_list']=['topic_detail']
     context['topic']=list()
-    try:
-        context['topic'] = Topic.objects.filter(topic_name=topic_name)[0]
-    except Exception as e:
-        pass
+    context['topic'] = get_object_or_404(Topic,id=int(topic_id))
+    
     
     context['page_topic'] = "selected"
-    context['load_type']='topic#' + topic_name
+    context['load_type']='topic#' + str(context['topic'].id)
     context['topic_name']=context['topic'].topic_name
     context['topic_id']=context['topic'].id
+    
+    context['topic_favorited']=False
+    for favorite in context['user_favorite_topics']:
+        if context['topic_id'] == favorite['id']:
+            context['topic_favorited']=True
     
     context['related_users']=my_utils.get_related_users(context['topic'].topic_name)
     return HttpResponse(t.render(context))
     
     
-def load_topic_timeline(request,topic_name):
+def load_topic_timeline(request,topic_id):
     result=dict()
     result['success']=True
     result['message']='success'
@@ -127,11 +128,12 @@ def load_topic_timeline(request,topic_name):
         if base_id:
             additional = Q(id__lt=base_id)
         
-        topic = Topic.objects.get(topic_name=topic_name)
+        topic = Topic.objects.get(id=topic_id)
         try:
             timelines = TopicTimeline.objects.filter(additional, topic=topic).order_by('-update_date')[:DEFAULT_LOAD_LENGTH]
             if not timelines:
-                return return_error('No Such Topic #2') 
+                result['feeds']=my_utils.process_messages(request, list())
+                return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
             messages = list()
             for timeline in timelines:
                 try:
@@ -151,7 +153,7 @@ def load_topic_timeline(request,topic_name):
             result['success']=True
             result['message']='Do not have any message'
     except:
-            return return_error('No Such Topic')
+            return my_utils.return_error('No Such Topic')
             
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
     
@@ -178,7 +180,7 @@ def update_description(request):
     
     
     
-def topic_favorite(request, topic_name):
+def topic_favorite(request, topic_id):
     result=dict()
     result['success']=True
     result['message']='success'
@@ -189,7 +191,8 @@ def topic_favorite(request, topic_name):
         return my_utils.return_error('Please Sign in first')
         
     try:
-        topic = Topic.objects.filter(topic_name=topic_name)[0]
+        topic = Topic.objects.filter(id=topic_id)[0]
+        result['topic_name']=topic.topic_name
     except:
         return my_utils.return_error('No such Topic')
     
@@ -202,7 +205,7 @@ def topic_favorite(request, topic_name):
     
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
-def topic_unfavorite(request, topic_name):
+def topic_unfavorite(request, topic_id):
     result=dict()
     result['success']=True
     result['message']='success'
@@ -213,7 +216,7 @@ def topic_unfavorite(request, topic_name):
         return my_utils.return_error('Please Sign in first')
         
     try:
-        topic = Topic.objects.filter(topic_name=topic_name)[0]
+        topic = Topic.objects.filter(id=topic_id)[0]
     except:
         return my_utils.return_error('No such Topic')
     

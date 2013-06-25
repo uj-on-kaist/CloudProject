@@ -27,7 +27,7 @@ import my_utils
 from controller.notificationcontroller import *
 
 
-DEFAULT_LOAD_LENGTH = 10
+DEFAULT_LOAD_LENGTH = 20
 
 @login_required(login_url='/signin/')
 def feed(request):
@@ -128,16 +128,38 @@ def load_comany_feed(request):
     result['message']='success'
     try:
         base_id = request.GET.get("base_id",False)
+        to_id = request.GET.get("to_id",False)
+        sort_method = request.GET.get("sort","reg_date")
         additional = Q()
+        load_length = DEFAULT_LOAD_LENGTH
         if base_id:
-            additional = Q(id__lt=base_id)
+            try:
+                if sort_method == 'reg_date':
+                    message = Message.objects.get(id=base_id)
+                    additional = Q(reg_date__lt=message.reg_date)
+                else:
+                    message = Message.objects.get(id=base_id)
+                    additional = Q(update_date__lt=message.update_date)
+            except:
+                pass
+            #additional = Q(id__lt=base_id)
+        if to_id:
+            load_length = 10000
+            additional = Q(id__gte=base_id)
         
-        messages = Message.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:DEFAULT_LOAD_LENGTH]
+        
+        if sort_method == 'reg_date':
+            messages = Message.objects.filter(additional,is_deleted=False).order_by('-reg_date')[:load_length]
+        else:
+            messages = Message.objects.filter(additional,is_deleted=False).order_by('-update_date')[:load_length]
+        
+        
         result['feeds']=my_utils.process_messages(request,messages)
         
         if len(messages) == DEFAULT_LOAD_LENGTH:
             result['load_more']=True
-    except:
+    except Exception as e:
+        print str(e)
         result['success']=True
         result['message']='Do not have any message'
             
@@ -183,16 +205,32 @@ def load_my_timeline(request):
         user = User.objects.get(username=request.user.username)
         try:
             base_id = request.GET.get("base_id",False)
+            to_id = request.GET.get("to_id",False)
+            sort_method = request.GET.get("sort","reg_date")
             additional = Q()
+            load_length=DEFAULT_LOAD_LENGTH
             if base_id:
                 try:
-                    timeline = UserTimeline.objects.get(id=base_id)
-                    additional = Q(update_date__lt=timeline.update_date)
+                    if sort_method == 'reg_date':
+                        timeline = UserTimeline.objects.get(id=base_id)
+                        additional = Q(message__reg_date__lt=timeline.message.reg_date)
+                    else:
+                        timeline = UserTimeline.objects.get(id=base_id)
+                        additional = Q(message__update_date__lt=timeline.message.update_date)
                 except:
                     pass
-                    
+            if to_id:
+                try:
+                    timeline = UserTimeline.objects.get(id=base_id)
+                    additional = Q(update_date__gte=timeline.update_date)
+                except:
+                    pass               
             
-            timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-update_date')[:DEFAULT_LOAD_LENGTH]
+            
+            if sort_method == 'reg_date':
+                timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-message__reg_date')[:load_length]
+            else:
+                timelines = UserTimeline.objects.filter(additional,user=user,message__is_deleted=False).order_by('-message__update_date')[:load_length]
             
             if len(timelines) == DEFAULT_LOAD_LENGTH:
                 result['load_more']=True
@@ -207,7 +245,8 @@ def load_my_timeline(request):
             
             result['feeds']=my_utils.process_messages(request,messages)
                 
-        except:
+        except Exception as e:
+            print str(e)
             result['success']=True
             result['message']='Do not have any message'
     except:
@@ -271,7 +310,7 @@ def load_favorite(request, user_name):
     result['message']='success'
     
     try:
-        user = User.objects.get(username=request.user.username)
+        user = User.objects.get(username=user_name)
         try:
             base_id = request.GET.get("base_id",False)
             additional = Q()
@@ -312,6 +351,8 @@ def update_feed(request):
     message=''
     attach_list=''
     location_info=''
+    lat = ''
+    lng = ''
     if request.method == 'POST':
         if request.POST['message']:
             message=smart_unicode(request.POST['message'], encoding='utf-8', strings_only=False, errors='strict')
@@ -320,13 +361,20 @@ def update_feed(request):
             attach_list=request.POST['attach_list']
             
         if request.POST['location_info']:
-            attach_list=request.POST['location_info']
+            location_info=request.POST['location_info']
+            try:
+                location = location_info.split("|")
+                lat = location[0]
+                lng = location[1]
+            except:
+                pass
     
     if message is not '':
         try:
             user = User.objects.get(username=request.user.username)
+            print location_info
             try: 
-                new_message = Message(author=user,contents=message,location=location_info,attach_files=attach_list)
+                new_message = Message(author=user,contents=message,lat=lat,lng=lng,attach_files=attach_list)
                 new_message.save()   
             except:
                 return my_utils.return_error('Insert Failed')
@@ -425,6 +473,7 @@ def update_comment(request):
         try: 
             new_comment = Comment(author=user,contents=input_message,message=message)
             new_comment.save()
+            message.save()
         except:
             return my_utils.return_error('Insert Failed')
         

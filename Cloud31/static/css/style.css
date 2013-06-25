@@ -1,7 +1,14 @@
 textarea:focus,input[type=text]:focus{
     outline: none; border: 1px solid #34b0d9;
 }
+textarea{
+    font-family:"Tahoma","Helvetica", Arial, sans-serif;
+    font-size: 12px;
+}
 
+table{
+    border-collapse: collapse;
+}
 .wrapper{}
 
 header{
@@ -46,6 +53,8 @@ footer .container .description{
     min-height: 800px;padding-top: 15px;
 }
 .main_contents{
+    float: left;
+width: 100%;
 }
 
 
@@ -102,7 +111,7 @@ input:focus {outline: none; border:1px solid #AAA;}
 
 
 
-.input_table input, .input_table textarea{
+.input_table input[type=text], .input_table textarea{
     width:460px;
     font-size: 100%;
     padding-left: 5px;
@@ -370,6 +379,8 @@ ul.menu_list a{
        
 }
 li.menu_item{
+    float: left;
+    width: 174px;
     padding: 0 8px;
     line-height: 23px;
     height: 23px;
@@ -380,13 +391,25 @@ li.menu_item{
 li.menu_item:hover{
     background-color: rgb(235,250,250);
 }
+ul#topic_favor_list{
+    margin-bottom: 10px;
+}
 li.selected.menu_item{background-color: rgb(196,231,241); font-weight: bold;}
 li.selected.menu_item:hover{background-color: rgb(196,231,241);}
-
+li.topic_menu_item{
+    float: left;
+    width: 174px;
+    padding: 0;
+    line-height: 23px;
+    font-size: 12px;list-style: none;
+    font-weight: normal;
+    color: rgb(50,50,50);
+}
 
 li.topic_favor_item{
     line-height:20px; height: 20px; overflow:hidden; font-size:12px;color: #325AAA;
     padding-left:36px;
+    width:146px;
 }
 li.topic_favor_item a p{font-size:12px;color: #325AAA;}
 li.topic_favor_item .del_btn{
@@ -396,7 +419,6 @@ li.topic_favor_item:hover .del_btn{
     display: inline;
 }
 li.topic_favor_item.last{
-    margin-bottom: 5px;
 }
 
 .user_box{float:left; width:100%; padding:0px 14px 5px 14px;}
@@ -415,7 +437,7 @@ li.topic_favor_item.last{
 .page_title b.user_id{font-size: 16px; color: #727272; font-weight: normal;}
 .page_title .header_map{font-size: 16px; margin-right: 5px;}
 
-div.tab{display: inline-block; width: 100%; height: 25px; border-bottom: 1px solid #b4b4b4; margin: 0;}
+div.tab{float: left; width: 100%; height: 25px; border-bottom: 1px solid #b4b4b4; margin: 0;}
 span.tab_item{min-width:83px; display: block; float: left; text-align: center; font-size: 12px; padding:3px 10px; color: #323232; 
     border: 1px solid transparent; border-bottom: 1px solid #b4b4b4;   
     max-width: 300px;
@@ -500,6 +522,7 @@ ul.setting_list.True{display: none;}
 #load_more_box, #loading_box{
     margin:16px 0px;
     text-align: center;
+    float: left;
     width:100%;
     display: none;
 }
@@ -565,6 +588,8 @@ ul.comments textarea,
     border-bottom: 1px solid #E9E9E9;
     font-weight: bold;
     text-align: center;
+    float: left;
+    width:515px;
 }
 
 
@@ -704,7 +729,7 @@ ul.index_list li.previous span, ul.index_list li.next span{
 
 
 #message_list .stream_element:hover, #event_list .stream_element:hover, #notice_list .stream_element:hover{
-    background-color: rgb(245,245,245);
+    background-color: rgb(250,250,250);
     cursor: pointer;
 }
 
@@ -791,3 +816,91 @@ h4.section_title{
     line-height: 24px;
 }
 
+
+
+.member_table tr.authority_item td{
+    height: 40px;
+    max-height: 40px;
+    overflow: hidden;
+}
+.member_table tr.authority_item td.name p,.member_table tr.authority_item td.name img{
+    float: left;
+    margin-left: 10px;
+}
+.member_table tr.authority_item td.name img{width: 25px; height: 25px;}
+#user_list_table tr:hover{background-color: #fff;}
+
+
+.select_inline_box{margin: 0 5px;}
+
+
+.map_area{
+    border: 1px solid #F0F0F0;
+    padding: 3px;
+    width: 517px;
+    height: 300px;
+    margin: 0px 0px 17px 0px;
+}
+.map_area:hover{
+    border: 1px solid #b4b4b4;
+}
+
+.map_area #map_canvas{
+    width: 517px;
+    height: 300px;
+}
+
+.stream_element .content p.feed_location.small img{
+    height:80px;
+}
+
+
+.event_comment{
+    border-left-width: 3px;
+border-left-style: solid;
+border-left-color: #F0F4F5;
+}
+
+ul.comments, ul.comments li{
+    float: left;
+    width: 100%;
+}
+ul.comments li{
+    width:453px;
+}
+ul.comments a.user_link{
+    width:30px;
+    height: 30px;
+}
+ul.comments .user_link a img{float: left; width:30px;}
+
+ul.comments li .content{
+    width: 410px;
+    float: left;
+    padding: 0 0 0 8px;
+}
+ul.comments li .user_image_box{
+    float: left;
+    padding: 2px 0px;
+    width: 30px;
+    height: 30px;
+}
+
+.stream{
+    float: left;
+    width:525px;
+}
+.stream .stream_element{
+    float: left;
+    width:525px;
+}
+
+
+ul#menu_list li.header_menu_item{
+    line-height: 23px;
+height: 23px;
+font-size: 12px;
+list-style: none;
+font-weight: normal;
+color: #323232;
+}

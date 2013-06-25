@@ -4,6 +4,7 @@ from django.conf import settings
 import django_cron
 django_cron.autodiscover()
 
+
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -43,11 +44,11 @@ urlpatterns = patterns('',
     
     
     url(r'^topic/$','controller.topiccontroller.topic'),
-    url(r'^topic/(?P<topic_name>\w+)/$','controller.topiccontroller.topic_detail'),
-    url(r'^api/topic/favor/(?P<topic_name>\w+)$','controller.topiccontroller.topic_favorite'),
-    url(r'^api/topic/unfavor/(?P<topic_name>\w+)$','controller.topiccontroller.topic_unfavorite'),
+    url(r'^topic/(?P<topic_id>\w+)/$','controller.topiccontroller.topic_detail'),
+    url(r'^api/topic/favor/(?P<topic_id>\w+)$','controller.topiccontroller.topic_favorite'),
+    url(r'^api/topic/unfavor/(?P<topic_id>\w+)$','controller.topiccontroller.topic_unfavorite'),
     
-    url(r'^api/feed/topic/(?P<topic_name>\w+)/$','controller.topiccontroller.load_topic_timeline'),
+    url(r'^api/feed/topic/(?P<topic_id>\w+)/$','controller.topiccontroller.load_topic_timeline'),
     url(r'^api/feed/update/desc$','controller.topiccontroller.update_description'),
     
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
@@ -63,9 +64,15 @@ urlpatterns = patterns('',
     url(r'^picture/(?P<username>\w+)/$','controller.profilecontroller.picture'),
 
     url(r'^file/$', 'controller.filecontroller.main'),
+    url(r'^file/download/(?P<file_id>\w+)$', 'controller.filecontroller.download_file'),
+    url(r'^file/download2/(?P<file_info>.+)$', 'controller.filecontroller.download_file_2'),
     url(r'^file/ajax_upload$', 'controller.filecontroller.ajax_upload'),
     
     url(r'^members/$', 'controller.membercontroller.main'),
+    
+    url(r'^location/$', 'controller.locationcontroller.main'),
+    url(r'^api/location/random$', 'controller.locationcontroller.get_random_feeds'),
+    url(r'^api/location/get$', 'controller.locationcontroller.get_location_feeds'),
     
     
     url(r'^message/$', 'controller.messagecontroller.main'),
@@ -78,8 +85,15 @@ urlpatterns = patterns('',
     url(r'^api/message/get/(?P<load_type>\w+)/$','controller.messagecontroller.load_message'),
     
     
-    
-    
+    url(r'^poll/$', 'controller.pollcontroller.main'),
+    url(r'^poll/new$', 'controller.pollcontroller.new'),
+    url(r'^poll/detail/(?P<poll_id>\w+)$', 'controller.pollcontroller.detail_poll'),
+    url(r'^api/poll/register/$','controller.pollcontroller.register_poll'),
+    url(r'^api/poll/delete/(?P<poll_id>\w+)$','controller.pollcontroller.delete_poll'),
+    url(r'^api/poll/update/comment/$','controller.pollcontroller.update_poll_comment'),
+    url(r'^api/poll/comment/delete/(?P<comment_id>\w+)$','controller.pollcontroller.delete_poll_comment'),
+    url(r'^api/poll/delete/(?P<poll_id>\w+)$','controller.pollcontroller.delete_poll'),
+    url(r'^api/poll/option/(?P<option_info>.+)$','controller.pollcontroller.check_option'),
     
     url(r'^event/$', 'controller.eventcontroller.main'),
     url(r'^event/new$', 'controller.eventcontroller.new'),
@@ -96,10 +110,6 @@ urlpatterns = patterns('',
     url(r'^api/event/get_info_date$','controller.eventcontroller.get_info_date'),
     
     url(r'^api/event/update/comment/$','controller.eventcontroller.update_event_comment'),
-    
-    
-    
-    
     
     
     url(r'^notifications/$', 'controller.notificationcontroller.main'),
@@ -126,7 +136,8 @@ urlpatterns = patterns('',
     url(r'^api/sidebar/dialog/delete$', 'sidebar.sidebarcontroller.delete_dialog'),
     url(r'^api/sidebar/dialog/get$', 'sidebar.sidebarcontroller.load_dialog'),
     url(r'^api/sidebar/invite$', 'sidebar.sidebarcontroller.send_invite'),
-    
+    url(r'^api/sidebar/poll/get$', 'sidebar.sidebarcontroller.load_poll'),
+
     
     
     url(r'^chart/test$','controller.statisticcontroller.test'),
@@ -134,12 +145,21 @@ urlpatterns = patterns('',
     url(r'^chart/recent_message$','controller.statisticcontroller.recent_message_graph'),
     url(r'^chart/recent_pop_topics$','controller.statisticcontroller.recent_pop_topics'),
     url(r'^chart/recent_active_users$','controller.statisticcontroller.recent_active_users'),
-    url(r'^chart/recent_user_stats/(?P<user_name>\w+)$','controller.statisticcontroller.recent_user_stats'),
-    url(r'^chart/recent_topic_stats/(?P<topic_name>\w+)$','controller.statisticcontroller.recent_topic_stats'),
+    url(r'^chart/recent_user_stats/(?P<user_id>\w+)$','controller.statisticcontroller.recent_user_stats'),
+    url(r'^chart/recent_topic_stats/(?P<topic_id>\w+)$','controller.statisticcontroller.recent_topic_stats'),
         
     url(r'^admin/overview','controller.admincontroller.overview'),
     url(r'^admin/stats/topic/$','controller.admincontroller.stats_topic'),
+    url(r'^admin/stats/thread/$','controller.admincontroller.stats_thread'),
+    url(r'^admin/stats/favorite/$','controller.admincontroller.stats_favorite'),
     url(r'^admin/stats/member','controller.admincontroller.stats_member'),
+    
+    url(r'^admin/export/$','controller.admincontroller.export'),
+    url(r'^admin/export/process/test$','controller.exportcontroller.process_test'),
+    url(r'^admin/export/process/$','controller.exportcontroller.process'),
+    
+    url(r'^admin/authority/$','controller.admincontroller.authority'),
+    url(r'^admin/authority/update/$','controller.admincontroller.authority_update'),
     
     url(r'^admin/invite/$','controller.admincontroller.invite'),
     url(r'^admin/invite/send/$','controller.admincontroller.send_invites'),
@@ -147,4 +167,7 @@ urlpatterns = patterns('',
     url(r'^admin/notice/$','controller.admincontroller.notice'),
     url(r'^api/notice/update/$','controller.admincontroller.update_notice'),
     url(r'^api/notice/delete/(?P<notice_id>\w+)$','controller.admincontroller.delete_notice'),
+    
+    
+    url(r'^mobile/',include('mobile.urls')),
 )

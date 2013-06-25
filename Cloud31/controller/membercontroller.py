@@ -33,7 +33,6 @@ def main(request):
     context['page_member'] = "selected"
     my_utils.prepare_search_topic(context)
     
-    context['files']=list()
     try:
         keyword = request.GET.get('q', '')
         search_index = request.GET.get('index', '')
@@ -61,7 +60,8 @@ def main(request):
                     member.picture = member_profile.picture.url
                 except:
                     member.picture = "/media/default.png"
-                members_list.append(member)
+                if not member_profile.is_deactivated:
+                    members_list.append(member)
             except:
                 pass
         

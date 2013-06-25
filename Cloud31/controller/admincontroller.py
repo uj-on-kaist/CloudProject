@@ -36,8 +36,36 @@ import time
 from datetime import datetime
 import datetime as dt
 from django.db.models import Q
+from django.db.models import Count
+
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+def export(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound() 
+    t = loader.get_template('admin/export.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['side_list']=['']
+    context['current_user'] = request.user
+    context['page_export'] = "selected"
+    
+    start_date=request.GET.get('start','')
+    end_date=request.GET.get('end','')
+    
+    now = dt.datetime.now().isocalendar()
+    this_week_start,this_week_end = get_week_days(now[0],now[1])
+    if start_date == '':
+        start_date=this_week_start.strftime("%Y-%m-%d")
+    if end_date == '':
+        end_date=this_week_end.strftime("%Y-%m-%d")
+    
+    context['start_date']=start_date
+    context['end_date']=end_date
+    
+    return HttpResponse(t.render(context))
+
 
 
 
@@ -72,16 +100,120 @@ def overview(request):
     start_time = dt.date(year, month, day) - dt.timedelta(6)
     end_time = dt.date(year, month, day)  + dt.timedelta(1)
     
-    context['user_length'] = User.objects.filter(is_active=True).count()
+    context['user_length'] = UserProfile.objects.filter(is_deactivated=False).count()
     context['feed_length'] = Message.objects.filter(is_deleted=False).count()
-    context['topic_length'] = Topic.objects.all().count()
+    
+    today_start = dt.date(year, month, day)
+    today_end = dt.date(year, month, day)  + dt.timedelta(1)
+    context['feed_today_length'] = Message.objects.filter(is_deleted=False, reg_date__range=(today_start,today_end)).count()
+    context['topic_length'] = Topic.objects.filter(topic_name__gt="").count()
     context['file_length'] = File.objects.filter(is_attached=True).count()
     
     
     context['recent_messages'] = Message.objects.filter(is_deleted=False).order_by("-reg_date")[:5]
-    context['recent_users'] = User.objects.filter(is_active=True).order_by("-last_login")[:5]
+    context['recent_users'] = UserLoginHistory.objects.all().order_by("-login_date")[:5]
     return HttpResponse(t.render(context))
 
+
+def stats_thread(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound()
+        
+    t = loader.get_template('admin/stats_thread.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    
+    context['page_stats_by_thread'] = 'selected'
+    
+    start_date=request.GET.get('start','')
+    end_date=request.GET.get('end','')
+    
+    now = dt.datetime.now().isocalendar()
+    this_week_start,this_week_end = get_week_days(now[0],now[1])
+    if start_date == '':
+        start_date=this_week_start.strftime("%Y-%m-%d")
+    if end_date == '':
+        end_date=this_week_end.strftime("%Y-%m-%d")
+    
+    context['start_date']=start_date
+    context['end_date']=end_date
+    
+    start_date=time.strptime(start_date,'%Y-%m-%d')
+    start_date=dt.datetime.fromtimestamp(time.mktime(start_date))
+    end_date=time.strptime(end_date,'%Y-%m-%d')
+    end_date=dt.datetime.fromtimestamp(time.mktime(end_date))
+    end_date=end_date+dt.timedelta(1)
+    
+    #print start_date,end_date
+    
+    messages = Comment.objects.filter(is_deleted=False,reg_date__range=(start_date,end_date), message__is_deleted=False).values('message').annotate(count = Count('message')).order_by('-count')
+    items=list()
+    for message in messages:
+        feed_id = message['message']
+        try:
+            feed= Message.objects.get(id=feed_id)
+            
+            comments = Comment.objects.filter(message=feed,reg_date__range=(start_date,end_date), is_deleted=False)
+            feed.comments = comments
+            items.append(feed)
+        except:
+            pass
+    
+    
+    context['items']=items
+    return HttpResponse(t.render(context))
+    
+    
+def stats_favorite(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound()
+        
+    t = loader.get_template('admin/stats_favorite.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    
+    context['page_stats_by_favorite'] = 'selected'
+    
+    start_date=request.GET.get('start','')
+    end_date=request.GET.get('end','')
+    
+    now = dt.datetime.now().isocalendar()
+    this_week_start,this_week_end = get_week_days(now[0],now[1])
+    if start_date == '':
+        start_date=this_week_start.strftime("%Y-%m-%d")
+    if end_date == '':
+        end_date=this_week_end.strftime("%Y-%m-%d")
+    
+    context['start_date']=start_date
+    context['end_date']=end_date
+    
+    start_date=time.strptime(start_date,'%Y-%m-%d')
+    start_date=dt.datetime.fromtimestamp(time.mktime(start_date))
+    end_date=time.strptime(end_date,'%Y-%m-%d')
+    end_date=dt.datetime.fromtimestamp(time.mktime(end_date))
+    end_date=end_date+dt.timedelta(1)
+    
+    #print start_date,end_date
+    
+    messages = UserFavorite.objects.filter(reg_date__range=(start_date,end_date), message__is_deleted=False).values('message').annotate(count = Count('message')).order_by('-count')
+    items=list()
+    for message in messages:
+        feed_id = message['message']
+        try:
+            feed= Message.objects.get(id=feed_id)
+            feed.count = message['count']
+            comments = Comment.objects.filter(message=feed,reg_date__range=(start_date,end_date), is_deleted=False)
+            feed.comments = comments
+            items.append(feed)
+        except:
+            pass
+    
+    
+    context['items']=items
+    return HttpResponse(t.render(context)) 
+    
+    
+    
 def stats_topic(request):
     if not request.user.is_staff:
         return HttpResponseNotFound()
@@ -94,6 +226,31 @@ def stats_topic(request):
     
     context['side_list']=['search_topic']
     my_utils.prepare_search_topic(context)
+    
+    
+    
+    now = dt.datetime.now().isocalendar()
+    this_week_start,this_week_end = get_week_days(now[0],now[1])
+    this_week_end = this_week_end + dt.timedelta(1)
+    last_week_start,last_week_end = this_week_start - dt.timedelta(7),this_week_end - dt.timedelta(7)
+    
+    this_week_topics = Topic.objects.filter(reg_date__range=(this_week_start,this_week_end), topic_name__gt="")
+    for topic in this_week_topics:
+        try:
+            topic.recent_message=''
+            recent_message = TopicTimeline.objects.filter(topic=topic).order_by('-update_date')[:1][0]
+            topic.recent_message=recent_message.message.contents
+        except Exception as e:
+            print str(e)
+            pass
+    context['this_week_topics'] = this_week_topics     
+    context['this_week_length'] = Topic.objects.filter(reg_date__range=(this_week_start,this_week_end), topic_name__gt="").count()
+    context['last_week_length'] = Topic.objects.filter(reg_date__range=(last_week_start,last_week_end), topic_name__gt="").count()
+    if context['last_week_length'] == 0:
+        context['increase_rate'] = 100.0
+    else:
+        context['increase_rate'] = (float(context['this_week_length']) - context['last_week_length'])/context['last_week_length'] * 100
+    
     
     try:
         keyword = request.GET.get('q', '')
@@ -113,9 +270,16 @@ def stats_topic(request):
                 this_index,next_index=my_utils.next_search_index(search_index)
                 query_type = Q(topic_name__gt=this_index, topic_name__lt=next_index)
         
-        topics = Topic.objects.filter(query_type).order_by('topic_name')
-        
-        
+        topics = Topic.objects.filter(query_type, topic_name__gt='').order_by('topic_name')
+        for topic in topics:
+            try:
+                topic.recent_message=''
+                recent_message = TopicTimeline.objects.filter(topic=topic).order_by('-update_date')[:1][0]
+                topic.recent_message=recent_message.message.contents
+            except Exception as e:
+                print str(e)
+                pass
+                
         paginator = Paginator(topics, 5)
         
         page = request.GET.get('page', 1)
@@ -136,6 +300,15 @@ def stats_topic(request):
     
     
     return HttpResponse(t.render(context))
+
+def get_week_days(year,week):
+    d = dt.date(year,1,1)
+    if(d.weekday()>3):
+        d = d+dt.timedelta(7-d.weekday())
+    else:
+        d = d - dt.timedelta(d.weekday())
+    dlt = dt.timedelta(days = (week-1)*7)
+    return d + dlt,  d + dlt + dt.timedelta(days=6)
 
 def stats_member(request):
     if not request.user.is_staff:
@@ -175,7 +348,8 @@ def stats_member(request):
                     member.picture = member_profile.picture.url
                 except:
                     member.picture = "/media/default.png"
-                members_list.append(member)
+                if not member_profile.is_deactivated:
+                    members_list.append(member)
             except:
                 pass
         
@@ -247,6 +421,9 @@ def update_notice(request):
     message=''
     attach_list=''
     location_info=''
+    lat = ''
+    lng = ''
+    
     if request.method == 'POST':
         if request.POST['message']:
             message=smart_unicode(request.POST['message'], encoding='utf-8', strings_only=False, errors='strict')
@@ -255,13 +432,19 @@ def update_notice(request):
             attach_list=request.POST['attach_list']
             
         if request.POST['location_info']:
-            attach_list=request.POST['location_info']
+            location_info=request.POST['location_info']
+            try:
+                location = location_info.split("|")
+                lat = location[0]
+                lng = location[1]
+            except:
+                pass
     
     if message is not '':
         try:
             user = User.objects.get(username=request.user.username)
             try: 
-                new_notice = Notice(author=user,contents=message,location=location_info,attach_files=attach_list)
+                new_notice = Notice(author=user,contents=message,lat=lat,lng=lng,attach_files=attach_list)
                 new_notice.save()   
             except:
                 return my_utils.return_error('Insert Failed')
@@ -301,4 +484,98 @@ def delete_notice(request, notice_id):
     except:
             return my_utils.return_error('Please Sign in First')
             
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+    
+def authority(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound() 
+    t = loader.get_template('admin/authority.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['side_list']=['']
+    context['current_user'] = request.user
+    context['page_authority'] = "selected"
+    
+    try:
+        category = request.GET.get('category','')
+        query_type = Q()
+        
+        if category == '1':
+            context['show_staff']='selected'
+            query_type = Q(user__is_staff=True, is_deactivated=False)
+        elif category == '2':
+            context['show_deactivated']='selected'
+            query_type = Q(is_deactivated=True)
+        else:
+            context['show_user']='selected'
+            query_type = Q(user__is_staff=False, is_deactivated=False)
+        
+        members = UserProfile.objects.filter(query_type & ~Q(user = request.user), user__is_active=True).order_by('user__username')
+        members_list = list()
+        for member in members:
+            try:
+                try:
+                    member.picture = member_profile.picture.url
+                except:
+                    member.picture = "/media/default.png"
+                members_list.append(member)
+            except:
+                pass
+        
+        paginator = Paginator(members_list, 10)
+        
+        page = request.GET.get('page', 1)
+        try:
+            context['members'] = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            context['members'] = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            context['members'] = paginator.page(paginator.num_pages)
+        
+        context['index_info'] = my_utils.get_index_list(context['members'].number, paginator.num_pages)
+        
+    except Exception as e:
+        print str(e)
+    
+    return HttpResponse(t.render(context))   
+
+def authority_update(request):
+    if not request.user.is_staff:
+        return my_utils.return_error('You don\'t have access.')
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    user_list = request.POST.get('user_list',False)
+    action = request.POST.get('action',False)
+    if not user_list:
+        return my_utils.return_error('No user.')
+    if not action:
+        return my_utils.return_error('No Action.')
+        
+    user_list = user_list.split('|')
+
+    for user_id in user_list:
+        if user_id == '':
+            continue
+        try:
+            user = User.objects.get(id=user_id)
+            user_profile = UserProfile.objects.get(user=user)
+            if action == 'user':
+                user.is_staff=False
+            if action == 'admin':
+                user.is_staff=True
+            if action == 'activate':
+                user_profile.is_deactivated = False
+            if action == 'deactivate':
+                user_profile.is_deactivated = True   
+            user.save()
+            user_profile.save()
+        except Exception as e:
+            print str(e)
+            pass
+        
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')

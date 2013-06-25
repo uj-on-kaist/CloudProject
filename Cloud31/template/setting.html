@@ -31,14 +31,15 @@ $(document).ready(function(){
         onComplete: function(id, fileName, responseJSON){
             console.log(responseJSON);
             
-            $(document).find(".setting_picture").each(function(){
+            $(".setting_picture").each(function(){
                var src= responseJSON.url;
+               console.log($(this));
                if($(this)[0].tagName == 'A')
                  $(this).attr("href",src+"?"+new Date().getTime());
                else
                  $(this).attr("src",src+"?"+new Date().getTime());
             });
-        },
+        }
     });
 });
 </script>

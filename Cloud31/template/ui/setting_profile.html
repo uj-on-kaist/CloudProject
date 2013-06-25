@@ -7,7 +7,7 @@ Profile Picture:
 </div>
 <div class="setting_field">
 
-<a class="fancy_image" href="{{ user_picture_url }}" class="setting_picture">
+<a class="fancy_image setting_picture" href="{{ user_profile.picture.url }}" >
     <img src="{{ user_profile.picture.url }}" class="setting_avatar setting_picture"/>
 </a>
 
@@ -72,8 +72,8 @@ Position:
 <div class="setting_label">
 </div>
 <div class="setting_field">
-<input type="submit" value="Save" class="button"/>
-<input type="button" value="Cancel" onclick="document.location.href='/setting'" class="button"/>
+<input type="submit" class="button_s" onblur="return false" value="Save"/>
+<input type="button" value="Cancel" onclick="document.location.href='/setting'" class="button_s"/>
 </div>
 </li>
 

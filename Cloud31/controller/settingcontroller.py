@@ -157,14 +157,19 @@ def ajax_upload( request ):
     ret_json = { 'success': success, 'url': url }
     return HttpResponse( json.dumps( ret_json ) )
   
-  
+import uuid
 def user_picture_upload(request, uploaded, filename, raw_data ):
     """
     raw_data: if True, upfile is a HttpRequest object with raw post data
     as the file, rather than a Django UploadedFile from request.FILES
     """
     try:
-        filename = os.path.normpath(os.path.join(settings.MEDIA_ROOT+'/profile/', filename))
+        user = get_object_or_404(User,username=request.user.username)
+        input_file_name = filename
+        (fileBaseName, fileExtension)=os.path.splitext(filename)
+        real_file_name = user.username + "_" + str(uuid.uuid1()) + fileExtension
+        filename = os.path.normpath(os.path.join(settings.MEDIA_ROOT+'/files/', real_file_name))
+        
         with BufferedWriter( FileIO( filename, "w" ) ) as dest:
             # if the "advanced" upload, read directly from the HTTP request
             # with the Django 1.3 functionality
@@ -172,10 +177,10 @@ def user_picture_upload(request, uploaded, filename, raw_data ):
                 (dirName, fileName) = os.path.split(filename)
                 print dirName
                 print fileName           
-                user = get_object_or_404(User,username=request.user.username)
                 user_profile = UserProfile.objects.get(user=user)
+                user_profile.thumbnail = None
                 user_profile.picture.save(fileName,ContentFile(uploaded.read()))
-                
+                user_profile.save()
             # if not raw, it was a form upload so read in the normal Django chunks fashion
             else:
                 (dirName, fileName) = os.path.split(filename)
@@ -183,9 +188,9 @@ def user_picture_upload(request, uploaded, filename, raw_data ):
                 # TODO: figure out when this gets called, make it work to save into a Photo like above
                 for c in uploaded.chunks( ):
                     dest.write( c )
-                user = get_object_or_404(User,username=request.user.username)
                 user_profile = UserProfile.objects.get(user=user)
                 user_profile.picture.save(fileName,File(open(filename)))
+                user_profile.save()
         return True, user_profile.picture.url
     except IOError:
         # could not open the file most likely

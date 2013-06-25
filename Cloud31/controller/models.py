@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
@@ -10,9 +11,13 @@ class UserProfile(models.Model):
 	is_deactivated = models.BooleanField(default=False)
 	receive_email = models.BooleanField(default=True)
 	receive_apns = models.BooleanField(default=True)
-	device_id = models.CharField(max_length=50)
+	device_id = models.CharField(max_length=100)
 	picture = models.ImageField(upload_to="profile", default='/media/default.png')
-    
+
+class UserLoginHistory(models.Model):
+    user = models.ForeignKey(User)
+    login_date = models.DateTimeField(auto_now_add=True)
+
 ##  
 ## Message Related
 ##
@@ -20,8 +25,10 @@ class Message(models.Model):
     author = models.ForeignKey(User)
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
-    location = models.CharField(max_length=30,default='')
+    lat = models.CharField(max_length=30,default='')
+    lng = models.CharField(max_length=30,default='')
     write_from = models.CharField(max_length=30,default='')
     # Comma Seperated
     attach_files = models.TextField(default='')
@@ -51,8 +58,10 @@ class Notice(models.Model):
     author = models.ForeignKey(User)
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
-    location = models.CharField(max_length=30,default='')
+    lat = models.CharField(max_length=30,default='')
+    lng = models.CharField(max_length=30,default='')
     write_from = models.CharField(max_length=30,default='')
     # Comma Seperated
     attach_files = models.TextField(default='')
@@ -98,8 +107,8 @@ class UserTopicFavorite(models.Model):
 class UserNotification(models.Model):
     user = models.ForeignKey(User, related_name="receiver")
     sender = models.ForeignKey(User, related_name="sender")
-    notification_type = models.CharField(max_length=10)
-    related_type = models.CharField(max_length=10)
+    notification_type = models.CharField(max_length=50)
+    related_type = models.CharField(max_length=50)
     related_id = models.IntegerField()
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
@@ -171,9 +180,35 @@ class EmailQueue(models.Model):
 
 
 class NotificationQueue(models.Model):
-    notification_type = models.CharField(max_length=10)
+    notification_type = models.CharField(max_length=20)
     target_user = models.ForeignKey(User)
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
     is_sent = models.BooleanField(default=False)
+    
+    
 
+class Poll(models.Model):
+    author = models.ForeignKey(User)
+    title = models.CharField(max_length=100)
+    contents = models.TextField(null=False)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
+
+class PollComment(models.Model):
+    poll = models.ForeignKey(Poll)
+    author = models.ForeignKey(User)
+    contents = models.TextField(null=False)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
+
+
+class PollItem(models.Model):
+    poll = models.ForeignKey(Poll)
+    detail = models.TextField(null=False)
+
+class PollAnswer(models.Model):
+    answer = models.ForeignKey(PollItem)
+    answerer = models.ForeignKey(User)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    

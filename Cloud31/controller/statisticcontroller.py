@@ -41,7 +41,6 @@ import random
 def recent_user_graph(request):
     if not request.user.is_staff:
         return my_utils.return_error('You cannot access to this')
-    
     date_before = 90
     range_const = 1
     
@@ -58,10 +57,16 @@ def recent_user_graph(request):
     data = list()
     time = start_time
     label_list = list()
-
+    
+    y = y_axis()
+    y.min, y.max, y.steps = 0, 20, 5
+    
     while time < end_time:
         next_time = time + dt.timedelta(range_const)
-        data.append(User.objects.filter(last_login__range=(time, next_time)).count())
+        visit_count = UserLoginHistory.objects.filter(login_date__range=(time, next_time)).count()
+        if visit_count > y.max:
+                y.max = visit_count+5
+        data.append(visit_count)
         label_list.append(time.strftime("%B %d, %Y"))
         time = next_time
     
@@ -70,12 +75,11 @@ def recent_user_graph(request):
     l = line()
     l.values = data
     l.colour = "#325AAA"
-    l.tip = "#x_label#<br>#val# Users Logined"
+    l.tip = "#x_label#<br>#val# Users Visited"
     chart = open_flash_chart()
     #chart.title = t
     
-    y = y_axis()
-    y.steps = 5
+    
     chart.y_axis = y
     
     x = x_axis()
@@ -127,7 +131,7 @@ def recent_message_graph(request):
             count+=Message.objects.filter(is_deleted=False,reg_date__range=(time, next_time)).count()
             data.append(count)
             if count > y.max:
-                y.max = count
+                y.max = count+5
             label_list.append(time.strftime("%B %d, %Y"))
             time = next_time
     else:
@@ -136,7 +140,7 @@ def recent_message_graph(request):
             count = Message.objects.filter(is_deleted=False,reg_date__range=(time, next_time)).count()
             data.append(count)
             if count > y.max:
-                y.max = count
+                y.max = count+5
             label_list.append(time.strftime("%B %d, %Y"))
             time = next_time
 
@@ -173,7 +177,6 @@ def get_start_end_time(in_start,in_end):
 def recent_pop_topics(request):
     date_before = 90
     range_const = 1
-    
     end_time = now_datetime()
     start_time = end_time - dt.timedelta(date_before)
     
@@ -185,33 +188,36 @@ def recent_pop_topics(request):
     
     accu = request.GET.get("accu", False)
     if accu == "1":
-        topics = TopicTimeline.objects.filter(update_date__range=(start_time, end_time)).values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
+        topics = TopicTimeline.objects.filter(message__is_deleted=False,message__reg_date__range=(start_time, end_time), topic__topic_name__gt='').values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
         
         x = x_axis()
         y = y_axis()
         y.min, y.max, y.steps = 0, 5, 5
         chart = open_flash_chart()
         chart.y_axis = y
-        
         for item in topics:
-            topic = Topic.objects.get(id=item['topic'])
-            data = list()
-            time = start_time
-            label_list = list()
-            while time < end_time:
-                next_time = time + dt.timedelta(range_const)
-                count = TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
-                data.append(count)
-                if count > y.max:
-                    y.max = count
-                label_list.append(time.strftime("%B %d, %Y"))
-                time = next_time
-            l = line()
-            l.tip = topic.topic_name+"<br>#val# Feeds"
-            l.values = data
-            l.colour = "#" + "%x" % random.randint(0,255) + "%x" % random.randint(0,255) + "%x" % random.randint(0,255)
-            l.text = "#" + topic.topic_name
-            chart.add_element(l)
+            try:
+                topic = Topic.objects.get(id=item['topic'])
+                data = list()
+                time = start_time
+                label_list = list()
+                while time < end_time:
+                    next_time = time + dt.timedelta(range_const)
+                    count = Message.objects.filter(reg_date__range=(time,next_time),is_deleted=False,related_topics__contains=topic.topic_name).count()
+                    #count = TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
+                    data.append(count)
+                    if count > y.max:
+                        y.max = count+5
+                    label_list.append(time.strftime("%B %d, %Y"))
+                    time = next_time
+                l = line()
+                l.tip = topic.topic_name+"<br>#val# Feeds"
+                l.values = data
+                l.colour = "#" + "%x" % random.randint(0,255) + "%x" % random.randint(0,255) + "%x" % random.randint(0,255)
+                l.text = "#" + topic.topic_name
+                chart.add_element(l)
+            except:
+                pass
         
         lbl = x_axis_labels(steps=date_before/3,labels=label_list)
         x.labels = lbl
@@ -224,7 +230,7 @@ def recent_pop_topics(request):
         return HttpResponse(chart.render())
         
     else:
-        topics = TopicTimeline.objects.filter(update_date__range=(start_time, end_time)).values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
+        topics = TopicTimeline.objects.filter(update_date__range=(start_time, end_time), topic__topic_name__gt='').values('topic').annotate(topic_count=Count('topic')).order_by("-topic_count")[:10]
     
         values = list()
         total = 0
@@ -232,11 +238,13 @@ def recent_pop_topics(request):
             total += int(item['topic_count'])
             
         for item in topics:
-            topic = Topic.objects.get(id=item['topic'])
-            value = pie_value(label="#"+topic.topic_name, value=item['topic_count'])
-            value.tip = "#label#<br> #val# Feeds ("+str("%.2f" % (float(item['topic_count'])*100.0/total))+"%)"
-            values.append(value)
-
+            try:
+                topic = Topic.objects.get(id=item['topic'])
+                value = pie_value(label="#"+topic.topic_name, value=item['topic_count'])
+                value.tip = "#label#<br> #val# Feeds ("+str("%.2f" % (float(item['topic_count'])*100.0/total))+"%)"
+                values.append(value)
+            except:
+                pass
         p = pie()
         p.values = values
         p.tip = "#label#<br>#val# Feeds"
@@ -291,7 +299,7 @@ def recent_active_users(request):
     chart.title = t
     return HttpResponse(chart.render())
 
-def recent_user_stats(request, user_name):
+def recent_user_stats(request, user_id):
     date_before = 90
     range_const = 1
     
@@ -314,7 +322,7 @@ def recent_user_stats(request, user_name):
     
     accu = request.GET.get("accu", False)
     try:
-        user = User.objects.get(username=user_name)
+        user = User.objects.get(id=user_id)
         if accu == "1":
             count = Message.objects.filter(is_deleted=False,author=user,reg_date__lt=time).count()
             while time < end_time:
@@ -322,7 +330,7 @@ def recent_user_stats(request, user_name):
                 count+=Message.objects.filter(is_deleted=False,author=user,reg_date__range=(time, next_time)).count()
                 data.append(count)
                 if count > y.max:
-                    y.max = count
+                    y.max = count+5
                 label_list.append(time.strftime("%B %d, %Y"))
                 time = next_time
         else:
@@ -331,7 +339,7 @@ def recent_user_stats(request, user_name):
                 count = Message.objects.filter(is_deleted=False,author=user,reg_date__range=(time, next_time)).count()
                 data.append(count)
                 if count > y.max:
-                    y.max = count
+                    y.max = count+5
                 label_list.append(time.strftime("%B %d, %Y"))
                 time = next_time
                 
@@ -358,13 +366,13 @@ def recent_user_stats(request, user_name):
     chart.bg_colour = '#FAFAFA'
     chart.add_element(l)
     
-    t = title(text="User @"+user_name)
+    t = title(text="User @"+user.username)
     t.style = "{font-size: 12px;text-align: center;padding:5px 0px 5px 0; color: #325AAA; font-weight:bold;}"
     chart.title = t
     
     return HttpResponse(chart.render())
     
-def recent_topic_stats(request, topic_name):
+def recent_topic_stats(request, topic_id):
     date_before = 90
     range_const = 1
     
@@ -387,7 +395,7 @@ def recent_topic_stats(request, topic_name):
     
     accu = request.GET.get("accu", False)
     try:
-        topic = Topic.objects.get(topic_name=topic_name)
+        topic = Topic.objects.get(id=topic_id)
         if accu == "1":
             count = TopicTimeline.objects.filter(topic=topic,update_date__lt=time).count()
             while time < end_time:
@@ -395,7 +403,7 @@ def recent_topic_stats(request, topic_name):
                 count+=TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
                 data.append(count)
                 if count > y.max:
-                    y.max = count
+                    y.max = count+5
                 label_list.append(time.strftime("%B %d, %Y"))
                 time = next_time
         else:
@@ -404,7 +412,7 @@ def recent_topic_stats(request, topic_name):
                 count = TopicTimeline.objects.filter(topic=topic,update_date__range=(time, next_time)).count()
                 data.append(count)
                 if count > y.max:
-                    y.max = count
+                    y.max = count+5
                 label_list.append(time.strftime("%B %d, %Y"))
                 time = next_time
                 
@@ -432,7 +440,7 @@ def recent_topic_stats(request, topic_name):
     chart.bg_colour = '#FAFAFA'
     chart.add_element(l)
     
-    t = title(text="Topic #"+topic_name)
+    t = title(text="Topic #"+topic.topic_name)
     t.style = "{font-size: 12px;text-align: center;padding:5px 0px 5px 0; color: #325AAA; font-weight:bold;}"
     chart.title = t
     

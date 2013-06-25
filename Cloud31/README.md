@@ -26,8 +26,21 @@ http://bitkickers.blogspot.com/2010/07/djangocelery-quickstart-or-how-i.html
 
 ### PyOFC2
 https://github.com/btbytes/pyofc2
-
+http://btbytes.github.com/pyofc2/
 
 ### Django OFC2( PyOFC2 )
 https://github.com/btbytes/djofc2_demo
 Open Flash Chart
+
+
+### APNSWrapper (Python)
+http://code.google.com/p/apns-python-wrapper/wiki/APNSWrapperOverview
+
+
+### xlwt 
+http://www.python-excel.org/
+
+### 권한 관련
+media 폴더의 files와 profile 폴더의 권한 소유 유저와 그룹을 아파치 세팅에 맞게 변환해주어야 함.
+ex) chown daemon:daemon files
+

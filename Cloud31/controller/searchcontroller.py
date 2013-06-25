@@ -53,6 +53,12 @@ def search_feeds(request, inStr):
         for item in arr:
             query_type = query_type & Q(contents__icontains=item)
         feeds = Message.objects.filter(query_type, is_deleted=False).order_by('-reg_date')
+        for feed in feeds:
+            try:
+                user_profile = UserProfile.objects.get(user=feed.author)
+                feed.author_picture=user_profile.picture.url
+            except Exception as e:
+                feed.author_picture='/media/default.png'
         result = my_utils.process_messages(request,feeds)
     except Exception as e:
         print str(e)
@@ -139,14 +145,14 @@ def ajax_user(request):
             item = dict()
             item['username'] = user.username
             item['name'] = user.last_name
-            
+            item['type'] = 'user'
             try:
                 user_profile = UserProfile.objects.get(user=user)
                 item['picture']= user_profile.picture.url
             except:
                 item['picture']='/media/default.png'
-            
-            result['items'].append(item)
+            if not user_profile.is_deactivated:
+                result['items'].append(item)
         except:
             pass
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
@@ -169,6 +175,7 @@ def ajax_topic(request):
         try:
             item = dict()
             item['topic_name'] = topic.topic_name
+            item['type'] = 'topic'
             result['items'].append(item)
         except:
             pass

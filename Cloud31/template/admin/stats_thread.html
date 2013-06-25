@@ -1,0 +1,79 @@
+{% include "meta_open.html" %}
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $('.datepicker').datepicker({
+        inline: true,
+        dateFormat: 'yy-mm-dd'
+    });
+    
+    var start_date ="{{start_date}}";
+    var end_date ="{{end_date}}";
+    
+    if(start_date == "" || end_date == ""){
+        var end = new Date();
+        var curr_date = end.getDate();
+        var curr_month = end.getMonth();
+        curr_month++;
+        var curr_year = end.getFullYear();
+    
+        var start = new Date(curr_year, curr_month-1, curr_date - 7);
+        $(".startpicker").val(start.getFullYear()+"-"+(start.getMonth()+1)+"-"+start.getDate());
+        $(".endpicker").val(curr_year+"-"+curr_month+"-"+curr_date);
+    }else{
+        $(".startpicker").val(start_date);
+        $(".endpicker").val(end_date);
+    }
+});
+</script>
+<h2 class="page_title">
+    Stats By Thread
+</h2>
+
+<div class="overview_item" style="border-bottom:1px solid #F0F0F0;">
+<h4><span class="ui_icon ui_icon_feed"></span> <b class="title">Most Replied Feeds</b></h4>
+<div class="chart_date_select"  style="padding-bottom:10px; border-bottom:1px solid #F0F0F0;">
+<b>Data From </b>
+<input type="text" class="datepicker startpicker" />
+<b>To </b>
+<input type="text" class="datepicker endpicker" />
+<input type="submit" class="button_s change_btn" onblur="return false" value="change" onclick="document.location.href='/admin/stats/thread/?start='+$('.startpicker').val()+'&end='+$('.endpicker').val();">
+<!-- <span style="margin-left:20px;"><input type="checkbox" style="margin: 0;" onclick="accuSet($(this),'recent_active_users','/chart/recent_active_users')"/> View Line chart</span> -->
+</div>
+
+{% if items|length_is:"0" %}
+<div class="no_result" style="float:left; width:515px; border-bottom:none;">
+No Result
+</div>
+{% else %}
+{% for feed in items %}
+<table class="most_feed_table" style="padding-top:5px; width:525px; border-bottom:1px solid #F0F0F0; float:left; margin:0px;" onclick="document.location.href='/feed/detail/{{feed.id}}'">
+    <tr class="feed_tr">
+        <td style="width:60px; vertical-align:top;text-align:right; padding-right:5px;" class="first"><p style="font-weight:bold; color:#325AAA;">{{ feed.author.username }}</p></th>
+        <td>
+            <p class="feed_contents">{{ feed.contents|striptags|safe }} <span class="feed_date">{{ feed.reg_date }}</span></p>
+        </th>
+    </tr>
+    {% for comment in feed.comments %}
+    <tr class="comment_item" onclick="">
+        <td class="first" style="text-align:right;"><p>{% if forloop.first %}<span style="font-size:11px; padding-right:5px; color:#A0A0A0;"><b>{{ feed.comments|length }}</b> Replies</span>{% endif %}</p></td>
+        <td class="name" style="border-bottom:1px dashed #EFEFEF;">
+            <p><b style="font-weight:bold; color:#343434;padding-right:10px;">@{{ comment.author.username }}</b> {{ comment.contents|striptags|safe}} <span class="feed_date">{{ comment.reg_date }}</span></p>
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td style="height:10px;"></td>
+        <td style="height:10px;"></td>
+    </tr>
+</table>
+{% endfor %}
+{% endif %}
+
+
+
+
+
+</div>
+
+{% include "meta_close.html" %}

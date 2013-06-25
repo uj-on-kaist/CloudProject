@@ -73,9 +73,11 @@ $(document).ready(function(){
     <div class="right controls">
         <a href="#" class="delete stream_element_delete" title="지우기" style="display:none;"><img alt="Deletelabel" src="/static/image/deletelabel.png?1307079878"></a>
     </div>
-    <a href="/people/1" class="user_link">
-      <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="" title="ujlikes@localhost">
+    <div class="user_image_box">
+    <a href="/user/" class="user_link">
+      <img  class="author avatar" src="/media/default.png" title="ujlikes@localhost">
     </a>
+    </div>
     <div class="content">
       <div class="from">
         <a href="/user/" class="user_link">
@@ -97,9 +99,12 @@ $(document).ready(function(){
             <a href="#" class="delete stream_element_delete message" onclick="delete_detail_comment($(this));" comment_id="{{ comment.id }}" title="지우기"><img alt="Deletelabel" src="/static/image/deletelabel.png"></a>
         {% endif %}
     </div>
+    <div class="user_image_box">
     <a href="/user/{{ comment.author }}" class="user_link">
       <img alt="ujlikes@localhost" class="author avatar" data-person_id="1" src="{{ comment.author_picture }}" title="ujlikes@localhost">
     </a>
+    </div>
+    
     <div class="content">
       <div class="from">
         <a href="/user/{{ comment.author }}" class="user_link">
@@ -126,7 +131,7 @@ $(document).ready(function(){
         <textarea class="comment_area" id="comment_area_{{ feed.id }}" placeholder="Write Comment" onclick="$('.submit_button').removeClass('hidden'); return false;"></textarea>
     </p>
     <div class="submit_button hidden">
-       <input class="comment_submit button" id="comment_submit_{{ feed.id }}" name="commit" type="submit" value="Reply" onclick="var id=$(this).attr('id').split('_')[2]; ;update_comment(id); return false;">
+       <input id="comment_submit_{{ feed.id }}" name="commit" type="submit" class="comment_submit button_s" onblur="return false" value="Reply" onclick="var id=$(this).attr('id').split('_')[2]; ;update_comment(id); return false;"/>
     </div>
     </li>
 </ul>

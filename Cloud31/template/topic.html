@@ -10,7 +10,7 @@
         <td class="topic_name first" style="padding:0px; border-bottom:none;">
             <ul class="popular_topics">
             {% for topic in popular_topics %}
-            <a href="/topic/{{ topic.topic_name }}"><li class="ui-corner-all">#{{ topic.topic_name }}</li></a>
+            <a href="/topic/{{ topic.id }}"><li class="ui-corner-all">#{{ topic.topic_name }}</li></a>
             {% endfor%}    
             </ul>
         </td>
@@ -21,7 +21,7 @@
 
 
 <h4 class="section_title"><span class="ui_icon ui_icon_topic"></span><b class="title">Topic List</b></h4>
-<table class="topic_table list_table">
+<table  border="0" class="topic_table list_table">
     <tr>
         <th width="160" class="first"><p>Topic Name</p></th>
         <th width="90" ><p>Feeds</p></th>
@@ -29,7 +29,7 @@
     </tr>
     
     {% for topic in topics.object_list %}
-    <tr class="topic_item list_item" onclick="document.location.href='/topic/{{ topic.topic_name }}';">
+    <tr class="topic_item list_item" onclick="document.location.href='/topic/{{ topic.id }}';">
         <td class="topic_name first"><p>{{ topic.topic_name }}</p></td>
         <td ><p>{{ topic.reference_count }}</p></td>
         <td><p class="ellipsis topic_detail">{{ topic.topic_detail|striptags|safe }}</p></td>

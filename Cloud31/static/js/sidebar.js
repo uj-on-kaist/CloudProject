@@ -62,6 +62,57 @@ function load_dialog(){
 		}
 	});
 }
+
+function load_poll(){
+    var url="/api/sidebar/poll/get";
+    
+    $.ajax({
+		type : "GET",
+		url : url,
+		dataType : "JSON",
+		cache : false,
+		success : function(json) {
+		  /* console.log(json); */
+          if(json.success){
+            display_polls(json.polls);
+          }else{console.log(json);}
+		},
+		error : function(data){
+		  console.log(data);
+		}
+	});
+}
+
+function display_polls(polls){
+    for(var i=0; i<polls.length; i++){
+        var poll = polls[i];
+        var last = false;
+        if(i == polls.length-1)
+            last = true;
+
+        $("#poll_list").append(make_poll_layout(poll, last));
+    }
+}
+function make_poll_layout(poll, last){
+    var dialog_layout = $("#poll_list .poll_item.template").clone();
+    dialog_layout.attr("poll_id",poll.id)
+    dialog_layout.removeClass("template");
+    if(last)
+        dialog_layout.addClass("last");
+    
+    
+    dialog_layout.find('.user_link').text(poll.author);
+    dialog_layout.find('.author_name').text(poll.author_name);
+    dialog_layout.find('p.poll_title').html(poll.title);
+    dialog_layout.find('.dialog_time').text(humane_date(poll.reg_date));
+    
+    dialog_layout.click(function(){
+        document.location.href="/poll/detail/"+$(this).attr("poll_id");
+    
+    });
+    return dialog_layout;
+}
+
 function display_dialogs(dialogs){
     for(var i=0; i<dialogs.length; i++){
         var dialog = dialogs[i];

@@ -6,7 +6,7 @@ function get_notis_count(){
 		cache : false,
 		success : function(json) {
 		  if(json.success){
-		      if(json.unread_notis.length == 0){
+		      if(json.unread_notis_count == 0){
 		          $(".noti_count").text("");
 		          $('#noti_selector').attr('status','nor');
 		          $('#noti_selector').removeClass("sel");
@@ -15,7 +15,7 @@ function get_notis_count(){
 		          $('#noti_selector').attr('status','high');
 		          $('#noti_selector').removeClass("nor");
 		          $('#noti_selector').addClass("high");
-		          $(".noti_count").text(json.unread_notis.length);
+		          $(".noti_count").text(json.unread_notis_count);
 		      }
 		  }
 		},
@@ -58,7 +58,7 @@ function load_notis(event){
 		      }
 		      show_noti(notis);
 		      if(json.unread_notis.length != 0)
-		          $(".noti_count").text(json.unread_notis.length);
+		          $(".noti_count").text(json.unread_notis_count);
 		  }
 		},
 		error : function(data){
@@ -77,7 +77,7 @@ function show_noti(notis){
     $('#noti_selector').addClass("sel");
     
     $('#noti_list li.noti_item').remove();
-    for(var i=0; i<notis.length; i++){
+    for(var i=notis.length-1; i>=0; i--){
         var noti=notis[i];
         console.log(noti);
         var noti_layout= $("#noti_list li.noti_item_template").clone();
@@ -125,7 +125,7 @@ function show_noti(notis){
             
             stopEvent(event);
         });
-        $('#noti_list a.see_more').before(noti_layout);
+        $('#noti_list li.loading').after(noti_layout);
     }
 
 }
@@ -170,7 +170,7 @@ function load_noti(type, load_more, base_id){
 		  $("#loading_box").hide();
 		  if(json.success){
 		      console.log(json.notis);
-		      display_notices(json.notis);
+		      display_notices(json.notis,load_more);
 		      
 		      if(json.load_more){
 		          $("#load_more_box").show();
@@ -186,8 +186,8 @@ function load_noti(type, load_more, base_id){
 	});
 }
 
-function display_notices(notis){
-    if(notis.length == 0){
+function display_notices(notis,load_more){
+    if(notis.length == 0 && !load_more){
         $(".no_result").show();
     }else{
          $(".no_result").hide();
