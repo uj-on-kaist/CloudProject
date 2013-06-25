@@ -62,6 +62,7 @@ urlpatterns = patterns('',
     url(r'^user/(?P<username>\w+)/$','controller.profilecontroller.user'),
     url(r'^favorite/$','controller.profilecontroller.favorite'),
     url(r'^picture/(?P<username>\w+)/$','controller.profilecontroller.picture'),
+    url(r'^picture/(?P<size>\w+)/(?P<username>\w+)/$','controller.profilecontroller.picture_size'),
 
     url(r'^file/$', 'controller.filecontroller.main'),
     url(r'^file/download/(?P<file_id>\w+)$', 'controller.filecontroller.download_file'),

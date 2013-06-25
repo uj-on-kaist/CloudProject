@@ -150,6 +150,7 @@ def ajax_upload( request ):
 
     filename=smart_unicode(filename, encoding='utf-8', strings_only=False, errors='strict')
     filename=request.user.username + '.png'
+    
     # save the file
     success,url = user_picture_upload(request, upload, filename, is_raw )
 
@@ -191,8 +192,27 @@ def user_picture_upload(request, uploaded, filename, raw_data ):
                 user_profile = UserProfile.objects.get(user=user)
                 user_profile.picture.save(fileName,File(open(filename)))
                 user_profile.save()
+        make_thumbnail(request)
         return True, user_profile.picture.url
     except IOError:
         # could not open the file most likely
         return False, -1
     return True, -1
+
+import Image, ImageOps
+def make_thumbnail(request):
+    try:
+        user = get_object_or_404(User,username=request.user.username)
+        user_profile = get_object_or_404(UserProfile,user=user)
+        if user_profile.picture.name:
+            filename = os.path.join(settings.MEDIA_ROOT, user_profile.picture.name)
+            (dirName, fileName) = os.path.split(filename)
+            image = Image.open(filename)
+            thumb = image.resize((50,50), Image.ANTIALIAS)
+            thumb.save(filename+".thumb.png", 'PNG', quality=75)
+            #image.thumbnail((50,50), Image.ANTIALIAS)
+            #image.save(image.name, 'PNG', quality=75)
+    except IOError as e:
+    	print e
+    	return False
+    return True
