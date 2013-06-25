@@ -1,0 +1,7 @@
+*.pyc
+Cloud31/media/files
+Cloud31/media/profile
+Cloud31/admin/django.wsgi
+
+
+
