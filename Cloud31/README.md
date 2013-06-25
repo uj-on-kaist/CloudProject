@@ -9,6 +9,9 @@
 > Imaging 1.1.7
 > http://www.pythonware.com/products/pil/index.htm
 
+### libjpeg, libpng for image resize thumbanil
+> http://ethan.tira-thompson.com/Mac_OS_X_Ports.html
+
 ### MySQL
 > mysql  Ver 14.14 Distrib 5.5.10, for osx10.6 (i386) using  EditLine wrapper
 

@@ -4,6 +4,7 @@
 from django.contrib.auth.models import User
 
 from controller.models import *
+from controller.settingcontroller import make_thumbnail
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_unicode
 from django.http import HttpResponse
@@ -12,11 +13,14 @@ import json
 import parser
 import re
 
+
+
 from django.conf import settings
 
 def load_basic_info(request, context):
     user_profile = get_object_or_404(UserProfile,user=request.user)
     user_profile.picture = user_profile.picture.url
+    user_profile.thumbnail = get_user_thumbnail(request)
     context['user_profile'] = user_profile
        
     try:
@@ -76,7 +80,8 @@ def process_messages(request, messages):
             feed['author_name']=message.author.last_name
             feed['author_dept']=user_profile.dept
             feed['author_position']=user_profile.position
-            feed['author_picture']= user_profile.picture.url
+            #feed['author_picture']= user_profile.picture.url
+            feed['author_picture']= get_user_thumbnail(request)
         except:
             feed['author_picture']='/media/default.png'
         feed['author_name']=message.author.last_name
@@ -103,7 +108,7 @@ def process_messages(request, messages):
                 item['author_name']=comment.author.last_name
                 try:
                     user_profile = UserProfile.objects.get(user=comment.author)
-                    item['author_picture']= user_profile.picture.url
+                    item['author_picture']= get_user_thumbnail(request)
                 except:
                     item['author_picture']='/media/default.png'
                 item['contents']= parser.parse_text(comment.contents)
@@ -333,3 +338,16 @@ def pretty_date(time=False):
     if day_diff < 365:
         return str(day_diff/30) + "개월 전"
     return str(day_diff/365) + "년 전"
+    
+    
+def get_user_thumbnail(request):
+    user = get_object_or_404(User,username=request.user.username)
+    user_profile = get_object_or_404(UserProfile,user=user)
+    filename = user_profile.picture.name+".thumb.png"
+    pathName = os.path.join(settings.MEDIA_ROOT, filename)
+    if os.path.isfile(pathName):
+        return "/media/"+filename
+    else:
+        make_thumbnail(request)
+        return "/media/"+filename
+

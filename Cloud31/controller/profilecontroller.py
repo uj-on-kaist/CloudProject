@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 
 from controller.models import *
+from controller.settingcontroller import *
 
 from django.shortcuts import get_object_or_404
 from django.core import serializers
@@ -54,6 +55,22 @@ def picture(request,username):
         user_profile = UserProfile.objects.get(user=user)
         if user_profile.picture.name:
             return HttpResponseRedirect(user_profile.picture.name)
+    except Exception as e:
+        print str(e)
+            
+    return HttpResponseRedirect('/media/default.png')
+    
+def picture_size(request,size,username):
+    try:
+        user = get_object_or_404(User,username=request.user.username)
+        user_profile = get_object_or_404(UserProfile,user=user)
+        filename = user_profile.picture.name+".thumb.png"
+        pathName = os.path.join(settings.MEDIA_ROOT, filename)
+        if os.path.isfile(pathName):
+            return HttpResponseRedirect("/media/"+filename)
+        else:
+        	make_thumbnail(request)
+        	return HttpResponseRedirect("/media/"+filename)
     except Exception as e:
         print str(e)
             
