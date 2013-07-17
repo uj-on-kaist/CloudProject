@@ -223,8 +223,19 @@ def get_related_topics(username):
     except Exception as e:
         print str(e)
         pass
-
-    return result
+        
+    final_result = list()
+    for topic in result:
+        try:
+            item = dict()
+            item['name'] = topic
+            item['id'] = Topic.objects.filter(topic_name=topic)[0].id
+            final_result.append(item)
+        except Exception as e:
+            print str(e)
+            pass
+    print final_result
+    return final_result
     
 
 

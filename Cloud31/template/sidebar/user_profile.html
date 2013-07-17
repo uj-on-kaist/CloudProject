@@ -22,7 +22,7 @@
 <b>Related Topics</b>
 
 {% for topic in related_topics %}
-<li><a href="/topic/{{ topic }}">#{{ topic }}</a></li>
+<li><a href="/topic/{{ topic.id }}">#{{ topic.name }}</a></li>
 {% endfor %}
 </ul>
 {% endif %}
