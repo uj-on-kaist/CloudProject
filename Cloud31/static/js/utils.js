@@ -6,11 +6,17 @@
 
 // Takes an ISO time and returns a string representing how
 // long ago the date represents.
+
 function humane_date(time){
+	var d = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," "));
+	return d.getFullYear() + "년 " + (d.getMonth() + 1) + "월 " + d.getDate() + "일 " + d.getHours() + "시 " + d.getMinutes() + "분";
+}
+/*
+function humane_date(time){
+	
 	var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ")),
 		diff = (((new Date()).getTime() - date.getTime()) / 1000),
 		day_diff = Math.floor(diff / 86400);
-
 	if ( isNaN(day_diff) || day_diff < 0 || day_diff >= 31 )
 		return;
 
@@ -23,7 +29,7 @@ function humane_date(time){
 		day_diff == 1 && "Yesterday" ||
 		day_diff < 7 && day_diff + " days ago" ||
 		day_diff < 31 && Math.ceil( day_diff / 7 ) + " weeks ago";
-}
+}*/
 
 
 function start_loading(item){
