@@ -31,7 +31,7 @@ function upload_feed(item){
         return false;
     }
     
-    data= "message=" + message + "&attach_list=" + attach_list + "&location_info="+location_info;
+    data= "message=" + encodeURIComponent(message) + "&attach_list=" + attach_list + "&location_info="+location_info;
     data +="&csrfmiddlewaretoken="+tokenValue;
     console.log(data);
 	$.ajax({
@@ -522,7 +522,7 @@ function update_comment(feed_id){
     
     var message = $("#comment_area_"+feed_id).val();
     
-    data= "message=" + message + "&feed_id=" + feed_id;
+    data= "message=" + encodeURIComponent(message) + "&feed_id=" + feed_id;
     data +="&csrfmiddlewaretoken="+tokenValue;
     
     $.ajax({
