@@ -602,20 +602,29 @@ def dashboard(request):
     else:
     	context['week'] = 'selected'
     context['queries'] = 'type=' + date_before
+    
+    failers_list = list()
     for member in members:
     	try:
+    	    item = dict()
+    	    item['username'] = member.username
+    	    item['last_name'] = member.last_name
+    	    item['id'] = member.id
     	    count = Message.objects.filter(is_deleted=False,author=member,reg_date__gt=time).count()
-    	    member.feeds = count
+    	    item['feeds'] = count
     	    
-    	    count = Comment.objects.filter(is_deleted=False,author=member,reg_date__gt=time).count()
-    	    member.comments = count
-
-    	    members_list.append(member)
+    	    count2 = Comment.objects.filter(is_deleted=False,author=member,reg_date__gt=time).count()
+    	    item['comments'] = count2
+    	    item['score'] = count + count2 * 0.5
+    	    members_list.append(item)
+    	    if item['score'] == 0.0:
+    	        failers_list.append(item)
     	except:
     	    pass
     
+    members_list = [y for (x,y) in sorted([(i['score'],i) for i in members_list], reverse=True)]
     
-    
+    context['failers'] = failers_list
     paginator = Paginator(members_list, 10)
         
     page = request.GET.get('page', 1)

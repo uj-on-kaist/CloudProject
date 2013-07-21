@@ -22,9 +22,9 @@ $(document).ready(function(){
 
 <table class="member_table list_table" style="margin-top:10px;">
     <tr>
-        <th width="80" ><p>User</p></th>
-        <th width="120"><p>Department/Position</p></th>
-        <th width="200"><p>Feeds/Comments</p></th>
+        <th><p>User</p></th>
+        <th ><p>Feeds/Comments</p></th>
+        <th><p>Score</p></th>
     </tr>
     
     {% for member in members.object_list %}
@@ -34,17 +34,22 @@ $(document).ready(function(){
             <p class="ellipsis real_name">{{ member.last_name }}</p>
             <p class="hidden userid" style="display:none">{{ member.id }}</p>
         </td>
-        <td class="dept">
-            <p>{{ member.profile.dept }}</p>
-            <p>{{ member.profile.position }}</p>
-        </td>
         <td class="first member_picture">{{ member.feeds }} / {{ member.comments }}</td>
+        <td>{{ member.score }}</td>
     </tr>
     {% endfor%}
 </table>
 
 {% include "ui/pagination.html" %}
 
+</div>
+
+<div class="overview_item" id="user_statistics">
+<h4><span class="ui_icon ui_icon_stats_by_member"></span> <b class="title">Failers</b>
+</h4>
+{% for failer in failers %}
+<span>@<b>{{ failer.username }}</b></span>&nbsp;
+{% endfor%}
 </div>
 
 {% include "meta_close.html"%}
