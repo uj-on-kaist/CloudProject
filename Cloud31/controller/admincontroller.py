@@ -601,7 +601,7 @@ def dashboard(request):
     	context['month'] = 'selected'
     else:
     	context['week'] = 'selected'
-    
+    context['queries'] = 'type=' + date_before
     for member in members:
     	try:
     	    count = Message.objects.filter(is_deleted=False,author=member,reg_date__gt=time).count()
