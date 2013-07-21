@@ -28,6 +28,7 @@ import my_utils, my_emailer
 
 
 from controller.notificationcontroller import *
+from controller.statisticcontroller import *
 
 from pyofc2  import * 
 import random
@@ -579,3 +580,51 @@ def authority_update(request):
             pass
         
     return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+    
+def dashboard(request):
+    if not request.user.is_staff:
+        return HttpResponseNotFound() 
+    t = loader.get_template('admin/dashboard.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['side_list']=['']
+    context['current_user'] = request.user
+    context['page_dashboard'] = "selected"
+    
+    members = User.objects.filter(is_active=True)
+    members_list = list()
+    
+    date_before = request.GET.get('type', 7)
+    time = now_datetime()  - dt.timedelta(int(date_before))
+    if int(date_before) is 30:
+    	context['month'] = 'selected'
+    else:
+    	context['week'] = 'selected'
+    
+    for member in members:
+    	try:
+    	    count = Message.objects.filter(is_deleted=False,author=member,reg_date__gt=time).count()
+    	    member.feeds = count
+    	    
+    	    count = Comment.objects.filter(is_deleted=False,author=member,reg_date__gt=time).count()
+    	    member.comments = count
+
+    	    members_list.append(member)
+    	except:
+    	    pass
+    
+    
+    
+    paginator = Paginator(members_list, 10)
+        
+    page = request.GET.get('page', 1)
+    try:
+        context['members'] = paginator.page(page)
+    except PageNotAnInteger:
+        context['members'] = paginator.page(1)
+    except EmptyPage:
+        context['members'] = paginator.page(paginator.num_pages)
+    context['index_info'] = my_utils.get_index_list(context['members'].number, paginator.num_pages)
+    
+    return HttpResponse(t.render(context))

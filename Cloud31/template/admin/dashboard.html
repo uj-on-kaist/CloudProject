@@ -1,0 +1,50 @@
+{% include "meta_open.html"%}
+
+<h2 class="page_title">Dashboard</h2>
+
+<script type="text/javascript">
+$(document).ready(function(){
+});
+</script>
+<style>
+.last_week {font-size:12px; font-weight:normal; float:right}
+.last_week a.selected {font-weight:bold}
+</style>
+
+<div class="overview_item" id="user_statistics">
+<h4><span class="ui_icon ui_icon_stats_by_member"></span> <b class="title">Last User Statistics</b>&nbsp;
+	<span class="last_week" style="">
+	<a href ="/admin/dashboard?type=7" class="{{ week }}">Last Week</a>&nbsp;/&nbsp;
+	<a href ="/admin/dashboard?type=30" class="{{ month }}">Last Month</a>
+	{{ wow }}
+	</span>
+</h4>
+
+<table class="member_table list_table" style="margin-top:10px;">
+    <tr>
+        <th width="80" ><p>User</p></th>
+        <th width="120"><p>Department/Position</p></th>
+        <th width="200"><p>Feeds/Comments</p></th>
+    </tr>
+    
+    {% for member in members.object_list %}
+    <tr class="member_item list_item" onclick="$('#user_name_input').val($(this).find('.username a b').text());$('#user_id_input').val($(this).find('.userid').text()); $('#user_statistics .change_btn').click(); console.log(123); return false;">
+        <td class="name">
+            <p class="ellipsis username"><a style="text-decoration:none;">@<b>{{ member.username }}</b></a></p>
+            <p class="ellipsis real_name">{{ member.last_name }}</p>
+            <p class="hidden userid" style="display:none">{{ member.id }}</p>
+        </td>
+        <td class="dept">
+            <p>{{ member.profile.dept }}</p>
+            <p>{{ member.profile.position }}</p>
+        </td>
+        <td class="first member_picture">{{ member.feeds }} / {{ member.comments }}</td>
+    </tr>
+    {% endfor%}
+</table>
+
+{% include "ui/pagination.html" %}
+
+</div>
+
+{% include "meta_close.html"%}
