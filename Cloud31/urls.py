@@ -165,9 +165,9 @@ urlpatterns = patterns('',
     url(r'^admin/invite/$','controller.admincontroller.invite'),
     url(r'^admin/invite/send/$','controller.admincontroller.send_invites'),
     
-    url(r'^admin/tab/$','controller.admincontroller.tab'),
-    url(r'^admin/tab/manage/(?P<tab_id>\w+)$','controller.admincontroller.tab_manage'),
-    url(r'^admin/tab/delete$','controller.admincontroller.tab_delete'),
+    url(r'^admin/tab/$','controller.tabcontroller.tab'),
+    url(r'^admin/tab/manage/(?P<tab_id>\w+)$','controller.tabcontroller.tab_manage'),
+    url(r'^admin/tab/delete$','controller.tabcontroller.tab_delete'),
 
     url(r'^admin/notice/$','controller.admincontroller.notice'),
     url(r'^api/notice/update/$','controller.admincontroller.update_notice'),

@@ -1,6 +1,6 @@
 {% include "meta_open.html"%}
 
-<h2 class="page_title">Tab Admin</h2>
+<h2 class="page_title">{{ tab_name }} - 회원 관리</h2>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -11,6 +11,142 @@ $(document).ready(function(){
 .last_week a.selected {font-weight:bold}
 </style>
 
-{{ tab_name }}
+<div class="overview_item" id="user_statistics">
+<h4><span class="ui_icon ui_icon_member"></span> <b class="title">{{ tab_name }} 등록 회원</b>
+</h4>
+
+<table class="member_table list_table" style="margin-top:10px;">
+    <tr>
+        <th><p>아이디</p></th>
+        <th><p>관리</p></th>
+    </tr>
+    
+    {% for user in tab_users.object_list %}
+    <tr class="member_item list_item" onclick="$('#user_name_input').val($(this).find('.username a b').text());$('#user_id_input').val($(this).find('.userid').text()); $('#user_statistics .change_btn').click(); console.log(123); return false;">
+        <td class="name">
+            <a>@{{ user.user.username }}</a> {{ user.user.last_name }}
+        </td>
+        <td>
+            <form action="/admin/tab/manage/{{ tab_id }}?page={{ index }}&amp;tab_page={{ tab_page }}" method="post" style="display: inline">
+                {% csrf_token %}
+                <input type="hidden" name="delete_user" value="{{ user.user.username }}" />
+                <a href="#" onclick="check_again($(this));">삭제</a>
+            </form>
+        </td>
+    </tr>
+    {% endfor%}
+</table>
+
+<div class="index_box">
+
+<ul class="index_list">
+    {% if index_info_tab.has_previous %}
+    <a href="./{{ tab_id }}?tab_page={{ index_info_tab.previous_index }}&amp;page={{ index }}">
+    <li class="previous">
+        <span>&lt; Prev</span>
+    </li>
+    </a>
+    {% endif %}
+    {% for index_tab in index_info_tab.index_list %}
+    <a href="./{{ tab_id }}?page={{ index }}&amp;tab_page={{ index_tab }}">
+        <li class="index_item {% if forloop.last%}last{% endif %}"><span>
+                {% if index_tab == index_info_tab.current_index %}
+                <b>{{ index_tab }}</b>
+                {% else %}
+                {{index_tab}}
+                {% endif %}
+        </span></li>
+    </a>
+    {% endfor%}
+    {% if index_info_tab.has_next %}
+    <a href="./{{ tab_id }}?tab_page={{ index_info_tab.next_index }}&amp;page={{ index }}">
+    <li class="next">
+        <span>Next &gt;</span>
+    </li>
+    </a>
+    {% endif %}
+</ul>
+
+</div>
+
+</div>
+
+
+<div class="overview_item" id="user_statistics">
+<h4><span class="ui_icon ui_icon_member"></span> <b class="title">Cloud31 전체 회원</b>
+</h4>
+
+<script type="text/javascript">
+function check_again(button){
+    button.closest('form').submit();
+    return;
+/*
+    msg = "정말로 삭제하시겠습니까?";
+    if (confirm(msg)!=0) {
+        // Yes click
+        button.closest('form').submit();
+    } else {
+        // no click
+        return false;
+    }
+*/
+}
+</script>
+
+<table class="member_table list_table" style="margin-top:10px;">
+    <tr>
+        <th><p>아이디</p></th>
+        <th><p>관리</p></th>
+    </tr>
+    
+    {% for user in users.object_list %}
+    <tr class="member_item list_item" onclick="$('#user_name_input').val($(this).find('.username a b').text());$('#user_id_input').val($(this).find('.userid').text()); $('#user_statistics .change_btn').click(); console.log(123); return false;">
+        <td class="name">
+            <a>@{{ user.user.username }}</a> {{ user.user.last_name }}
+        </td>
+        <td>
+            <form action="/admin/tab/manage/{{ tab_id }}?page={{ index }}&amp;tab_page={{ tab_page }}" method="post" style="display: inline">
+                {% csrf_token %}
+                <input type="hidden" name="add_user" value="{{ user.user.username }}" />
+                <a href="#" onclick="check_again($(this));">추가</a>
+            </form>
+        </td>
+    </tr>
+    {% endfor%}
+</table>
+
+<div class="index_box">
+
+<ul class="index_list">
+    {% if index_info.has_previous %}
+    <a href="./{{ tab_id }}?page={{ index_info.previous_index }}&amp;tab_page={{ tab_page }}">
+    <li class="previous">
+        <span>&lt; Prev</span>
+    </li>
+    </a>
+    {% endif %}
+    {% for index in index_info.index_list %}
+    <a href="./{{ tab_id }}?page={{ index }}&amp;tab_page={{ tab_page }}">
+        <li class="index_item {% if forloop.last%}last{% endif %}"><span>
+                {% if index == index_info.current_index %}
+                <b>{{ index }}</b>
+                {% else %}
+                {{index}}
+                {% endif %}
+        </span></li>
+    </a>
+    {% endfor%}
+    {% if index_info.has_next %}
+    <a href="./{{ tab_id }}?page={{ index_info.next_index }}&amp;tab_page={{ tab_page }}">
+    <li class="next">
+        <span>Next &gt;</span>
+    </li>
+    </a>
+    {% endif %}
+</ul>
+
+</div>
+
+</div>
 
 {% include "meta_close.html"%}

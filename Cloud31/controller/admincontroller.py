@@ -601,7 +601,7 @@ def dashboard(request):
     	context['month'] = 'selected'
     else:
     	context['week'] = 'selected'
-    context['queries'] = 'type=' + date_before
+    context['queries'] = 'type=' + str(date_before)
     
     failers_list = list()
     for member in members:
@@ -638,71 +638,3 @@ def dashboard(request):
     
     return HttpResponse(t.render(context))
 
-def tab(request):
-    if not request.user.is_staff:
-        return HttpResponseNotFound() 
-    t = loader.get_template('admin/tab.html')
-    context = RequestContext(request)
-    my_utils.load_basic_info(request, context)
-    context['side_list']=['']
-    context['current_user'] = request.user
-    context['page_tab'] = "selected"
-    
-    tab_name = request.POST.get('tab_name', '')
-    is_public = request.POST.get('is_public', False)
-    
-    if tab_name is not '':
-        ## create tab
-        try:
-            new_tab = Tab(name=tab_name, is_public=is_public)
-            new_tab.save()
-            context['tab_message'] = "Tab \'" + tab_name + "\' is created."
-        except Exception as e:
-            print e
-            context['tab_message'] = "Tab \'" + tab_name + "\' is not created. Check again."
-        
-    
-    tabs = Tab.objects.all()
-    paginator = Paginator(tabs, 10)
-        
-    page = request.GET.get('page', 1)
-    try:
-        context['tabs'] = paginator.page(page)
-    except PageNotAnInteger:
-        context['tabs'] = paginator.page(1)
-    except EmptyPage:
-        context['tabs'] = paginator.page(paginator.num_pages)
-    context['index_info'] = my_utils.get_index_list(context['tabs'].number, paginator.num_pages)
-    
-    return HttpResponse(t.render(context))
-
-def tab_delete(request):
-    if not request.user.is_staff:
-        return HttpResponseNotFound()
-
-    tab_id = request.POST.get('tab_id','')
-    if tab_id is not '':
-        try:
-            tab = Tab.objects.get(id=tab_id)
-            tab.delete()
-        except Exception as e:
-            print e
-    
-    return HttpResponseRedirect("/admin/tab/")
-
-def tab_manage(request, tab_id):
-    if not request.user.is_staff:
-        return HttpResponseNotFound()
-    
-    t = loader.get_template('admin/tab_manage.html')
-    context = RequestContext(request)
-    my_utils.load_basic_info(request, context)
-    context['side_list']=['']
-    context['current_user'] = request.user
-    context['page_tab'] = "selected"
-    
-    tab = get_object_or_404(Tab, id=tab_id, is_public=False)
-    
-    context['tab_name'] = tab.name
-    
-    return HttpResponse(t.render(context))
