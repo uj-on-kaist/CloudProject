@@ -1,0 +1,104 @@
+{% include "meta_open.html"%}
+
+<h2 class="page_title">Tab Admin</h2>
+
+<script type="text/javascript">
+$(document).ready(function(){
+});
+</script>
+<style>
+.last_week {font-size:12px; font-weight:normal; float:right}
+.last_week a.selected {font-weight:bold}
+</style>
+
+<div class="overview_item" id="user_statistics">
+<h4><span class="ui_icon ui_icon_topic"></span> <b class="title">Tab Create</b>
+</h4>
+
+{{ tab_message }}
+
+<form action="/admin/tab/" method="post">
+{% csrf_token %}
+<li class="setting_item">
+<div class="setting_label">
+탭 이름
+</div>
+<div class="setting_field">
+<div class="change_field" style="display: inline;">
+    <input id="new_tab" type="text" placeholder="이름" name="tab_name" class="setting_input input_167_25">
+</div>
+</div>
+</li>
+
+<li class="setting_item">
+<div class="setting_label">
+탭 공개
+</div>
+<div class="setting_field">
+<div class="change_field" style="display: inline;">
+    <input id="new_public" type="checkbox" name="is_public" class="setting_input input_167_25" checked/>
+</div>
+</div>
+</li>
+
+<li class="setting_item">
+<div class="setting_label">
+</div>
+<div class="setting_field">
+<input type="submit" class="button_s" onblur="return false" value="Create"/>
+</div>
+</li>
+
+</form>
+
+</div>
+
+<div class="overview_item" id="user_statistics">
+<h4><span class="ui_icon ui_icon_topic"></span> <b class="title">Tabs</b>
+</h4>
+
+<script type="text/javascript">
+function check_again(button){
+    msg = "정말로 삭제하시겠습니까?";
+    if (confirm(msg)!=0) {
+        // Yes click
+        button.closest('form').submit();
+    } else {
+        // no click
+        return false;
+    }
+}
+</script>
+
+<table class="member_table list_table" style="margin-top:10px;">
+    <tr>
+        <th><p>탭 이름</p></th>
+        <th ><p>공개 여부</p></th>
+        <th><p>관리</p></th>
+    </tr>
+    
+    {% for tab in tabs.object_list %}
+    <tr class="member_item list_item" onclick="$('#user_name_input').val($(this).find('.username a b').text());$('#user_id_input').val($(this).find('.userid').text()); $('#user_statistics .change_btn').click(); console.log(123); return false;">
+        <td class="name">
+            <p class="ellipsis username"><a href="#" onClick="window.open('/tab/{{ tab.id }}');" style="text-decoration:none;"><b>{{ tab.name }}</b></a></p>
+        </td>
+        <td class="member_picture">{{ tab.is_public }}</td>
+        <td>
+            {% if not tab.is_public %}
+            <a href="#" onClick="window.open('/admin/tab/manage/{{ tab.id }}');">회원관리</a>&nbsp;/&nbsp;
+            {% endif %}
+            <form action="/admin/tab/delete" method="post" style="display: inline">
+            {% csrf_token %}
+            <input type="hidden" name="tab_id" value="{{ tab.id }}" />
+            <a href="#" onclick="check_again($(this));">삭제</a>
+            </form>
+        </td>
+    </tr>
+    {% endfor%}
+</table>
+
+{% include "ui/pagination.html" %}
+
+</div>
+
+{% include "meta_close.html"%}

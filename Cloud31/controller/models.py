@@ -212,3 +212,16 @@ class PollAnswer(models.Model):
     answerer = models.ForeignKey(User)
     reg_date = models.DateTimeField(auto_now_add=True)
     
+##
+## Tab Related
+##
+
+class Tab(models.Model):
+    name = models.CharField(null=False, max_length=256)
+    is_public = models.BooleanField(default=True)
+    reg_date = models.DateTimeField(auto_now_add=True)
+
+class TabUsers(models.Model):
+    tab = models.ForeignKey(Tab)
+    user = models.ForeignKey(User)
+    reg_date = models.DateTimeField(auto_now_add=True)
