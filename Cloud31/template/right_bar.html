@@ -4,7 +4,9 @@
 {% if user.is_authenticated %}
 
 
-
+{% if 'tab_info' in side_list%}
+{% include "sidebar/tab_info.html" %}
+{% endif %}
 
 {% if 'search_topic' in side_list%}
 {% include "sidebar/search_topic.html" %}

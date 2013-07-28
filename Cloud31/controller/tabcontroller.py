@@ -43,7 +43,7 @@ from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-def tab(request):
+def tab_admin(request):
     if not request.user.is_staff:
         return HttpResponseNotFound() 
     t = loader.get_template('admin/tab.html')
@@ -131,9 +131,9 @@ def tab_manage(request, tab_id):
             print 'add failed'
     
     
-    tab_users = TabUsers.objects.filter(tab=tab)
+    tab_users = TabUsers.objects.filter(tab=tab).order_by("-reg_date")
     
-    paginator_tab = Paginator(tab_users, 10)
+    paginator_tab = Paginator(tab_users, 5)
         
     tab_page = request.GET.get('tab_page', 1)
     
@@ -164,3 +164,81 @@ def tab_manage(request, tab_id):
     context['index'] = page
     
     return HttpResponse(t.render(context))
+
+
+@login_required(login_url='/signin/')
+def tab(request):
+    t = loader.get_template('tab.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    
+    context['side_list']=['']
+    context['page_tab'] = "selected"
+    
+    
+    tabs = Tab.objects.all()
+    user_tabs = list()
+    for tab in tabs:
+        try:
+            if tab.is_public:
+                user_tabs.append(tab)
+            tab_user = TabUsers.objects.filter(tab=tab, user=request.user).count()
+            if tab_user is not 0:
+                user_tabs.append(tab)
+        except Exception as e:
+            print e
+    paginator = Paginator(user_tabs, 10)
+        
+    page = request.GET.get('page', 1)
+    try:
+        context['tabs'] = paginator.page(page)
+    except PageNotAnInteger:
+        context['tabs'] = paginator.page(1)
+    except EmptyPage:
+        context['tabs'] = paginator.page(paginator.num_pages)
+    context['index_info'] = my_utils.get_index_list(context['tabs'].number, paginator.num_pages)
+    
+    return HttpResponse(t.render(context))
+
+
+@login_required(login_url='/signin/')
+def tab_detail(request,tab_id):
+    t = loader.get_template('tab_detail.html')
+    context = RequestContext(request)
+    my_utils.load_basic_info(request, context)
+    context['side_list']=['']
+    context['current_user'] = request.user
+    context['page_tab'] = "selected"
+    
+    print tab_id
+    print tab_id
+    tab = get_object_or_404(Tab, id=tab_id)
+    
+    context['tab'] = tab
+    context['tab_name'] = tab.name
+    context['tab_id'] = tab.id
+    
+    related_users = list()
+    if not tab.is_public:
+        tab_users = TabUsers.objects.filter(tab=tab)
+        for tab_users in tab_users:
+            user = tab_users.user
+            if not user.is_active:
+                continue
+            try:
+                user_profile = UserProfile.objects.get(user=user)
+                user.picture_url = user_profile.picture.url
+            except Exception as e:
+                print str(e)
+                user.picture_url = '/media/default.png'
+            related_users.append(user)
+    
+    context['related_users'] = related_users
+    
+    context['side_list']=['tab_info']
+    context['page_tab'] = "selected"
+    
+    return HttpResponse(t.render(context))
+
+
+

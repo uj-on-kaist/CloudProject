@@ -1,0 +1,28 @@
+{% include "meta_open.html"%}
+
+<h2 class="page_title">Tabs</h2>
+
+<h4 class="section_title"><span class="ui_icon ui_icon_topic"></span><b class="title">Tab List</b></h4>
+<table  border="0" class="topic_table list_table">
+    <tr>
+        <th width="160" class="first"><p>Tab Name</p></th>
+        <th width="90" ><p>공개 여부</p></th>
+    </tr>
+    
+    {% for tab in tabs.object_list %}
+    <tr class="topic_item list_item" onclick="document.location.href='/tab/{{ tab.id }}';">
+        <td class="topic_name first"><p>{{ tab.name }}</p></td>
+        <td >
+            {% if not tab.is_public %}
+            <p>비공개</p>
+            {% else %}
+            <p>공개</p>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor%}
+</table>
+
+{% include "ui/pagination.html" %}
+
+{% include "meta_close.html"%}

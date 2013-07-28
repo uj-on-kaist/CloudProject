@@ -149,6 +149,10 @@ urlpatterns = patterns('',
     url(r'^chart/recent_user_stats/(?P<user_id>\w+)$','controller.statisticcontroller.recent_user_stats'),
     url(r'^chart/recent_topic_stats/(?P<topic_id>\w+)$','controller.statisticcontroller.recent_topic_stats'),
         
+        
+    url(r'^tab/$','controller.tabcontroller.tab'),
+    url(r'^tab/(?P<tab_id>\w+)$','controller.tabcontroller.tab_detail'),
+    
     url(r'^admin/overview','controller.admincontroller.overview'),
     url(r'^admin/stats/topic/$','controller.admincontroller.stats_topic'),
     url(r'^admin/stats/thread/$','controller.admincontroller.stats_thread'),
@@ -165,7 +169,7 @@ urlpatterns = patterns('',
     url(r'^admin/invite/$','controller.admincontroller.invite'),
     url(r'^admin/invite/send/$','controller.admincontroller.send_invites'),
     
-    url(r'^admin/tab/$','controller.tabcontroller.tab'),
+    url(r'^admin/tab/$','controller.tabcontroller.tab_admin'),
     url(r'^admin/tab/manage/(?P<tab_id>\w+)$','controller.tabcontroller.tab_manage'),
     url(r'^admin/tab/delete$','controller.tabcontroller.tab_delete'),
 

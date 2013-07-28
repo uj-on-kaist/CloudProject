@@ -1,0 +1,14 @@
+<div class="side_item">
+<h3 class="sidebar_header">Tab: {{ tab.name }}</h3>
+
+{% if related_users %}
+<ul class="topic_related_users">
+<div class="list_header"><b>가입 회원</b></div>
+
+{% for user in related_users %}
+<li><a href="/user/{{ user.username }}" title="{{ user.username }}"><img src="{{ user.picture_url }}"  tipsy-text="@{{ user.username }}"/></a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+</div>
