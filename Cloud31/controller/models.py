@@ -225,3 +225,25 @@ class TabUsers(models.Model):
     tab = models.ForeignKey(Tab)
     user = models.ForeignKey(User)
     reg_date = models.DateTimeField(auto_now_add=True)
+
+
+class TabFeed(models.Model):
+    author = models.ForeignKey(User)
+    tab = models.ForeignKey(Tab)
+    contents = models.TextField(null=False)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    lat = models.CharField(max_length=30,default='')
+    lng = models.CharField(max_length=30,default='')
+    write_from = models.CharField(max_length=30,default='')
+    # Comma Seperated
+    attach_files = models.TextField(default='')
+
+class TabComment(models.Model):
+    message = models.ForeignKey(TabFeed)
+    author = models.ForeignKey(User)
+    contents = models.TextField(null=False)
+    reg_date = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
+

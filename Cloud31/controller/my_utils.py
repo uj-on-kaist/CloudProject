@@ -139,6 +139,76 @@ def process_messages(request, messages):
             pass
         feeds.append(feed)
     return feeds
+
+
+def process_tab_messages(request, messages):
+    feeds=list()
+    for message in messages:
+        feed = dict()
+        feed['result_type']='feed'
+        feed['id']=message.id
+        try:
+            user_profile = UserProfile.objects.get(user=message.author)
+            feed['author']=message.author.username
+        except:
+            continue
+        
+        try:
+            
+            feed['author_name']=message.author.last_name
+            feed['author_dept']=user_profile.dept
+            feed['author_position']=user_profile.position
+            #feed['author_picture']= user_profile.picture.url
+            feed['author_picture']= get_user_thumbnail(message.author)
+        except:
+            feed['author_picture']='/media/default.png'
+        feed['author_name']=message.author.last_name
+        feed['contents']= parser.parse_text(message.contents)
+        feed['contents_original']= message.contents
+        if message.lat != '' and message.lng != '':
+            feed['lat'] = message.lat
+            feed['lng'] = message.lng
+        feed['reg_date']= str(message.reg_date)
+        feed['pretty_date'] = pretty_date(message.reg_date)
+        feed['comments'] = list()
+        feed['file_list'] = list()
+        try:
+            feed['base_id']=message.base_id
+        except:
+            feed['base_id']=message.id
+        
+        try:
+            comments = TabComment.objects.filter(message=message, is_deleted=False).order_by('reg_date')
+            for comment in comments:
+                item = dict()
+                item['id']=comment.id
+                item['author']=comment.author.username
+                item['author_name']=comment.author.last_name
+                try:
+                    user_profile = UserProfile.objects.get(user=comment.author)
+                    item['author_picture']= get_user_thumbnail(comment.author)
+                except:
+                    item['author_picture']='/media/default.png'
+                item['contents']= parser.parse_text(comment.contents)
+                item['contents_original']= comment.contents
+                item['reg_date']= str(comment.reg_date)
+                feed['comments'].append(item)
+        except:
+            pass
+        
+        attach_list = message.attach_files.split('.')
+        attach_files = list()
+        for a_file in attach_list:
+            if a_file != '':
+                attach_files.append(a_file)
+        try:
+            files = File.objects.filter(id__in=attach_files)
+            feed['file_list']=process_files(files)
+        except Exception as e:
+            print str(e)
+            pass
+        feeds.append(feed)
+    return feeds
     
 import os.path
 

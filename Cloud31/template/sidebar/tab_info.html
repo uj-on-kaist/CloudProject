@@ -1,6 +1,10 @@
 <div class="side_item">
 <h3 class="sidebar_header">Tab: {{ tab.name }}</h3>
-
+{% if not tab.is_public %}
+<p>비공개 탭</p>
+{% else %}
+<p>공개 탭</p>
+{% endif %}
 {% if related_users %}
 <ul class="topic_related_users">
 <div class="list_header"><b>가입 회원</b></div>

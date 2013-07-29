@@ -1,0 +1,119 @@
+<div class="feed_box ui-corner-all">
+    <!-- <div id="feed_div" onClick="this.contentEditable='true';">Write your Feed</div> -->
+    <div>
+    <textarea id="feed_message_input" class="autogrow ui-corner-all" placeholder="Write your Tab Feed"></textarea>
+    </div>
+    <div id="location_info_box" attached="false">
+        <p id="location_info">
+            <b>Location:</b>
+            <span id="address_info"></span>
+            <a href="#" style="float:right;" onclick="$(this).parent().attr('attached','false'); $(this).parent().parent().hide(); return false;"><span class="ui_icon ui_icon_delete"></span></a>
+            <span id="lat_value"></span>
+            <span id="lng_value"></span>
+        </p>
+    </div>
+    
+    <div id="file-uploader" class="ui-corner-all">       
+    <noscript>          
+        <p>Please enable JavaScript to use file uploader.</p>
+        <!-- or put a simple form for upload here -->
+    </noscript>         
+    </div>
+    
+    
+    <div id="location_selector" style="display:none;">
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+        <div id="map_canvas"></div>
+    </div>
+</div>
+
+
+<div class="feed" style="margin-bottom:20px;">
+
+<div class="feed_form">
+<div id="auto_complete_list" class="ui-corner-all">
+<ul>
+<li class="first corner_top type_msg"><span></span></li>
+<li class="first corner_top search_msg"><span>Search Result</span></li>
+<li class="user_item template">
+    <div class="user">
+    <span class="user_picture"><img /></span>
+    <p class="user_info">
+        <span class="user_name"></span>
+        <span class="user_real_name"></span>
+    </p>
+    </div>
+</li>
+<li class="topic_item template">
+    <div class="topic">
+    <span class="topic_name">#삼일</span>
+    </div>
+</li>
+<li class="add ui-corner-bottom">Make Topic "<b><span class="topic_name"></span></b>"</li>
+</ul>
+</div>
+
+<div class="feed_rest" style="display:none;">
+
+<div class="control">
+
+<div class="item update template">
+    <p class="loading" style="display:inline; padding:0; margin:0; display:none; padding-top:8px; padding-bottom:6px;padding-right:5px"><img src="/static/image/ajax-loader.gif?asdf"></p>
+    <input type="submit" id="update_btn" class="button_m" onblur="return false;" value="Update" />
+</div>
+
+</div><!-- control -->
+</div><!-- feed_rest -->
+
+
+</div><!-- feed_form -->
+
+</div><!-- feed -->
+<script type="text/javascript">
+    $("#feed_message_input").bind('focus',function(){
+        $(this).parent().parent().css('border','1px solid #34b0d9');
+    });
+    $("#feed_message_input").bind('blur',function(){
+        $(this).parent().parent().css('border','1px solid #ccc');
+    });
+    
+    $("#feed_message_input").keyup(function(event){
+        detect_auto_complete($(this));
+    });
+    
+    
+    $("#auto_complete_list li").click(function(event){
+        
+        event.stopPropagation();
+    });
+    
+    $('#auto_complete_list li.add').click(function(){
+        var left=$(this).attr('left');
+        var right=$(this).attr('right');
+        replace_input_text($("#feed_message_input"), $(this).find('.topic_name').text(),left, right);
+        $("#auto_complete_list").hide();
+    });
+    
+    
+    var uploader = new qq.FileUploader({
+        element: document.getElementById('file-uploader'),
+        action: '/file/ajax_upload',
+        sizeLimit: 0, // max size
+        minSizeLimit: 0, // min size
+        debug: true,
+        params:{
+            title: '<span class="ui_icon ui_icon_attach_file"></span>',
+            delete_btn: '<span class="ui_icon ui_icon_delete"></span>',
+            additional: '<div class="location_box" onClick="attach_gps(); return false;"><span class="ui_icon ui_icon_location"></span></div>'
+        },
+        onComplete: function(id, fileName, responseJSON){
+            /* $("#attach_list").append("<li id='file_"+responseJSON.id+"'>"+responseJSON.id+"</li>"); */
+        }
+    });
+    
+    $("#file-uploader .custom_zone").prepend("<p class='attach_label'>Attach</p> ");
+    var update_btn_layout = $(".item.update").clone();
+    update_btn_layout.removeClass("template");
+    $("#file-uploader .custom_zone").after(update_btn_layout);
+
+</script>

@@ -152,6 +152,13 @@ urlpatterns = patterns('',
         
     url(r'^tab/$','controller.tabcontroller.tab'),
     url(r'^tab/(?P<tab_id>\w+)$','controller.tabcontroller.tab_detail'),
+    url(r'^api/tab/feed/update/$','controller.tabcontroller.update_tab_feed'),
+    url(r'^api/tab/feed/delete/(?P<feed_id>\w+)$','controller.tabcontroller.delete_tab_feed'),
+    url(r'^api/tab/feed/update/comment/$','controller.tabcontroller.update_tab_comment'),
+    url(r'^api/tab/feed/comment/delete/(?P<comment_id>\w+)$','controller.tabcontroller.delete_tab_comment'),
+    url(r'^api/tab/feed/load$','controller.tabcontroller.load_tab_feed'),
+
+    
     
     url(r'^admin/overview','controller.admincontroller.overview'),
     url(r'^admin/stats/topic/$','controller.admincontroller.stats_topic'),

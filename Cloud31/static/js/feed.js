@@ -175,24 +175,29 @@ function display_feeds(feeds, type){
         feed_layout.find('.from span.author_name').text(feed.author_name);
         feed_layout.find('.feed_content').html(nl2br(feed.contents));
         
-        if(feed.favorite){
-            feed_layout.find('.like_action a span.favor').hide();
-            feed_layout.find('.like_action a span.unfavor').show();
-            feed_layout.find('.like_action a').attr('feed_id',feed.id);
-            
-            feed_layout.find('.like_action a').click(function(){
-                feed_like($(this), false);
-                return false;
-            });
-        }else{
-            feed_layout.find('.like_action a span.favor').show();
-            feed_layout.find('.like_action a span.unfavor').hide();
-            feed_layout.find('.like_action a').attr('feed_id',feed.id);
-            feed_layout.find('.like_action a').click(function(){
-                feed_like($(this), true);
-                return false;
-            });
-        }
+		if(type != 'tab'){
+		    if(feed.favorite){
+				feed_layout.find('.like_action a span.favor').hide();
+				feed_layout.find('.like_action a span.unfavor').show();
+				feed_layout.find('.like_action a').attr('feed_id',feed.id);
+				
+				feed_layout.find('.like_action a').click(function(){
+					feed_like($(this), false);
+					return false;
+				});
+	        }else{
+				feed_layout.find('.like_action a span.favor').show();
+				feed_layout.find('.like_action a span.unfavor').hide();
+				feed_layout.find('.like_action a').attr('feed_id',feed.id);
+				feed_layout.find('.like_action a').click(function(){
+					feed_like($(this), true);
+					return false;
+				});
+	        }			
+		}else{
+			feed_layout.find('.like_action').remove();
+		}
+
         
         feed_layout.find('abbr.feed_time').text(humane_date(feed.reg_date));
         feed_layout.find('img.avatar.author').attr('src',feed.author_picture);
@@ -222,7 +227,13 @@ function display_feeds(feeds, type){
             feed_layout.find('.stream_element_delete.feed').attr('feed_id',feed.id);
             if(type != 'notice'){
                 feed_layout.find('.stream_element_delete.feed').click(function(){
-                    delete_feed($(this));
+                    
+					if(type != 'tab'){
+						delete_feed($(this));			
+					}else{
+						delete_tab_feed($(this));
+					}
+
                 });
             }else{
                 feed_layout.find('.stream_element_delete.feed').click(function(){
@@ -287,7 +298,11 @@ function display_feeds(feeds, type){
 
         feed_layout.find(".comment_submit").click(function(){
                 var id=$(this).attr('id').split('_')[2];
-                update_comment(id);
+				if(type != 'tab'){
+	                update_comment(id);					
+				}else{
+					update_tab_comment(id);
+				}
         });
         feed_layout.find("textarea").click(function(){
                 var reply_btn = $(this).parent().parent().find('.submit_button');
@@ -394,7 +409,12 @@ function add_comment(feed_layout, comment, index, total){
         comment_layout.find('.stream_element_delete').show();
         comment_layout.find('.stream_element_delete').attr('comment_id',comment.id);
         comment_layout.find('.stream_element_delete').click(function(){
-            delete_comment($(this));
+			if($("#tab_id").length >= 1){
+				delete_tab_comment($(this));
+			}else{
+				delete_comment($(this));
+				
+			}
             return false;
         });
     }else{

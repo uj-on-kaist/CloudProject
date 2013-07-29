@@ -2,5 +2,43 @@
 
 <h2 class="page_title">{{ tab_name }}</h2>
 
+{% include "tab/feed_form.html"%}
 
+
+<div style="display: none" id="tab_id" tab="{{ tab.id }}"></div>
+
+<div class="tab">
+<a href="#" onclick="load_tab_feed('{{ tab.id }}'); return false;">
+    <span class="tab_item selected corner_top" onclick="select_this_tab($(this)); return false;">Tab Feed</span>
+</a>
+
+<div style="float:right; position:relative; top:-5px">
+<select onchange="change_tab_sort_method($(this));" id="feed_sort_method">
+<option value="reg_date">작성일 순</option>
+<option value="update_date">업데이트 순</option>
+</select>
+</div>
+
+</div>
+
+
+
+{% include "ui/feed_list.html"%}
+<script type="text/javascript">
+load_tab_feed('{{ tab.id }}');
+    
+    $("#update_btn").click(function(){
+        upload_tab_feed('{{ tab.id }}', $(this)); 
+        return false;
+    });
+</script>
+
+<div id="loading_box">
+<img src="/static/image/loading.gif" />
+</div>
+<div id="load_more_box">
+<a href="#" onclick="load_more(); return false">
+<p>Load more</p>
+</a>
+</div>
 {% include "meta_close.html"%}

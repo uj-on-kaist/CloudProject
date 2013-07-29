@@ -173,7 +173,7 @@ def tab(request):
     my_utils.load_basic_info(request, context)
     
     context['side_list']=['']
-    context['page_tab'] = "selected"
+    context['page_tab_user'] = "selected"
     
     
     tabs = Tab.objects.all()
@@ -208,7 +208,7 @@ def tab_detail(request,tab_id):
     my_utils.load_basic_info(request, context)
     context['side_list']=['']
     context['current_user'] = request.user
-    context['page_tab'] = "selected"
+    context['page_tab_user'] = "selected"
     
     print tab_id
     print tab_id
@@ -241,4 +241,199 @@ def tab_detail(request,tab_id):
     return HttpResponse(t.render(context))
 
 
+
+
+
+
+def delete_tab_feed(request, feed_id):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+        try:
+            message = TabFeed.objects.get(author=user, id=feed_id)
+            message.is_deleted=True
+            message.save()
+        except:
+            result['success']=True
+            result['message']='Invalid action'
+    except:
+            return my_utils.return_error('Please Sign in First')
+            
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+    
+
+def delete_tab_comment(request, comment_id):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    try:
+        user = User.objects.get(username=request.user.username)
+        try:
+            comment = TabComment.objects.get(author=user, id=comment_id)
+            comment.is_deleted=True
+            comment.save()
+        except:
+            result['success']=True
+            result['message']='Invalid action'
+    except:
+            return my_utils.return_error('Please Sign in First')
+            
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
+
+def update_tab_feed(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    message=''
+    attach_list=''
+    location_info=''
+    lat = ''
+    lng = ''
+    if request.method == 'POST':
+        if request.POST['message']:
+            message=smart_unicode(request.POST['message'], encoding='utf-8', strings_only=False, errors='strict')
+        
+        if request.POST['attach_list']:
+            attach_list=request.POST['attach_list']
+            
+        if request.POST['location_info']:
+            location_info=request.POST['location_info']
+            try:
+                location = location_info.split("|")
+                lat = location[0]
+                lng = location[1]
+            except:
+                pass
+    tab_id = request.POST.get('tab',-1)
+    if tab_id is -1:
+        return my_utils.return_error('Empty Tab')
+
+    if message is not '':
+        try:
+            user = User.objects.get(username=request.user.username)
+            tab = Tab.objects.get(id=tab_id)
+            print location_info
+            try: 
+                new_message = TabFeed(author=user,tab=tab,contents=message,lat=lat,lng=lng,attach_files=attach_list)
+                new_message.save()   
+            except:
+                return my_utils.return_error('Insert Failed')
+            
+            
+            #FILE CHECK
+            attach_arr = attach_list.split('.')
+            for attach_id in attach_arr:
+                try:
+                    if attach_id is '':
+                        continue
+                    attach = File.objects.get(id=attach_id)
+                    attach.is_attached=True
+                    attach.save()
+                except Exception as e:
+                    print str(e)
+        except:
+            return my_utils.return_error('No such User')
+    else:
+        return my_utils.return_error('Empty Message')
+    
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
+
+def update_tab_comment(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    
+    input_message=''
+    if request.method == 'POST':
+        if request.POST['message']:
+            input_message=smart_unicode(request.POST['message'], encoding='utf-8', strings_only=False, errors='strict')
+        if request.POST['feed_id']:
+            feed_id = request.POST['feed_id']
+
+    if input_message is not '':
+        try:
+            user = User.objects.get(username=request.user.username)
+        except:
+            return my_utils.return_error('Please Sign in first')
+        
+        try:
+            message = TabFeed.objects.filter(id=feed_id,is_deleted=False)[0]
+        except:
+            return my_utils.return_error('No such Message')
+            
+        try: 
+            new_comment = TabComment(author=user,contents=input_message,message=message)
+            new_comment.save()
+            message.save()
+        except:
+            return my_utils.return_error('Insert Failed')
+        
+    else:
+        return my_utils.return_error('Empty Message')
+    
+    try:
+        item = dict()
+        item['id']=new_comment.id
+        item['author']=new_comment.author.username
+        #item['author_picture']=UserProfile.objects.get(user=new_comment.author).picture.url
+        item['author_picture']=my_utils.get_user_thumbnail(new_comment.author)
+        item['author_name']=new_comment.author.last_name
+        item['contents']= parser.parse_text(new_comment.contents)
+        item['reg_date']= str(new_comment.reg_date)
+        result['comment']=item
+    except Exception as e:
+        print str(e)
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
+
+@never_cache
+def load_tab_feed(request):
+    result=dict()
+    result['success']=True
+    result['message']='success'
+    try:
+        tab_id = request.GET.get("tab",-1)
+        tab = Tab.objects.get(id=tab_id)
+        base_id = request.GET.get("base_id",False)
+        to_id = request.GET.get("to_id",False)
+        sort_method = request.GET.get("sort","reg_date")
+        additional = Q()
+        load_length = DEFAULT_LOAD_LENGTH
+        if base_id:
+            try:
+                if sort_method == 'reg_date':
+                    message = TabFeed.objects.get(id=base_id, tab=tab)
+                    additional = Q(reg_date__lt=message.reg_date)
+                else:
+                    message = TabFeed.objects.get(id=base_id, tab=tab)
+                    additional = Q(update_date__lt=message.update_date)
+            except:
+                pass
+            #additional = Q(id__lt=base_id)
+        if to_id:
+            load_length = 10000
+            additional = Q(id__gte=base_id)
+        
+        
+        if sort_method == 'reg_date':
+            messages = TabFeed.objects.filter(additional,is_deleted=False,tab=tab).order_by('-reg_date')[:load_length]
+        else:
+            messages = TabFeed.objects.filter(additional,is_deleted=False,tab=tab).order_by('-update_date')[:load_length]
+        
+        
+        result['feeds']=my_utils.process_tab_messages(request,messages)
+        
+        if len(messages) == DEFAULT_LOAD_LENGTH:
+            result['load_more']=True
+    except Exception as e:
+        print str(e)
+        result['success']=True
+        result['message']='Do not have any message'
+            
+    return HttpResponse(json.dumps(result, indent=4), mimetype='application/json')
 
