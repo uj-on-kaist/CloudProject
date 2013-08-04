@@ -246,12 +246,74 @@ def register_noti(request, noti_type, info):
             return
         try:
             register_iPhone_notification(new_noti, noti_type, info)
+            register_SMS_notification(new_noti, noti_type, info)
         except Exception as e:
             print str(e)
             
     except Exception as e:
         print 'Error '+str(e)
         pass
+
+def register_SMS_notification(noti, noti_type, info):
+    print 'SMS Noti'
+    target_user = noti.user
+    sender = noti.sender
+    try:
+        target_user_profile = UserProfile.objects.get(user=target_user)
+    except:
+        return
+    
+    if target_user_profile.phone == '':
+        return
+    
+    if target_user_profile.receive_phone == False:
+        return
+    
+    try:
+        notification_type='sms'
+        target_object = info['target_object']
+        phone = target_user_profile.phone
+        print info
+        if noti_type == 'new_comment':
+            target_message = target_object.contents
+            target_message = target_message[:10] + ".."
+            p = re.compile(r'<.*?>')
+            target_message = p.sub('', target_message)
+            target_message = target_message.replace("\n"," ")
+            contents = sender.username+u"님이 메시지 \""+target_message+u"\"에 새 댓글을 다셨습니다. http://cloud31.co.kr/n"
+            new_noti = NotificationQueue(target_user=target_user, target_phone=phone, notification_type=notification_type, contents = contents)
+            new_noti.save()
+        elif noti_type == 'new_at_feed':
+            target_message = target_object.contents
+            target_message = target_message[:10] + ".."
+            p = re.compile(r'<.*?>')
+            target_message = p.sub('', target_message)
+            target_message = target_message.replace("\n"," ")
+            contents = sender.username+u"님이 회원님에 관한 메시지 \""+target_message+u"\"를 작성하셨습니다. http://cloud31.co.kr/n"
+            new_noti = NotificationQueue(target_user=target_user, target_phone=phone, notification_type=notification_type, contents = contents)
+            new_noti.save()
+        elif noti_type == 'new_dm':
+            target_message = target_object.contents
+            target_message = target_message[:10] + ".."
+            target_message = target_message.replace("\n"," ")
+            p = re.compile(r'<.*?>')
+            target_message = p.sub('', target_message)
+            contents = sender.username+u"님이 회원님에게 쪽지 \""+target_message+u"\"를 보냈습니다. http://cloud31.co.kr/n"
+            new_noti = NotificationQueue(target_user=target_user, target_phone=phone, notification_type=notification_type, contents = contents)
+            new_noti.save()
+        elif noti_type == 'new_dm_reply':
+            target_message = target_object.contents
+            target_message = target_message[:10] + ".."
+            p = re.compile(r'<.*?>')
+            target_message = p.sub('', target_message)
+            target_message = target_message.replace("\n"," ")
+            contents = sender.username+u"님이 회원님에게 쪽지 \""+target_message+u"\"에 답장을 작성하셨습니다. http://cloud31.co.kr/n"
+            new_noti = NotificationQueue(target_user=target_user, target_phone=phone, notification_type=notification_type, contents = contents)
+            new_noti.save()
+    except Exception as e:
+        print 'Error '+str(e)
+        pass
+
 
 def register_iPhone_notification(noti, noti_type, info):
     print 'iPhone Noti'

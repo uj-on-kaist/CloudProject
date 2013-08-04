@@ -184,6 +184,7 @@ class EmailQueue(models.Model):
 class NotificationQueue(models.Model):
     notification_type = models.CharField(max_length=20)
     target_user = models.ForeignKey(User)
+    target_phone = models.CharField(max_length=100)
     contents = models.TextField(null=False)
     reg_date = models.DateTimeField(auto_now_add=True)
     is_sent = models.BooleanField(default=False)
