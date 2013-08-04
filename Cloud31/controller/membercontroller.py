@@ -57,7 +57,7 @@ def main(request):
                 member_profile = UserProfile.objects.get(user=member)
                 member.profile = member_profile
                 try:
-                    member.picture = member_profile.picture.url
+                    member.picture = my_utils.get_user_thumbnail(member)
                 except:
                     member.picture = "/media/default.png"
                 if not member_profile.is_deactivated:
