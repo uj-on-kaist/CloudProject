@@ -12,6 +12,8 @@ class UserProfile(models.Model):
 	receive_email = models.BooleanField(default=True)
 	receive_apns = models.BooleanField(default=True)
 	device_id = models.CharField(max_length=100)
+	phone = models.CharField(max_length=100)
+	receive_phone = models.BooleanField(default=False)
 	picture = models.ImageField(upload_to="profile", default='/media/default.png')
 
 class UserLoginHistory(models.Model):

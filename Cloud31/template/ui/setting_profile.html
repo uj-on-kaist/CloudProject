@@ -65,7 +65,35 @@ Position:
 </div>
 </li>
 
+<li class="setting_item">
+<div class="setting_label">
+Phone:
+</div>
+<div class="setting_field">
+{{ user_profile.phone }}
+<a href="#" onclick="$(this).parent().find('.change_field').show(); $(this).remove();  return false;">(change)</a>
 
+<div class="change_field">
+    <input id="new_phone" type="text" placeholder="핸드폰 번호" name="new_phone" class="setting_input input_167_25">
+</div>
+</div>
+</li>
+
+<li class="setting_item">
+<div class="setting_label">
+SMS Noti:
+</div>
+<div class="setting_field">
+
+<div class="change_field" style="display: inline">
+    {% if user_profile.receive_phone %}
+    <input id="new_receive_phone" type="checkbox" placeholder="" name="new_receive_phone" class="setting_input input_167_25" checked>
+    {% else %}
+    <input id="new_receive_phone" type="checkbox" placeholder="" name="new_receive_phone" class="setting_input input_167_25" >
+    {% endif %}
+</div>
+</div>
+</li>
 
 
 <li class="setting_item">

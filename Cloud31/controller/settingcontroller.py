@@ -102,8 +102,20 @@ def update(request, update_type):
         if new_position != '':
             user_profile.position = smart_unicode(new_position, encoding='utf-8', strings_only=False, errors='strict')
             user_profile.save()
+
+        new_phone = request.POST.get("new_phone",False)
+        if new_phone != '':
+            user_profile.phone = smart_unicode(new_phone, encoding='utf-8', strings_only=False, errors='strict')
+            user_profile.save()
         
-      
+        receive_phone = request.POST.get("new_receive_phone",False)
+        if receive_phone != False:
+            user_profile.receive_phone = True
+            user_profile.save()
+        else:
+            user_profile.receive_phone = False
+            user_profile.save()
+        
     context['user'] = user
     context['user_profile'] = user_profile
     return HttpResponse(t.render(context))

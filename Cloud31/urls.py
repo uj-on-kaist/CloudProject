@@ -112,7 +112,7 @@ urlpatterns = patterns('',
     
     url(r'^api/event/update/comment/$','controller.eventcontroller.update_event_comment'),
     
-    
+    url(r'^n/$', 'controller.notificationcontroller.main'),
     url(r'^notifications/$', 'controller.notificationcontroller.main'),
     url(r'^notifications/read$', 'controller.notificationcontroller.read'),
     url(r'^notifications/unread$', 'controller.notificationcontroller.unread'),
