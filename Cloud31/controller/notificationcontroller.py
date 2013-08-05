@@ -280,7 +280,7 @@ def register_SMS_notification(noti, noti_type, info):
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
             target_message = target_message.replace("\n"," ")
-            contents = sender.username+u"님이 메시지 \""+target_message+u"\"에 새 댓글을 다셨습니다. http://cloud31.co.kr/n"
+            contents = sender.username+u"님이 \""+target_message+u"\"에 댓글을 다셨습니다. http://cloud31.co.kr/n"
             new_noti = NotificationQueue(target_user=target_user, target_phone=phone, notification_type=notification_type, contents = contents)
             new_noti.save()
         elif noti_type == 'new_at_feed':
@@ -289,7 +289,7 @@ def register_SMS_notification(noti, noti_type, info):
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
             target_message = target_message.replace("\n"," ")
-            contents = sender.username+u"님이 회원님에 관한 메시지 \""+target_message+u"\"를 작성하셨습니다. http://cloud31.co.kr/n"
+            contents = sender.username+u"님이 회원님에 관해 \""+target_message+u"\"를 작성하셨습니다. http://cloud31.co.kr/n"
             new_noti = NotificationQueue(target_user=target_user, target_phone=phone, notification_type=notification_type, contents = contents)
             new_noti.save()
         elif noti_type == 'new_dm':
@@ -298,7 +298,7 @@ def register_SMS_notification(noti, noti_type, info):
             target_message = target_message.replace("\n"," ")
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
-            contents = sender.username+u"님이 회원님에게 쪽지 \""+target_message+u"\"를 보냈습니다. http://cloud31.co.kr/n"
+            contents = sender.username+u"님이 쪽지 \""+target_message+u"\"를 보냈습니다. http://cloud31.co.kr/n"
             new_noti = NotificationQueue(target_user=target_user, target_phone=phone, notification_type=notification_type, contents = contents)
             new_noti.save()
         elif noti_type == 'new_dm_reply':
@@ -307,7 +307,7 @@ def register_SMS_notification(noti, noti_type, info):
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
             target_message = target_message.replace("\n"," ")
-            contents = sender.username+u"님이 회원님에게 쪽지 \""+target_message+u"\"에 답장을 작성하셨습니다. http://cloud31.co.kr/n"
+            contents = sender.username+u"님이 \""+target_message+u"\"에 답장을 작성하셨습니다. http://cloud31.co.kr/n"
             new_noti = NotificationQueue(target_user=target_user, target_phone=phone, notification_type=notification_type, contents = contents)
             new_noti.save()
     except Exception as e:
