@@ -276,7 +276,7 @@ def register_SMS_notification(noti, noti_type, info):
         print info
         if noti_type == 'new_comment':
             target_message = target_object.contents
-            target_message = target_message[:10] + ".."
+            target_message = target_message[:5] + ".."
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
             target_message = target_message.replace("\n"," ")
@@ -285,7 +285,7 @@ def register_SMS_notification(noti, noti_type, info):
             new_noti.save()
         elif noti_type == 'new_at_feed':
             target_message = target_object.contents
-            target_message = target_message[:10] + ".."
+            target_message = target_message[:5] + ".."
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
             target_message = target_message.replace("\n"," ")
@@ -294,7 +294,7 @@ def register_SMS_notification(noti, noti_type, info):
             new_noti.save()
         elif noti_type == 'new_dm':
             target_message = target_object.contents
-            target_message = target_message[:10] + ".."
+            target_message = target_message[:5] + ".."
             target_message = target_message.replace("\n"," ")
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
@@ -303,7 +303,7 @@ def register_SMS_notification(noti, noti_type, info):
             new_noti.save()
         elif noti_type == 'new_dm_reply':
             target_message = target_object.contents
-            target_message = target_message[:10] + ".."
+            target_message = target_message[:5] + ".."
             p = re.compile(r'<.*?>')
             target_message = p.sub('', target_message)
             target_message = target_message.replace("\n"," ")
