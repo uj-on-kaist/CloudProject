@@ -1,3 +1,11 @@
+function check_all_options(item){
+    if(!item.attr("checked")){
+        $(".export_option_box table input[type=checkbox]").removeAttr('checked');
+    }else{
+        $(".export_option_box table input[type=checkbox]").attr('checked','checked');
+    }
+}
+
 function show_user_menu(event){
     $("#menu_list").toggle();
     $("#menu_list").width($("#user_box").width()+24);

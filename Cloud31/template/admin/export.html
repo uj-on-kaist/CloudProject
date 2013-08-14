@@ -4,6 +4,10 @@
     Export Data
 </h2>
 
+{% if not user.is_staff %}
+<link rel="stylesheet" href="/static/css/admin.css?123" type="text/css" />
+{% endif %}
+
 <script type="text/javascript">
 $(document).ready(function(){
 
