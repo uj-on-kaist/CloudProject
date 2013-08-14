@@ -43,8 +43,9 @@ from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def export(request):
-    if not request.user.is_staff:
-        return HttpResponseNotFound() 
+    # Modified : Non-admin user can export data 
+    #if not request.user.is_staff:
+    #    return HttpResponseNotFound() 
     t = loader.get_template('admin/export.html')
     context = RequestContext(request)
     my_utils.load_basic_info(request, context)
