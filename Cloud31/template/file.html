@@ -10,7 +10,7 @@
     </tr>
     
     {% for file in files.object_list %}
-    <tr class="file_item list_item" onclick="window.open('/file/download/{{ file.id }}/');">
+    <tr class="file_item list_item" onclick="window.open('{{ file.url }}');">
         <td class="first name">
             <span class="ui_icon ui_icon_file_{{ file.type }}"></span>
             <p class="ellipsis">{{ file.name }}</p>
